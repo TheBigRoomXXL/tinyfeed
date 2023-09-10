@@ -55,6 +55,34 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 
 	items = items[0:min(len(items), 49)]
 
+	printHTML(items)
+}
+
+func printHTML(items []*gofeed.Item) {
+	html := `<!DOCTYPE html>
+	<html lang="en" dir="ltr" itemscope itemtype="https://schema.org/WebPage" prefix="og:http://ogp.me/ns#">
+	
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+		<title>Feed</title>
+	
+		<link rel="icon" type="image/svg+xml" href="/icon.svg" />
+	
+		<!-- General -->
+		<meta name="application-name" content="tinyfeed" />
+		<meta name="author" content="Sebastien LOVERGNE" />
+		<meta name="description" content="tiny feed reader" />
+		<meta name="referrer" content="strict-origin" />
+	</head>
+	<body>
+	<h1>Feed</h1>`
+	for _, item := range items {
+		html += fmt.Sprintf("<a href=\"%s\"><h2>%s</h2><a>", item.Link, item.Title)
+	}
+	html += "</body></html>"
+	fmt.Println(html)
 }
 
 func stdinToArgs() ([]string, error) {
