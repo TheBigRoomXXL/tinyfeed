@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 	"strings"
 
+	"github.com/mmcdole/gofeed"
 	"github.com/spf13/cobra"
 )
 
@@ -27,17 +29,57 @@ func main() {
 }
 
 func tinyfeed(cmd *cobra.Command, args []string) {
-	args = append(args, stdinToArgs()...)
-	for _, arg := range args {
-		fmt.Println(arg)
+	strdinArgs, err := stdinToArgs()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error parsing stdin: ", err)
+		return
 	}
+
+	args = append(args, strdinArgs...)
+
+	if len(args) == 0 {
+		fmt.Fprintln(os.Stderr, "You must input at list one feed url.")
+		return
+	}
+
+	items := []*gofeed.Item{}
+	fp := gofeed.NewParser()
+	for _, url := range args {
+		feed, _ := fp.ParseURL(url)
+		items = append(items, feed.Items...)
+	}
+
+	sort.SliceStable(items, func(i, j int) bool {
+		return items[i].PublishedParsed.After(*items[j].PublishedParsed)
+	})
+
+	items = items[0:min(len(items), 49)]
+
 }
 
-func stdinToArgs() []string {
-	stdin, err := io.ReadAll(os.Stdin)
+func stdinToArgs() ([]string, error) {
+	//Check if stdin is Used
+	stdin := os.Stdin
+	// fi, err := stdin.Stat()
+	// if err != nil {
+	// 	return []string{}, nil
+	// }
+	// size := fi.Size()
+	// if size == 0 {
+	// 	return []string{}, nil
+	// }
+
+	input, err := io.ReadAll(stdin)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return strings.Fields(string(stdin))
+	return strings.Fields(string(input)), nil
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }
