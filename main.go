@@ -1,20 +1,25 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"io"
 	"os"
 	"sort"
 	"strings"
+	"text/template"
 
 	"github.com/mmcdole/gofeed"
 	"github.com/spf13/cobra"
 )
 
+//go:embed template.html
+var htmlTemplate embed.FS
+
 var rootCmd = &cobra.Command{
 	Use:   "tinyfeed [FEED_URL ...]",
-	Short: "Generate a static HTML page from a collection of feeds.",
-	Long:  "Generate a static HTML page from a collection of feeds. Only RSS, Atom and JSON feeds are supported.",
+	Short: "Aggregate a collection of feed into static HTML page",
+	Long:  "Aggregate a collection of feed into static HTML page. Only RSS, Atom and JSON feeds are supported.",
 	Example: `  single feed      tinyfeed lovergne.dev/rss.xml > index.html
   multiple feeds   cat feeds.txt | tinyfeed > index.html`,
 	Args: cobra.ArbitraryArgs,
@@ -31,7 +36,7 @@ func main() {
 func tinyfeed(cmd *cobra.Command, args []string) {
 	strdinArgs, err := stdinToArgs()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error parsing stdin: ", err)
+		fmt.Fprintln(os.Stderr, err)
 		return
 	}
 
@@ -55,51 +60,30 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 
 	items = items[0:min(len(items), 49)]
 
-	printHTML(items)
+	err = printHTML(items)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
 }
 
-func printHTML(items []*gofeed.Item) {
-	html := `<!DOCTYPE html>
-	<html lang="en" dir="ltr" itemscope itemtype="https://schema.org/WebPage" prefix="og:http://ogp.me/ns#">
-	
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-	
-		<title>Feed</title>
-	
-		<link rel="icon" type="image/svg+xml" href="/icon.svg" />
-	
-		<!-- General -->
-		<meta name="application-name" content="tinyfeed" />
-		<meta name="author" content="Sebastien LOVERGNE" />
-		<meta name="description" content="tiny feed reader" />
-		<meta name="referrer" content="strict-origin" />
-	</head>
-	<body>
-	<h1>Feed</h1>`
-	for _, item := range items {
-		html += fmt.Sprintf("<a href=\"%s\"><h2>%s</h2><a>", item.Link, item.Title)
+func printHTML(items []*gofeed.Item) error {
+	ts, err := template.ParseFiles("template.html")
+	if err != nil {
+		return fmt.Errorf("error loading html template: %s", err)
 	}
-	html += "</body></html>"
-	fmt.Println(html)
+
+	err = ts.Execute(os.Stdout, items)
+	if err != nil {
+		return fmt.Errorf("error rendering html template: %s", err)
+	}
+
+	return nil
 }
 
 func stdinToArgs() ([]string, error) {
-	//Check if stdin is Used
-	stdin := os.Stdin
-	// fi, err := stdin.Stat()
-	// if err != nil {
-	// 	return []string{}, nil
-	// }
-	// size := fi.Size()
-	// if size == 0 {
-	// 	return []string{}, nil
-	// }
-
-	input, err := io.ReadAll(stdin)
+	input, err := io.ReadAll(os.Stdin)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error parsing stdin: %s", err)
 	}
 
 	return strings.Fields(string(input)), nil

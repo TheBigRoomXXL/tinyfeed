@@ -15,5 +15,6 @@
 go.work
 
 # things
-feed**
+**feed**
 **html
+!template.html

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" itemscope itemtype="https://schema.org/WebPage" prefix="og:http://ogp.me/ns#">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<title>Feed</title>
+
+	<link rel="icon" type="image/svg+xml" href="/icon.svg" />
+
+	<!-- General -->
+	<meta name="application-name" content="tinyfeed" />
+	<meta name="author" content="Sebastien LOVERGNE" />
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator" />
+	<meta name="referrer" content="strict-origin" />
+</head>
+
+<body>
+	<h1>Feed</h1>
+
+	{{range .}}
+	<a href={{.Link}}>
+		<h2>{{.Title}}</h2>
+	</a>
+	{{end}}
+</body>
+
+</html>
