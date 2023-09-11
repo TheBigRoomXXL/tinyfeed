@@ -44,16 +44,20 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 	args = append(args, strdinArgs...)
 
 	if len(args) == 0 {
-		fmt.Fprintln(os.Stderr, "You must input at list one feed url.")
+		fmt.Fprintln(os.Stderr, "you must input at list one feed url.")
 		return
 	}
 
-	// feeds := []*gofeed.Feed{}
+	feeds := []*gofeed.Feed{}
 	items := []*gofeed.Item{}
 	fp := gofeed.NewParser()
 	for _, url := range args {
-		feed, _ := fp.ParseURL(url)
-		// feeds = append(feeds, feed)
+		feed, err := fp.ParseURL(url)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "could not parse feed: %s\n", err)
+			continue
+		}
+		feeds = append(feeds, feed)
 		items = append(items, feed.Items...)
 	}
 
@@ -63,7 +67,7 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 
 	items = items[0:min(len(items), 49)]
 
-	err = printHTML(items)
+	err = printHTML(feeds, items)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
@@ -86,7 +90,7 @@ func Domain(item *gofeed.Item) string {
 	return hostname
 }
 
-func printHTML(items []*gofeed.Item) error {
+func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	ts, err := template.New("template.html").
 		Funcs(template.FuncMap{"Preview": Preview, "Domain": Domain}).
 		ParseFiles("template.html")
@@ -94,7 +98,15 @@ func printHTML(items []*gofeed.Item) error {
 		return fmt.Errorf("error loading html template: %s", err)
 	}
 
-	err = ts.Execute(os.Stdout, items)
+	data := struct {
+		Items []*gofeed.Item
+		Feeds []*gofeed.Feed
+	}{
+		Items: items,
+		Feeds: feeds,
+	}
+
+	err = ts.Execute(os.Stdout, data)
 	if err != nil {
 		return fmt.Errorf("error rendering html template: %s", err)
 	}

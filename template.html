@@ -82,7 +82,8 @@
 			color: var(--text);
 		}
 
-		p {
+		details>p {
+			font-size: max(0.75rem, 12px);
 			letter-spacing: .12em;
 			word-spacing: .16em;
 		}
@@ -90,28 +91,39 @@
 </head>
 
 <body>
-	<h1>Feed</h1>
+	<header>
+		<h1>Feed</h1>
+	</header>
 	<hr>
-	<ol>
-		{{range .}}
-		<li>
-			<details>
-				<summary>
-					<a href={{.Link}} target="_blank">
-						<h2>{{.Title}}</h2>
-					</a>
-					<small>
-						(<a href="http://{{Domain .}}" target="_blank">{{Domain .}}</a>)
-					</small>
-				</summary>
-				<p>{{Preview .}}</p>
-			</details>
+	<main>
+		<ol>
+			{{range .Items}}
+			<li>
+				<details>
+					<summary>
+						<a href={{.Link}} target="_blank">
+							<h2>{{.Title}}</h2>
+						</a>
+						<small>
+							(<a href="http://{{Domain .}}" target="_blank">{{Domain .}}</a>)
+						</small>
+					</summary>
+					<p>{{Preview .}}</p>
+				</details>
 
-		</li>
-		{{end}}
-	</ol>
+			</li>
+			{{end}}
+		</ol>
+	</main>
 	<hr>
-
+	<footer>
+		<p>This page aggregate the following feeds:</p>
+		<p>
+			{{range .Feeds}}
+			<a href="{{.Link}}" target="_blank">{{.Title}}</a> |
+			{{end}}
+		</p>
+	</footer>
 </body>
 
 </html>
