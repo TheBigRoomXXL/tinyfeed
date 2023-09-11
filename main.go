@@ -19,6 +19,7 @@ var htmlTemplate embed.FS
 
 // flags
 var limit int
+var name string
 var templatePath string
 
 var rootCmd = &cobra.Command{
@@ -38,6 +39,13 @@ func init() {
 		"l",
 		50,
 		"How many articles will be included",
+	)
+	rootCmd.Flags().StringVarP(
+		&name,
+		"name",
+		"n",
+		"Feed",
+		"Name of the aggregated feed.",
 	)
 	rootCmd.Flags().StringVarP(
 		&templatePath,
@@ -120,11 +128,13 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	}
 
 	data := struct {
-		Items []*gofeed.Item
-		Feeds []*gofeed.Feed
+		Metadata map[string]string
+		Items    []*gofeed.Item
+		Feeds    []*gofeed.Feed
 	}{
-		Items: items,
-		Feeds: feeds,
+		Metadata: map[string]string{"name": name},
+		Items:    items,
+		Feeds:    feeds,
 	}
 
 	err = ts.Execute(os.Stdout, data)
