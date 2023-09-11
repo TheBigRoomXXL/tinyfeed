@@ -14,11 +14,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-//lint:ignore U1000 go:embed template.html
+//lint:ignore U1000 go:embed built-in.html
 var htmlTemplate embed.FS
 
 // flags
 var limit int
+var templatePath string
 
 var rootCmd = &cobra.Command{
 	Use:   "tinyfeed [FEED_URL ...]",
@@ -31,7 +32,20 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.Flags().IntVarP(&limit, "limit", "l", 50, "How many articles will be included")
+	rootCmd.Flags().IntVarP(
+		&limit,
+		"limit",
+		"l",
+		50,
+		"How many articles will be included",
+	)
+	rootCmd.Flags().StringVarP(
+		&templatePath,
+		"template",
+		"t",
+		"built-in.html",
+		"Path to a custom html+go template file.",
+	)
 }
 
 func main() {
@@ -98,9 +112,9 @@ func Domain(item *gofeed.Item) string {
 }
 
 func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
-	ts, err := template.New("template.html").
+	ts, err := template.New(templatePath).
 		Funcs(template.FuncMap{"Preview": Preview, "Domain": Domain}).
-		ParseFiles("template.html")
+		ParseFiles(templatePath)
 	if err != nil {
 		return fmt.Errorf("error loading html template: %s", err)
 	}

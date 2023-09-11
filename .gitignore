@@ -17,4 +17,4 @@ go.work
 # things
 **feed**
 **html
-!template.html
+!built-in.html
