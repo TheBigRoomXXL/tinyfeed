@@ -17,6 +17,9 @@ import (
 //lint:ignore U1000 go:embed template.html
 var htmlTemplate embed.FS
 
+// flags
+var limit int
+
 var rootCmd = &cobra.Command{
 	Use:   "tinyfeed [FEED_URL ...]",
 	Short: "Aggregate a collection of feed into static HTML page",
@@ -25,6 +28,10 @@ var rootCmd = &cobra.Command{
   multiple feeds   cat feeds.txt | tinyfeed > index.html`,
 	Args: cobra.ArbitraryArgs,
 	Run:  tinyfeed,
+}
+
+func init() {
+	rootCmd.Flags().IntVarP(&limit, "limit", "l", 50, "How many articles will be included")
 }
 
 func main() {
@@ -65,7 +72,7 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 		return items[i].PublishedParsed.After(*items[j].PublishedParsed)
 	})
 
-	items = items[0:min(len(items), 49)]
+	items = items[0:min(len(items), limit)]
 
 	err = printHTML(feeds, items)
 	if err != nil {
