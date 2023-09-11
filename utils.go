@@ -31,7 +31,6 @@ func truncstr(input string, length int) string {
 
 	if length > len(asRunes) {
 		return input
-	} else {
-		return string(asRunes[0:length]) + "..."
 	}
+	return string(asRunes[0:length]) + "..."
 }

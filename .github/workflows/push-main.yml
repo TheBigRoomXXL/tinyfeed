@@ -1,0 +1,32 @@
+name: build-test-deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup-repos
+        uses: actions/checkout@v3
+
+      - name: setup-go
+        uses: actions/setup-go@v4
+
+      - name: Verify dependencies
+        run: go mod verify
+
+      - name: build
+        run: |
+          npm install
+          npm run build
+
+      - name: install-ssh-keys
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_SECRET_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          config: ${{ secrets.SSH_CONFIG }}
+
+      - name: rsync-over-SSH
+        run: ssh lovergne.dev 'go install '

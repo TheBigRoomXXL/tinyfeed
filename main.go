@@ -110,15 +110,14 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 	}
 }
 
-func Preview(item *gofeed.Item) string {
+func preview(item *gofeed.Item) string {
 	if len(item.Description) > 0 {
 		return truncstr(item.Description, 600)
-	} else {
-		return truncstr(item.Content, 600)
 	}
+	return truncstr(item.Content, 600)
 }
 
-func Domain(item *gofeed.Item) string {
+func domain(item *gofeed.Item) string {
 	url, err := url.Parse(item.Link)
 	if err != nil {
 		log.Fatal(err)
@@ -129,7 +128,7 @@ func Domain(item *gofeed.Item) string {
 
 func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	ts, err := template.New(templatePath).
-		Funcs(template.FuncMap{"Preview": Preview, "Domain": Domain}).
+		Funcs(template.FuncMap{"Preview": preview, "Domain": domain}).
 		ParseFiles(templatePath)
 	if err != nil {
 		return fmt.Errorf("error loading html template: %s", err)

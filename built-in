@@ -107,10 +107,10 @@
 							<h2>{{.Title}}</h2>
 						</a>
 						<small>
-							(<a href="http://{{Domain .}}" target="_blank">{{Domain .}}</a>)
+							(<a href="http://{{domain .}}" target="_blank">{{domain .}}</a>)
 						</small>
 					</summary>
-					<p>{{Preview .}}</p>
+					<p>{{preview .}}</p>
 				</details>
 
 			</li>
