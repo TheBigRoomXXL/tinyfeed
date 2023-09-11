@@ -3,7 +3,8 @@ package main
 import (
 	"embed"
 	"fmt"
-	"io"
+	"log"
+	"net/url"
 	"os"
 	"sort"
 	"strings"
@@ -13,7 +14,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-//go:embed template.html
+//lint:ignore U1000 go:embed template.html
 var htmlTemplate embed.FS
 
 var rootCmd = &cobra.Command{
@@ -47,10 +48,12 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 		return
 	}
 
+	// feeds := []*gofeed.Feed{}
 	items := []*gofeed.Item{}
 	fp := gofeed.NewParser()
 	for _, url := range args {
 		feed, _ := fp.ParseURL(url)
+		// feeds = append(feeds, feed)
 		items = append(items, feed.Items...)
 	}
 
@@ -66,8 +69,27 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 	}
 }
 
+func Preview(item *gofeed.Item) string {
+	if len(item.Description) > 0 {
+		return truncstr(item.Description, 600)
+	} else {
+		return truncstr(item.Content, 600)
+	}
+}
+
+func Domain(item *gofeed.Item) string {
+	url, err := url.Parse(item.Link)
+	if err != nil {
+		log.Fatal(err)
+	}
+	hostname := strings.TrimPrefix(url.Hostname(), "www.")
+	return hostname
+}
+
 func printHTML(items []*gofeed.Item) error {
-	ts, err := template.ParseFiles("template.html")
+	ts, err := template.New("template.html").
+		Funcs(template.FuncMap{"Preview": Preview, "Domain": Domain}).
+		ParseFiles("template.html")
 	if err != nil {
 		return fmt.Errorf("error loading html template: %s", err)
 	}
@@ -78,20 +100,4 @@ func printHTML(items []*gofeed.Item) error {
 	}
 
 	return nil
-}
-
-func stdinToArgs() ([]string, error) {
-	input, err := io.ReadAll(os.Stdin)
-	if err != nil {
-		return nil, fmt.Errorf("error parsing stdin: %s", err)
-	}
-
-	return strings.Fields(string(input)), nil
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }
