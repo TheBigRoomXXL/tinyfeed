@@ -8,12 +8,15 @@ import (
 )
 
 func stdinToArgs() ([]string, error) {
-	input, err := io.ReadAll(os.Stdin)
-	if err != nil {
-		return nil, fmt.Errorf("error parsing stdin: %s", err)
+	fi, _ := os.Stdin.Stat()
+	if (fi.Mode() & os.ModeCharDevice) == 0 {
+		input, err := io.ReadAll(os.Stdin)
+		if err != nil {
+			return nil, fmt.Errorf("error parsing stdin: %s", err)
+		}
+		return strings.Fields(string(input)), nil
 	}
-
-	return strings.Fields(string(input)), nil
+	return []string{}, nil
 }
 
 func min(a, b int) int {
