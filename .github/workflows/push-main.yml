@@ -1,10 +1,10 @@
-name: build-test-deploy
+name: build-and-release
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "*.*.*"
 jobs:
-  build-test-deploy:
+  build-and-release:
     runs-on: ubuntu-latest
     steps:
       - name: setup-repos
@@ -13,20 +13,19 @@ jobs:
       - name: setup-go
         uses: actions/setup-go@v4
 
-      - name: Verify dependencies
+      - name: verify-dependencies
         run: go mod verify
 
       - name: build
-        run: |
-          npm install
-          npm run build
+        run: go build
 
-      - name: install-ssh-keys
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_SECRET_KEY }}
-          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-          config: ${{ secrets.SSH_CONFIG }}
-
-      - name: rsync-over-SSH
-        run: ssh lovergne.dev 'go install '
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          files: tinyfeed
+          draft: false
+          prerelease: false

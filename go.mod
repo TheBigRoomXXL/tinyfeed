@@ -1,4 +1,4 @@
-module tinyfeed
+module github.com/TheBigRoomXXL/tinyfeed
 
 go 1.20
 
