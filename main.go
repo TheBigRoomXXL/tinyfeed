@@ -20,6 +20,7 @@ var htmlTemplate embed.FS
 // flags
 var limit int
 var name string
+var stylesheet string
 var templatePath string
 
 var rootCmd = &cobra.Command{
@@ -48,10 +49,17 @@ func init() {
 		"Name of the aggregated feed.",
 	)
 	rootCmd.Flags().StringVarP(
+		&stylesheet,
+		"stylesheet",
+		"s",
+		"",
+		"Path to an external CSS stylesheet",
+	)
+	rootCmd.Flags().StringVarP(
 		&templatePath,
 		"template",
 		"t",
-		"built-in.html",
+		"built-in",
 		"Path to a custom html+go template file.",
 	)
 }
@@ -132,7 +140,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		Items    []*gofeed.Item
 		Feeds    []*gofeed.Feed
 	}{
-		Metadata: map[string]string{"name": name},
+		Metadata: map[string]string{"name": name, "stylesheet": stylesheet},
 		Items:    items,
 		Feeds:    feeds,
 	}

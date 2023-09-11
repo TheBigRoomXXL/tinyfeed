@@ -88,6 +88,8 @@
 			word-spacing: .16em;
 		}
 	</style>
+
+	<link rel="stylesheet" type="text/css" href="{{.Metadata.stylesheet}}">
 </head>
 
 <body>
