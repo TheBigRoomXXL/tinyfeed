@@ -1,11 +1,15 @@
 name: build-and-release
+
 on:
   push:
     tags:
-      - "*.*.*"
+      - "v*.*.*"
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: setup-repos
         uses: actions/checkout@v3
@@ -19,13 +23,7 @@ jobs:
       - name: build
         run: go build
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          files: tinyfeed
-          draft: false
-          prerelease: false
+      - name: release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "tinyfeed"
