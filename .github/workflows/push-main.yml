@@ -17,13 +17,16 @@ jobs:
       - name: setup-go
         uses: actions/setup-go@v4
 
-      - name: verify-dependencies
-        run: go mod verify
-
-      - name: build
-        run: go build
+      - name: cross-platform-build
+        run: |
+          mkdir ./builds/
+          env GOARCH=arm64
+          env GOOS=linux go build -o ./builds/tinyfeed_linux_arm64
+          env GOOS=freebsd go build -o ./builds/tinyfeed_freebsd_arm64
+          env GOOS=darwin go build -o ./builds/tinyfeed_darwin_arm64
+          env GOOS=windows go build -o ./builds/tinyfeed_windows_arm64
 
       - name: release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "tinyfeed"
+          artifacts: "./builds/*"
