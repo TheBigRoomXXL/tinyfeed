@@ -34,7 +34,7 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 	args = append(args, strdinArgs...)
 
 	if len(args) == 0 {
-		fmt.Fprintln(os.Stderr, "you must input at list one feed url.")
+		fmt.Fprintln(os.Stderr, "No argument found, you must input at least one feed url.")
 		return
 	}
 
