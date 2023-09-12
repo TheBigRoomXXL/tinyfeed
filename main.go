@@ -1,7 +1,7 @@
 package main
 
 import (
-	"embed"
+	_ "embed"
 	"fmt"
 	"log"
 	"net/url"
@@ -14,8 +14,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-//lint:ignore U1000 go:embed built-in.html
-var htmlTemplate embed.FS
+//go:embed built-in
+var builtInTemplate string
 
 // flags
 var limit int
@@ -59,8 +59,8 @@ func init() {
 		&templatePath,
 		"template",
 		"t",
-		"built-in",
-		"Path to a custom html+go template file.",
+		"",
+		"Path to a custom HTML+Go template file.",
 	)
 }
 
@@ -127,9 +127,18 @@ func domain(item *gofeed.Item) string {
 }
 
 func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
-	ts, err := template.New(templatePath).
-		Funcs(template.FuncMap{"Preview": preview, "Domain": domain}).
-		ParseFiles(templatePath)
+	var err error
+	var ts *template.Template
+
+	if templatePath == "" {
+		ts, err = template.New("built-in").
+			Funcs(template.FuncMap{"preview": preview, "domain": domain}).
+			Parse(builtInTemplate)
+	} else {
+		ts, err = template.New(templatePath).
+			Funcs(template.FuncMap{"preview": preview, "domain": domain}).
+			ParseFiles(templatePath)
+	}
 	if err != nil {
 		return fmt.Errorf("error loading html template: %s", err)
 	}
