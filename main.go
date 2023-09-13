@@ -44,7 +44,7 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 	for _, url := range args {
 		feed, err := fp.ParseURL(url)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "could not parse feed: %s\n", err)
+			fmt.Fprintf(os.Stderr, "could not parse feed at %s: %s\n", url, err)
 			continue
 		}
 		feeds = append(feeds, feed)
