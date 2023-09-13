@@ -15,6 +15,7 @@ var rootCmd = &cobra.Command{
 // flags
 var limit int
 var name string
+var imageAllowed bool
 var stylesheet string
 var templatePath string
 
@@ -32,6 +33,13 @@ func init() {
 		"n",
 		"Feed",
 		"Name of the aggregated feed.",
+	)
+	rootCmd.Flags().BoolVarP(
+		&imageAllowed,
+		"image-allowed",
+		"i",
+		false,
+		"Add this flag to load image in summaries",
 	)
 	rootCmd.Flags().StringVarP(
 		&stylesheet,

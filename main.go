@@ -83,6 +83,11 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		return fmt.Errorf("error loading html template: %s", err)
 	}
 
+	imageCsp := "'none'"
+	if imageAllowed {
+		imageCsp = "https://*"
+	}
+
 	data := struct {
 		Metadata map[string]string
 		Items    []*gofeed.Item
@@ -90,6 +95,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	}{
 		Metadata: map[string]string{
 			"name":       name,
+			"imageCsp":   imageCsp,
 			"stylesheet": stylesheet,
 			"nonce":      randStr(20),
 		},
