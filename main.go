@@ -52,6 +52,12 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 	}
 
 	sort.SliceStable(items, func(i, j int) bool {
+		if items[i].PublishedParsed == nil {
+			return false
+		}
+		if items[j].PublishedParsed == nil {
+			return true
+		}
 		return items[i].PublishedParsed.After(*items[j].PublishedParsed)
 	})
 
