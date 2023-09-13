@@ -3,8 +3,12 @@ package main
 import (
 	"fmt"
 	"io"
+	"math/rand"
+	"net/url"
 	"os"
 	"strings"
+
+	"github.com/mmcdole/gofeed"
 )
 
 func stdinToArgs() ([]string, error) {
@@ -19,6 +23,21 @@ func stdinToArgs() ([]string, error) {
 	return []string{}, nil
 }
 
+func preview(item *gofeed.Item) string {
+	if len(item.Description) > 0 {
+		return item.Description
+	}
+	return item.Content
+}
+
+func domain(item *gofeed.Item) string {
+	url, err := url.Parse(item.Link)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
+	return strings.TrimPrefix(url.Hostname(), "www.")
+}
+
 func min(a, b int) int {
 	if a < b {
 		return a
@@ -26,11 +45,12 @@ func min(a, b int) int {
 	return b
 }
 
-func truncstr(input string, length int) string {
-	asRunes := []rune(input)
-
-	if length > len(asRunes) {
-		return input
+// Source: https://stackoverflow.com/questions/22892120/
+func randStr(n int) string {
+	const randomseed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = randomseed[rand.Int63()%int64(len(randomseed))]
 	}
-	return string(asRunes[0:length]) + "..."
+	return string(b)
 }

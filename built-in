@@ -7,13 +7,16 @@
 
 	<title>{{.Metadata.name}}</title>
 
-	<!-- General -->
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'self';
+		style-src 'nonce-{{.Metadata.nonce}}' '{{.Metadata.stylesheet}}' ;
+		img-src http*; child-src 'none';">
 	<meta name="application-name" content="tinyfeed" />
 	<meta name="author" content="Sebastien LOVERGNE" />
 	<meta name="description" content="RSS, Atom and JSON feeds aggregator" />
 	<meta name="referrer" content="strict-origin" />
 
-	<style>
+	<style nonce="{{.Metadata.nonce}}">
 		:root {
 			color-scheme: dark light;
 			--primary: #0AC8F5;

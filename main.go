@@ -3,11 +3,8 @@ package main
 import (
 	_ "embed"
 	"fmt"
-	"log"
-	"net/url"
 	"os"
 	"sort"
-	"strings"
 	"text/template"
 
 	"github.com/mmcdole/gofeed"
@@ -69,22 +66,6 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 	}
 }
 
-func preview(item *gofeed.Item) string {
-	if len(item.Description) > 0 {
-		return item.Description
-	}
-	return item.Content
-}
-
-func domain(item *gofeed.Item) string {
-	url, err := url.Parse(item.Link)
-	if err != nil {
-		log.Fatal(err)
-	}
-	hostname := strings.TrimPrefix(url.Hostname(), "www.")
-	return hostname
-}
-
 func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	var err error
 	var ts *template.Template
@@ -107,9 +88,13 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		Items    []*gofeed.Item
 		Feeds    []*gofeed.Feed
 	}{
-		Metadata: map[string]string{"name": name, "stylesheet": stylesheet},
-		Items:    items,
-		Feeds:    feeds,
+		Metadata: map[string]string{
+			"name":       name,
+			"stylesheet": stylesheet,
+			"nonce":      randStr(20),
+		},
+		Items: items,
+		Feeds: feeds,
 	}
 
 	err = ts.Execute(os.Stdout, data)
