@@ -82,6 +82,12 @@
 			color: var(--text);
 		}
 
+		details {
+			max-height: 20em;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
 		details>p {
 			font-size: max(0.75rem, 12px);
 			letter-spacing: .12em;

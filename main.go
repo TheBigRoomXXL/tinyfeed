@@ -71,9 +71,9 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 
 func preview(item *gofeed.Item) string {
 	if len(item.Description) > 0 {
-		return truncstr(item.Description, 600)
+		return item.Description
 	}
-	return truncstr(item.Content, 600)
+	return item.Content
 }
 
 func domain(item *gofeed.Item) string {
