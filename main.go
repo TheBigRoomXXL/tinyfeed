@@ -83,7 +83,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		return fmt.Errorf("error loading html template: %s", err)
 	}
 
-	imageCsp := "'none'"
+	imageCsp := "'self'"
 	if imageAllowed {
 		imageCsp = "https://*"
 	}
