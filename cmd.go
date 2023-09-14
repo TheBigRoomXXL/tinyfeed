@@ -15,6 +15,7 @@ var rootCmd = &cobra.Command{
 // flags
 var limit int
 var name string
+var description string
 var imageAllowed bool
 var stylesheet string
 var templatePath string
@@ -32,7 +33,14 @@ func init() {
 		"name",
 		"n",
 		"Feed",
-		"Name of the aggregated feed.",
+		"Title of the page.",
+	)
+	rootCmd.Flags().StringVarP(
+		&description,
+		"description",
+		"d",
+		"",
+		"Add a description after the name of your page",
 	)
 	rootCmd.Flags().BoolVarP(
 		&imageAllowed,

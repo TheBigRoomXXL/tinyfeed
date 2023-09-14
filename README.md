@@ -35,12 +35,13 @@ Examples:
   multiple feeds   cat feeds.txt | tinyfeed > index.html
 
 Flags:
-  -h, --help                help for tinyfeed
-  -i, --image-allowed       Add this flag to load image in summaries
-  -l, --limit int           How many articles will be included (default 50)
-  -n, --name string         Name of the aggregated feed. (default "Feed")
-  -s, --stylesheet string   Path to an external CSS stylesheet
-  -t, --template string     Path to a custom HTML+Go template file.
+  -d, --description string   Add a description after the name of your page
+  -h, --help                 help for tinyfeed
+  -i, --image-allowed        Add this flag to load image in summaries
+  -l, --limit int            How many articles will be included (default 50)
+  -n, --name string          Title of the page. (default "Feed")
+  -s, --stylesheet string    Path to an external CSS stylesheet
+  -t, --template string      Path to a custom HTML+Go template file.
 ```
 
 ## Installation

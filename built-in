@@ -42,13 +42,14 @@
 			background: var(--bg);
 			max-width: 70rem;
 			width: 100%;
-			margin: 2em auto;
+			margin: 0.5em auto 2em;
 			line-height: 1.5em;
 		}
 
-		h1 {
-			padding-left: 1em;
-			margin-top: 30px;
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+			margin-bottom: 0.25em;
 		}
 
 		h2 {
@@ -105,6 +106,7 @@
 <body>
 	<header>
 		<h1>{{.Metadata.name}}</h1>
+		{{.Metadata.description}}
 	</header>
 	<hr>
 	<main>

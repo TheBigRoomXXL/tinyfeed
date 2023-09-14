@@ -94,10 +94,11 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		Feeds    []*gofeed.Feed
 	}{
 		Metadata: map[string]string{
-			"name":       name,
-			"imageCsp":   imageCsp,
-			"stylesheet": stylesheet,
-			"nonce":      randStr(20),
+			"name":        name,
+			"description": description,
+			"imageCsp":    imageCsp,
+			"stylesheet":  stylesheet,
+			"nonce":       randStr(20),
 		},
 		Items: items,
 		Feeds: feeds,
