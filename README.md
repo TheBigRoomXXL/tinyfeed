@@ -44,6 +44,14 @@ Flags:
   -t, --template string      Path to a custom HTML+Go template file.
 ```
 
+⚠️ When using a redirection directly, like in the example, your HTML page will be
+blank while tinyfeed is processing. it will also stay blank if there is an error.
+ To avoid that, use a tempory file: 
+
+```bash
+cat feeds | tinyfeed > /tpm/tinyfeed && mv tinyfeed /path/to/index.html
+```
+
 ## Installation
 
 ### Install with Go:
