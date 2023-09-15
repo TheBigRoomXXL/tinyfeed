@@ -3,9 +3,12 @@ package main
 import (
 	_ "embed"
 	"fmt"
+	"net/http"
 	"os"
 	"sort"
+	"sync"
 	"text/template"
+	"time"
 
 	"github.com/mmcdole/gofeed"
 	"github.com/spf13/cobra"
@@ -33,16 +36,63 @@ func tinyfeed(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("no argument found, you must input at least one feed url. Use `tinyfeed --help` for examples")
 	}
 
-	feeds := []*gofeed.Feed{}
-	items := []*gofeed.Item{}
+	feeds := parseFeeds(args)
+	items := prepareItems(feeds)
+
+	err = printHTML(feeds, items)
+	if err != nil {
+		return fmt.Errorf("%s", err)
+	}
+	return nil
+}
+
+func parseFeeds(url_list []string) []*gofeed.Feed {
+	var sem = make(chan struct{}, 10)
+	var results = make(chan *gofeed.Feed)
+	var wg sync.WaitGroup
+	wg.Add(len(url_list))
+
 	fp := gofeed.NewParser()
-	for _, url := range args {
-		feed, err := fp.ParseURL(url)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "WARNING: could not parse feed at %s: %s\n", url, err)
-			continue
+	fp.Client = &http.Client{Timeout: time.Second * 5}
+
+	for _, url := range url_list {
+		go func(url string) {
+			defer func() {
+				wg.Done()
+				<-sem
+			}()
+			sem <- struct{}{}
+			results <- parseFeed(url, fp)
+		}(url)
+	}
+
+	go func() {
+		wg.Wait()
+		close(sem)
+		close(results)
+	}()
+
+	feeds := []*gofeed.Feed{}
+	for feed := range results {
+		if feed != nil {
+			feeds = append(feeds, feed)
 		}
-		feeds = append(feeds, feed)
+	}
+	return feeds
+}
+
+func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
+	feed, err := fp.ParseURL(url)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "WARNING: could not parse feed at %s: %s\n", url, err)
+		return nil
+	}
+	return feed
+}
+
+func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
+	items := []*gofeed.Item{}
+	for _, feed := range feeds {
 		items = append(items, feed.Items...)
 	}
 
@@ -56,13 +106,7 @@ func tinyfeed(cmd *cobra.Command, args []string) error {
 		return items[i].PublishedParsed.After(*items[j].PublishedParsed)
 	})
 
-	items = items[0:min(len(items), limit)]
-
-	err = printHTML(feeds, items)
-	if err != nil {
-		return fmt.Errorf("%s", err)
-	}
-	return nil
+	return items[0:min(len(items), limit)]
 }
 
 func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
