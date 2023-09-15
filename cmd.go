@@ -7,9 +7,10 @@ var rootCmd = &cobra.Command{
 	Short: "Aggregate a collection of feed into static HTML page",
 	Long:  "Aggregate a collection of feed into static HTML page. Only RSS, Atom and JSON feeds are supported.",
 	Example: `  single feed      tinyfeed lovergne.dev/rss.xml > index.html
-  multiple feeds   cat feeds.txt | tinyfeed > index.html`,
-	Args: cobra.ArbitraryArgs,
-	Run:  tinyfeed,
+	multiple feeds   cat feeds.txt | tinyfeed > index.html`,
+	Args:         cobra.ArbitraryArgs,
+	RunE:         tinyfeed,
+	SilenceUsage: true,
 }
 
 // flags

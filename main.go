@@ -21,18 +21,16 @@ func main() {
 	}
 }
 
-func tinyfeed(cmd *cobra.Command, args []string) {
+func tinyfeed(cmd *cobra.Command, args []string) error {
 	strdinArgs, err := stdinToArgs()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return
+		return fmt.Errorf("could not parse stdin: %s", err)
 	}
 
 	args = append(args, strdinArgs...)
 
 	if len(args) == 0 {
-		fmt.Fprintln(os.Stderr, "No argument found, you must input at least one feed url.")
-		return
+		return fmt.Errorf("no argument found, you must input at least one feed url. Use `tinyfeed --help` for examples")
 	}
 
 	feeds := []*gofeed.Feed{}
@@ -41,7 +39,7 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 	for _, url := range args {
 		feed, err := fp.ParseURL(url)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "could not parse feed at %s: %s\n", url, err)
+			fmt.Fprintf(os.Stderr, "WARNING: could not parse feed at %s: %s\n", url, err)
 			continue
 		}
 		feeds = append(feeds, feed)
@@ -62,8 +60,9 @@ func tinyfeed(cmd *cobra.Command, args []string) {
 
 	err = printHTML(feeds, items)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		return fmt.Errorf("%s", err)
 	}
+	return nil
 }
 
 func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
@@ -80,7 +79,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 			ParseFiles(templatePath)
 	}
 	if err != nil {
-		return fmt.Errorf("error loading html template: %s", err)
+		return fmt.Errorf("could not load HTML template: %s", err)
 	}
 
 	imageCsp := "'self'"
@@ -106,7 +105,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 
 	err = ts.Execute(os.Stdout, data)
 	if err != nil {
-		return fmt.Errorf("error rendering html template: %s", err)
+		return fmt.Errorf("could not render html template: %s", err)
 	}
 
 	return nil
