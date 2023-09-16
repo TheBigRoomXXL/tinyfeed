@@ -46,7 +46,7 @@ func init() {
 	)
 	rootCmd.Flags().BoolVarP(
 		&imageAllowed,
-		"--images",
+		"images",
 		"i",
 		false,
 		"Add this flag to load images in summaries",

@@ -35,7 +35,7 @@ Examples:
   multiple feeds   cat feeds.txt | tinyfeed > index.html
 
 Flags:
-  -i, ----images             Add this flag to load images in summaries
+  -i, --images               Add this flag to load images in summaries
   -d, --description string   Add a description after the name of your page
   -h, --help                 help for tinyfeed
   -l, --limit int            How many articles will be included (default 50)
