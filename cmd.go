@@ -28,7 +28,7 @@ func init() {
 		"limit",
 		"l",
 		50,
-		"How many articles will be included",
+		"How many articles to display",
 	)
 	rootCmd.Flags().StringVarP(
 		&name,

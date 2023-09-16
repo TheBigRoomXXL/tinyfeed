@@ -40,7 +40,7 @@
 			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
 			color: var(--text);
 			background: var(--bg);
-			max-width: 70rem;
+			max-width: 50rem;
 			width: 100%;
 			margin: 0.5em auto 2em;
 			line-height: 1.5em;
@@ -89,7 +89,7 @@
 
 		details {
 			max-height: 20em;
-			overflow: hidden;
+			overflow: scroll;
 			text-overflow: ellipsis;
 		}
 
