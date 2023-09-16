@@ -53,7 +53,7 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 	wg.Add(len(url_list))
 
 	fp := gofeed.NewParser()
-	fp.Client = &http.Client{Timeout: time.Second * 5}
+	fp.Client = &http.Client{Timeout: time.Second * 10}
 
 	for _, url := range url_list {
 		go func(url string) {
@@ -83,7 +83,7 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 
 func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 	feed, err := fp.ParseURL(url)
-	if err != nil {
+	if err != nil && !quiet {
 		fmt.Fprintf(os.Stderr, "WARNING: could not parse feed at %s: %s\n", url, err)
 		return nil
 	}

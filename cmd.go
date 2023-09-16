@@ -18,6 +18,7 @@ var limit int
 var name string
 var description string
 var imageAllowed bool
+var quiet bool
 var stylesheet string
 var templatePath string
 
@@ -45,10 +46,17 @@ func init() {
 	)
 	rootCmd.Flags().BoolVarP(
 		&imageAllowed,
-		"image-allowed",
+		"--images",
 		"i",
 		false,
-		"Add this flag to load image in summaries",
+		"Add this flag to load images in summaries",
+	)
+	rootCmd.Flags().BoolVarP(
+		&quiet,
+		"quiet",
+		"q",
+		false,
+		"Add this flag to silence warnings.",
 	)
 	rootCmd.Flags().StringVarP(
 		&stylesheet,
