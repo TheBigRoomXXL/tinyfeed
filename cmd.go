@@ -15,6 +15,7 @@ var rootCmd = &cobra.Command{
 
 // flags
 var limit int
+var timeout int
 var name string
 var description string
 var imageAllowed bool
@@ -29,6 +30,12 @@ func init() {
 		"l",
 		50,
 		"How many articles to display",
+	)
+	rootCmd.Flags().IntVar(
+		&timeout,
+		"timeout",
+		5,
+		"timeout to get feeds in seconds",
 	)
 	rootCmd.Flags().StringVarP(
 		&name,
