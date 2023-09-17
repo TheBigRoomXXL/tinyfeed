@@ -114,7 +114,7 @@ If you need anything related to this project wether it's' just giving feedback,
 help to understand something or feature request just open a issue on this repos.
 
 
-# Acknowledgement
+## Acknowledgement
 
 The project was heavily inspired by Hacker News and [tinystatus](https://github.com/bderenzo/tinystatus).
 
