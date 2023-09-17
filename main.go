@@ -27,7 +27,7 @@ func main() {
 func tinyfeed(cmd *cobra.Command, args []string) error {
 	strdinArgs, err := stdinToArgs()
 	if err != nil {
-		return fmt.Errorf("could not parse stdin: %s", err)
+		return fmt.Errorf("fail to parse stdin: %w", err)
 	}
 
 	args = append(args, strdinArgs...)
@@ -41,7 +41,7 @@ func tinyfeed(cmd *cobra.Command, args []string) error {
 
 	err = printHTML(feeds, items)
 	if err != nil {
-		return fmt.Errorf("%s", err)
+		return fmt.Errorf("fail to output HTML: %w", err)
 	}
 	return nil
 }
@@ -84,7 +84,7 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 	feed, err := fp.ParseURL(url)
 	if err != nil && !quiet {
-		fmt.Fprintf(os.Stderr, "WARNING: could not parse feed at %s: %s\n", url, err)
+		fmt.Fprintf(os.Stderr, "WARNING: fail to parse feed at %s: %s\n", url, err)
 		return nil
 	}
 	return feed
@@ -123,7 +123,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 			ParseFiles(templatePath)
 	}
 	if err != nil {
-		return fmt.Errorf("could not load HTML template: %s", err)
+		return fmt.Errorf("fail to load HTML template: %w", err)
 	}
 
 	imageCsp := "'self'"
@@ -149,7 +149,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 
 	err = ts.Execute(os.Stdout, data)
 	if err != nil {
-		return fmt.Errorf("could not render html template: %s", err)
+		return fmt.Errorf("fail to render HTML template: %w", err)
 	}
 
 	return nil
