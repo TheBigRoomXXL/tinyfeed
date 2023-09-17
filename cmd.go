@@ -34,7 +34,7 @@ func init() {
 	rootCmd.Flags().IntVar(
 		&timeout,
 		"timeout",
-		5,
+		15,
 		"timeout to get feeds in seconds",
 	)
 	rootCmd.Flags().StringVarP(

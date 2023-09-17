@@ -43,7 +43,7 @@ Flags:
   -q, --quiet                Add this flag to silence warnings.
   -s, --stylesheet string    Path to an external CSS stylesheet
   -t, --template string      Path to a custom HTML+Go template file.
-      --timeout int          timeout to get feeds in seconds (default 5)
+      --timeout int          timeout to get feeds in seconds (default 15)
 ```
 
 ⚠️ When using a redirection directly, like in the example, your HTML page will be
