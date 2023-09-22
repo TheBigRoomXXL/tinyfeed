@@ -47,7 +47,7 @@ func tinyfeed(cmd *cobra.Command, args []string) error {
 }
 
 func parseFeeds(url_list []string) []*gofeed.Feed {
-	var sem = make(chan struct{}, 10)
+	var sem = make(chan struct{}, requestSemaphore)
 	var results = make(chan *gofeed.Feed)
 	var wg sync.WaitGroup
 	wg.Add(len(url_list))
@@ -87,6 +87,7 @@ func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 		fmt.Fprintf(os.Stderr, "WARNING: fail to parse feed at %s: %s\n", url, err)
 		return nil
 	}
+
 	return feed
 }
 

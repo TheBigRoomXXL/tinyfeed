@@ -16,6 +16,7 @@ var rootCmd = &cobra.Command{
 // flags
 var limit int
 var timeout int
+var requestSemaphore int
 var name string
 var description string
 var imageAllowed bool
@@ -30,6 +31,13 @@ func init() {
 		"l",
 		50,
 		"How many articles to display",
+	)
+	rootCmd.Flags().IntVarP(
+		&requestSemaphore,
+		"requests",
+		"r",
+		8,
+		"How many simulaneous requests can be made",
 	)
 	rootCmd.Flags().IntVar(
 		&timeout,
