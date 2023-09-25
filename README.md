@@ -87,7 +87,7 @@ go install github.com/TheBigRoomXXL/tinyfeed@latest
 ## External HTML+Go template 
 
 You can provide you own template for page generation. For an exemple template
-check out the [built-in one](https://github.com/TheBigRoomXXL/tinyfeed/blob/main/.built-in).
+check out the [built-in one](https://github.com/TheBigRoomXXL/tinyfeed/blob/main/built-in).
 To learn about HTML+Go template check the [official documentation](https://pkg.go.dev/html/template). 
 
 Inside you template you will have access to data with the following struct and functions:
