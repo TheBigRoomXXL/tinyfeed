@@ -24,7 +24,7 @@
 			--secondary: #D2F00F;
 			--txt: #cfcfcf;
 			--bg: #1D1F21;
-			font-size: min(calc(.75rem + 1vw), 18px);
+			font-size: min(calc(.5rem + 1.25vw), 18px);
 		}
 
 		@media (prefers-color-scheme: light) {
