@@ -87,16 +87,12 @@
 			color: var(--text);
 		}
 
-		details {
-			max-height: 20em;
-			overflow: scroll;
-			text-overflow: ellipsis;
-		}
-
-		details>p {
+		details>.preview {
 			font-size: max(0.75rem, 12px);
 			letter-spacing: .12em;
 			word-spacing: .16em;
+			max-height: 25em;
+			overflow: auto;
 		}
 	</style>
 
@@ -122,7 +118,9 @@
 							(<a href="http://{{domain .}}" target="_blank">{{domain .}}</a>)
 						</small>
 					</summary>
-					<p>{{preview .}}</p>
+					<div class="preview">
+						<p>{{preview .}}</p>
+					</div>
 				</details>
 
 			</li>
