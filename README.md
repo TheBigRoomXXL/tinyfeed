@@ -8,9 +8,9 @@ You can effortlessly set it up in crond or systemd and direct your HTTP server
 to the generated `index.html` and voilà, you’ve got yourself a webpage 
 that aggregate your feeds.
 
-## Demo
+## Screenshot
 
-### [feed.lovergne.dev/](https://feed.lovergne.dev/)
+![desktop](/.images/desktop.webp)
 
 ## Feature
 
