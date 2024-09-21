@@ -122,11 +122,11 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 
 	if templatePath == "" {
 		ts, err = template.New("built-in").
-			Funcs(template.FuncMap{"preview": preview, "domain": domain}).
+			Funcs(template.FuncMap{"domain": domain, "publication": publication}).
 			Parse(builtInTemplate)
 	} else {
 		ts, err = template.New(templatePath).
-			Funcs(template.FuncMap{"preview": preview, "domain": domain}).
+			Funcs(template.FuncMap{"domain": domain, "publication": publication}).
 			ParseFiles(templatePath)
 	}
 	if err != nil {

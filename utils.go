@@ -23,19 +23,22 @@ func stdinToArgs() ([]string, error) {
 	return []string{}, nil
 }
 
-func preview(item *gofeed.Item) string {
-	if len(item.Description) > 0 {
-		return item.Description
-	}
-	return item.Content
-}
-
 func domain(item *gofeed.Item) string {
 	url, err := url.Parse(item.Link)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
 	return strings.TrimPrefix(url.Hostname(), "www.")
+}
+
+func publication(item *gofeed.Item) string {
+	if item.PublishedParsed == nil {
+		if item.Published != "" {
+			return item.Published
+		}
+		return "Once upon a time"
+	}
+	return item.PublishedParsed.Format("2006-01-02")
 }
 
 func min(a, b int) int {

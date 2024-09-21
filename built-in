@@ -23,13 +23,15 @@
 			--primary: #0AC8F5;
 			--secondary: #D2F00F;
 			--txt: #cfcfcf;
+			--bd: #c0c0c0;
 			--bg: #1D1F21;
-			font-size: min(calc(.5rem + 1.25vw), 18px);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
 		}
 
 		@media (prefers-color-scheme: light) {
 			:root {
-				--txt: #444;
+				--txt: #444444;
+				--bd: #333333;
 				--bg: white;
 				--primary: #207D92;
 				--secondary: #6A7A06;
@@ -38,12 +40,12 @@
 
 		body {
 			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
-			color: var(--text);
+			color: var(--txt);
 			background: var(--bg);
 			max-width: 50rem;
 			width: 100%;
 			margin: 0.5em auto 2em;
-			line-height: 1.5em;
+			line-height: 1.25em;
 		}
 
 		header>h1 {
@@ -57,9 +59,12 @@
 			display: inline;
 		}
 
+		ol {
+			padding-left: 5ch;
+		}
+
 		li {
 			margin-block-start: 1em;
-			font-size: 0.85rem;
 		}
 
 		a {
@@ -79,20 +84,31 @@
 		}
 
 		small {
-			font-size: 0.85rem;
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
 		}
 
 		small>a:link,
 		small>a:visited {
-			color: var(--text);
+			color: var(--txt);
 		}
 
-		details>.preview {
-			font-size: max(0.75rem, 12px);
-			letter-spacing: .12em;
-			word-spacing: .16em;
-			max-height: 25em;
-			overflow: auto;
+		footer {
+			padding: 2rem 1rem;
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--bd);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--bd);
 		}
 	</style>
 
@@ -112,22 +128,26 @@
 				<a href={{.Link}} target="_blank">
 					<h2>{{.Title}}</h2>
 				</a>
+				<br>
 				<small>
-					(<a href="http://{{domain .}}" target="_blank">{{domain .}}</a>)
+					<time datetime="{{publication .}}">{{publication .}}</time>
+					|
+					<a href="https://{{domain .}}" target="_blank">{{domain .}}</a>
 				</small>
 
 			</li>
 			{{end}}
 		</ol>
 	</main>
-	<hr>
 	<footer>
 		<p>This page aggregate the following feeds:</p>
-		<p>
+		<div class="feed-list">
 			{{range .Feeds}}
-			<a href="{{.Link}}" target="_blank">{{.Title}}</a> |
+			<div>
+				<a href="{{.Link}}" target="_blank">{{.Title}}</a>
+			</div>
 			{{end}}
-		</p>
+		</div>
 	</footer>
 </body>
 
