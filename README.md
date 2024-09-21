@@ -1,6 +1,6 @@
 # tinyfeed 
 
-![banner](banner.svg)
+![banner](.images/banner.svg)
 
 **tinyfeed** is a CLI tool that generate a static HTML page from a collection of feeds.
 
@@ -10,7 +10,7 @@ that aggregate your feeds.
 
 ## Screenshot
 
-![desktop](/.images/desktop.webp)
+![desktop](.images/desktop.webp)
 
 ## Feature
 
