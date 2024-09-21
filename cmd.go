@@ -19,7 +19,6 @@ var timeout int
 var requestSemaphore int
 var name string
 var description string
-var imageAllowed bool
 var quiet bool
 var stylesheet string
 var templatePath string
@@ -58,13 +57,6 @@ func init() {
 		"d",
 		"",
 		"Add a description after the name of your page",
-	)
-	rootCmd.Flags().BoolVarP(
-		&imageAllowed,
-		"images",
-		"i",
-		false,
-		"Add this flag to load images in summaries",
 	)
 	rootCmd.Flags().BoolVarP(
 		&quiet,

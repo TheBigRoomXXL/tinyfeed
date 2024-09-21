@@ -13,6 +13,7 @@
 		img-src {{.Metadata.imageCsp}} ; 
 		child-src 'none';">
 	<meta name="application-name" content="tinyfeed" />
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed" />
 	<meta name="author" content="Sebastien LOVERGNE" />
 	<meta name="description" content="RSS, Atom and JSON feeds aggregator" />
 	<meta name="referrer" content="strict-origin" />
@@ -109,19 +110,12 @@
 		<ol>
 			{{range .Items}}
 			<li>
-				<details>
-					<summary>
-						<a href={{.Link}} target="_blank">
-							<h2>{{.Title}}</h2>
-						</a>
-						<small>
-							(<a href="http://{{domain .}}" target="_blank">{{domain .}}</a>)
-						</small>
-					</summary>
-					<div class="preview">
-						<p>{{preview .}}</p>
-					</div>
-				</details>
+				<a href={{.Link}} target="_blank">
+					<h2>{{.Title}}</h2>
+				</a>
+				<small>
+					(<a href="http://{{domain .}}" target="_blank">{{domain .}}</a>)
+				</small>
 
 			</li>
 			{{end}}
