@@ -1,9 +1,11 @@
 package main
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"io"
-	"math/rand"
+	"log"
 	"net/url"
 	"os"
 	"strings"
@@ -48,12 +50,11 @@ func min(a, b int) int {
 	return b
 }
 
-// Source: https://stackoverflow.com/questions/22892120/
-func randStr(n int) string {
-	const randomseed = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+func generateNonce(n int) string {
 	b := make([]byte, n)
-	for i := range b {
-		b[i] = randomseed[rand.Int63()%int64(len(randomseed))]
+	_, err := rand.Read(b)
+	if err != nil { // Very unlikely
+		log.Fatal(fmt.Errorf("failed to generate nonce: %w", err))
 	}
-	return string(b)
+	return base64.URLEncoding.EncodeToString(b)
 }

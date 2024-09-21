@@ -149,7 +149,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 			"name":        name,
 			"description": description,
 			"stylesheet":  stylesheet,
-			"nonce":       randStr(20),
+			"nonce":       generateNonce(256),
 		},
 		Items: items,
 		Feeds: feeds,

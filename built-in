@@ -15,7 +15,7 @@
 	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
 	<meta name="author" content="Sebastien LOVERGNE">
 	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
-	<meta name="referrer" content="strict-origin">
+	<meta name="referrer" content="same-origin">
 
 	<style nonce="{{.Metadata.nonce}}">
 		:root {
