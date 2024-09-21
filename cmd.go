@@ -28,7 +28,7 @@ func init() {
 		&limit,
 		"limit",
 		"l",
-		50,
+		256,
 		"How many articles to display",
 	)
 	rootCmd.Flags().IntVarP(
