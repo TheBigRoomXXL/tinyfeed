@@ -97,6 +97,12 @@ func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
 		items = append(items, feed.Items...)
 	}
 
+	for i := 0; i < len(items); i++ {
+		if items[i].Title == "" {
+			items[i].Title = "<i>Untitled</i>"
+		}
+	}
+
 	sort.SliceStable(items, func(i, j int) bool {
 		if items[i].PublishedParsed == nil {
 			return false
