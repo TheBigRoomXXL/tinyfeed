@@ -8,10 +8,6 @@ You can effortlessly set it up in crond or systemd and direct your HTTP server
 to the generated `index.html` and voilà, you’ve got yourself a webpage 
 that aggregate your feeds.
 
-## Screenshot
-
-![desktop](.images/desktop.webp)
-
 ## Feature
 
 - RSS, Atom and JSON feeds are all supported thanks to the awesome 
@@ -20,6 +16,11 @@ that aggregate your feeds.
 - Dark / Light theme based on system preference
 - Generated page is lightweight and fully accessible
 - Summaries of the articles are available by clinking on the side
+
+
+## Screenshot
+
+![desktop](.images/desktop.avif)
 
 
 ## Usage
@@ -99,7 +100,7 @@ type data struct {
     Feeds    []*gofeed.Feed
 }
 
-func preview(item *gofeed.Item) string
+func publication(item *gofeed.Item) string
 
 func domain(item *gofeed.Item) string
 ```
