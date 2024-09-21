@@ -35,7 +35,7 @@ func init() {
 		&requestSemaphore,
 		"requests",
 		"r",
-		8,
+		16,
 		"How many simulaneous requests can be made",
 	)
 	rootCmd.Flags().IntVar(
