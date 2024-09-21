@@ -3,11 +3,12 @@ package main
 import (
 	_ "embed"
 	"fmt"
+	"html"
+	"html/template"
 	"net/http"
 	"os"
 	"sort"
 	"sync"
-	"text/template"
 	"time"
 
 	"github.com/mmcdole/gofeed"
@@ -99,8 +100,14 @@ func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
 
 	for i := 0; i < len(items); i++ {
 		if items[i].Title == "" {
-			items[i].Title = "<i>Untitled</i>"
+			items[i].Title = "Untitled"
 		}
+
+		// Some stirng are already html escaped ans when they are parsed by
+		// html/template it create a double escape so we must unescape first.
+		items[i].Title = html.UnescapeString(items[i].Title)
+		items[i].Link = html.UnescapeString(items[i].Link)
+		items[i].Published = html.UnescapeString(items[i].Published)
 	}
 
 	sort.SliceStable(items, func(i, j int) bool {

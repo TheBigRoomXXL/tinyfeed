@@ -2,8 +2,8 @@
 <html lang="en" dir="ltr">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>{{.Metadata.name}}</title>
 
@@ -11,11 +11,11 @@
 		default-src 'none';
 		style-src 'nonce-{{.Metadata.nonce}}' '{{.Metadata.stylesheet}}' ;
     ">
-	<meta name="application-name" content="tinyfeed" />
-	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed" />
-	<meta name="author" content="Sebastien LOVERGNE" />
-	<meta name="description" content="RSS, Atom and JSON feeds aggregator" />
-	<meta name="referrer" content="strict-origin" />
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="strict-origin">
 
 	<style nonce="{{.Metadata.nonce}}">
 		:root {
