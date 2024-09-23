@@ -7,7 +7,8 @@ var rootCmd = &cobra.Command{
 	Short: "Aggregate a collection of feed into static HTML page",
 	Long:  "Aggregate a collection of feed into static HTML page. Only RSS, Atom and JSON feeds are supported.",
 	Example: `  single feed      tinyfeed lovergne.dev/rss.xml > index.html
-  multiple feeds   cat feeds.txt | tinyfeed > index.html`,
+  multiple feeds   cat feeds.txt | tinyfeed > index.html
+  daemon mode      tinyfeed --daemon -i feeds.txt -o index.html `,
 
 	Args:         cobra.ArbitraryArgs,
 	RunE:         tinyfeed,
@@ -25,6 +26,8 @@ var stylesheet string
 var templatePath string
 var input string
 var output string
+var daemon bool
+var interval int64
 
 func init() {
 	rootCmd.Flags().IntVarP(
@@ -96,5 +99,19 @@ func init() {
 		"o",
 		"",
 		"Path to a file to save the output to.",
+	)
+	rootCmd.Flags().BoolVarP(
+		&daemon,
+		"daemon",
+		"D",
+		false,
+		"Whether to execute the program in a daemon mode.",
+	)
+	rootCmd.Flags().Int64VarP(
+		&interval,
+		"interval",
+		"I",
+		1440,
+		"Duration in minutes between execution. Ignored if not in daemon mode.",
 	)
 }

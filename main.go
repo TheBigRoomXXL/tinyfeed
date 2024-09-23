@@ -6,10 +6,13 @@ import (
 	"html"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"sort"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/mmcdole/gofeed"
@@ -27,12 +30,41 @@ func main() {
 }
 
 func tinyfeed(cmd *cobra.Command, args []string) error {
+	log.SetOutput(os.Stderr)
+
+	// We get the inputs stdin at the start to that it can be reused by the daemon
 	strdinArgs, err := stdinToArgs()
 	if err != nil {
 		return fmt.Errorf("fail to parse stdin: %w", err)
 	}
 	args = append(args, strdinArgs...)
 
+	err = run(args)
+
+	if !daemon || err != nil {
+		return err
+	}
+
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
+	ticker := time.NewTicker(time.Minute * time.Duration(interval))
+
+	for {
+		select {
+		case <-signalChan:
+			return nil
+		case <-ticker.C:
+			err = run(args)
+			if err != nil {
+				return err
+			}
+		}
+	}
+}
+
+func run(args []string) error {
+	// We append inputs from file here so that it can be updated without
+	// reloading the daemon
 	inputArgs, err := fileToArgs(input)
 	if err != nil {
 		return fmt.Errorf("fail to parse input file: %w", err)
@@ -91,7 +123,7 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 	feed, err := fp.ParseURL(url)
 	if err != nil && !quiet {
-		fmt.Fprintf(os.Stderr, "WARNING: fail to parse feed at %s: %s\n", url, err)
+		log.Printf("WARNING: fail to parse feed at %s: %s\n", url, err)
 		return nil
 	}
 
