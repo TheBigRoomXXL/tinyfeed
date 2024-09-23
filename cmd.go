@@ -24,6 +24,7 @@ var quiet bool
 var stylesheet string
 var templatePath string
 var input string
+var output string
 
 func init() {
 	rootCmd.Flags().IntVarP(
@@ -83,9 +84,16 @@ func init() {
 	)
 	rootCmd.Flags().StringVarP(
 		&input,
-		"intput",
+		"input",
 		"i",
 		"",
 		"Path to a file with a list of feeds.",
+	)
+	rootCmd.Flags().StringVarP(
+		&output,
+		"output",
+		"o",
+		"",
+		"Path to a file to save the output to.",
 	)
 }

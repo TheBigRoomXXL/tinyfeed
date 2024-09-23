@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html"
 	"html/template"
+	"io"
 	"net/http"
 	"os"
 	"sort"
@@ -160,7 +161,18 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		Feeds: feeds,
 	}
 
-	err = ts.Execute(os.Stdout, data)
+	var outFile io.WriteCloser
+	if output != "" {
+		outFile, err = os.Create(output)
+		if err != nil {
+			return err
+		}
+		defer outFile.Close()
+	} else {
+		outFile = os.Stdout
+	}
+
+	err = ts.Execute(outFile, data)
 	if err != nil {
 		return fmt.Errorf("fail to render HTML template: %w", err)
 	}
