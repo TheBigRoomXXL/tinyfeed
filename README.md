@@ -15,8 +15,7 @@ that aggregate your feeds.
 - Highly customizable, especially with the ability to use external stylesheet and templates.
 - Dark / Light theme based on system preference
 - Generated page is lightweight and fully accessible
-- Summaries of the articles are available by clinking on the side
-
+- Support a daemon mode to re-generate the output periodically
 
 ## Screenshot
 
@@ -34,32 +33,37 @@ Usage:
 Examples:
   single feed      tinyfeed lovergne.dev/rss.xml > index.html
   multiple feeds   cat feeds.txt | tinyfeed > index.html
+  daemon mode      tinyfeed --daemon -i feeds.txt -o index.html 
 
 Flags:
-  -i, --images               Add this flag to load images in summaries
+  -D, --daemon               Whether to execute the program in a daemon mode.
   -d, --description string   Add a description after the name of your page
   -h, --help                 help for tinyfeed
-  -l, --limit int            How many articles will be included (default 50)
+  -i, --input string         Path to a file with a list of feeds.
+  -I, --interval int         Duration in minutes between execution. Ignored if not in daemon mode. (default 1440)
+  -l, --limit int            How many articles to display (default 256)
   -n, --name string          Title of the page. (default "Feed")
+  -o, --output string        Path to a file to save the output to.
   -q, --quiet                Add this flag to silence warnings.
+  -r, --requests int         How many simulaneous requests can be made (default 16)
   -s, --stylesheet string    Path to an external CSS stylesheet
   -t, --template string      Path to a custom HTML+Go template file.
-      --timeout int          timeout to get feeds in seconds (default 15)
+  -T, --timeout int          timeout to get feeds in seconds (default 15)
 ```
 
 ⚠️ When using a redirection directly, like in the example, your HTML page will be
-blank while tinyfeed is processing. it will also stay blank if there is an error.
+blank while tinyfeed is processing and it will also stay blank if there is an error.
  To avoid that, use a tempory file: 
 
 ```bash
-cat feeds | tinyfeed > /tpm/tinyfeed && mv tinyfeed /path/to/index.html
+cat feeds | tinyfeed > /tmp/tinyfeed && mv /tmp/tinyfeed /path/to/index.html
 ```
 
 ## Installation
 
 ### Install from binary 
 
-You can download the official binaries from the [releases page](https://github.com/TheBigRoomXXL/tinyfeed/releases/latest/). Currently only arm64 architecure on Linux, Mqx and Windows, is
+You can download the official binaries from the [releases page](https://github.com/TheBigRoomXXL/tinyfeed/releases/latest/). Currently only arm64 architecture on Linux, Mac and Windows, is
 supported. If you need something else than that, please open an issue and I will
 add it to the releases process.
 
@@ -117,7 +121,7 @@ help to understand something or feature request just open a issue on this repos.
 
 ## Acknowledgement
 
-The project was heavily inspired by Hacker News and [tinystatus](https://github.com/bderenzo/tinystatus).
+The project was heavily inspired by [tinystatus](https://github.com/bderenzo/tinystatus), and message boards like Lobste.rs and Hacker News.
 
 Thank you @MariaLetta for the awesome [free-gophers-pack ](https://github.com/MariaLetta/free-gophers-pack)
 wich I adapted for the banner.
