@@ -41,9 +41,10 @@ func init() {
 		16,
 		"How many simulaneous requests can be made",
 	)
-	rootCmd.Flags().IntVar(
+	rootCmd.Flags().IntVarP(
 		&timeout,
 		"timeout",
+		"T",
 		15,
 		"timeout to get feeds in seconds",
 	)
