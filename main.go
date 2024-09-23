@@ -30,8 +30,13 @@ func tinyfeed(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("fail to parse stdin: %w", err)
 	}
-
 	args = append(args, strdinArgs...)
+
+	inputArgs, err := fileToArgs(input)
+	if err != nil {
+		return fmt.Errorf("fail to parse input file: %w", err)
+	}
+	args = append(args, inputArgs...)
 
 	if len(args) == 0 {
 		return fmt.Errorf("no argument found, you must input at least one feed url. Use `tinyfeed --help` for examples")

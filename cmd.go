@@ -8,6 +8,7 @@ var rootCmd = &cobra.Command{
 	Long:  "Aggregate a collection of feed into static HTML page. Only RSS, Atom and JSON feeds are supported.",
 	Example: `  single feed      tinyfeed lovergne.dev/rss.xml > index.html
   multiple feeds   cat feeds.txt | tinyfeed > index.html`,
+
 	Args:         cobra.ArbitraryArgs,
 	RunE:         tinyfeed,
 	SilenceUsage: true,
@@ -22,6 +23,7 @@ var description string
 var quiet bool
 var stylesheet string
 var templatePath string
+var input string
 
 func init() {
 	rootCmd.Flags().IntVarP(
@@ -78,5 +80,12 @@ func init() {
 		"t",
 		"",
 		"Path to a custom HTML+Go template file.",
+	)
+	rootCmd.Flags().StringVarP(
+		&input,
+		"intput",
+		"i",
+		"",
+		"Path to a file with a list of feeds.",
 	)
 }

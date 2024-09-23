@@ -25,6 +25,21 @@ func stdinToArgs() ([]string, error) {
 	return []string{}, nil
 }
 
+func fileToArgs(filepath string) ([]string, error) {
+	if filepath == "" {
+		return []string{}, nil
+	}
+	file, err := os.Open(filepath)
+	if err != nil {
+		return nil, fmt.Errorf("error opening input file: %s", err)
+	}
+	input, err := io.ReadAll(file)
+	if err != nil {
+		return nil, fmt.Errorf("error reading input file: %s", err)
+	}
+	return strings.Fields(string(input)), nil
+}
+
 func domain(item *gofeed.Item) string {
 	url, err := url.Parse(item.Link)
 	if err != nil {
