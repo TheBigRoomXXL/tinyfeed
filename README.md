@@ -4,9 +4,11 @@
 
 **tinyfeed** is a CLI tool that generate a static HTML page from a collection of feeds.
 
-You can effortlessly set it up in crond or systemd and direct your HTTP server 
-to the generated `index.html` and voilà, you’ve got yourself a webpage 
-that aggregate your feeds.
+It's dead simple, no database, no config file, just a CLI and some HTML 
+
+Give it a list of RSS, Atom or JSON feeds urls and it will generate a single HTML page for
+it. Then you can effortlessly set it up in `crond` `systemd` or `openrc` and voilà, you’ve
+got yourself an webpage that aggregate your favorite feeds.
 
 ## Feature
 
