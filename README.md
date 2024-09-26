@@ -53,10 +53,13 @@ Flags:
 
 ⚠️ When using a redirection directly, like in the example, your HTML page will be
 blank while tinyfeed is processing and it will also stay blank if there is an error.
- To avoid that, use a tempory file: 
+ To avoid that, use a tempory file or the --output flag: 
 
 ```bash
 cat feeds | tinyfeed > /tmp/tinyfeed && mv /tmp/tinyfeed /path/to/index.html
+# OR
+cat feeds | tinyfeed -o /path/to/index.html
+
 ```
 
 ## Installation
