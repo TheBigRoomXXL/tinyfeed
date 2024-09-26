@@ -109,11 +109,19 @@ After=network.target
 Type=simple
 Restart=always
 User=<USER>
-WorkingDirectory=/home/<USER>
+WorkingDirectory=/home/<USER>/
 ExecStart=/usr/local/bin/tinyfeed --daemon -i feeds.txt -o index.html -I 720
 
 [Install]
 WantedBy=mutli-user.target
+```
+
+If you have SELinux enabled you will need to allow the binary to access the
+`/usr/local/bin` directory with the following commands:
+```bash
+sudo semanage fcontext -a -t bin_t /usr/local/bin 
+sudo chcon -Rv -u system_u -t bin_t /usr/local/bin 
+sudo restorecon -R -v /usr/local/bin
 ```
 
 ## External HTML+Go template 
