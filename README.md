@@ -22,7 +22,9 @@ got yourself an webpage that aggregate your favorite feeds.
 
 ## Usage
 
-The CLI app is design to work with basic pipelining and stdout redirections. 
+The CLI app is design to work with basic pipelining and stdout redirections.
+
+Tinyfeed expect a list of space or carriage-return separated feeds urls as argument.
 
 ```
 Usage:
@@ -87,7 +89,37 @@ apk add gcompat
 go install github.com/TheBigRoomXXL/tinyfeed@latest
 ```
 
-## Recipes 
+### Install with docker
+
+```bash
+docker run thebigroomxxl/tinyfeed --help
+```
+
+
+## Recipes
+
+### Docker
+
+This is a simple example of how to run **tinyfeed** in a docker container. This will mount
+an entire directory, if you want to bind only the input/output files instead you will have
+use [bind mounts](https://docs.docker.com/engine/storage/bind-mounts/).
+
+```bash
+docker run --restart unless-stopped  -v /your/path:/app thebigroomxxl/tinyfeed --daemon -i feeds.txt -o index.html
+```
+
+Docker compose equivalent:
+
+```yaml
+services:
+    tinyfeed:
+        image: thebigroomxxl/tinyfeed
+        command: --daemon -i feeds.txt -o index.html
+        volumes:
+            - ./dev:/app
+        restart: unless-stopped
+```
+
 
 ### Systemd
 
@@ -116,8 +148,7 @@ ExecStart=/usr/local/bin/tinyfeed --daemon -i feeds.txt -o index.html -I 720
 WantedBy=mutli-user.target
 ```
 
-If you have SELinux enabled you will need to allow the binary to access the
-`/usr/local/bin` directory with the following commands:
+If you have SELinux enabled you will need to allow systemd to execute binaries in the `usr/local/bin` directory with the following commands:
 ```bash
 sudo semanage fcontext -a -t bin_t /usr/local/bin 
 sudo chcon -Rv -u system_u -t bin_t /usr/local/bin 
