@@ -19,10 +19,6 @@ got yourself an webpage that aggregate your favorite feeds.
 - Generated page is lightweight and fully accessible
 - Support a daemon mode to re-generate the output periodically
 
-## Screenshot
-
-![desktop](.images/desktop.avif)
-
 
 ## Usage
 
@@ -91,6 +87,35 @@ apk add gcompat
 go install github.com/TheBigRoomXXL/tinyfeed@latest
 ```
 
+## Recipes 
+
+### Systemd
+
+Here is a simple systemd service file to run **tinyfeed** when your system start and 
+update the page every 12 hours. Whith this setup you can edit the feeds list at 
+`~/feeds.txt` and the output will be updated after the next run. 
+
+With the output file at `~/index.html` you can access it locally at `file:///home/<USER>/index.html`.
+If you want to serve it with a web server you can move it to the web server root directory.
+
+```ini
+# /etc/systemd/system/tinyfeed.service
+
+[Unit]
+Description=tinyfeed service
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+User=<USER>
+WorkingDirectory=/home/<USER>
+ExecStart=/usr/local/bin/tinyfeed --daemon -i feeds.txt -o index.html -I 720
+
+[Install]
+WantedBy=mutli-user.target
+```
+
 ## External HTML+Go template 
 
 You can provide you own template for page generation. For an exemple template
@@ -123,7 +148,8 @@ help to understand something or feature request just open a issue on this repos.
 
 ## Acknowledgement
 
-The project was heavily inspired by [tinystatus](https://github.com/bderenzo/tinystatus), and message boards like Lobste.rs and Hacker News.
+The project was heavily inspired by the awesomely simple [tinystatus](https://github.com/bderenzo/tinystatus)
+and message boards like Lobste.rs and Hacker News.
 
 Thank you @MariaLetta for the awesome [free-gophers-pack ](https://github.com/MariaLetta/free-gophers-pack)
 wich I adapted for the banner.
