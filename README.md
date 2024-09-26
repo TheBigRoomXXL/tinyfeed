@@ -92,11 +92,11 @@ go install github.com/TheBigRoomXXL/tinyfeed@latest
 ### Systemd
 
 Here is a simple systemd service file to run **tinyfeed** when your system start and 
-update the page every 12 hours. Whith this setup you can edit the feeds list at 
+update the page every 12 hours. With this setup you can edit the feeds list at 
 `~/feeds.txt` and the output will be updated after the next run. 
 
 With the output file at `~/index.html` you can access it locally at `file:///home/<USER>/index.html`.
-If you want to serve it with a web server you can move it to the web server root directory.
+If, instead, you want to serve it with a web server you can move it to the web server root directory.
 
 ```ini
 # /etc/systemd/system/tinyfeed.service
