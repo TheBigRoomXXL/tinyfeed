@@ -66,16 +66,15 @@ cat feeds | tinyfeed -o /path/to/index.html
 
 ### Live demo: [feed.lovergne.dev](https://feed.lovergne.dev/)
 
-Visited links are iin yellow, unvisited in blue. 
+Visited links are in yellow, unvisited in blue. 
 ![screenshots of feed.lovergne.dev](/.images/screenshots.png)
 
 ## Installation
 
 ### Install from binary 
 
-You can download the official binaries from the [releases page](https://github.com/TheBigRoomXXL/tinyfeed/releases/latest/). Currently only arm64 architecture on Linux, Mac and Windows, is
-supported. If you need something else than that, please open an issue and I will
-add it to the releases process.
+You can download the official binaries from the [releases page](https://github.com/TheBigRoomXXL/tinyfeed/releases/latest/). Currently arm64 and amd64 architecture on Linux, Mac and Windows and FreeBSD is supported. If you need something else than that, please open an issue and I will add it to the releases process if it's supported by golang 
+cross-compilation.
 
 Here is a quick example of how to install the binary for linux:
 
