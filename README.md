@@ -79,13 +79,6 @@ sudo mv tinyfeed_linux_arm64 /usr/local/bin/tinyfeed
 tinyfeed --help
 ```
 
-If you are on Alpine you also need to install [gcompat](https://pkgs.alpinelinux.org/package/edge/main/x86_64/gcompat) to fix the usual musl / glibc compatibility
-issues.
-
-```bash
-apk add gcompat
-```
-
 ### Install with Go
 
 ```bash 
