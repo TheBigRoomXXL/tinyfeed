@@ -67,8 +67,7 @@ cat feeds | tinyfeed -o /path/to/index.html
 ### Live demo: [feed.lovergne.dev](https://feed.lovergne.dev/)
 
 Visited links are iin yellow, unvisited in blue. 
-![screenshot of feed.lovergne.dev](/.images/Screenshot_20250101-172709.png)
-![screenshot of feed.lovergne.dev](/.images/Screenshot_20250101-172803.png)
+![screenshots of feed.lovergne.dev](/.images/screenshots.png)
 
 ## Installation
 
