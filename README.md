@@ -158,6 +158,27 @@ sudo chcon -Rv -u system_u -t bin_t /usr/local/bin
 sudo restorecon -R -v /usr/local/bin
 ```
 
+### OpenRC
+
+To create an OpenRC service, you just need to add an init file at `/etc/init.d/tinyfeed`.
+Then, you can enable the service with `rc-update add tinyfeed default` and start or stop it with `rc-service tinyfeed <COMMAND>`. Below, you can find the most minimal service file that will enable you to start and stop tinyfeed with the feed list and rendered page located at `/etc/tinyfeed`.
+
+```ini
+#!/sbin/openrc-run
+
+depend() {
+	need net
+	use dns 
+}
+
+command="/usr/local/bin/tinyfeed"
+command_args="--daemon -i /etc/tinyfeed/feeds.txt -o /etc/tinyfeed/index.html"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+```
+For more advanced patterns (like running as your user instead of root), you can check out the official [OpenRC documentation](https://github.com/OpenRC/openrc/blob/master/service-script-guide.md) on the subject.
+
+
 ## External HTML+Go template 
 
 You can provide you own template for page generation. For an exemple template
