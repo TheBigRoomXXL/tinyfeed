@@ -119,7 +119,7 @@ services:
         image: thebigroomxxl/tinyfeed
         command: --daemon -i feeds.txt -o index.html
         volumes:
-            - ./dev:/app
+            - /path/to/your/feeds/:/app
         restart: unless-stopped
 ```
 
