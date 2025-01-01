@@ -124,7 +124,7 @@ update the page every 12 hours. With this setup you can edit the feeds list at
 `~/feeds.txt` and the output will be updated after the next run. 
 
 With the output file at `~/index.html` you can access it locally at `file:///home/<USER>/index.html`.
-If, instead, you want to serve it with a web server you can move it to the web server root directory.
+If, instead, you want to serve it with a web server you can save it in the web server root directory.
 
 ```ini
 # /etc/systemd/system/tinyfeed.service
