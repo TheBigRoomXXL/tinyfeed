@@ -20,6 +20,14 @@ got yourself an webpage that aggregate your favorite feeds.
 - Support a daemon mode to re-generate the output periodically
 
 
+## Demo and Screenshots
+
+### Live demo: [feed.lovergne.dev](https://feed.lovergne.dev/)
+
+Visited links are in yellow, unvisited in blue. 
+![screenshots of feed.lovergne.dev](/.images/screenshots.png)
+
+
 ## Usage
 
 The CLI app is design to work with basic pipelining and stdout redirections.
@@ -62,12 +70,6 @@ cat feeds | tinyfeed -o /path/to/index.html
 
 ```
 
-## Demo and Screenshots
-
-### Live demo: [feed.lovergne.dev](https://feed.lovergne.dev/)
-
-Visited links are in yellow, unvisited in blue. 
-![screenshots of feed.lovergne.dev](/.images/screenshots.png)
 
 ## Installation
 
