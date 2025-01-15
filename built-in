@@ -113,7 +113,7 @@
 	</style>
 
 	{{if .Metadata.stylesheet}}
-	<link rel="stylesheet" type="text/css" href="{{.Metadata.stylesheet}}">
+	<link rel="stylesheet" type="text/css" href="{{.Metadata.stylesheet}}", nonce="{{.Metadata.nonce}}">
 	{{end}}
 </head>
 
