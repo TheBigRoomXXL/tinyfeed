@@ -121,6 +121,10 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 }
 
 func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
+	if url[0] =='#'{
+		log.Printf("Ignoring Commented URL: %s\n", url[1:])
+		return nil
+	}
 	feed, err := fp.ParseURL(url)
 	if err != nil && !quiet {
 		log.Printf("WARNING: fail to parse feed at %s: %s\n", url, err)
@@ -177,7 +181,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	if err != nil {
 		return fmt.Errorf("fail to load HTML template: %w", err)
 	}
-
+	currDate := time.Now()
 	data := struct {
 		Metadata map[string]string
 		Items    []*gofeed.Item
@@ -188,6 +192,8 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 			"description": description,
 			"stylesheet":  stylesheet,
 			"nonce":       generateNonce(256),
+			"day":currDate.Weekday().String(),
+			"datetime":currDate.Format(time.DateTime),
 		},
 		Items: items,
 		Feeds: feeds,
