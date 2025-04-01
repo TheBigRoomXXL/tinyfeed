@@ -43,7 +43,7 @@ func fileToArgs(filepath string) ([]string, error) {
 func domain(item *gofeed.Item) string {
 	url, err := url.Parse(item.Link)
 	if err != nil {
-		log.Printf("WARNING: fail to parse domaine %s: %s\n", item.Link, err)
+		log.Printf("WARNING: fail to parse domain %s: %s\n", item.Link, err)
 	}
 	return strings.TrimPrefix(url.Hostname(), "www.")
 }
