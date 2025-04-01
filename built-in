@@ -113,7 +113,7 @@
 	</style>
 
 	{{if .Metadata.stylesheet}}
-	<link rel="stylesheet" type="text/css" href="{{.Metadata.stylesheet}}", nonce="{{.Metadata.nonce}}">
+	<link rel="stylesheet" type="text/css" href="{{.Metadata.stylesheet}}" , nonce="{{.Metadata.nonce}}">
 	{{end}}
 </head>
 
@@ -142,6 +142,7 @@
 		</ol>
 	</main>
 	<footer>
+		<p>Last Updated On: {{.Metadata.day}}, {{.Metadata.datetime}}</p>
 		<p>This page aggregate the following feeds:</p>
 		<div class="feed-list">
 			{{range .Feeds}}
