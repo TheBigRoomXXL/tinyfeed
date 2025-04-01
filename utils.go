@@ -20,7 +20,15 @@ func stdinToArgs() ([]string, error) {
 		if err != nil {
 			return nil, fmt.Errorf("error parsing stdin: %s", err)
 		}
-		return strings.Fields(string(input)), nil
+		unsortedArgs := strings.Split(string(input), "\n")
+		var sortedArgs []string
+		for _, s := range unsortedArgs {
+			trimmedString := strings.TrimSpace(s)
+			if !(strings.HasPrefix(trimmedString, "#")) && !(trimmedString == "") {
+				sortedArgs = append(sortedArgs, strings.Fields(trimmedString)...)
+			}
+		}
+		return sortedArgs, nil
 	}
 	return []string{}, nil
 }
@@ -37,7 +45,17 @@ func fileToArgs(filepath string) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error reading input file: %s", err)
 	}
-	return strings.Fields(string(input)), nil
+	unsortedArgs := strings.Split(string(input), "\n")
+	var sortedArgs []string
+	for _, s := range unsortedArgs {
+		trimmedString := strings.TrimSpace(s)
+		if !(strings.HasPrefix(trimmedString, "#")) && !(trimmedString == "") && strings.ContainsAny(trimmedString, " ") {
+			sortedArgs = append(sortedArgs, strings.Fields(trimmedString)...)
+		} else if !(strings.HasPrefix(trimmedString, "#")) && !(trimmedString == "") {
+			sortedArgs = append(sortedArgs, s)
+		}
+	}
+	return sortedArgs, nil
 }
 
 func domain(item *gofeed.Item) string {
