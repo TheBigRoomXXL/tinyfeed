@@ -1,3 +1,4 @@
+.gitignore
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -5,6 +6,7 @@
 *.so
 *.dylib
 .histfile
+*.txt
 # Test binary, built with `go test -c`
 *.test
 

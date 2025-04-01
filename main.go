@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/signal"
 	"sort"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
@@ -121,8 +122,8 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 }
 
 func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
-	if url[0] =='#'{
-		log.Printf("Ignoring Commented URL: %s\n", url[1:])
+	if strings.HasPrefix(url, "#") {
+		log.Printf("Ignoring Comment: %s\n", strings.TrimSpace(strings.TrimPrefix(url, "#")))
 		return nil
 	}
 	feed, err := fp.ParseURL(url)
@@ -192,8 +193,8 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 			"description": description,
 			"stylesheet":  stylesheet,
 			"nonce":       generateNonce(256),
-			"day":currDate.Weekday().String(),
-			"datetime":currDate.Format(time.DateTime),
+			"day":         currDate.Weekday().String(),
+			"datetime":    currDate.Format(time.DateTime),
 		},
 		Items: items,
 		Feeds: feeds,

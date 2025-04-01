@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
@@ -33,17 +34,25 @@ func fileToArgs(filepath string) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error opening input file: %s", err)
 	}
-	input, err := io.ReadAll(file)
-	if err != nil {
-		return nil, fmt.Errorf("error reading input file: %s", err)
+	defer file.Close()
+	var args []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		input := scanner.Text()
+		if input != "" {
+			args = append(args, input)
+		}
 	}
-	return strings.Fields(string(input)), nil
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("error scanning input file: %s", err)
+	}
+	return args, nil
 }
 
 func domain(item *gofeed.Item) string {
 	url, err := url.Parse(item.Link)
 	if err != nil {
-		log.Printf("WARNING: fail to parse domaine %s: %s\n", item.Link, err)
+		log.Printf("WARNING: fail to parse domain %s: %s\n", item.Link, err)
 	}
 	return strings.TrimPrefix(url.Hostname(), "www.")
 }
