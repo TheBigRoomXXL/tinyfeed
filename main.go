@@ -177,7 +177,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	if err != nil {
 		return fmt.Errorf("fail to load HTML template: %w", err)
 	}
-
+	currDate := time.Now()
 	data := struct {
 		Metadata map[string]string
 		Items    []*gofeed.Item
@@ -188,6 +188,8 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 			"description": description,
 			"stylesheet":  stylesheet,
 			"nonce":       generateNonce(256),
+			"day":         currDate.Weekday().String(),
+			"datetime":    currDate.Format(time.DateTime),
 		},
 		Items: items,
 		Feeds: feeds,
