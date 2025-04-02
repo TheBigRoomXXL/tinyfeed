@@ -38,16 +38,25 @@ func readerToArgs(reader io.Reader) ([]string, error) {
 		return nil, fmt.Errorf("error reading input: %s", err)
 	}
 	lines := strings.Split(string(input), "\n")
-	var args []string
+
+	argsSet := make(map[string]struct{})
 	for _, s := range lines {
 		lineTrimmed := strings.TrimSpace(s)
 		if strings.HasPrefix(lineTrimmed, "#") || lineTrimmed == "" {
 			continue
 		}
-		args = append(args, strings.Fields(lineTrimmed)...)
+		for _, field := range strings.Fields(lineTrimmed) {
+			argsSet[field] = struct{}{}
+		}
+	}
+
+	i := 0
+	args := make([]string, len(argsSet))
+	for k := range argsSet {
+		args[i] = k
+		i++
 	}
 	return args, nil
-
 }
 
 func domain(item *gofeed.Item) string {

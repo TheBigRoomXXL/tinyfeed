@@ -1,6 +1,7 @@
 package main
 
 import (
+	"slices"
 	"strings"
 	"testing"
 
@@ -32,6 +33,7 @@ func TestReaderToArgs(t *testing.T) {
 		{"\n # http://foo.com ", []string{""}},
 		{"http://foo.com\thttp://baz.org", []string{"http://foo.com", "http://baz.org"}},
 		{"http://foo.com http://baz.org", []string{"http://foo.com", "http://baz.org"}},
+		{"http://foo.com http://foo.com", []string{"http://foo.com"}},
 	}
 
 	for _, test := range tests {
@@ -42,6 +44,9 @@ func TestReaderToArgs(t *testing.T) {
 				t.Errorf("readerToArgs() error = %v", err)
 				return
 			}
+
+			slices.Sort(test.want)
+			slices.Sort(got)
 			for i := range got {
 				if got[i] != test.want[i] {
 					t.Errorf("readerToArgs() got = %v, want %v", got, test.want)
