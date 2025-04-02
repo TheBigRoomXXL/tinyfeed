@@ -16,19 +16,7 @@ import (
 func stdinToArgs() ([]string, error) {
 	fi, _ := os.Stdin.Stat()
 	if (fi.Mode() & os.ModeCharDevice) == 0 {
-		input, err := io.ReadAll(os.Stdin)
-		if err != nil {
-			return nil, fmt.Errorf("error parsing stdin: %s", err)
-		}
-		unsortedArgs := strings.Split(string(input), "\n")
-		var sortedArgs []string
-		for _, s := range unsortedArgs {
-			trimmedString := strings.TrimSpace(s)
-			if !(strings.HasPrefix(trimmedString, "#")) && !(trimmedString == "") {
-				sortedArgs = append(sortedArgs, strings.Fields(trimmedString)...)
-			}
-		}
-		return sortedArgs, nil
+		return readerToArgs(os.Stdin)
 	}
 	return []string{}, nil
 }
@@ -41,21 +29,25 @@ func fileToArgs(filepath string) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error opening input file: %s", err)
 	}
-	input, err := io.ReadAll(file)
+	return readerToArgs(file)
+}
+
+func readerToArgs(reader io.Reader) ([]string, error) {
+	input, err := io.ReadAll(reader)
 	if err != nil {
-		return nil, fmt.Errorf("error reading input file: %s", err)
+		return nil, fmt.Errorf("error reading input: %s", err)
 	}
-	unsortedArgs := strings.Split(string(input), "\n")
-	var sortedArgs []string
-	for _, s := range unsortedArgs {
-		trimmedString := strings.TrimSpace(s)
-		if !(strings.HasPrefix(trimmedString, "#")) && !(trimmedString == "") && strings.ContainsAny(trimmedString, " ") {
-			sortedArgs = append(sortedArgs, strings.Fields(trimmedString)...)
-		} else if !(strings.HasPrefix(trimmedString, "#")) && !(trimmedString == "") {
-			sortedArgs = append(sortedArgs, s)
+	lines := strings.Split(string(input), "\n")
+	var args []string
+	for _, s := range lines {
+		lineTrimmed := strings.TrimSpace(s)
+		if strings.HasPrefix(lineTrimmed, "#") || lineTrimmed == "" {
+			continue
 		}
+		args = append(args, strings.Fields(lineTrimmed)...)
 	}
-	return sortedArgs, nil
+	return args, nil
+
 }
 
 func domain(item *gofeed.Item) string {
