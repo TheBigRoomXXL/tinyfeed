@@ -32,7 +32,8 @@ Visited links are in yellow, unvisited in blue.
 
 The CLI app is design to work with basic pipelining and stdout redirections.
 
-Tinyfeed expect a list of space or carriage-return separated feeds urls as argument.
+Tinyfeed expect a list of whitespace separated feeds urls as argument. Lines can 
+be commented out with a `#` at the start. 
 
 ```
 Usage:
@@ -67,7 +68,21 @@ blank while tinyfeed is processing and it will also stay blank if there is an er
 cat feeds | tinyfeed > /tmp/tinyfeed && mv /tmp/tinyfeed /path/to/index.html
 # OR
 cat feeds | tinyfeed -o /path/to/index.html
+```
 
+Example of input file:
+```txt
+# Software Engineering
+https://lovergne.dev/rss.xml
+
+# Cyber Security
+https://words.filippo.io/rss/
+https://feeds.feedburner.com/TroyHunt
+
+# Frontend
+https://tonsky.me/atom.xml
+https://andy-bell.co.uk/feed.xml
+https://www.htmhell.dev/feed.xml
 ```
 
 
