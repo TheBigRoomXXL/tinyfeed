@@ -16,6 +16,7 @@ var rootCmd = &cobra.Command{
 
 // flags
 var limit int
+var limitPerFeed int
 var timeout int
 var requestSemaphore int
 var name string
@@ -34,7 +35,14 @@ func init() {
 		"limit",
 		"l",
 		256,
-		"How many articles to display",
+		"How many articles to display in total",
+	)
+	rootCmd.Flags().IntVarP(
+		&limitPerFeed,
+		"limit-per-feed",
+		"L",
+		256,
+		"Maximum number of articles to display per feed",
 	)
 	rootCmd.Flags().IntVarP(
 		&requestSemaphore,
@@ -48,7 +56,7 @@ func init() {
 		"timeout",
 		"T",
 		15,
-		"timeout to get feeds in seconds",
+		"Timeout to get feeds in seconds",
 	)
 	rootCmd.Flags().StringVarP(
 		&name,
