@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 )
@@ -25,6 +26,9 @@ var daemon bool
 var interval int64
 
 func init() {
+	log.SetOutput(os.Stderr)
+	log.SetFlags(0)
+
 	fs = flag.NewFlagSet("tinyfeed", flag.ContinueOnError)
 	fs.Usage = func() {} // Disable default usage message
 
@@ -70,7 +74,7 @@ func init() {
 }
 
 func printHelp() {
-	fmt.Println(`Aggregate a collection of feed into static HTML page
+	log.Println(`Aggregate a collection of feed into static HTML page
 
 Usage:
   tinyfeed [flags] [FEED_URL ...]

@@ -23,7 +23,6 @@ import (
 var builtInTemplate string
 
 func main() {
-	log.SetOutput(os.Stderr)
 	args, err := parseFlagsToTheEnd(fs)
 	if err != nil {
 		if err == flag.ErrHelp {
@@ -63,7 +62,7 @@ func main() {
 		case <-ticker.C:
 			err = run(args)
 			if err != nil {
-				log.Printf("ERROR: %s\n", err)
+				log.Printf("%s\n", err)
 				os.Exit(1)
 			}
 		}
@@ -154,7 +153,7 @@ func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
 			items[i].Title = "Untitled"
 		}
 
-		// Some stirng are already html escaped ans when they are parsed by
+		// Some string are already html escaped ans when they are parsed by
 		// html/template it create a double escape so we must unescape first.
 		items[i].Title = html.UnescapeString(items[i].Title)
 		items[i].Link = html.UnescapeString(items[i].Link)
