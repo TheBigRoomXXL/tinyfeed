@@ -4,60 +4,12 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"io"
 	"log"
 	"net/url"
-	"os"
 	"strings"
 
 	"github.com/mmcdole/gofeed"
 )
-
-func stdinToArgs() ([]string, error) {
-	fi, _ := os.Stdin.Stat()
-	if (fi.Mode() & os.ModeCharDevice) == 0 {
-		return readerToArgs(os.Stdin)
-	}
-	return []string{}, nil
-}
-
-func fileToArgs(filepath string) ([]string, error) {
-	if filepath == "" {
-		return []string{}, nil
-	}
-	file, err := os.Open(filepath)
-	if err != nil {
-		return nil, fmt.Errorf("error opening input file: %s", err)
-	}
-	return readerToArgs(file)
-}
-
-func readerToArgs(reader io.Reader) ([]string, error) {
-	input, err := io.ReadAll(reader)
-	if err != nil {
-		return nil, fmt.Errorf("error reading input: %s", err)
-	}
-	lines := strings.Split(string(input), "\n")
-
-	argsSet := make(map[string]struct{})
-	for _, s := range lines {
-		lineTrimmed := strings.TrimSpace(s)
-		if strings.HasPrefix(lineTrimmed, "#") || lineTrimmed == "" {
-			continue
-		}
-		for _, field := range strings.Fields(lineTrimmed) {
-			argsSet[field] = struct{}{}
-		}
-	}
-
-	i := 0
-	args := make([]string, len(argsSet))
-	for k := range argsSet {
-		args[i] = k
-		i++
-	}
-	return args, nil
-}
 
 func domain(item *gofeed.Item) string {
 	url, err := url.Parse(item.Link)

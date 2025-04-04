@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "embed"
+	"flag"
 	"fmt"
 	"html"
 	"html/template"
@@ -16,35 +17,41 @@ import (
 	"time"
 
 	"github.com/mmcdole/gofeed"
-	"github.com/spf13/cobra"
 )
 
 //go:embed built-in
 var builtInTemplate string
 
 func main() {
-	err := rootCmd.Execute()
+	log.SetOutput(os.Stderr)
+	args, err := parseFlagsToTheEnd(fs)
 	if err != nil {
+		if err == flag.ErrHelp {
+			printHelp()
+			os.Exit(0)
+		}
 		os.Exit(1)
 	}
-}
-
-func tinyfeed(cmd *cobra.Command, args []string) error {
-	log.SetOutput(os.Stderr)
 
 	// We get the inputs stdin at the start to that it can be reused by the daemon
 	strdinArgs, err := stdinToArgs()
 	if err != nil {
-		return fmt.Errorf("fail to parse stdin: %w", err)
+		log.Printf("fail to parse stdin: %s\n", err)
+		os.Exit(1)
 	}
 	args = append(args, strdinArgs...)
 
 	err = run(args)
-
-	if !daemon || err != nil {
-		return err
+	if err != nil {
+		log.Printf("%s\n", err)
+		os.Exit(1)
 	}
 
+	if !daemon {
+		return
+	}
+
+	// Daemon mode
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
 	ticker := time.NewTicker(time.Minute * time.Duration(interval))
@@ -52,19 +59,19 @@ func tinyfeed(cmd *cobra.Command, args []string) error {
 	for {
 		select {
 		case <-signalChan:
-			return nil
+			return
 		case <-ticker.C:
 			err = run(args)
 			if err != nil {
-				return err
+				log.Printf("ERROR: %s\n", err)
+				os.Exit(1)
 			}
 		}
 	}
 }
 
 func run(args []string) error {
-	// We append inputs from file here so that it can be updated without
-	// reloading the daemon
+	// We append inputs from file here so that it can be updated without reloading the daemon
 	inputArgs, err := fileToArgs(input)
 	if err != nil {
 		return fmt.Errorf("fail to parse input file: %w", err)
@@ -72,7 +79,9 @@ func run(args []string) error {
 	args = append(args, inputArgs...)
 
 	if len(args) == 0 {
-		return fmt.Errorf("no argument found, you must input at least one feed url. Use `tinyfeed --help` for examples")
+		return fmt.Errorf(
+			"no argument found, you must input at least one feed url. Use `tinyfeed --help` for examples",
+		)
 	}
 
 	feeds := parseFeeds(args)
