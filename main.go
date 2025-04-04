@@ -131,8 +131,10 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 
 func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 	feed, err := fp.ParseURL(url)
-	if err != nil && !quiet {
-		log.Printf("WARNING: fail to parse feed at %s: %s\n", url, err)
+	if err != nil {
+		if !quiet {
+			log.Printf("WARNING: fail to parse feed at %s: %s\n", url, err)
+		}
 		return nil
 	}
 
