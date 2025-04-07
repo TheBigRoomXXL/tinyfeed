@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: setup-repos
-        uses: actions/checkout@v3
+        uses: actions/checkout@11bd719
 
       - name: setup-go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@0aaccfd
 
       - name: run-tests
         run: |
@@ -26,10 +26,10 @@ jobs:
       contents: write
     steps:
       - name: setup-repos
-        uses: actions/checkout@v3
+        uses: actions/checkout@11bd719
 
       - name: setup-go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@0aaccfd
 
       - name: cross-platform-build
         run: |

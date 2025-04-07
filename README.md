@@ -229,7 +229,7 @@ jobs:
         # 404.html allows every path to be served by the index.html
 
       - name: upload-page
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact # add @ to specify a version
         with:
           path: www/
 
@@ -245,7 +245,7 @@ jobs:
     steps:
       - name: deploy-to-github-pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages # add @ to specify a version
 ```
 
 ## External HTML+Go template 

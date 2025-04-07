@@ -21,7 +21,7 @@ jobs:
           cp www/index.html www/404.html
 
       - name: upload-page
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc60
         with:
           path: www/
 
@@ -37,4 +37,4 @@ jobs:
     steps:
       - name: deploy-to-github-pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db901
