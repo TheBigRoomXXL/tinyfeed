@@ -10,7 +10,7 @@ RUN go mod download
 # Build static binary
 COPY *.go ./
 COPY built-in ./
-RUN CGO_ENABLED=0 go build -o /tinyfeed
+RUN CGO_ENABLED=0 go build -ldflags "-s -w" -o /tinyfeed
 
 # Create the user file 
 RUN adduser -H -D feed

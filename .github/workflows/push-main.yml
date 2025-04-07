@@ -34,15 +34,16 @@ jobs:
       - name: cross-platform-build
         run: |
           mkdir ./builds/
+          env GO_LDFLAGS="-s -w" # strip debug info
           env GOARCH=arm64
-          env GOOS=linux go build -o ./builds/tinyfeed_linux_arm64
+          env GOOS=linux   go build -o ./builds/tinyfeed_linux_arm64
           env GOOS=freebsd go build -o ./builds/tinyfeed_freebsd_arm64
-          env GOOS=darwin go build -o ./builds/tinyfeed_darwin_arm64
+          env GOOS=darwin  go build -o ./builds/tinyfeed_darwin_arm64
           env GOOS=windows go build -o ./builds/tinyfeed_windows_arm64
           env GOARCH=amd64
-          env GOOS=linux go build -o ./builds/tinyfeed_linux_amd64
+          env GOOS=linux   go build -o ./builds/tinyfeed_linux_amd64
           env GOOS=freebsd go build -o ./builds/tinyfeed_freebsd_amd64
-          env GOOS=darwin go build -o ./builds/tinyfeed_darwin_amd64
+          env GOOS=darwin  go build -o ./builds/tinyfeed_darwin_amd64
           env GOOS=windows go build -o ./builds/tinyfeed_windows_amd64
 
       - name: release
