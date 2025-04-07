@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: setup-repos
-        uses: actions/checkout@11bd719
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: setup-go
-        uses: actions/setup-go@0aaccfd
+        uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b
 
       - name: run-tests
         run: |
@@ -26,10 +26,10 @@ jobs:
       contents: write
     steps:
       - name: setup-repos
-        uses: actions/checkout@11bd719
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: setup-go
-        uses: actions/setup-go@0aaccfd
+        uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b
 
       - name: cross-platform-build
         run: |
@@ -47,6 +47,6 @@ jobs:
           env GOOS=windows go build -o ./builds/tinyfeed_windows_amd64
 
       - name: release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@440c8c1cb0ed28b9f43e4d1d670870f059653174
         with:
           artifacts: "./builds/*"
