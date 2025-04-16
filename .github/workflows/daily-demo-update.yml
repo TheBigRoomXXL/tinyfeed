@@ -1,4 +1,5 @@
 name: update-demo-daily
+permissions: {}
 on:
   schedule:
     - cron: "0 6 * * *"

@@ -1,8 +1,9 @@
 name: test
+permissions: {}
 
 on:
   push:
-  
+
   pull_request:
     types: [opened, reopened, edited]
 
