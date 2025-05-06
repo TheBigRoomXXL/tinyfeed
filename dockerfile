@@ -4,6 +4,7 @@
 FROM golang:1.23.1-alpine3.20 AS build
 
 # Install the dependencies
+RUN apk add upx
 COPY go.mod go.sum ./
 RUN go mod download
 
@@ -11,6 +12,7 @@ RUN go mod download
 COPY *.go ./
 COPY built-in ./
 RUN CGO_ENABLED=0 go build -ldflags "-s -w" -o /tinyfeed
+RUN upx /tinyfeed
 
 # Create the user file 
 RUN adduser -H -D feed
