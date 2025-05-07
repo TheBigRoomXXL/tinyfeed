@@ -32,7 +32,7 @@ Visited links are in yellow, unvisited in blue.
 
 The CLI app is design to work with basic pipelining and stdout redirections.
 
-Tinyfeed expect a list of whitespace separated feeds urls as argument. Lines can 
+tinyfeed expect a list of whitespace separated feeds urls as argument. Lines can 
 be commented out with a `#` at the start. 
 
 ```
