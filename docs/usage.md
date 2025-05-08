@@ -1,7 +1,7 @@
 # Usage
 
 !!! info
-    This page use real feeds URL so that you can copy-paste the command and see the result. If you one the links is dead, please open an issue on the [repository](https://github.com/TheBigRoomXXL/tinyfeed/issues)
+    This page uses real feeds URLs so that you can copy-paste the command and see the result. If one of the links is dead, please open an issue on the [repository](https://github.com/TheBigRoomXXL/tinyfeed/issues)
 
 ## Basic usage
 
@@ -10,20 +10,19 @@ Start by displaying the help message to check that tinyfeed is correctly install
 tinyfeed --help
 ```
 
-Then this is how you use tinyfeed in it's most basic form:
+Then this is how you use tinyfeed in its most basic form:
 ```bash
 tinyfeed --output "index.html" https://lovergne.dev/rss
 ```
 This tell tinyfeed to fetch the feed at `https://lovergne.dev/rss`, generate a webpage for it and output the result to `index.html`. The value of `--output` can be a relative or absolute path. 
 
-You can then open the resulting `index.html` in your browser using the `file` scheme with an url like `file:///absolute/page/to/your/index.html`. Or, on most OS, you can right-click on the `index.html` in your file explorer and use "Open With` and select your browser. 
+You can then open the resulting `index.html` in your browser using the `file` scheme with an URL like `file:///absolute/page/to/your/index.html`. Or, on most OS, you can right-click on the `index.html` in your file explorer and use "Open With" and select your browser. 
 
-
-If you want to process multiple feeds you can pass multiple URLs to tinyfeed:
+If you want to process multiple feeds, you can pass multiple URLs to tinyfeed:
 ```bash
 tinyfeed --output "index.html" https://lovergne.dev/rss https://blog.codingconfessions.com/feed
 ```
-Or use an input file containing all of your feeds (preferable if you have manny):
+Or use an input file containing all of your feeds (preferable if you have many):
 ```bash
 tinyfeed --input feeds.txt --output index.html
 ```
@@ -46,7 +45,7 @@ Notice that lines starting with `#` are comments and won't be parsed by tinyfeed
 
 ## Configuration
 
-You can change the default behavior of tinyfeed and customize it's settings using
+You can change the default behavior of tinyfeed and customize its settings using
 flags:
 ```txt
 Flags:
@@ -65,10 +64,11 @@ Flags:
   -T, --timeout int          timeout to get feeds in seconds (default 15)
 ```
 
-Most flags are used to change default values but more advanced flags like `--stylesheet`, `--template` and `--daemon` have there own dedicated documentation page:
+Most flags are used to change default values, but more advanced flags like `--daemon`, `--stylesheet` and `--template` have their own dedicated documentation page:
 
- - LIST_DOCUMENTSTION
-
+- [Understanding daemon mode](/daemon)
+- [Custom theme with styling](/styling/)
+- [Custom layout with templating](/templating)
 
 
 
