@@ -1,0 +1,26 @@
+site_name: tinyfeed documentation
+site_url: https://feed.lovergne.dev/
+repo_url: https://github.com/thebigroomxxl/tinyfeed
+site_author: TheBigRoomXXL
+copyright: MIT
+theme:
+  name: readthedocs
+  logo: img/logo.svg
+markdown_extensions:
+  - admonition
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: installation.md
+      - Usage: usage.md
+      - Daemon mode: daemon.md
+      - Pipelining: pipelining.md
+  - Customization:
+      - Styling: styling.md
+      - Templating: templating.md
+  - Workflows:
+      - Docker: docker.md
+      - Cron: crong.md
+      - Systemd: systemd.md
+      - OpenRC: openrc.md
+      - Github Action and Page: github.md

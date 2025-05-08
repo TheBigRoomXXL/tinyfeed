@@ -20,3 +20,7 @@ go.work
 !built-in
 tmp
 .dev
+
+# Generated documentation site
+site/
+.cache/
