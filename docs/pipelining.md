@@ -27,7 +27,7 @@ tinyfeed https://lovergne.dev/rss.xml \
     https://words.filippo.io/rss/ \
     https://feeds.feedburner.com/TroyHunt \
     https://tonsky.me/atom.xml \
-    https://andy-bell.co.uk/feed.xml > index .html
+    https://andy-bell.co.uk/feed.xml > index.html
 ```
 ```bash
 cat feeds.txt | tinyfeed > index.html 

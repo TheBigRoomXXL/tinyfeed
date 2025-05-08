@@ -10,7 +10,8 @@ If you need something an architecture or OS currently not support, please open a
 Here is a one-liner to install the binary for Linux amd64:
 
 ```bash
-sudo wget https://github.com/TheBigRoomXXL/tinyfeed/releases/latest/download/tinyfeed_linux_arm64 -O /usr/local/bin/tinyfeed && chmod +x /usr/local/bin/tinyfeed
+sudo wget https://github.com/TheBigRoomXXL/tinyfeed/releases/latest/download/tinyfeed_linux_arm64 -O /usr/local/bin/tinyfeed
+sudo chmod +x /usr/local/bin/tinyfeed
 tinyfeed --help
 ```
 To adapt this script, you can just change `_linux_arm64` to your system.
