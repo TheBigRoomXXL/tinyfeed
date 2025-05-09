@@ -89,5 +89,15 @@ Most flags are used to change default values, but more advanced flags like `--da
 - [Custom layout with templating](/templating)
 
 
+## Hosting the tinyfeed webpage
 
+tinyfeed is only a static site generator (even if it's a one-page website) so once you are happy with the page you generated you will need a way to host it and a way to update it.
 
+For the hosting, the solution is an HTTP server like [NGINX](https://nginx.org/) or [Caddy](https://caddyserver.com/). If you are unfamiliar with HTTP servers, I would recommend [Caddy](https://caddyserver.com/) because it is simpler to configure and handles HTTPS for you automatically.
+
+For the updating, you will have a lot of options and this will depend on your setup. For guidance on that subject, the workflow section of the documentation presents 5 options:
+
+- [Cron](/cron): running tinyfeed periodically in a cron job. This is the simplest setup.
+- [Docker](/docker): running tinyfeed as a containerized service. This is a good option if you are already familiar with Docker.
+- [systemd](systemd) and [OpenRC](/openrc): running tinyfeed as a service managed by your [init system](https://en.wikipedia.org/wiki/Init). This is the traditional (and dependencies-free) way to integrate a daemon with your OS.
+- [GitHub Action and Page](/github): run tinyfeed the serverless (and free as in free beer) way. Use GitHub Action to periodically generate your page like a cron job and GitHub Page to replace a traditional HTTP server.
