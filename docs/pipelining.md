@@ -1,5 +1,5 @@
 
-## Advance Usage
+## Pipelining
 
 !!! info
     This page is addressed to users with a good understanding of the terminal
