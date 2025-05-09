@@ -43,6 +43,24 @@ https://www.htmhell.dev/feed.xml
 
 Notice that lines starting with `#` are comments and won't be parsed by tinyfeed.
 
+## Docker caveat
+
+If you are running tinyfeed through Docker, you should be aware of the following details:
+
+- Files for the `--input` and `--output` flags won't be available if you don't mount them.
+- You will not be able to use [pipelining](/pipelining) if you don't use Docker's `-i` flag (interactive mode).
+
+Single feed without mount:
+```bash
+docker run -i thebigroomxxl/tinyfeed https://lovergne.dev/rss > index.html
+```
+
+Multiple feeds from a file without mount:
+```bash
+cat feeds.txt | docker run -i thebigroomxxl/tinyfeed > index.html
+```
+For more guidance, check out the [Docker section](/docker) of the documentation.
+
 ## Configuration
 
 You can change the default behavior of tinyfeed and customize its settings using
