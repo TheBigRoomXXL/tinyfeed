@@ -19,8 +19,8 @@ nav:
       - Styling: styling.md
       - Templating: templating.md
   - Workflows:
+      - Cron: cron.md
       - Docker: docker.md
-      - Cron: crong.md
       - Systemd: systemd.md
       - OpenRC: openrc.md
       - Github Action and Page: github.md
