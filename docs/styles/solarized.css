@@ -1,0 +1,15 @@
+:root {
+    --primary: #1696D8;
+    --secondary: #d7b151;
+    --text: #cfcfcf;
+    --border: #c0c0c0;
+    --background: #002C37;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --text: #5c7075;
+        --border: #EFE8D3;
+        --background: #FFF6E1;
+    }
+}

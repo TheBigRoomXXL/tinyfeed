@@ -1,0 +1,23 @@
+:root {
+    font-size: 11.5pt;
+    --primary: #89b0fe;
+    --secondary: #4F8AFF;
+    --text: #A0A0A0;
+    --border: #A0A0A0;
+    --background: #0c0c0c;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --primary: #89b0fe;
+        --secondary: #4F8AFF;
+        --text: #A0A0A0;
+        --border: #9fd9f4;
+        --background: #0c0c0c;
+    }
+}
+
+li {
+    font-size: bold;
+    margin-block-start: 0.5em;
+}
