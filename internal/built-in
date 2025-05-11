@@ -33,9 +33,9 @@
 
 		@media (prefers-color-scheme: light) {
 			:root {
-				--text: #444444;
-				--border: #333333;
-				--background: white;
+				--text: var(--txt#444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
 				--primary: #207D92;
 				--secondary: #6A7A06;
 			}

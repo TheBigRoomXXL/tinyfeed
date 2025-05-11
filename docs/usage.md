@@ -77,7 +77,7 @@ Flags:
   -o, --output string        Path to a file to save the output to.
   -q, --quiet                Add this flag to silence warnings.
   -r, --requests int         How many simulaneous requests can be made (default 16)
-  -s, --stylesheet string    Path to an external CSS stylesheet
+  -s, --stylesheet string    Link to an external CSS stylesheet
   -t, --template string      Path to a custom HTML+Go template file.
   -T, --timeout int          timeout to get feeds in seconds (default 15)
 ```
