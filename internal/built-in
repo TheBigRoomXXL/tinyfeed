@@ -20,19 +20,22 @@
 	<style nonce="{{.Metadata.nonce}}">
 		:root {
 			color-scheme: dark light;
+
 			--primary: #0AC8F5;
 			--secondary: #D2F00F;
-			--txt: #cfcfcf;
-			--bd: #c0c0c0;
-			--bg: #1D1F21;
+			/* We use var() with fallback value to avoid breaking change 
+			after renaming variables */
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
 			font-size: min(calc(.5rem + 0.75vw), 16px);
 		}
 
 		@media (prefers-color-scheme: light) {
 			:root {
-				--txt: #444444;
-				--bd: #333333;
-				--bg: white;
+				--text: #444444;
+				--border: #333333;
+				--background: white;
 				--primary: #207D92;
 				--secondary: #6A7A06;
 			}
@@ -40,8 +43,8 @@
 
 		body {
 			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
-			color: var(--txt);
-			background: var(--bg);
+			color: var(--text);
+			background: var(--background);
 			max-width: 50rem;
 			width: 100%;
 			margin: 0.5em auto 2em;
@@ -49,7 +52,7 @@
 		}
 
 		header {
-			border-bottom: 1px solid var(--bd);
+			border-bottom: 1px solid var(--border);
 			margin-bottom: 0.25em;
 		}
 
@@ -94,19 +97,19 @@
 
 		small>a:link,
 		small>a:visited {
-			color: var(--txt);
+			color: var(--text);
 		}
 
 		footer {
 			padding: 1rem;
 			margin-top: 2rem;
-			border-top: 1px solid var(--bd);
+			border-top: 1px solid var(--border);
 		}
 
 		.feed-list {
 			display: flex;
 			flex-wrap: wrap;
-			border: 0.5px solid var(--bd);
+			border: 0.5px solid var(--border);
 		}
 
 		.feed-list>div {
@@ -114,7 +117,7 @@
 			padding: 0.5em 0.5em 0.35em 0.5em;
 			text-align: center;
 			vertical-align: middle;
-			border: 0.5px solid var(--bd);
+			border: 0.5px solid var(--border);
 		}
 	</style>
 
