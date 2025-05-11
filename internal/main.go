@@ -153,8 +153,9 @@ func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
 			items[i].Title = "Untitled"
 		}
 
-		// Some string are already html escaped ans when they are parsed by
-		// html/template it create a double escape so we must unescape first.
+		// Some string are already html escaped inside the feeds and when
+		// html/template run it re-escape them, creating double escape. In
+		// order to avoid malformed string we must unescape first.
 		items[i].Title = html.UnescapeString(items[i].Title)
 		items[i].Link = html.UnescapeString(items[i].Link)
 		items[i].Published = html.UnescapeString(items[i].Published)
