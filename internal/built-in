@@ -98,7 +98,9 @@
 		}
 
 		footer {
-			padding: 2rem 1rem;
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--bd);
 		}
 
 		.feed-list {
