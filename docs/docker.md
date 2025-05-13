@@ -9,7 +9,7 @@ The official Docker image for tinyfeed is [thebigroomxxl/tinyfeed](https://hub.d
 ## Running with pipelining
 
 !!! warning
-    You will not be able to use [pipelining](/pipelining) if you don't use Docker's `-i` flag (interactive mode).
+    You will not be able to use [pipelining](pipelining.md) if you don't use Docker's `-i` flag (interactive mode).
 
 In this mode, you pass the feeds as arguments to the command and redirect the output using pipelining. This method is simpler because it does not require mounting a volume.
 
@@ -48,7 +48,7 @@ services:
 
 ## Running as a service (daemon mode)
 
-tinyfeed has a [daemon mode](/daemon) where it continuously runs and periodically updates the output file. To use it, pass the `--daemon` flag and set it to restart automatically using Docker's `--restart unless-stopped`.
+tinyfeed has a [daemon mode](daemon.md) where it continuously runs and periodically updates the output file. To use it, pass the `--daemon` flag and set it to restart automatically using Docker's `--restart unless-stopped`.
 
 This is the previous example adapted to run as a service:
 

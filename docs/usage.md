@@ -1,7 +1,7 @@
 # Usage
 
 !!! info
-    This page uses real feeds URLs so that you can copy-paste the command and see the result. If one of the links is dead, please open an issue on the [repository](https://github.com/TheBigRoomXXL/tinyfeed/issues)
+    This page uses real feeds URLs so that you can copy-paste the command and see the result. If one of the links is dead, please [open an issue](https://github.com/TheBigRoomXXL/tinyfeed/issues)
 
 ## Basic usage
 
@@ -48,7 +48,7 @@ Notice that lines starting with `#` are comments and won't be parsed by tinyfeed
 If you are running tinyfeed through Docker, you should be aware of the following details:
 
 - Files for the `--input` and `--output` flags won't be available if you don't mount them.
-- You will not be able to use [pipelining](/pipelining) if you don't use Docker's `-i` flag (interactive mode).
+- You will not be able to use [pipelining](pipelining.md) if you don't use Docker's `-i` flag (interactive mode).
 
 Single feed without mount:
 ```bash
@@ -59,7 +59,7 @@ Multiple feeds from a file without mount:
 ```bash
 cat feeds.txt | docker run -i thebigroomxxl/tinyfeed > index.html
 ```
-For more guidance, check out the [Docker section](/docker) of the documentation.
+For more guidance, check out the [Docker section](docker.md) of the documentation.
 
 ## Configuration
 
@@ -84,9 +84,9 @@ Flags:
 
 Most flags are used to change default values, but more advanced flags like `--daemon`, `--stylesheet` and `--template` have their own dedicated documentation page:
 
-- [Understanding daemon mode](/daemon)
-- [Custom theme with styling](/styling/)
-- [Custom layout with templating](/templating)
+- [Understanding daemon mode](daemon.md)
+- [Custom theme with styling](styling.md/)
+- [Custom layout with templating](templating.md)
 
 
 ## Hosting the tinyfeed webpage
@@ -97,7 +97,7 @@ For the hosting, the solution is an HTTP server like [NGINX](https://nginx.org/)
 
 For the updating, you will have a lot of options and this will depend on your setup. For guidance on that subject, the workflow section of the documentation presents 5 options:
 
-- [Cron](/cron): running tinyfeed periodically in a cron job. This is the simplest setup.
-- [Docker](/docker): running tinyfeed as a containerized service. This is a good option if you are already familiar with Docker.
-- [systemd](systemd) and [OpenRC](/openrc): running tinyfeed as a service managed by your [init system](https://en.wikipedia.org/wiki/Init). This is the traditional (and dependencies-free) way to integrate a daemon with your OS.
-- [GitHub Action and Page](/github): run tinyfeed the serverless (and free as in free beer) way. Use GitHub Action to periodically generate your page like a cron job and GitHub Page to replace a traditional HTTP server.
+- [Cron](cron.md): running tinyfeed periodically in a cron job. This is the simplest setup.
+- [Docker](docker.md): running tinyfeed as a containerized service. This is a good option if you are already familiar with Docker.
+- [systemd](systemd.md) and [OpenRC](openrc.md): running tinyfeed as a service managed by your [init system](https://en.wikipedia.org/wiki/Init). This is the traditional (and dependencies-free) way to integrate a daemon with your OS.
+- [GitHub Action and Page](github.md): run tinyfeed the serverless and free (as in free beer) way. Use GitHub Action to periodically generate your page like a cron job and GitHub Page to replace a traditional HTTP server.
