@@ -1,6 +1,6 @@
 # Docker
 
-The official Docker image for is [thebigroomxxl/tinyfeed](https://hub.docker.com/r/thebigroomxxl/tinyfeed)
+The official Docker image for tinyfeed is [thebigroomxxl/tinyfeed](https://hub.docker.com/r/thebigroomxxl/tinyfeed)
 
 ## Running with pipelining
 
