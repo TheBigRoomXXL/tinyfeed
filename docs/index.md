@@ -18,7 +18,7 @@ Give it a list of RSS, Atom or JSON feeds urls and it will generate a single HTM
 - Supports a daemon mode to re-generate the output periodically.
 
 
-## Live demos:
+## Live demos
 
 **Default tinyfeed: [feed.lovergne.dev/demo](/demo)**  
 **With solarize theme : [feed.lovergne.dev/demo/solarized](/demo/solarized.html)**  
