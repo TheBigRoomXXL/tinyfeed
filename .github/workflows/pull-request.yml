@@ -1,13 +1,10 @@
 name: test
 
 on:
-  push:
-  
   pull_request:
     types: [opened, reopened, edited]
 
 jobs:
-
   test:
     runs-on: ubuntu-latest
     steps:
