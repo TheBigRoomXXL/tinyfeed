@@ -67,8 +67,7 @@ For example this is the stylesheet use to convert tinyfeed to a solarized theme:
 }
 ```
 
-See solarized demo : [feed.lovergne.dev/demo/solarized](https://feed.lovergne.dev/demo/solarized)
-
+**See solarized demo : [feed.lovergne.dev/demo/solarized](/demo/solarized.html)**
 ## Formatting
 
 More generaly adding a stylesheet gives you access to the full power of CSS. For example adding 
@@ -80,7 +79,7 @@ li {
     margin-block-start: 0.5em;
 }
 ``` 
-would give you the compact layout of [lobste.rs](https://lobste.rs/). See the lobste.rs skin demo:  [feed.lovergne.dev/demo/lobster](https://feed.lovergne.dev/demo/lobster)
+would give you the compact layout of [lobste.rs](https://lobste.rs/). **See the lobste.rs skin demo:  [feed.lovergne.dev/demo/lobster](/demo/lobster.html)**
 
 Or something more involved like:
 ```css
@@ -133,5 +132,5 @@ small {
     font-size: 8pt;
 }
 ```
-would reproduce the style and layout of [Hacker News](https://news.ycombinator.com/). See the hacker news skin demo: [feed.lovergne.dev/demo/hacker-news](https:///feed.lovergne.dev/demo/hacker-news)
+would reproduce the style and layout of [Hacker News](https://news.ycombinator.com/). **See the hacker news skin demo: [feed.lovergne.dev/demo/hackernews](/demo/hackernews.html)**
 
