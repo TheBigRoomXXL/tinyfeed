@@ -158,6 +158,8 @@ func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
 		// order to avoid malformed string we must unescape first.
 		items[i].Title = html.UnescapeString(items[i].Title)
 		items[i].Link = html.UnescapeString(items[i].Link)
+		items[i].Description = html.UnescapeString(items[i].Description)
+		items[i].Content = html.UnescapeString(items[i].Content)
 		items[i].Published = html.UnescapeString(items[i].Published)
 	}
 
