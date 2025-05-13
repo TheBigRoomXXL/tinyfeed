@@ -1,5 +1,9 @@
 # Docker
 
+!!! Info
+    Docker is a tool that is used to automate the deployment of applications in lightweight containers so that applications can work efficiently in different environments in isolation.  
+    - *from [Wikipedia](https://en.wikipedia.org/wiki/Docker_(software))*
+
 The official Docker image for tinyfeed is [thebigroomxxl/tinyfeed](https://hub.docker.com/r/thebigroomxxl/tinyfeed)
 
 ## Running with pipelining

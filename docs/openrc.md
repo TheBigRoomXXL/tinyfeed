@@ -1,7 +1,7 @@
 # OpenRC
 
 !!! Info
-    OpenRC is an [init system](https://github.com/OpenRC/openrc/blob/master/service-script-guide.md) designed for Unix-like OS. It's notably the default init system for Alpine and Gentoo.
+    OpenRC is an [init system](https://github.com/OpenRC/openrc/blob/master/service-script-guide.md) designed for Unix-like OS. Each service is defined by a small text file, called a unit file, which containing instructions on how to run the service. It's notably the default init system for Alpine and Gentoo.
 
 
 To create an OpenRC service, you just need to add an [init file](https://wiki.alpinelinux.org/wiki/Writing_Init_Scripts) at `/etc/init.d/tinyfeed`.
