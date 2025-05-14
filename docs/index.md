@@ -35,15 +35,15 @@ Visited links are in yellow, unvisited in blue.
 
 ## Feedback, help or bug report
 
-If you need anything related to this project, whether it's just giving feedback, requesting a feature, or simply asking for help to understand something, open an issue on the official [repository](https://github.com/TheBigRoomXXL/tinyfeed/issues).
+If you need anything related to this project, whether it's just giving feedback, requesting a feature, or simply asking for help to understand something, open an [issue]((https://github.com/TheBigRoomXXL/tinyfeed/issues)) on the official [repository](https://github.com/TheBigRoomXXL/tinyfeed/).
 
 You have created a page with tinyfeed and you want to share it? You can open a merge request or an issue to add it to the demo section.
 
 *If you want to contribute something other than a demo, please open an issue first so that we can collaborate efficiently.*
 
+
 ## Acknowledgement
 
-The project was heavily inspired by the awesomely simple [tinystatus](https://github.com/bderenzo/tinystatus)
-and message boards like Lobste.rs and Hacker News.
-
 Thank you [@MariaLetta](https://github.com/MariaLetta) for the awesome [free-gophers-pack ](https://github.com/MariaLetta/free-gophers-pack) which I adapted for the banner.
+
+The project was heavily inspired by the awesomely simple [tinystatus](https://github.com/bderenzo/tinystatus) and message boards like Lobste.rs and Hacker News.
