@@ -41,7 +41,7 @@ For guidance on installation, usage, customization and integration of tinyfeed, 
 To get started:
 
 - [Installation guide](https://feed.lovergne.dev/installation/)
-- [Usage Guide](https://feed.lovergne.dev/installation/)
+- [Usage Guide](https://feed.lovergne.dev/usage/)
 
 
 ## Feedback, help or bug report
