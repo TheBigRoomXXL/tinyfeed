@@ -19,7 +19,7 @@ Since `crond` executes tinyfeed with your user permissions, ensure you have read
 
 If you want to change the frequency you need to update `0 6 * * *` with a new cron definition. You might use [crontab.guru](https://crontab.guru/) if you are unfamilliar with this format.
 
-## Alterting
+## Alerting
 
 If your server is set up with a mail service (such as [Postfix](https://www.postfix.org/)), you can add `MAILTO="your.email@domain.com"` before the tinyfeed line. This setup ensures you receive an email notification whenever tinyfeed encounters an error.
 

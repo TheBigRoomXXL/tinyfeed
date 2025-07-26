@@ -1,7 +1,7 @@
 # Usage
 
 !!! info
-    This page uses real feeds URLs so that you can copy-paste the command and see the result. If one of the links is dead, please [open an issue].(https://github.com/TheBigRoomXXL/tinyfeed/issues)
+    This page uses real feeds URLs so that you can copy-paste the command and see the result. If one of the links is dead, please [open an issue](https://github.com/TheBigRoomXXL/tinyfeed/issues).
 
 ## Basic usage
 
