@@ -112,7 +112,7 @@ Flags:
   -n, --name string          Title of the page. (default "Feed")
   -d, --description string   Add a description after the name of your page
   -s, --stylesheet string    Link to an external CSS stylesheet
-  -S, --script string    	 Link to an external JavaScript file
+  -S, --script string        Link to an external JavaScript file
   -t, --template string      Path to a custom HTML+Go template file.
 
   Configuration flags:
