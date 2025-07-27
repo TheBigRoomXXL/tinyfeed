@@ -30,10 +30,11 @@ jobs:
       - name: build-demos
         run: |
           mkdir site/demo/
-          echo $FEEDS | go run . -o site/demo/index.html
-          echo $FEEDS | go run . -o site/demo/solarized.html -s /styles/solarized.css
-          echo $FEEDS | go run . -o site/demo/lobster.html -s /styles/lobster.css
-          echo $FEEDS | go run . -o site/demo/hackernews.html -s /styles/hackernews.css
+          echo $FEEDS | go run . -o site/demo/index.html -S /scripts/back-to-docs.js
+          echo $FEEDS | go run . -o site/demo/solarized.html -S /scripts/back-to-docs.js -s /styles/solarized.css
+          echo $FEEDS | go run . -o site/demo/lobster.html -S /scripts/back-to-docs.js -s /styles/lobster.css
+          echo $FEEDS | go run . -o site/demo/hackernews.html -S /scripts/back-to-docs.js -s /styles/hackernews.css
+          echo $FEEDS | go run . -o site/demo/back-to-top.html -S /scripts/back-to-docs.js -S /scripts/top.js
 
       - name: upload-artifact
         id: deployment
