@@ -45,6 +45,7 @@ jobs:
           echo $FEEDS | go run . -o site/demo/solarized.html -s /styles/solarized.css
           echo $FEEDS | go run . -o site/demo/lobster.html -s /styles/lobster.css
           echo $FEEDS | go run . -o site/demo/hackernews.html -s /styles/hackernews.css
+          echo $FEEDS | go run . -o site/demo/back-to-top.html -S /scripts/top.js
 
       - name: upload-artifact
         id: deployment

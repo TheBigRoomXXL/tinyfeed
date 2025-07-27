@@ -22,9 +22,9 @@ Give it a list of RSS, Atom or JSON feeds urls and it will generate a single HTM
 
 **Default tinyfeed: [feed.lovergne.dev/demo](/demo)**  
 **With solarize theme : [feed.lovergne.dev/demo/solarized](/demo/solarized.html)**  
-**With lobste.rs skin : [feed.lovergne.dev/demo/lobster](/demo/lobster.html)**  
-**With hacker new skin : [feed.lovergne.dev/demo/hackernew](/demo/hackernews.html)**  
-
+**With lobste.rs theme : [feed.lovergne.dev/demo/lobster](/demo/lobster.html)**  
+**With hacker new theme : [feed.lovergne.dev/demo/hackernew](/demo/hackernews.html)**  
+**With a back-to-top button injected: [feed.lovergne.dev/demo/back-to-top](/demo/back-to-top.html)**
 
 ## Screenshots
 
