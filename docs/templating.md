@@ -52,9 +52,11 @@ Inside your template, you will have access to tinyfeed's data through the follow
 
 ```go
 type data struct {
-    Metadata map[string]string
-    Items    []*gofeed.Item
-    Feeds    []*gofeed.Feed
+    Metadata    map[string]string
+    Items       []*gofeed.Item
+    Feeds       []*gofeed.Feed
+    Stylesheets []string
+    Scripts     []string
 }
 ```
 

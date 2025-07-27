@@ -10,8 +10,8 @@
 	<meta http-equiv="Content-Security-Policy" content="
 		default-src 'none';
 		img-src 'self' data: ;
-		style-src 'nonce-{{.Metadata.nonce}}'{{if .Metadata.stylesheet}} {{.Metadata.stylesheet}} {{end}} ;
-		{{if .Metadata.script}} script-src 'nonce-{{.Metadata.nonce}}' 'strict-dynamic' ; {{end}} 
+		style-src 'nonce-{{.Metadata.nonce}}' ;
+		script-src 'nonce-{{.Metadata.nonce}}' 'strict-dynamic' ;
     ">
 	<meta name="application-name" content="tinyfeed">
 	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
@@ -123,13 +123,12 @@
 		}
 	</style>
 
-	{{if .Metadata.stylesheet}}
-	<link rel="stylesheet" type="text/css" href="{{.Metadata.stylesheet}}" ,
-		  nonce="{{.Metadata.nonce}}">
+	{{range .Stylesheets}}
+	<link rel="stylesheet" type="text/css" href="{{.}}" nonce="{{$.Metadata.nonce}}">
 	{{end}}
 
-	{{if .Metadata.script}}
-	<script type="module" src="{{.Metadata.script}}" nonce="{{.Metadata.nonce}}"></script>
+	{{range .Scripts}}
+	<script type="module" src="{{.}}" nonce="{{$.Metadata.nonce}}"></script>
 	{{end}}
 </head>
 

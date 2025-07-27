@@ -181,7 +181,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	var ts *template.Template
 
 	if templatePath == "" {
-		ts, err = template.New("built-in").	
+		ts, err = template.New("built-in").
 			Funcs(template.FuncMap{"domain": domain, "publication": publication}).
 			Parse(builtInTemplate)
 	} else {
@@ -193,26 +193,29 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		return fmt.Errorf("fail to load HTML template: %w", err)
 	}
 	currDate := time.Now()
+
 	data := struct {
-		// Metadata is an arbitrary map, there is no compatibility promise on it's content.
-		// Changing it's content won't be concidered breaking change. (But we try to keep it stable)
+		// Metadata is an arbitrary map, there is no backward compatibility promise on it's content.
+		// Changing it's content won't be concidered breaking change. (But we keep it as stable as possible)
 		// In the future if we are confident that it won't evolve we will replace it with a struct
 		// to ensure backward compatibiliy
-		Metadata map[string]string
-		Items    []*gofeed.Item
-		Feeds    []*gofeed.Feed
+		Metadata    map[string]string
+		Items       []*gofeed.Item
+		Feeds       []*gofeed.Feed
+		Stylesheets []string
+		Scripts     []string
 	}{
 		Metadata: map[string]string{
 			"name":        name,
 			"description": description,
-			"stylesheet":  stylesheet,
-			"script":      script,
 			"nonce":       generateNonce(256),
 			"day":         currDate.Weekday().String(),
 			"datetime":    currDate.Format(time.DateTime),
 		},
-		Items: items,
-		Feeds: feeds,
+		Items:       items,
+		Feeds:       feeds,
+		Stylesheets: stylesheets,
+		Scripts:     scripts,
 	}
 
 	var outFile io.WriteCloser

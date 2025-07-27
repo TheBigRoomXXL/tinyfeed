@@ -9,6 +9,19 @@ import (
 	"strings"
 )
 
+// implement flag.Value
+// Adapted from https://stackoverflow.com/a/28323276
+type StringRepeatable []string
+
+func (i *StringRepeatable) String() string {
+	return fmt.Sprintf("%v", *i)
+}
+
+func (i *StringRepeatable) Set(value string) error {
+	*i = append(*i, value)
+	return nil
+}
+
 // flags
 var fs *flag.FlagSet
 var limit int
@@ -18,8 +31,8 @@ var requestSemaphore int
 var name string
 var description string
 var quiet bool
-var stylesheet string
-var script string
+var stylesheets StringRepeatable = make(StringRepeatable, 0)
+var scripts StringRepeatable = make(StringRepeatable, 0)
 var templatePath string
 var input string
 var output string
@@ -54,11 +67,11 @@ func init() {
 	fs.BoolVar(&quiet, "quiet", false, "Silence warnings")
 	fs.BoolVar(&quiet, "q", false, "Silence warnings")
 
-	fs.StringVar(&stylesheet, "stylesheet", "", "Link to an external CSS stylesheet")
-	fs.StringVar(&stylesheet, "s", "", "Link to an external CSS stylesheet")
+	fs.Var(&stylesheets, "stylesheet", "Link to an external CSS stylesheet")
+	fs.Var(&stylesheets, "s", "Link to an external CSS stylesheet")
 
-	fs.StringVar(&script, "script", "", "Link to an external JavaScript file")
-	fs.StringVar(&script, "S", "", "Link to an external JavaScript file")
+	fs.Var(&scripts, "script", "Link to an external JavaScript file")
+	fs.Var(&scripts, "S", "Link to an external JavaScript file")
 
 	fs.StringVar(&templatePath, "template", "", "Path to a custom HTML+Go template file")
 	fs.StringVar(&templatePath, "t", "", "Path to a custom HTML+Go template file")
