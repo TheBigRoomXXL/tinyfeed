@@ -19,7 +19,7 @@ jobs:
 
       - name: run-tests
         run: |
-          go test -v
+          go test -v internal/*.go
 
   build-and-release:
     needs: test
