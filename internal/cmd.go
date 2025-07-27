@@ -19,6 +19,7 @@ var name string
 var description string
 var quiet bool
 var stylesheet string
+var script string
 var templatePath string
 var input string
 var output string
@@ -55,6 +56,9 @@ func init() {
 
 	fs.StringVar(&stylesheet, "stylesheet", "", "Path to an external CSS stylesheet")
 	fs.StringVar(&stylesheet, "s", "", "Path to an external CSS stylesheet")
+
+	fs.StringVar(&script, "script", "", "Path to an external JavaScript file")
+	fs.StringVar(&script, "S", "", "Path to an external JavaScript file")
 
 	fs.StringVar(&templatePath, "template", "", "Path to a custom HTML+Go template file")
 	fs.StringVar(&templatePath, "t", "", "Path to a custom HTML+Go template file")
@@ -97,6 +101,7 @@ Flags:
   -q, --quiet                Add this flag to silence warnings.
   -r, --requests int         How many simulaneous requests can be made (default 16)
   -s, --stylesheet string    Link to an external CSS stylesheet
+  -S, --script string    	 Link to an external JavaScript file
   -t, --template string      Path to a custom HTML+Go template file.
   -T, --timeout int          Timeout to get feeds in seconds (default 15)
 

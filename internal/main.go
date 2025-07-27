@@ -181,7 +181,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	var ts *template.Template
 
 	if templatePath == "" {
-		ts, err = template.New("built-in").
+		ts, err = template.New("built-in").	
 			Funcs(template.FuncMap{"domain": domain, "publication": publication}).
 			Parse(builtInTemplate)
 	} else {
@@ -202,6 +202,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 			"name":        name,
 			"description": description,
 			"stylesheet":  stylesheet,
+			"script":      script,
 			"nonce":       generateNonce(256),
 			"day":         currDate.Weekday().String(),
 			"datetime":    currDate.Format(time.DateTime),
