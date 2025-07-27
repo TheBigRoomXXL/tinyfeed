@@ -48,7 +48,7 @@ jobs:
           GOOS=darwin  go build -o ./builds/tinyfeed_darwin_amd64
           GOOS=windows go build -o ./builds/tinyfeed_windows_amd64
 
-          apt install upx
+          sudo apt install upx
           upx ./builds/tinyfeed_linux*
           upx ./builds/tinyfeed_windows*
 
