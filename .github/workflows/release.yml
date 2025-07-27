@@ -5,6 +5,8 @@ on:
     tags:
       - "v*.*.*"
 
+permissions: {}
+
 jobs:
   test:
     runs-on: ubuntu-latest

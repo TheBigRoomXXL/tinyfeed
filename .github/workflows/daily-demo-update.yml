@@ -1,10 +1,13 @@
 name: update-demo-daily
+
 on:
   schedule:
     - cron: "0 6 * * *"
   push:
     tags:
       - "refresh-demos"
+
+permissions: {}
 
 jobs:
   build-docs:

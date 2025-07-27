@@ -1,8 +1,12 @@
 name: build-test-deploy
+
 on:
   push:
     branches:
       - main
+
+permissions: {}
+
 jobs:
   test:
     runs-on: ubuntu-latest
