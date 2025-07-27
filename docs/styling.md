@@ -13,8 +13,8 @@ tinyfeed -s "https://feed.lovergne.dev/css/solarized.css" -o index.html https://
 
 Or a relative link:
 ```bash
-tinyfeed -s "/solarized.css" -o index.html https://lovergne.dev/rss
-# add <link rel="stylesheet" type="text/css" href="/solarized.css" , nonce="..."> to the webpage
+tinyfeed -s "/css/solarized.css" -o index.html https://lovergne.dev/rss
+# add <link rel="stylesheet" type="text/css" href="/css/solarized.css" , nonce="..."> to the webpage
 ```
 
 !!! Info

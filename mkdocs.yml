@@ -17,6 +17,7 @@ nav:
       - Pipelining: pipelining.md
   - Customization:
       - Styling: styling.md
+      - Scripting: scripting.md
       - Templating: templating.md
   - Workflows:
       - Cron: cron.md
