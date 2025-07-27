@@ -194,6 +194,10 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	}
 	currDate := time.Now()
 	data := struct {
+		// Metadata is an arbitrary map, there is no compatibility promise on it's content.
+		// Changing it's content won't be concidered breaking change. (But we try to keep it stable)
+		// In the future if we are confident that it won't evolve we will replace it with a struct
+		// to ensure backward compatibiliy
 		Metadata map[string]string
 		Items    []*gofeed.Item
 		Feeds    []*gofeed.Feed

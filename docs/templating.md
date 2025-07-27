@@ -57,7 +57,10 @@ type data struct {
     Feeds    []*gofeed.Feed
 }
 ```
-Metadata currently holds the following keys: `name`, `description`, `stylesheet`, `nonce`, `day`, `datetime`. For the most recent list of keys, refer to `printHTML` in [main.go](https://github.com/TheBigRoomXXL/tinyfeed/blob/main/internal/main.go). 
+
+Metadata is an arbitrary map, there is currently no backward compatibility promise on it's content (but we keep it stable as much as possible).
+
+Metadata currently holds the following keys: `name`, `description`, `nonce`, `day`, `datetime`. For the most recent list of keys, refer to `printHTML` in [main.go](https://github.com/TheBigRoomXXL/tinyfeed/blob/main/internal/main.go). 
 
 You will also have access to two functions for formatting:
 ```go
