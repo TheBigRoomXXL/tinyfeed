@@ -16,12 +16,10 @@ tinyfeed -S "/scripts/top.js" -o index.html https://lovergne.dev/rss
 # add 	<script type="module" src="/scripts/top.js" nonce="..."></script> to the webpage
 ```
 
-Adding a javascript script is ideal if you want to extend tinyfeed with with more interactive feature. 
+Adding a script is ideal if you want to extend tinyfeed with with more interactive features. 
 
 
-## Examples
-
-### Back to Top button
+## Example: Back to Top button
 
 Adding a button with a callback is the kind of lightweight customization you can easily achieve with JavaScript.
 
@@ -66,6 +64,6 @@ document.body.appendChild(button);
 window.onscroll = onScroll;
 ```
 
-Then generate your `index.html` with `tinyfeed -S "top.js" -o index.html https://lovergne.dev/rss`. The resulting page should have "Back To Top" button apear on the botton right when you start scrolling.
+Then generate your `index.html` with `tinyfeed -S "top.js" -o index.html https://lovergne.dev/rss`. The resulting page should have "Back To Top" button appear on the botton right when you start scrolling.
 
 **Check out the demo with that exact script:  [feed.lovergne.dev/demo/back-to-top](/demo/back-to-top.html)**
