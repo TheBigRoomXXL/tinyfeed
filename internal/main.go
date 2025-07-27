@@ -197,7 +197,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 	data := struct {
 		// Metadata is an arbitrary map, there is no backward compatibility promise on it's content.
 		// Changing it's content won't be concidered breaking change. (But we keep it as stable as possible)
-		// In the future if we are confident that it won't evolve we will replace it with a struct
+		// In the future, if we are confident that it won't evolve, we will replace it with a struct
 		// to ensure backward compatibiliy
 		Metadata    map[string]string
 		Items       []*gofeed.Item
@@ -206,11 +206,12 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		Scripts     []string
 	}{
 		Metadata: map[string]string{
-			"name":        name,
-			"description": description,
-			"nonce":       generateNonce(256),
-			"day":         currDate.Weekday().String(),
-			"datetime":    currDate.Format(time.DateTime),
+			"name":            name,
+			"description":     description,
+			"nonce":           generateNonce(256),
+			"day":             currDate.Weekday().String(),
+			"datetime":        currDate.Format(time.DateTime),
+			"datetimeRFC3339": currDate.Format(time.RFC3339),
 		},
 		Items:       items,
 		Feeds:       feeds,

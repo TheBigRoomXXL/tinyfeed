@@ -157,7 +157,11 @@
 		</ol>
 	</main>
 	<footer>
-		<p>Last Updated On: {{.Metadata.day}}, {{.Metadata.datetime}}</p>
+		<p>Last Updated On:
+			<time id="update-at" datetime="{{.Metadata.datetimeRFC3339}}">
+				{{.Metadata.day}}, {{.Metadata.datetime}}
+			</time>
+		</p>
 		<p>This page aggregate the following feeds:</p>
 		<div class="feed-list">
 			{{range .Feeds}}
@@ -168,5 +172,14 @@
 		</div>
 	</footer>
 </body>
+
+<script type="module" nonce="{{$.Metadata.nonce}}">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
 
 </html>
