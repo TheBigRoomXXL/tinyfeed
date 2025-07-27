@@ -67,19 +67,28 @@ You can change the default behavior of tinyfeed and customize its settings using
 flags:
 ```txt
 Flags:
-  -D, --daemon               Whether to execute the program in a daemon mode.
-  -d, --description string   Add a description after the name of your page
-  -h, --help                 help for tinyfeed
+
+  Main flags:
   -i, --input string         Path to a file with a list of feeds.
-  -I, --interval int         Duration in minutes between execution. Ignored if not in daemon mode. (default 1440)
-  -l, --limit int            How many articles to display (default 256)
-  -n, --name string          Title of the page. (default "Feed")
   -o, --output string        Path to a file to save the output to.
+  -D, --daemon               Whether to execute the program in a daemon mode.
+  
+  Customization Flags:
+  -n, --name string          Title of the page. (default "Feed")
+  -d, --description string   Add a description after the name of your page
+  -s, --stylesheet string    Link to an external CSS stylesheet
+  -S, --script string    	 Link to an external JavaScript file
+  -t, --template string      Path to a custom HTML+Go template file.
+
+  Configuration flags:
+  -I, --interval int         Duration in minutes between execution. Ignored if not in daemon mode. (default 1440)
+  -l, --limit int            How many articles to display in total (default 256)
+  -L, --limit-per-feed int   Maximum number of articles to display per feed (default 256)
   -q, --quiet                Add this flag to silence warnings.
   -r, --requests int         How many simulaneous requests can be made (default 16)
-  -s, --stylesheet string    Link to an external CSS stylesheet
-  -t, --template string      Path to a custom HTML+Go template file.
-  -T, --timeout int          timeout to get feeds in seconds (default 15)
+  -T, --timeout int          Timeout to get feeds in seconds (default 15)
+  
+  -h, --help                 help for tinyfeed
 ```
 
 Most flags are used to change default values, but more advanced flags like `--daemon`, `--stylesheet` and `--template` have their own dedicated documentation page:

@@ -54,11 +54,11 @@ func init() {
 	fs.BoolVar(&quiet, "quiet", false, "Silence warnings")
 	fs.BoolVar(&quiet, "q", false, "Silence warnings")
 
-	fs.StringVar(&stylesheet, "stylesheet", "", "Path to an external CSS stylesheet")
-	fs.StringVar(&stylesheet, "s", "", "Path to an external CSS stylesheet")
+	fs.StringVar(&stylesheet, "stylesheet", "", "Link to an external CSS stylesheet")
+	fs.StringVar(&stylesheet, "s", "", "Link to an external CSS stylesheet")
 
-	fs.StringVar(&script, "script", "", "Path to an external JavaScript file")
-	fs.StringVar(&script, "S", "", "Path to an external JavaScript file")
+	fs.StringVar(&script, "script", "", "Link to an external JavaScript file")
+	fs.StringVar(&script, "S", "", "Link to an external JavaScript file")
 
 	fs.StringVar(&templatePath, "template", "", "Path to a custom HTML+Go template file")
 	fs.StringVar(&templatePath, "t", "", "Path to a custom HTML+Go template file")
@@ -89,24 +89,31 @@ Examples:
   daemon mode      tinyfeed --daemon -i feeds.txt -o index.html
 
 Flags:
-  -D, --daemon               Whether to execute the program in a daemon mode.
-  -d, --description string   Add a description after the name of your page
-  -h, --help                 help for tinyfeed
+
+  Main flags:
   -i, --input string         Path to a file with a list of feeds.
-  -I, --interval int         Duration in minutes between execution. Ignored if not in daemon mode. (default 1440)
-  -l, --limit int            How many articles to display in total (default 256)
-  -L, --limit-per-feed int   Maximum number of articles to display per feed (default 256)
-  -n, --name string          Title of the page. (default "Feed")
   -o, --output string        Path to a file to save the output to.
-  -q, --quiet                Add this flag to silence warnings.
-  -r, --requests int         How many simulaneous requests can be made (default 16)
+  -D, --daemon               Whether to execute the program in a daemon mode.
+  
+  Customization Flags:
+  -n, --name string          Title of the page. (default "Feed")
+  -d, --description string   Add a description after the name of your page
   -s, --stylesheet string    Link to an external CSS stylesheet
   -S, --script string    	 Link to an external JavaScript file
   -t, --template string      Path to a custom HTML+Go template file.
+
+  Configuration flags:
+  -I, --interval int         Duration in minutes between execution. Ignored if not in daemon mode. (default 1440)
+  -l, --limit int            How many articles to display in total (default 256)
+  -L, --limit-per-feed int   Maximum number of articles to display per feed (default 256)
+  -q, --quiet                Add this flag to silence warnings.
+  -r, --requests int         How many simulaneous requests can be made (default 16)
   -T, --timeout int          Timeout to get feeds in seconds (default 15)
+  
+  -h, --help                 help for tinyfeed
 
 For more instructions on how to integrate tinyfeed with your workflow, please visit:
-https://github.com/TheBigRoomXXL/tinyfeed#recipes`)
+https://feed.lovergne.dev/`)
 	os.Exit(0)
 }
 
