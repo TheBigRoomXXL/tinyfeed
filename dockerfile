@@ -9,8 +9,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # Build static binary
-COPY *.go ./
-COPY built-in ./
+COPY . . 
 RUN CGO_ENABLED=0 go build -ldflags "-s -w" -o /tinyfeed
 RUN upx /tinyfeed
 
