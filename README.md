@@ -25,7 +25,7 @@ Give it a list of RSS, Atom or JSON feeds urls and it will generate a single HTM
 **With solarize theme : [feed.lovergne.dev/demo/solarized](https://feed.lovergne.dev//demo/solarized.html)**  
 **With lobste.rs skin : [feed.lovergne.dev/demo/lobster](https://feed.lovergne.dev//demo/lobster.html)**  
 **With hacker new skin : [feed.lovergne.dev/demo/hackernew](https://feed.lovergne.dev//demo/hackernews.html)**  
-**With a back-to-top button injected: [feed.lovergne.dev/demo/back-to-top](/demo/back-to-top.html)**  
+**With a back-to-top button injected: [feed.lovergne.dev/demo/back-to-top](https://feed.lovergne.dev/demo/back-to-top.html)**  
 
 
 ## Screenshots
