@@ -21,6 +21,10 @@ To adapt this script, you can just change `_linux_arm64` to your system.
 
 ## Install with Go
 
+!!! warning
+    During the next release, the module name will be changed to `pkg.lovergne.dev/tinyfeed`.
+    If you have an automated process that rely on the go install method, please report it in this issue: https://github.com/TheBigRoomXXL/tinyfeed/issues/23
+
 ```bash 
 go install github.com/TheBigRoomXXL/tinyfeed@latest
 ```
