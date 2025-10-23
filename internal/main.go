@@ -22,6 +22,11 @@ import (
 //go:embed built-in
 var builtInTemplate string
 
+type ItemWithFeedName struct {
+    GoFeedItem *gofeed.Item
+    FeedName string
+}
+
 func Main() {
 	args, err := parseFlagsToTheEnd(fs)
 	if err != nil {
@@ -142,41 +147,47 @@ func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 	return feed
 }
 
-func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
-	items := []*gofeed.Item{}
+func prepareItems(feeds []*gofeed.Feed) []ItemWithFeedName {
+	var items []ItemWithFeedName
+
 	for _, feed := range feeds {
-		items = append(items, feed.Items...)
+		for _, item := range feed.Items {
+			items = append(items, ItemWithFeedName {
+				GoFeedItem:    item,
+				FeedName: feed.Title,
+			})
+		}
 	}
 
-	for i := 0; i < len(items); i++ {
-		if items[i].Title == "" {
-			items[i].Title = "Untitled"
+	for i := range items {
+		if items[i].GoFeedItem.Title == "" {
+			items[i].GoFeedItem.Title = "Untitled"
 		}
 
 		// Some string are already html escaped inside the feeds and when
 		// html/template run it re-escape them, creating double escape. In
 		// order to avoid malformed string we must unescape first.
-		items[i].Title = html.UnescapeString(items[i].Title)
-		items[i].Link = html.UnescapeString(items[i].Link)
-		items[i].Description = html.UnescapeString(items[i].Description)
-		items[i].Content = html.UnescapeString(items[i].Content)
-		items[i].Published = html.UnescapeString(items[i].Published)
+		items[i].GoFeedItem.Title = html.UnescapeString(items[i].GoFeedItem.Title)
+		items[i].GoFeedItem.Link = html.UnescapeString(items[i].GoFeedItem.Link)
+		items[i].GoFeedItem.Description = html.UnescapeString(items[i].GoFeedItem.Description)
+		items[i].GoFeedItem.Content = html.UnescapeString(items[i].GoFeedItem.Content)
+		items[i].GoFeedItem.Published = html.UnescapeString(items[i].GoFeedItem.Published)
 	}
 
 	sort.SliceStable(items, func(i, j int) bool {
-		if items[i].PublishedParsed == nil {
+		if items[i].GoFeedItem.PublishedParsed == nil {
 			return false
 		}
-		if items[j].PublishedParsed == nil {
+		if items[j].GoFeedItem.PublishedParsed == nil {
 			return true
 		}
-		return items[i].PublishedParsed.After(*items[j].PublishedParsed)
+		return items[i].GoFeedItem.PublishedParsed.After(*items[j].GoFeedItem.PublishedParsed)
 	})
 
 	return items[0:min(len(items), limit)]
 }
 
-func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
+func printHTML(feeds []*gofeed.Feed, items []ItemWithFeedName) error {
 	var err error
 	var ts *template.Template
 
@@ -200,7 +211,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		// In the future, if we are confident that it won't evolve, we will replace it with a struct
 		// to ensure backward compatibiliy
 		Metadata    map[string]string
-		Items       []*gofeed.Item
+		Items       []ItemWithFeedName
 		Feeds       []*gofeed.Feed
 		Stylesheets []string
 		Scripts     []string
