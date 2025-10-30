@@ -142,16 +142,14 @@
 		<ol>
 			{{range .Items}}
 			<li>
-				<a href={{.GoFeedItem.Link}} target="_blank">
-					<h2>{{.GoFeedItem.Title}}</h2>
+				<a href={{.Link}} target="_blank">
+					<h2>{{.Title}}</h2>
 				</a>
 				<br>
 				<small>
-					<time datetime="{{publication .GoFeedItem}}">{{publication .GoFeedItem}}</time>
+					<time datetime="{{publication .}}">{{publication .}}</time>
 					|
-                    {{ .FeedName }}
-                    |
-					<a href="https://{{domain .GoFeedItem}}" target="_blank">{{domain .GoFeedItem}}</a>
+					<a href="https://{{domain .}}" target="_blank">{{domain .}}</a>
 				</small>
 
 			</li>
