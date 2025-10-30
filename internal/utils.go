@@ -7,11 +7,9 @@ import (
 	"log"
 	"net/url"
 	"strings"
-
-	"github.com/mmcdole/gofeed"
 )
 
-func domain(item *gofeed.Item) string {
+func domain(item Item) string {
 	url, err := url.Parse(item.Link)
 	if err != nil {
 		log.Printf("WARNING: fail to parse url %s: %s\n", item.Link, err)
@@ -20,7 +18,7 @@ func domain(item *gofeed.Item) string {
 	return strings.TrimPrefix(url.Hostname(), "www.")
 }
 
-func publication(item *gofeed.Item) string {
+func publication(item Item) string {
 	if item.PublishedParsed == nil {
 		if item.Published != "" {
 			return item.Published
