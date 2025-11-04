@@ -22,6 +22,11 @@ import (
 //go:embed built-in
 var builtInTemplate string
 
+type Item struct {
+    *gofeed.Item
+    FeedName string
+}
+
 func Main() {
 	args, err := parseFlagsToTheEnd(fs)
 	if err != nil {
@@ -142,13 +147,19 @@ func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 	return feed
 }
 
-func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
-	items := []*gofeed.Item{}
+func prepareItems(feeds []*gofeed.Feed) []Item {
+	var items []Item
+
 	for _, feed := range feeds {
-		items = append(items, feed.Items...)
+		for _, item := range feed.Items {
+			items = append(items, Item {
+				item,
+				feed.Title,
+			})
+		}
 	}
 
-	for i := 0; i < len(items); i++ {
+	for i := range items {
 		if items[i].Title == "" {
 			items[i].Title = "Untitled"
 		}
@@ -161,6 +172,7 @@ func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
 		items[i].Description = html.UnescapeString(items[i].Description)
 		items[i].Content = html.UnescapeString(items[i].Content)
 		items[i].Published = html.UnescapeString(items[i].Published)
+		items[i].FeedName = html.UnescapeString(items[i].FeedName)
 	}
 
 	sort.SliceStable(items, func(i, j int) bool {
@@ -176,7 +188,7 @@ func prepareItems(feeds []*gofeed.Feed) []*gofeed.Item {
 	return items[0:min(len(items), limit)]
 }
 
-func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
+func printHTML(feeds []*gofeed.Feed, items []Item) error {
 	var err error
 	var ts *template.Template
 
@@ -200,7 +212,7 @@ func printHTML(feeds []*gofeed.Feed, items []*gofeed.Item) error {
 		// In the future, if we are confident that it won't evolve, we will replace it with a struct
 		// to ensure backward compatibiliy
 		Metadata    map[string]string
-		Items       []*gofeed.Item
+		Items       []Item
 		Feeds       []*gofeed.Feed
 		Stylesheets []string
 		Scripts     []string
