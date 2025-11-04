@@ -20,7 +20,10 @@ func TestDomain(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.input, func(t *testing.T) {
-			item := &gofeed.Item{Link: test.input}
+			// we need to initialize the embedded field explicitely
+			item := Item{
+				Item: &gofeed.Item{Link: test.input},
+			}
 			got := domain(item)
 			if got != test.want {
 				t.Errorf("domain() got = %v, want %v", got, test.want)
@@ -39,7 +42,9 @@ func TestDomainMalformed(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test, func(t *testing.T) {
-			item := &gofeed.Item{Link: test}
+			item := Item{
+				Item: &gofeed.Item{Link: test},
+			}
 			got := domain(item)
 			if got != "" {
 				t.Errorf("domain() got = %v, want empty string", got)
