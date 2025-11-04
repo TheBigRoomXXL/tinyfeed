@@ -328,7 +328,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: kubectl
-              image: cgr.dev/chainguard/kubectl:latest
+              image: registry.k8s.io/kubectl:v1.34.1
               command:
                 - 'kubectl'
                 - 'delete'
