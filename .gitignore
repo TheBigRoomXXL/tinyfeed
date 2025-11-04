@@ -24,3 +24,6 @@ tmp
 # Generated documentation site
 site/
 .cache/
+
+# Virtual env when writing documentation locally
+.venv
