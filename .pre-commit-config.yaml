@@ -11,3 +11,17 @@ repos:
     hooks:
       - id: yamlfmt
         name: Yaml Formatting
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.103.0
+    hooks:
+      - id: terraform_fmt
+        name: Terraform FMT
+      - id: terragrunt_fmt
+        name: Terragrunt FMT
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.34.1
+    hooks:
+      - id: check-jsonschema
+        name: Validate markdown lint file
+        files: mkdocs.yaml
+        args: ["--schemafile", "https://www.schemastore.org/mkdocs-1.6.json"]
