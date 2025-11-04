@@ -1,10 +1,10 @@
-# Welcome 
+# Welcome
 
 ![banner](docs/img/banner.svg)
 
 **tinyfeed** is a CLI tool that generate a static HTML page from a collection of feeds.
 
-It's dead simple, no database, no config file, just a CLI and some HTML 
+It's dead simple, no database, no config file, just a CLI and some HTML
 
 Give it a list of RSS, Atom or JSON feeds urls and it will generate a single HTML page for it. Then you can effortlessly set it up in `crond`, `systemd` or `openrc` and voilà, you’ve got yourself a webpage that aggregates your favorite feeds.
 
@@ -20,18 +20,18 @@ Give it a list of RSS, Atom or JSON feeds urls and it will generate a single HTM
 
 ## Live demos
 
-**Default tinyfeed: [feed.lovergne.dev/demo](https://feed.lovergne.dev//demo)**  
-**With solarize theme : [feed.lovergne.dev/demo/solarized](https://feed.lovergne.dev//demo/solarized.html)**  
-**With lobste.rs skin : [feed.lovergne.dev/demo/lobster](https://feed.lovergne.dev//demo/lobster.html)**  
-**With hacker new skin : [feed.lovergne.dev/demo/hackernew](https://feed.lovergne.dev//demo/hackernews.html)**  
-**With a back-to-top button injected: [feed.lovergne.dev/demo/back-to-top](https://feed.lovergne.dev/demo/back-to-top.html)**  
+**Default tinyfeed: [feed.lovergne.dev/demo](https://feed.lovergne.dev//demo)**
+**With solarize theme : [feed.lovergne.dev/demo/solarized](https://feed.lovergne.dev//demo/solarized.html)**
+**With lobste.rs skin : [feed.lovergne.dev/demo/lobster](https://feed.lovergne.dev//demo/lobster.html)**
+**With hacker new skin : [feed.lovergne.dev/demo/hackernew](https://feed.lovergne.dev//demo/hackernews.html)**
+**With a back-to-top button injected: [feed.lovergne.dev/demo/back-to-top](https://feed.lovergne.dev/demo/back-to-top.html)**
 
 
 ## Screenshots
 
 ![screenshots of feed.lovergne.dev](docs/img/screenshots.png)
 
-Visited links are in yellow, unvisited in blue. 
+Visited links are in yellow, unvisited in blue.
 
 
 ## Documentation
@@ -55,6 +55,6 @@ You have created a page with tinyfeed, and you want to share it? You can open a 
 
 ## Acknowledgement
 
-Thank you, @MariaLetta,[](https://github.com/MariaLetta) for the awesome [free-gophers-pack ](https://github.com/MariaLetta/free-gophers-pack) which I adapted for the banner.
+Thank you, [@MariaLetta](https://github.com/MariaLetta), for the awesome [free-gophers-pack ](https://github.com/MariaLetta/free-gophers-pack) which I adapted for the banner.
 
 The project was heavily inspired by the awesomely simple [tinystatus](https://github.com/bderenzo/tinystatus) and message boards like Lobste.rs and Hacker News.
