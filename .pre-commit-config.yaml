@@ -23,5 +23,5 @@ repos:
     hooks:
       - id: check-jsonschema
         name: Validate markdown lint file
-        files: mkdocs.yaml
+        files: mkdocs.yml
         args: ["--schemafile", "https://www.schemastore.org/mkdocs-1.6.json"]
