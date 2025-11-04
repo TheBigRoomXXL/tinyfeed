@@ -26,7 +26,7 @@ clear, open an issue on the repo.
 
 ## Deploy
 
-!!! Info 
+!!! Info
     This documentation is not production-tested, and is aimed at home lab usage. Enough to get you over the line
 
 The deployment is made up of 4 individual resources.
@@ -73,7 +73,7 @@ kubectl apply -f pvc.yaml
 
 ### Cron job
 
-Create a file called `job.yaml` and in it put the below in to that file. 
+Create a file called `job.yaml` and in it put the below in to that file.
 
 ``` yaml
 apiVersion: batch/v1
@@ -125,7 +125,7 @@ Eg:
 ```
 
 
-This will use your Default storage class. 
+This will use your Default storage class.
 
 It's important that the `AccessModes` is set to `ReadWriteMany` as the cron job will `write` to it _many_ times, and the `nginx` pod will _read from it_
 
@@ -135,7 +135,7 @@ We are going to use `nginx` as our web server as it's super simple and is one of
 
 Create a file called `deployment.yaml` and in that file, put the below
 
-``` yaml 
+``` yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -174,7 +174,7 @@ spec:
 kubectl apply -f deployment.yaml
 ```
 
-This creates an `nginx` container and then mounts the `index.html` file in to the `/usr/share/nginx/html` directory where 
+This creates an `nginx` container and then mounts the `index.html` file in to the `/usr/share/nginx/html` directory where
 the default config of this container looks for files to serve.
 
 ### Service
@@ -186,7 +186,7 @@ For this example, we will assume what ever onwards technology you use, requires 
 
 Create a file called `service.yaml` and in that file put the below
 
-```yaml 
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -215,8 +215,8 @@ If you like to keep your clusters super ephemeral and have no persistence then t
 The below creates a deployment of Tinyfeed with an init container that generates the `index.html` file, then once that container
 exits with status of `0` (success) it spawns the _main_ container which is `nginx` to serve the site.
 
-Every 15 minutes as defined in the Cronjob `*/15 * * * *` (different cronjob from previous example!!) it finds all the 
-pods that match the label of `app=tinyfeed` and deletes them. 
+Every 15 minutes as defined in the Cronjob `*/15 * * * *` (different cronjob from previous example!!) it finds all the
+pods that match the label of `app=tinyfeed` and deletes them.
 
 This causes the cycle to start again, refreshing the feeds and then serving.
 
