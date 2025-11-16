@@ -30,7 +30,7 @@ Give it a list of RSS, Atom or JSON feeds urls and it will generate a single HTM
 
 ## Screenshots
 
-![screenshots of feed.lovergne.dev](docs/img/screenshots.png)
+![screenshots of feed.lovergne.dev](docs/img/screenshots.webp)
 
 Visited links are in yellow, unvisited in blue. 
 
