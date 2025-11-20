@@ -25,3 +25,5 @@ nav:
       - Systemd: systemd.md
       - OpenRC: openrc.md
       - Github Action and Page: github.md
+  - Advanced use cases:
+      - Kubernetes: kubernetes.md

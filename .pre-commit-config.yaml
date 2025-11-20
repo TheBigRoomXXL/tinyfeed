@@ -1,0 +1,27 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: end-of-file-fixer
+        name: Ensure files have end of file
+      - id: trailing-whitespace
+        name: Trims extra whitespaces
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.20.0
+    hooks:
+      - id: yamlfmt
+        name: Yaml Formatting
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.103.0
+    hooks:
+      - id: terraform_fmt
+        name: Terraform FMT
+      - id: terragrunt_fmt
+        name: Terragrunt FMT
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.34.1
+    hooks:
+      - id: check-jsonschema
+        name: Validate markdown lint file
+        files: mkdocs.yml
+        args: ["--schemafile", "https://www.schemastore.org/mkdocs-1.6.json"]

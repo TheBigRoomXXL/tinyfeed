@@ -21,6 +21,12 @@ go.work
 tmp
 .dev
 
+# Cursed IntelliJ always does this!!!!
+.idea
+
 # Generated documentation site
 site/
 .cache/
+
+# Virtual env when writing documentation locally
+.venv
