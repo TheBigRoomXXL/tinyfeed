@@ -74,10 +74,59 @@ Inside your template, you will have access to tinyfeed's data through the follow
 ```go
 type data struct {
     Metadata    map[string]string
-    Items       []Item // it's *gofeed.Item with a FeedName field added.
-    Feeds       []*gofeed.Feed
+    Items       []Item
+    Feeds       []Feed
     Stylesheets []string
     Scripts     []string
+}
+
+type Item struct {
+    FeedName        string
+    Title           string
+    Description     string
+    Content         string
+    Link            string
+    Links           []string
+    Updated         string
+    UpdatedParsed   *time.Time
+    Published       string
+    PublishedParsed *time.Time
+    Author          *Person
+    Authors         []*Person
+    GUID            string
+    Image           *Image
+    Categories      []string
+    Enclosures      []*Enclosure
+    DublinCoreExt   *ext.DublinCoreExtension
+    ITunesExt       *ext.ITunesItemExtension
+    Extensions      ext.Extensions
+    Custom          map[string]string
+}
+
+type Feed struct {
+    Title           string
+    Description     string
+    Link            string
+    FeedLink        string
+    Links           []string
+    Updated         string
+    UpdatedParsed   *time.Time
+    Published       string
+    PublishedParsed *time.Time
+    Author          *Person
+    Authors         []*Person
+    Language        string
+    Image           *Image
+    Copyright       string
+    Generator       string
+    Categories      []string
+    DublinCoreExt   *ext.DublinCoreExtension
+    ITunesExt       *ext.ITunesFeedExtension
+    Extensions      ext.Extensions
+    Custom          map[string]string
+    Items           []*Item
+    FeedType        string
+    FeedVersion     string
 }
 ```
 
