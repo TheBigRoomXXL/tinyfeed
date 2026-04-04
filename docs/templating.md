@@ -58,11 +58,12 @@ While escaping the provided inputs helps secure the content (and tinyfeed does s
 ```
 
 Here is a breakdown of what it does:
-- `default-src 'none';`: Disables the loading of all resources, including any JavaScript.
-- `base-uri 'self';`: stop a [<base> element](https://developer.mozilla.org/fr/docs/Web/HTML/Reference/Elements/base) from changing the base URI of relative link.
-- `img-src 'self' data: ;` Enable loading images from the same domain or from [data urls](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data)
-- `style-src 'nonce-{{.Metadata.nonce}}';`: Enable loading stylesheets if they contain a given nonce. This nonce is generated randomly and securely at each execution of tinyfeed.
-- `script-src 'nonce-{{.Metadata.nonce}}' 'strict-dynamic' ;`: Enable loading script if they contain a given nonce (same as stylesheets). `strict-dynamic` enable trusted script to load there own script, this make scripts with dependencies easy to use.
+
+- `default-src 'none';`: Disables the loading of all resources, including any JavaScript.  
+- `base-uri 'self';`: stop a [<base> element](https://developer.mozilla.org/fr/docs/Web/HTML/Reference/Elements/base) from changing the base URI of relative link.  
+- `img-src 'self' data: ;` Enable loading images from the same domain or from [data urls](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data)  
+- `style-src 'nonce-{{.Metadata.nonce}}';`: Enable loading stylesheets if they contain a given nonce. This nonce is generated randomly and securely at each execution of tinyfeed.  
+- `script-src 'nonce-{{.Metadata.nonce}}' 'strict-dynamic' ;`: Enable loading script if they contain a given nonce (same as stylesheets). `strict-dynamic` enable trusted script to load there own script, this make scripts with dependencies easy to use.  
 
 After tweaking the CSP for your needs, I recommend auditing it with Google's [CSP Evaluator](https://csp-evaluator.withgoogle.com/).
 
