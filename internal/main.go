@@ -19,8 +19,11 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
-//go:embed built-in
+//go:embed templates/index.html.gtpl
 var builtInTemplate string
+
+//go:embed templates/index.opml.gtpl
+var opmlTemplate string
 
 type Item struct {
 	*gofeed.Item
@@ -199,16 +202,22 @@ func prepareItems(feeds []*gofeed.Feed) []Item {
 func printHTML(feeds []*gofeed.Feed, items []Item) error {
 	var err error
 	var ts *template.Template
-
-	if templatePath == "" {
-		ts, err = template.New("built-in").
-			Funcs(template.FuncMap{"domain": domain, "publication": publication}).
+	var templateFuncs = template.FuncMap{"domain": domain, "publication": publication, "opmlRSSVersion": opmlRSSVersion}
+	switch templatePath {
+	case "":
+		ts, err = template.New("templates/index.html.gtpl").
+			Funcs(templateFuncs).
 			Parse(builtInTemplate)
-	} else {
+	case "opml":
+		ts, err = template.New("templates/index.opml.gtpl").
+			Funcs(templateFuncs).
+			Parse(opmlTemplate)
+	default:
 		ts, err = template.New(templatePath).
-			Funcs(template.FuncMap{"domain": domain, "publication": publication}).
+			Funcs(templateFuncs).
 			ParseFiles(templatePath)
 	}
+
 	if err != nil {
 		return fmt.Errorf("fail to load HTML template: %w", err)
 	}
@@ -232,6 +241,7 @@ func printHTML(feeds []*gofeed.Feed, items []Item) error {
 			"day":             currDate.Weekday().String(),
 			"datetime":        currDate.Format(time.DateTime),
 			"datetimeRFC3339": currDate.Format(time.RFC3339),
+			"datetimeRFC822":  currDate.Format(time.RFC822),
 		},
 		Items:       items,
 		Feeds:       feeds,

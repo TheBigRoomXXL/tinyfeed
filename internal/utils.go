@@ -8,6 +8,8 @@ import (
 	"net/url"
 	"sort"
 	"strings"
+
+	"github.com/mmcdole/gofeed"
 )
 
 func domain(item Item) string {
@@ -71,4 +73,18 @@ func sortItems(items []Item) []Item {
 		})
 	}
 	return items
+}
+
+func opmlRSSVersion(feed gofeed.Feed) string {
+	if feed.FeedType != "rss" {
+		return feed.FeedVersion
+	}
+	switch feed.FeedVersion {
+	case "1.0":
+		return "RSS1"
+	case "2.0":
+		return "RSS2"
+	default:
+		return "RSS"
+	}
 }
