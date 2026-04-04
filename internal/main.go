@@ -143,7 +143,7 @@ func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 	feed, err := fp.ParseURL(url)
 	if err != nil {
 		if !quiet {
-			log.Printf("WARNING: fail to parse feed at %s: %s\n", url, err)
+			log.Printf("WARNING: fail to process feed at %s: %s\n", url, err)
 		}
 		return nil
 	}
