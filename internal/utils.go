@@ -20,10 +20,11 @@ func domain(item Item) string {
 
 func publication(item Item) string {
 	if item.PublishedParsed == nil {
-		if item.Published != "" {
-			return item.Published
+		trimed := strings.TrimSpace(item.Published)
+		if trimed == "" {
+			return "Once upon a time"
 		}
-		return "Once upon a time"
+		return trimed
 	}
 	return item.PublishedParsed.Format("2006-01-02")
 }
