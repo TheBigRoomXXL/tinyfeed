@@ -116,3 +116,99 @@ func TestPublicationDate(t *testing.T) {
 		})
 	}
 }
+
+func TestSortItems(t *testing.T) {
+	now := time.Now()
+	yesterday := now.AddDate(0, 0, -1)
+	lastWeek := now.AddDate(0, 0, -7)
+
+	itemA := Item{
+		Item: &gofeed.Item{
+			Title:           "Alpha",
+			PublishedParsed: &yesterday,
+			UpdatedParsed:   &now,
+			Author:          &gofeed.Person{Name: "Charlie"},
+		},
+		FeedName: "Z-Feed",
+	}
+
+	itemB := Item{
+		Item: &gofeed.Item{
+			Title:           "Beta",
+			PublishedParsed: &now,
+			UpdatedParsed:   &lastWeek,
+			Author:          &gofeed.Person{Name: "Alice"},
+		},
+		FeedName: "A-Feed",
+	}
+
+	itemC := Item{
+		Item: &gofeed.Item{
+			Title:           "Gamma",
+			PublishedParsed: &lastWeek,
+			UpdatedParsed:   &yesterday,
+			Author:          &gofeed.Person{Name: "Bob"},
+		},
+		FeedName: "M-Feed",
+	}
+
+	tests := []struct {
+		label    string
+		orderBy  string
+		input    []Item
+		expected []string // We'll check the Titles to verify order
+	}{
+		{
+			label:    "Sort by publication-date (descending)",
+			orderBy:  "publication-date",
+			input:    []Item{itemC, itemA, itemB},
+			expected: []string{"A-Feed", "Z-Feed", "M-Feed"},
+		},
+		{
+			label:    "Sort by update-date (descending)",
+			orderBy:  "update-date",
+			input:    []Item{itemC, itemA, itemB},
+			expected: []string{"Z-Feed", "M-Feed", "A-Feed"},
+		},
+		{
+			label:    "Sort by feed-name (ascending)",
+			orderBy:  "feed-name",
+			input:    []Item{itemA, itemB, itemC},
+			expected: []string{"A-Feed", "M-Feed", "Z-Feed"},
+		},
+		{
+			label:    "Sort by author (ascending)",
+			orderBy:  "author",
+			input:    []Item{itemA, itemB, itemC},
+			expected: []string{"A-Feed", "M-Feed", "Z-Feed"},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.label, func(t *testing.T) {
+			orderBy = test.orderBy
+
+			got := sortItems(test.input)
+
+			for i, item := range got {
+				if item.FeedName != test.expected[i] {
+					t.Errorf("%s: at index %d, expected %s, got %s", test.label, i, test.expected[i], item.FeedName)
+				}
+			}
+		})
+	}
+}
+
+func TestSortItemsWithNilDates(t *testing.T) {
+	now := time.Now()
+	itemNil := Item{Item: &gofeed.Item{Title: "NilDate", PublishedParsed: nil}}
+	itemValid := Item{Item: &gofeed.Item{Title: "ValidDate", PublishedParsed: &now}}
+
+	orderBy = "publication-date"
+	items := []Item{itemNil, itemValid}
+	sorted := sortItems(items)
+
+	if sorted[0].Title != "ValidDate" {
+		t.Errorf("Expected ValidDate to come before NilDate in descending sort")
+	}
+}

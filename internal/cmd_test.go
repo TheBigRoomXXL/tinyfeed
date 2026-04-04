@@ -54,3 +54,64 @@ func TestReaderToArgs(t *testing.T) {
 		})
 	}
 }
+
+func TestValidateOrderBy(t *testing.T) {
+	tests := []struct {
+		label   string
+		input   string
+		wantErr bool
+	}{
+		{
+			label:   "Valid publication-date",
+			input:   "publication-date",
+			wantErr: false,
+		},
+		{
+			label:   "Valid author",
+			input:   "author",
+			wantErr: false,
+		},
+		{
+			label:   "Valid update date",
+			input:   "update-date",
+			wantErr: false,
+		},
+		{
+			label:   "Valid feed-name",
+			input:   "feed-name",
+			wantErr: false,
+		},
+		{
+			label:   "Empty string",
+			input:   "",
+			wantErr: true,
+		},
+		{
+			label:   "Case sensitivity check",
+			input:   "FEED-NAME",
+			wantErr: true,
+		},
+		{
+			label:   "Invalid value",
+			input:   "description",
+			wantErr: true,
+		},
+		{
+			label:   "Partial match",
+			input:   "publication",
+			wantErr: true,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.label, func(t *testing.T) {
+			orderBy = test.input
+
+			err := validateOrderBy()
+
+			if (err != nil) != test.wantErr {
+				t.Errorf("validateOrderBy() error = %v, wantErr %v", err, test.wantErr)
+			}
+		})
+	}
+}

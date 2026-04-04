@@ -38,6 +38,7 @@ var input string
 var output string
 var daemon bool
 var interval int64
+var orderBy string
 
 func init() {
 	log.SetOutput(os.Stderr)
@@ -88,6 +89,8 @@ func init() {
 	fs.Int64Var(&interval, "interval", 1440, "Duration in minutes between execution. Ignored if not in daemon mode")
 	fs.Int64Var(&interval, "I", 1440, "Duration in minutes between execution. Ignored if not in daemon mode")
 
+	fs.StringVar(&orderBy, "order-by", "publication-date", "How to order the articles")
+	fs.StringVar(&orderBy, "O", "publication-date", "How to order the articles")
 }
 
 func printHelp() {
@@ -108,7 +111,7 @@ Flags:
   -o, --output string        Path to a file to save the output to.
   -D, --daemon               Whether to execute the program in a daemon mode.
   
-  Customization Flags:
+  Customization flags:
   -n, --name string          Title of the page. (default "Feed")
   -d, --description string   Add a description after the name of your page
   -s, --stylesheet string    Link to an external CSS stylesheet
@@ -122,7 +125,8 @@ Flags:
   -q, --quiet                Add this flag to silence warnings.
   -r, --requests int         How many simulaneous requests can be made (default 16)
   -T, --timeout int          Timeout to get feeds in seconds (default 15)
-  
+  -O, --order-by string      How to order the articles. Accept 'publication-date', 'update-date', 'feed-name','author'. (default publication-date)
+
   -h, --help                 help for tinyfeed
 
 For more instructions on how to integrate tinyfeed with your workflow, please visit:
@@ -202,4 +206,18 @@ func readerToArgs(reader io.Reader) ([]string, error) {
 		i++
 	}
 	return args, nil
+}
+
+func validateOrderBy() error {
+	accepted := []string{"publication-date", "update-date", "feed-name", "author"}
+	for _, accept := range accepted {
+		if orderBy == accept {
+			return nil
+		}
+	}
+	return fmt.Errorf(
+		"Invalid value '%s' for flag --order-by, accepted values are %s.",
+		orderBy,
+		strings.Join(accepted, ", "),
+	)
 }

@@ -23,8 +23,8 @@ import (
 var builtInTemplate string
 
 type Item struct {
-    *gofeed.Item
-    FeedName string
+	*gofeed.Item
+	FeedName string
 }
 
 func Main() {
@@ -34,6 +34,12 @@ func Main() {
 			printHelp()
 			os.Exit(0)
 		}
+		os.Exit(1)
+	}
+
+	err = validateOrderBy()
+	if err != nil {
+		log.Printf("%s\n", err)
 		os.Exit(1)
 	}
 
@@ -152,7 +158,7 @@ func prepareItems(feeds []*gofeed.Feed) []Item {
 
 	for _, feed := range feeds {
 		for _, item := range feed.Items {
-			items = append(items, Item {
+			items = append(items, Item{
 				item,
 				feed.Title,
 			})
@@ -184,6 +190,8 @@ func prepareItems(feeds []*gofeed.Feed) []Item {
 		}
 		return items[i].PublishedParsed.After(*items[j].PublishedParsed)
 	})
+
+	items = sortItems(items)
 
 	return items[0:min(len(items), limit)]
 }

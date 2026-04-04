@@ -87,7 +87,8 @@ Flags:
   -q, --quiet                Add this flag to silence warnings.
   -r, --requests int         How many simulaneous requests can be made (default 16)
   -T, --timeout int          Timeout to get feeds in seconds (default 15)
-  
+  -O, --order-by string      How to order the articles. Accept 'publication-date', 'update-date', 'feed-name','author'. (default publication-date)
+
   -h, --help                 help for tinyfeed
 ```
 

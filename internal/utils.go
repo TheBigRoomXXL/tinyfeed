@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"sort"
 	"strings"
 )
 
@@ -36,4 +37,38 @@ func generateNonce(n int) string {
 		log.Fatal(fmt.Errorf("failed to generate nonce: %w", err))
 	}
 	return base64.URLEncoding.EncodeToString(b)
+}
+
+func sortItems(items []Item) []Item {
+	switch orderBy {
+	case "publication-date":
+		sort.SliceStable(items, func(i, j int) bool {
+			if items[i].PublishedParsed == nil {
+				return false
+			}
+			if items[j].PublishedParsed == nil {
+				return true
+			}
+			return items[i].PublishedParsed.After(*items[j].PublishedParsed)
+		})
+	case "update-date":
+		sort.SliceStable(items, func(i, j int) bool {
+			if items[i].UpdatedParsed == nil {
+				return false
+			}
+			if items[j].UpdatedParsed == nil {
+				return true
+			}
+			return items[i].UpdatedParsed.After(*items[j].UpdatedParsed)
+		})
+	case "feed-name":
+		sort.SliceStable(items, func(i, j int) bool {
+			return items[i].FeedName < items[j].FeedName
+		})
+	case "author":
+		sort.SliceStable(items, func(i, j int) bool {
+			return items[i].Author.Name < items[j].Author.Name
+		})
+	}
+	return items
 }
