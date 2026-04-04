@@ -28,13 +28,6 @@ func publication(item Item) string {
 	return item.PublishedParsed.Format("2006-01-02")
 }
 
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
 func generateNonce(n int) string {
 	b := make([]byte, n)
 	_, err := rand.Read(b)
