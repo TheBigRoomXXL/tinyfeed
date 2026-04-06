@@ -15,6 +15,7 @@ nav:
       - Usage: usage.md
       - Daemon mode: daemon.md
       - Pipelining: pipelining.md
+      - Configuration: configuration.md
   - Customization:
       - Styling: styling.md
       - Scripting: scripting.md
