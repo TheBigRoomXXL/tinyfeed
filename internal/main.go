@@ -114,6 +114,7 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 	wg.Add(len(url_list))
 
 	fp := gofeed.NewParser()
+	fp.UserAgent = "tinyfeed/v1"
 	fp.Client = &http.Client{Timeout: time.Duration(timeout * int(time.Second))}
 
 	for _, url := range url_list {
