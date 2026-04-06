@@ -9,6 +9,9 @@ tinyfeed is designed to work with basic pipelining. In its default behavior, tin
 Given the following `feeds.txt` file:
 
 ```txt
+# tinyfeed releases
+https://feed.lovergne.dev/releases.atom
+
 # Software Engineering
 https://lovergne.dev/rss.xml
 
@@ -23,7 +26,7 @@ https://www.htmhell.dev/feed.xml
 ```
 Then the following commands are equivalent:
 ```bash
-tinyfeed https://lovergne.dev/rss.xml \
+tinyfeed https://feed.lovergne.dev/releases.atom \
     https://words.filippo.io/rss/ \
     https://feeds.feedburner.com/TroyHunt \
     https://tonsky.me/atom.xml \

@@ -12,15 +12,15 @@ tinyfeed --help
 
 Then this is how you use tinyfeed in its most basic form:
 ```bash
-tinyfeed --output "index.html" https://lovergne.dev/rss
+tinyfeed --output "index.html" https://feed.lovergne.dev/releases.atom
 ```
-This tell tinyfeed to fetch the feed at `https://lovergne.dev/rss`, generate a webpage for it and output the result to `index.html`. The value of `--output` can be a relative or absolute path. 
+This tell tinyfeed to fetch the feed at `https://feed.lovergne.dev/releases.atom`, generate a webpage for it and output the result to `index.html`. The value of `--output` can be a relative or absolute path. 
 
 You can then open the resulting `index.html` in your browser using the `file` scheme with an URL like `file:///absolute/page/to/your/index.html`. Or, on most OS, you can right-click on the `index.html` in your file explorer and use "Open With" and select your browser. 
 
 If you want to process multiple feeds, you can pass multiple URLs to tinyfeed:
 ```bash
-tinyfeed --output "index.html" https://lovergne.dev/rss https://blog.codingconfessions.com/feed
+tinyfeed --output "index.html" https://feed.lovergne.dev/releases.atom https://blog.codingconfessions.com/feed
 ```
 Or use an input file containing all of your feeds (preferable if you have many):
 ```bash
@@ -28,6 +28,9 @@ tinyfeed --input feeds.txt --output index.html
 ```
 Example of `feeds.txt` file:
 ```txt
+# tinyfeed releases
+https://feed.lovergne.dev/releases.atom
+
 # Software Engineering
 https://lovergne.dev/rss.xml
 
@@ -52,7 +55,7 @@ If you are running tinyfeed through Docker, you should be aware of the following
 
 Single feed without mount:
 ```bash
-docker run -i thebigroomxxl/tinyfeed https://lovergne.dev/rss > index.html
+docker run -i thebigroomxxl/tinyfeed https://feed.lovergne.dev/releases.atom > index.html
 ```
 
 Multiple feeds from a file without mount:

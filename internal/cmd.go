@@ -100,7 +100,7 @@ Usage:
   tinyfeed [flags] [FEED_URL ...]
 
 Examples:
-  single feed      tinyfeed lovergne.dev/rss.xml > index.html
+  single feed      tinyfeed https://feed.lovergne.dev/releases.atom > index.html
   multiple feeds   cat feeds.txt | tinyfeed > index.html
   daemon mode      tinyfeed --daemon -i feeds.txt -o index.html
 

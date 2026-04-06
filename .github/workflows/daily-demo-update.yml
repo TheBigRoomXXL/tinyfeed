@@ -30,6 +30,9 @@ jobs:
       - name: build-docs
         run: mkdocs build
 
+      - name: copy-release-feed
+        run: wget https://github.com/TheBigRoomXXL/tinyfeed/releases.atom -O site/releases.atom
+
       - name: build-demos
         run: |
           mkdir site/demo/

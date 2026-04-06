@@ -6,14 +6,14 @@ the `-s` or `--stylesheet` flag:
 Using a direct link:
 
 ```bash
-tinyfeed -s "https://feed.lovergne.dev/css/solarized.css" -o index.html https://lovergne.dev/rss
+tinyfeed -s "https://feed.lovergne.dev/css/solarized.css" -o index.html https://feed.lovergne.dev/releases.atom
 # add <link rel="stylesheet" type="text/css" href="http://localhost:8000/styles/solarized.css" , nonce="..."> to the webpage
 
 ```
 
 Or a relative link:
 ```bash
-tinyfeed -s "/css/solarized.css" -o index.html https://lovergne.dev/rss
+tinyfeed -s "/css/solarized.css" -o index.html https://feed.lovergne.dev/releases.atom
 # add <link rel="stylesheet" type="text/css" href="/css/solarized.css" , nonce="..."> to the webpage
 ```
 

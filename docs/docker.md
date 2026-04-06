@@ -15,7 +15,7 @@ In this mode, you pass the feeds as arguments to the command and redirect the ou
 
 Single feed:
 ```bash
-docker run -i thebigroomxxl/tinyfeed https://lovergne.dev/rss  > index.html
+docker run -i thebigroomxxl/tinyfeed https://feed.lovergne.dev/releases.atom > index.html
 ```
 
 Multiple feeds from a file :
