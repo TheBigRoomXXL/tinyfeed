@@ -26,3 +26,4 @@ nav:
       - Systemd: systemd.md
       - OpenRC: openrc.md
       - Github Action and Page: github.md
+      - OPML Export: opml.md
