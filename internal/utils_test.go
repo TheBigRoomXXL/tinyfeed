@@ -212,3 +212,81 @@ func TestSortItemsWithNilDates(t *testing.T) {
 		t.Errorf("Expected ValidDate to come before NilDate in descending sort")
 	}
 }
+
+func TestSortItemsAuthorFallbackToPublicationDate(t *testing.T) {
+	now := time.Now()
+	yesterday := now.AddDate(0, 0, -1)
+
+	itemOlder := Item{
+		Item: &gofeed.Item{
+			Title:           "Older Post",
+			PublishedParsed: &yesterday,
+			Author:          &gofeed.Person{Name: "Same Author"},
+		},
+		FeedName: "Older-Feed",
+	}
+
+	itemNewer := Item{
+		Item: &gofeed.Item{
+			Title:           "Newer Post",
+			PublishedParsed: &now,
+			Author:          &gofeed.Person{Name: "Same Author"},
+		},
+		FeedName: "Newer-Feed",
+	}
+
+	items := []Item{itemOlder, itemNewer}
+
+	orderBy = "author"
+
+	sorted := sortItems(items)
+
+	// Since the authors match, it should fall back to publication date (descending)
+	// Therefore, the newer item should end up at index 0
+	if sorted[0].FeedName != "Newer-Feed" {
+		t.Errorf("Expected 'Newer-Feed' to come before 'Older-Feed' during fallback sort, got '%s' at index 0", sorted[0].FeedName)
+	}
+
+	if sorted[1].FeedName != "Older-Feed" {
+		t.Errorf("Expected 'Older-Feed' at index 1, got '%s'", sorted[1].FeedName)
+	}
+}
+
+func TestSortItemByFeednameFallbackToPublicationDate(t *testing.T) {
+	now := time.Now()
+	yesterday := now.AddDate(0, 0, -1)
+
+	itemOlder := Item{
+		Item: &gofeed.Item{
+			Title:           "Older Post",
+			PublishedParsed: &yesterday,
+			Author:          &gofeed.Person{Name: "Author A"},
+		},
+		FeedName: "FeeedNaaaame",
+	}
+
+	itemNewer := Item{
+		Item: &gofeed.Item{
+			Title:           "Newer Post",
+			PublishedParsed: &now,
+			Author:          &gofeed.Person{Name: "Author B"},
+		},
+		FeedName: "FeeedNaaaame",
+	}
+
+	items := []Item{itemOlder, itemNewer}
+
+	orderBy = "feed-name"
+
+	sorted := sortItems(items)
+
+	// Since the authors match, it should fall back to publication date (descending)
+	// Therefore, the newer item should end up at index 0
+	if sorted[0].Title != "Newer Post" {
+		t.Errorf("Expected 'Newer Post' to come before 'Older Post' during fallback sort, got '%s' at index 0", sorted[0].FeedName)
+	}
+
+	if sorted[1].Title != "Older Post" {
+		t.Errorf("Expected 'Older Post' at index 1, got '%s'", sorted[1].FeedName)
+	}
+}
