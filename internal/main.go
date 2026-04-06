@@ -151,6 +151,10 @@ func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 		return nil
 	}
 
+	if feed.FeedLink == "" {
+		feed.FeedLink = url
+	}
+
 	feed.Items = feed.Items[:min(len(feed.Items), limitPerFeed)]
 
 	return feed
