@@ -94,7 +94,7 @@ func init() {
 }
 
 func printHelp() {
-	log.Println(`Aggregate a collection of feed into static HTML page
+	log.Println(`Aggregate a collection of feeds into static HTML page
 
 Usage:
   tinyfeed [flags] [FEED_URL ...]
@@ -123,14 +123,13 @@ Flags:
   -l, --limit int            How many articles to display in total (default 256)
   -L, --limit-per-feed int   Maximum number of articles to display per feed (default 256)
   -q, --quiet                Add this flag to silence warnings.
-  -r, --requests int         How many simulaneous requests can be made (default 16)
+  -r, --requests int         How many simultaneous requests can be made (default 16)
   -T, --timeout int          Timeout to get feeds in seconds (default 15)
   -O, --order-by string      How to order the articles. Accept 'publication-date', 'update-date', 'feed-name','author'. (default publication-date)
 
   -h, --help                 help for tinyfeed
 
-For more instructions on how to integrate tinyfeed with your workflow, please visit:
-https://feed.lovergne.dev/`)
+For the full tinyfeed manual, please visit: https://feed.lovergne.dev/`)
 	os.Exit(0)
 }
 
