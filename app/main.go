@@ -41,7 +41,7 @@ func Main() {
 		os.Exit(1)
 	}
 
-	err = run(config)
+	err = Run(config)
 	if err != nil {
 		log.Printf("%s\n", err)
 		os.Exit(1)
@@ -61,7 +61,7 @@ func Main() {
 		case <-signalChan:
 			return
 		case <-ticker.C:
-			err = run(config)
+			err = Run(config)
 			if err != nil {
 				log.Printf("%s\n", err)
 				os.Exit(1)
@@ -70,7 +70,7 @@ func Main() {
 	}
 }
 
-func run(config *Config) error {
+func Run(config *Config) error {
 	// We append inputs from file here so that it can be updated without reloading the daemon
 	fileUrls, err := fileToArgs(config.Input)
 	if err != nil {
@@ -166,7 +166,7 @@ func prepareItems(feeds []*gofeed.Feed, config *Config) []Item {
 		}
 
 		// Some string are already html escaped inside the feeds and when
-		// html/template run it re-escape them, creating double escape. In
+		// html/template Run it re-escape them, creating double escape. In
 		// order to avoid malformed string we must unescape first.
 		items[i].Title = html.UnescapeString(items[i].Title)
 		items[i].Link = html.UnescapeString(items[i].Link)

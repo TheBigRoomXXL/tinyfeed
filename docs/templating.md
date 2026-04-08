@@ -4,7 +4,7 @@ Internally, tinyfeed uses a Golang HTML template to generate its webpage. You ca
 ```bash
 tinyfeed -i feeds.txt -o index.html -t my-template.html
 ```
-For an example template, check out the [built-in one](https://github.com/TheBigRoomXXL/tinyfeed/blob/main/internal/templates/index.html.gtpl). To learn about HTML+Go templates, check the [official documentation](https://pkg.go.dev/html/template).
+For an example template, check out the [built-in one](https://github.com/TheBigRoomXXL/tinyfeed/blob/main/app/templates/index.html.gtpl). To learn about HTML+Go templates, check the [official documentation](https://pkg.go.dev/html/template).
 
 ## Securing against Cross-Site-Scripting  🛡️
 
@@ -132,7 +132,7 @@ type Feed struct {
 
 Metadata is an arbitrary map, there is currently no backward compatibility promise on it's content (but we keep it stable as much as possible).
 
-Metadata currently holds the following keys: `name`, `description`, `nonce`, `day`, `datetime`, `datetimeRFC3339`, `datetimeRFC822`. For the most recent list of keys, refer to `printHTML` in [main.go](https://github.com/TheBigRoomXXL/tinyfeed/blob/main/internal/main.go). 
+Metadata currently holds the following keys: `name`, `description`, `nonce`, `day`, `datetime`, `datetimeRFC3339`, `datetimeRFC822`. For the most recent list of keys, refer to `printHTML` in [main.go](https://github.com/TheBigRoomXXL/tinyfeed/blob/main/app/main.go). 
 
 You will also have access to two functions for formatting:
 ```go
