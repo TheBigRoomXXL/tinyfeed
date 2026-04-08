@@ -41,7 +41,7 @@ func generateNonce(n int) string {
 	return base64.URLEncoding.EncodeToString(b)
 }
 
-func sortItems(items []Item) []Item {
+func sortItems(items []Item, orderBy string) []Item {
 	var less func(i, j int) bool
 
 	switch orderBy {

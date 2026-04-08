@@ -23,74 +23,28 @@ func (i *StringRepeatable) Set(value string) error {
 }
 
 // flags
-var fs *flag.FlagSet
-var limit int
-var limitPerFeed int
-var timeout int
-var requestSemaphore int
-var name string
-var description string
-var quiet bool
-var stylesheets StringRepeatable = make(StringRepeatable, 0)
-var scripts StringRepeatable = make(StringRepeatable, 0)
-var templatePath string
-var input string
-var output string
-var daemon bool
-var interval int64
-var orderBy string
+type Config struct {
+	Urls             []string
+	Limit            int
+	LimitPerFeed     int
+	Timeout          int
+	RequestSemaphore int
+	Name             string
+	Description      string
+	Quiet            bool
+	Stylesheets      StringRepeatable
+	Scripts          StringRepeatable
+	TemplatePath     string
+	Input            string
+	Output           string
+	Daemon           bool
+	Interval         int64
+	OrderBy          string
+}
 
 func init() {
 	log.SetOutput(os.Stderr)
 	log.SetFlags(0)
-
-	fs = flag.NewFlagSet("tinyfeed", flag.ContinueOnError)
-	fs.Usage = func() {} // Disable default usage message
-
-	fs.IntVar(&limit, "limit", 256, "How many articles to display in total")
-	fs.IntVar(&limit, "l", 256, "How many articles to display in total")
-
-	fs.IntVar(&limitPerFeed, "limit-per-feed", 256, "Maximum number of articles to display per feed")
-	fs.IntVar(&limitPerFeed, "L", 256, "Maximum number of articles to display per feed")
-
-	fs.IntVar(&requestSemaphore, "requests", 16, "How many simulaneous requests can be made")
-	fs.IntVar(&requestSemaphore, "r", 16, "How many simulaneous requests can be made")
-
-	fs.IntVar(&timeout, "timeout", 15, "Timeout to get feeds in seconds")
-	fs.IntVar(&timeout, "T", 15, "Timeout to get feeds in seconds")
-
-	fs.StringVar(&name, "name", "Feed", "Title of the page")
-	fs.StringVar(&name, "n", "Feed", "Title of the page")
-
-	fs.StringVar(&description, "description", "", "Add a description after the name of your page")
-	fs.StringVar(&description, "d", "", "Add a description after the name of your page")
-
-	fs.BoolVar(&quiet, "quiet", false, "Silence warnings")
-	fs.BoolVar(&quiet, "q", false, "Silence warnings")
-
-	fs.Var(&stylesheets, "stylesheet", "Link to an external CSS stylesheet")
-	fs.Var(&stylesheets, "s", "Link to an external CSS stylesheet")
-
-	fs.Var(&scripts, "script", "Link to an external JavaScript file")
-	fs.Var(&scripts, "S", "Link to an external JavaScript file")
-
-	fs.StringVar(&templatePath, "template", "", "Path to a custom HTML+Go template file")
-	fs.StringVar(&templatePath, "t", "", "Path to a custom HTML+Go template file")
-
-	fs.StringVar(&input, "input", "", "Path to a file with a list of feeds")
-	fs.StringVar(&input, "i", "", "Path to a file with a list of feeds")
-
-	fs.StringVar(&output, "output", "", "Path to a file to save the output to")
-	fs.StringVar(&output, "o", "", "Path to a file to save the output to")
-
-	fs.BoolVar(&daemon, "daemon", false, "Whether to execute the program in a daemon mode")
-	fs.BoolVar(&daemon, "D", false, "Whether to execute the program in a daemon mode")
-
-	fs.Int64Var(&interval, "interval", 1440, "Duration in minutes between execution. Ignored if not in daemon mode")
-	fs.Int64Var(&interval, "I", 1440, "Duration in minutes between execution. Ignored if not in daemon mode")
-
-	fs.StringVar(&orderBy, "order-by", "publication-date", "How to order the articles")
-	fs.StringVar(&orderBy, "O", "publication-date", "How to order the articles")
 }
 
 func printHelp() {
@@ -131,6 +85,79 @@ Flags:
 
 For the full tinyfeed manual, please visit: https://feed.lovergne.dev/`)
 	os.Exit(0)
+}
+
+func parseCmd() (*Config, error) {
+	var config Config
+	config.Scripts = make(StringRepeatable, 0)
+	config.Stylesheets = make(StringRepeatable, 0)
+
+	fs := flag.NewFlagSet("tinyfeed", flag.ContinueOnError)
+	fs.Usage = func() {} // Disable default usage message
+
+	fs.IntVar(&config.Limit, "limit", 256, "How many articles to display in total")
+	fs.IntVar(&config.Limit, "l", 256, "How many articles to display in total")
+
+	fs.IntVar(&config.LimitPerFeed, "limit-per-feed", 256, "Maximum number of articles to display per feed")
+	fs.IntVar(&config.LimitPerFeed, "L", 256, "Maximum number of articles to display per feed")
+
+	fs.IntVar(&config.RequestSemaphore, "requests", 16, "How many simulaneous requests can be made")
+	fs.IntVar(&config.RequestSemaphore, "r", 16, "How many simulaneous requests can be made")
+
+	fs.IntVar(&config.Timeout, "timeout", 15, "Timeout to get feeds in seconds")
+	fs.IntVar(&config.Timeout, "T", 15, "Timeout to get feeds in seconds")
+
+	fs.StringVar(&config.Name, "name", "Feed", "Title of the page")
+	fs.StringVar(&config.Name, "n", "Feed", "Title of the page")
+
+	fs.StringVar(&config.Description, "description", "", "Add a description after the name of your page")
+	fs.StringVar(&config.Description, "d", "", "Add a description after the name of your page")
+
+	fs.BoolVar(&config.Quiet, "quiet", false, "Silence warnings")
+	fs.BoolVar(&config.Quiet, "q", false, "Silence warnings")
+
+	fs.Var(&config.Stylesheets, "stylesheet", "Link to an external CSS stylesheet")
+	fs.Var(&config.Stylesheets, "s", "Link to an external CSS stylesheet")
+
+	fs.Var(&config.Scripts, "script", "Link to an external JavaScript file")
+	fs.Var(&config.Scripts, "S", "Link to an external JavaScript file")
+
+	fs.StringVar(&config.TemplatePath, "template", "", "Path to a custom HTML+Go template file")
+	fs.StringVar(&config.TemplatePath, "t", "", "Path to a custom HTML+Go template file")
+
+	fs.StringVar(&config.Input, "input", "", "Path to a file with a list of feeds")
+	fs.StringVar(&config.Input, "i", "", "Path to a file with a list of feeds")
+
+	fs.StringVar(&config.Output, "output", "", "Path to a file to save the output to")
+	fs.StringVar(&config.Output, "o", "", "Path to a file to save the output to")
+
+	fs.BoolVar(&config.Daemon, "daemon", false, "Whether to execute the program in a daemon mode")
+	fs.BoolVar(&config.Daemon, "D", false, "Whether to execute the program in a daemon mode")
+
+	fs.Int64Var(&config.Interval, "interval", 1440, "Duration in minutes between execution. Ignored if not in daemon mode")
+	fs.Int64Var(&config.Interval, "I", 1440, "Duration in minutes between execution. Ignored if not in daemon mode")
+
+	fs.StringVar(&config.OrderBy, "order-by", "publication-date", "How to order the articles")
+	fs.StringVar(&config.OrderBy, "O", "publication-date", "How to order the articles")
+
+	args, err := parseFlagsToTheEnd(fs)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse flags: %w", err)
+	}
+
+	// We get the inputs stdin at the start to that it can be reused by the daemon
+	strdinArgs, err := stdinToArgs()
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse stdin: %w", err)
+	}
+	config.Urls = append(args, strdinArgs...)
+
+	err = validateOrderBy(config.OrderBy)
+	if err != nil {
+		return nil, err
+	}
+
+	return &config, nil
 }
 
 // This function allow to parse the flags that are passed after aguments in order to
@@ -207,7 +234,7 @@ func readerToArgs(reader io.Reader) ([]string, error) {
 	return args, nil
 }
 
-func validateOrderBy() error {
+func validateOrderBy(orderBy string) error {
 	accepted := []string{"publication-date", "update-date", "feed-name", "author"}
 	for _, accept := range accepted {
 		if orderBy == accept {

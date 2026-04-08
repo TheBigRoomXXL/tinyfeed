@@ -186,9 +186,7 @@ func TestSortItems(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.label, func(t *testing.T) {
-			orderBy = test.orderBy
-
-			got := sortItems(test.input)
+			got := sortItems(test.input, test.orderBy)
 
 			for i, item := range got {
 				if item.FeedName != test.expected[i] {
@@ -204,9 +202,8 @@ func TestSortItemsWithNilDates(t *testing.T) {
 	itemNil := Item{Item: &gofeed.Item{Title: "NilDate", PublishedParsed: nil}}
 	itemValid := Item{Item: &gofeed.Item{Title: "ValidDate", PublishedParsed: &now}}
 
-	orderBy = "publication-date"
 	items := []Item{itemNil, itemValid}
-	sorted := sortItems(items)
+	sorted := sortItems(items, "publication-date")
 
 	if sorted[0].Title != "ValidDate" {
 		t.Errorf("Expected ValidDate to come before NilDate in descending sort")
@@ -236,10 +233,7 @@ func TestSortItemsAuthorFallbackToPublicationDate(t *testing.T) {
 	}
 
 	items := []Item{itemOlder, itemNewer}
-
-	orderBy = "author"
-
-	sorted := sortItems(items)
+	sorted := sortItems(items, "author")
 
 	// Since the authors match, it should fall back to publication date (descending)
 	// Therefore, the newer item should end up at index 0
@@ -276,9 +270,7 @@ func TestSortItemByFeednameFallbackToPublicationDate(t *testing.T) {
 
 	items := []Item{itemOlder, itemNewer}
 
-	orderBy = "feed-name"
-
-	sorted := sortItems(items)
+	sorted := sortItems(items, "feed-name")
 
 	// Since the authors match, it should fall back to publication date (descending)
 	// Therefore, the newer item should end up at index 0

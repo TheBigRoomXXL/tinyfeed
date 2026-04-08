@@ -31,50 +31,37 @@ type Item struct {
 }
 
 func Main() {
-	args, err := parseFlagsToTheEnd(fs)
+	config, err := parseCmd()
 	if err != nil {
 		if err == flag.ErrHelp {
 			printHelp()
 			os.Exit(0)
 		}
+		log.Printf("%s\n", err)
 		os.Exit(1)
 	}
 
-	err = validateOrderBy()
+	err = run(config)
 	if err != nil {
 		log.Printf("%s\n", err)
 		os.Exit(1)
 	}
 
-	// We get the inputs stdin at the start to that it can be reused by the daemon
-	strdinArgs, err := stdinToArgs()
-	if err != nil {
-		log.Printf("fail to parse stdin: %s\n", err)
-		os.Exit(1)
-	}
-	args = append(args, strdinArgs...)
-
-	err = run(args)
-	if err != nil {
-		log.Printf("%s\n", err)
-		os.Exit(1)
-	}
-
-	if !daemon {
+	if !config.Daemon {
 		return
 	}
 
 	// Daemon mode
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM)
-	ticker := time.NewTicker(time.Minute * time.Duration(interval))
+	ticker := time.NewTicker(time.Minute * time.Duration(config.Interval))
 
 	for {
 		select {
 		case <-signalChan:
 			return
 		case <-ticker.C:
-			err = run(args)
+			err = run(config)
 			if err != nil {
 				log.Printf("%s\n", err)
 				os.Exit(1)
@@ -83,39 +70,39 @@ func Main() {
 	}
 }
 
-func run(args []string) error {
+func run(config *Config) error {
 	// We append inputs from file here so that it can be updated without reloading the daemon
-	inputArgs, err := fileToArgs(input)
+	fileUrls, err := fileToArgs(config.Input)
 	if err != nil {
 		return fmt.Errorf("fail to parse input file: %w", err)
 	}
-	args = append(args, inputArgs...)
+	urls := append(config.Urls, fileUrls...)
 
-	if len(args) == 0 {
+	if len(urls) == 0 {
 		return fmt.Errorf(
 			"no argument found, you must input at least one feed url. Use `tinyfeed --help` for examples",
 		)
 	}
 
-	feeds := parseFeeds(args)
-	items := prepareItems(feeds)
+	feeds := parseFeeds(urls, config)
+	items := prepareItems(feeds, config)
 
-	err = printHTML(feeds, items)
+	err = printHTML(feeds, items, config)
 	if err != nil {
 		return fmt.Errorf("fail to output HTML: %w", err)
 	}
 	return nil
 }
 
-func parseFeeds(url_list []string) []*gofeed.Feed {
-	var sem = make(chan struct{}, requestSemaphore)
+func parseFeeds(url_list []string, config *Config) []*gofeed.Feed {
+	var sem = make(chan struct{}, config.RequestSemaphore)
 	var results = make(chan *gofeed.Feed)
 	var wg sync.WaitGroup
 	wg.Add(len(url_list))
 
 	fp := gofeed.NewParser()
 	fp.UserAgent = "tinyfeed/v1"
-	fp.Client = &http.Client{Timeout: time.Duration(timeout * int(time.Second))}
+	fp.Client = &http.Client{Timeout: time.Duration(config.Timeout * int(time.Second))}
 
 	for _, url := range url_list {
 		go func(url string) {
@@ -124,7 +111,7 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 				<-sem
 			}()
 			sem <- struct{}{}
-			results <- parseFeed(url, fp)
+			results <- parseFeed(url, fp, config)
 		}(url)
 	}
 
@@ -143,10 +130,10 @@ func parseFeeds(url_list []string) []*gofeed.Feed {
 	return feeds
 }
 
-func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
+func parseFeed(url string, fp *gofeed.Parser, config *Config) *gofeed.Feed {
 	feed, err := fp.ParseURL(url)
 	if err != nil {
-		if !quiet {
+		if !config.Quiet {
 			log.Printf("WARNING: fail to process feed at %s: %s\n", url, err)
 		}
 		return nil
@@ -156,12 +143,12 @@ func parseFeed(url string, fp *gofeed.Parser) *gofeed.Feed {
 		feed.FeedLink = url
 	}
 
-	feed.Items = feed.Items[:min(len(feed.Items), limitPerFeed)]
+	feed.Items = feed.Items[:min(len(feed.Items), config.LimitPerFeed)]
 
 	return feed
 }
 
-func prepareItems(feeds []*gofeed.Feed) []Item {
+func prepareItems(feeds []*gofeed.Feed, config *Config) []Item {
 	var items []Item
 
 	for _, feed := range feeds {
@@ -199,16 +186,16 @@ func prepareItems(feeds []*gofeed.Feed) []Item {
 		return items[i].PublishedParsed.After(*items[j].PublishedParsed)
 	})
 
-	items = sortItems(items)
+	items = sortItems(items, config.OrderBy)
 
-	return items[0:min(len(items), limit)]
+	return items[0:min(len(items), config.Limit)]
 }
 
-func printHTML(feeds []*gofeed.Feed, items []Item) error {
+func printHTML(feeds []*gofeed.Feed, items []Item, config *Config) error {
 	var err error
 	var ts *template.Template
 	var templateFuncs = template.FuncMap{"domain": domain, "publication": publication, "opmlRSSVersion": opmlRSSVersion}
-	switch templatePath {
+	switch config.TemplatePath {
 	case "":
 		ts, err = template.New("templates/index.html.gtpl").
 			Funcs(templateFuncs).
@@ -218,9 +205,9 @@ func printHTML(feeds []*gofeed.Feed, items []Item) error {
 			Funcs(templateFuncs).
 			Parse(opmlTemplate)
 	default:
-		ts, err = template.New(templatePath).
+		ts, err = template.New(config.TemplatePath).
 			Funcs(templateFuncs).
-			ParseFiles(templatePath)
+			ParseFiles(config.TemplatePath)
 	}
 
 	if err != nil {
@@ -240,8 +227,8 @@ func printHTML(feeds []*gofeed.Feed, items []Item) error {
 		Scripts     []string
 	}{
 		Metadata: map[string]string{
-			"name":            name,
-			"description":     description,
+			"name":            config.Name,
+			"description":     config.Description,
 			"nonce":           generateNonce(256),
 			"day":             currDate.Weekday().String(),
 			"datetime":        currDate.Format(time.DateTime),
@@ -250,13 +237,13 @@ func printHTML(feeds []*gofeed.Feed, items []Item) error {
 		},
 		Items:       items,
 		Feeds:       feeds,
-		Stylesheets: stylesheets,
-		Scripts:     scripts,
+		Stylesheets: config.Stylesheets,
+		Scripts:     config.Scripts,
 	}
 
 	var outFile io.WriteCloser
-	if output != "" {
-		outFile, err = os.Create(output)
+	if config.Output != "" {
+		outFile, err = os.Create(config.Output)
 		if err != nil {
 			return err
 		}

@@ -105,9 +105,7 @@ func TestValidateOrderBy(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.label, func(t *testing.T) {
-			orderBy = test.input
-
-			err := validateOrderBy()
+			err := validateOrderBy(test.input)
 
 			if (err != nil) != test.wantErr {
 				t.Errorf("validateOrderBy() error = %v, wantErr %v", err, test.wantErr)
