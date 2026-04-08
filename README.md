@@ -51,7 +51,7 @@ If you need anything related to this project, whether it's just giving feedback,
 
 You have created a page with tinyfeed and you want to share it? You can open a merge request or an issue to add it to the demo section.
 
-*If you want to contribute something other than a demo, please open an issue first so that we can collaborate efficiently.*
+*If you want to contribute, read [CONTRIBUTING.md](CONTRIBUTING.md) first so that we can collaborate efficiently.*
 
 
 ## Acknowledgement
