@@ -72,10 +72,22 @@ func Main() {
 
 func Run(config *Config) error {
 	// We append inputs from file here so that it can be updated without reloading the daemon
-	fileUrls, err := fileToArgs(config.Input)
+	var fileUrls []string
+	var err error
+
+	opmlUrls, err := expandOPMLFile(config.Input)
 	if err != nil {
-		return fmt.Errorf("fail to parse input file: %w", err)
+		return fmt.Errorf("fail to parse OPML input file: %w", err)
 	}
+	if opmlUrls != nil {
+		fileUrls = opmlUrls
+	} else {
+		fileUrls, err = fileToArgs(config.Input)
+		if err != nil {
+			return fmt.Errorf("fail to parse input file: %w", err)
+		}
+	}
+
 	urls := append(config.Urls, fileUrls...)
 
 	if len(urls) == 0 {
@@ -83,6 +95,8 @@ func Run(config *Config) error {
 			"no argument found, you must input at least one feed url. Use `tinyfeed --help` for examples",
 		)
 	}
+
+	urls = resolveURLs(urls, config.Timeout)
 
 	feeds := parseFeeds(urls, config)
 	items := prepareItems(feeds, config)
