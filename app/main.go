@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"sort"
 	"sync"
 	"syscall"
@@ -205,7 +206,7 @@ func printHTML(feeds []*gofeed.Feed, items []Item, config *Config) error {
 			Funcs(templateFuncs).
 			Parse(opmlTemplate)
 	default:
-		ts, err = template.New(config.TemplatePath).
+		ts, err = template.New(filepath.Base(config.TemplatePath)).
 			Funcs(templateFuncs).
 			ParseFiles(config.TemplatePath)
 	}
