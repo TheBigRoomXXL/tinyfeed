@@ -62,7 +62,7 @@ Multiple feeds from a file without mount:
 ```bash
 cat feeds.txt | docker run -i thebigroomxxl/tinyfeed > index.html
 ```
-For more guidance, check out the [Docker section](docker.md) of the documentation.
+For more guidance and `docker-compose` configurations, check out the [Docker section](docker.md) of the documentation.
 
 ## Configuration
 
