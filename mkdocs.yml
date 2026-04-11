@@ -8,6 +8,8 @@ theme:
   logo: img/logo.svg
 markdown_extensions:
   - admonition
+  - toc:
+      permalink: true
 nav:
   - Home: index.md
   - Getting Started:
