@@ -3,7 +3,7 @@
 !!! info
     A daemon is a background process that runs independently of user interaction, typically used to perform tasks at scheduled intervals or in response to specific events. 
 
-In the context of tinyfeed, the daemon mode allows the tool to periodically update the generated HTML page with the latest content from the specified feeds. This is particullary useful to integrate tinyfeed with service manager such as [systemd](systemd.md), [OpenRC](openrc.md) or even [Docker](docker.md). For details about those use case, please see the corresponding workflow section of the documentation.
+In the context of tinyfeed, the daemon mode allows the tool to periodically update the generated HTML page with the latest content from the specified feeds. This is particularly useful to integrate tinyfeed with service manager such as [systemd](systemd.md), [OpenRC](openrc.md) or even [Docker](docker.md). For details about those use case, please see the corresponding workflow section of the documentation.
 
 To use tinyfeed in daemon mode, you can use the `-D / --daemon` flag along with the `-o / --output` flag to specify which file to keep updated.
 
