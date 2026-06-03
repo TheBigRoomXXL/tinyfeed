@@ -63,7 +63,7 @@ func sortItems(items []Item, orderBy string) []Item {
 
 func sortByPublicationDate(items []Item) func(i, j int) bool {
 	return func(i, j int) bool {
-		if items[i].PublishedParsed == items[j].PublishedParsed {
+		if items[i].PublishedParsed != nil && items[j].PublishedParsed != nil && items[i].PublishedParsed.Equal(*items[j].PublishedParsed) {
 			return sortByUpdateDate(items)(i, j)
 		}
 		if items[i].PublishedParsed == nil {
