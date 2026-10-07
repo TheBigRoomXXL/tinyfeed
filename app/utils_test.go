@@ -246,6 +246,71 @@ func TestSortItemsAuthorFallbackToPublicationDate(t *testing.T) {
 	}
 }
 
+func TestSortItemsWithMissingAuthors(t *testing.T) {
+	newer := time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC)
+	older := newer.AddDate(0, 0, -1)
+	named := func(title, author string) Item {
+		return Item{Item: &gofeed.Item{Title: title, Author: &gofeed.Person{Name: author}}}
+	}
+	missing := func(title string, published *time.Time) Item {
+		return Item{Item: &gofeed.Item{Title: title, PublishedParsed: published}}
+	}
+	tests := []struct {
+		name  string
+		items []Item
+		want  []string
+	}{
+		{
+			name:  "missing before named",
+			items: []Item{missing("Missing", nil), named("Alice", "Alice")},
+			want:  []string{"Alice", "Missing"},
+		},
+		{
+			name:  "named before missing",
+			items: []Item{named("Alice", "Alice"), missing("Missing", nil)},
+			want:  []string{"Alice", "Missing"},
+		},
+		{
+			name:  "missing authors use publication date",
+			items: []Item{missing("Older", &older), missing("Newer", &newer)},
+			want:  []string{"Newer", "Older"},
+		},
+		{
+			name:  "missing authors and dates stay stable",
+			items: []Item{missing("First", nil), missing("Second", nil)},
+			want:  []string{"First", "Second"},
+		},
+		{
+			name:  "missing authors with undated entries",
+			items: []Item{missing("Undated", nil), missing("Dated", &older)},
+			want:  []string{"Dated", "Undated"},
+		},
+		{
+			name: "mixed authors",
+			items: []Item{
+				missing("Older", &older), named("Bob", "Bob"),
+				missing("Newer", &newer), named("Alice", "Alice"),
+			},
+			want: []string{"Alice", "Bob", "Newer", "Older"},
+		},
+		{
+			name:  "empty author name retains its order",
+			items: []Item{missing("Missing", nil), named("Alice", "Alice"), named("Empty", "")},
+			want:  []string{"Empty", "Alice", "Missing"},
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			got := sortItems(test.items, "author")
+			for i, want := range test.want {
+				if got[i].Title != want {
+					t.Errorf("item %d = %q, want %q", i, got[i].Title, want)
+				}
+			}
+		})
+	}
+}
+
 func TestSortItemByFeednameFallbackToPublicationDate(t *testing.T) {
 	now := time.Now()
 	yesterday := now.AddDate(0, 0, -1)

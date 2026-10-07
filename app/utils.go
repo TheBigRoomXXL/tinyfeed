@@ -99,6 +99,15 @@ func sortByFeedName(items []Item) func(i, j int) bool {
 
 func sortByAuthor(items []Item) func(i, j int) bool {
 	return func(i, j int) bool {
+		if items[i].Author == nil {
+			if items[j].Author == nil {
+				return sortByPublicationDate(items)(i, j)
+			}
+			return false
+		}
+		if items[j].Author == nil {
+			return true
+		}
 		if items[i].Author.Name == items[j].Author.Name {
 			return sortByPublicationDate(items)(i, j)
 		}
