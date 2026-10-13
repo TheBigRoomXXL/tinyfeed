@@ -100,42 +100,6 @@ func TestSortItemsWithNilDates(t *testing.T) {
 	}
 }
 
-func TestSortItemsAuthorFallbackToPublicationDate(t *testing.T) {
-	now := time.Now()
-	yesterday := now.AddDate(0, 0, -1)
-
-	itemOlder := Item{
-		Item: &gofeed.Item{
-			Title:           "Older Post",
-			PublishedParsed: &yesterday,
-			Author:          &gofeed.Person{Name: "Same Author"},
-		},
-		FeedName: "Older-Feed",
-	}
-
-	itemNewer := Item{
-		Item: &gofeed.Item{
-			Title:           "Newer Post",
-			PublishedParsed: &now,
-			Author:          &gofeed.Person{Name: "Same Author"},
-		},
-		FeedName: "Newer-Feed",
-	}
-
-	items := []Item{itemOlder, itemNewer}
-	sorted := sortItems(items, "author")
-
-	// Since the authors match, it should fall back to publication date (descending)
-	// Therefore, the newer item should end up at index 0
-	if sorted[0].FeedName != "Newer-Feed" {
-		t.Errorf("Expected 'Newer-Feed' to come before 'Older-Feed' during fallback sort, got '%s' at index 0", sorted[0].FeedName)
-	}
-
-	if sorted[1].FeedName != "Older-Feed" {
-		t.Errorf("Expected 'Older-Feed' at index 1, got '%s'", sorted[1].FeedName)
-	}
-}
-
 func TestSortItemsWithMissingAuthors(t *testing.T) {
 	newer := time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC)
 	older := newer.AddDate(0, 0, -1)
@@ -201,40 +165,97 @@ func TestSortItemsWithMissingAuthors(t *testing.T) {
 	}
 }
 
-func TestSortItemByFeednameFallbackToPublicationDate(t *testing.T) {
-	now := time.Now()
-	yesterday := now.AddDate(0, 0, -1)
-
-	itemOlder := Item{
-		Item: &gofeed.Item{
-			Title:           "Older Post",
-			PublishedParsed: &yesterday,
-			Author:          &gofeed.Person{Name: "Author A"},
+// Each case ties on every criterion before the one under test, and the later
+// criteria disagree with the expected order, so only that criterion can
+// decide it.
+func TestSortItemsFallbackChain(t *testing.T) {
+	newer := time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC)
+	older := newer.AddDate(0, 0, -1)
+	item := func(title, feed, author string, published, updated *time.Time) Item {
+		return Item{
+			Item: &gofeed.Item{
+				Title:           title,
+				Author:          &gofeed.Person{Name: author},
+				PublishedParsed: published,
+				UpdatedParsed:   updated,
+			},
+			FeedName: feed,
+		}
+	}
+	tests := []struct {
+		orderBy string
+		name    string
+		first   Item
+		second  Item
+	}{
+		{
+			"publication-date", "then update date",
+			item("First", "B", "Bob", &newer, &newer),
+			item("Second", "A", "Alice", &newer, &older),
 		},
-		FeedName: "FeeedNaaaame",
-	}
-
-	itemNewer := Item{
-		Item: &gofeed.Item{
-			Title:           "Newer Post",
-			PublishedParsed: &now,
-			Author:          &gofeed.Person{Name: "Author B"},
+		{
+			"publication-date", "then author",
+			item("First", "B", "Alice", &newer, &newer),
+			item("Second", "A", "Bob", &newer, &newer),
 		},
-		FeedName: "FeeedNaaaame",
+		{
+			"publication-date", "then feed name",
+			item("First", "A", "Alice", &newer, &newer),
+			item("Second", "B", "Alice", &newer, &newer),
+		},
+		{
+			"update-date", "then publication date",
+			item("First", "B", "Bob", &newer, &newer),
+			item("Second", "A", "Alice", &older, &newer),
+		},
+		{
+			"update-date", "then author",
+			item("First", "B", "Alice", &newer, &newer),
+			item("Second", "A", "Bob", &newer, &newer),
+		},
+		{
+			"update-date", "then feed name",
+			item("First", "A", "Alice", &newer, &newer),
+			item("Second", "B", "Alice", &newer, &newer),
+		},
+		{
+			"feed-name", "then publication date",
+			item("First", "A", "Bob", &newer, &older),
+			item("Second", "A", "Alice", &older, &newer),
+		},
+		{
+			"feed-name", "then update date",
+			item("First", "A", "Bob", &newer, &newer),
+			item("Second", "A", "Alice", &newer, &older),
+		},
+		{
+			"feed-name", "then author",
+			item("First", "A", "Alice", &newer, &newer),
+			item("Second", "A", "Bob", &newer, &newer),
+		},
+		{
+			"author", "then publication date",
+			item("First", "B", "Alice", &newer, &older),
+			item("Second", "A", "Alice", &older, &newer),
+		},
+		{
+			"author", "then update date",
+			item("First", "B", "Alice", &newer, &newer),
+			item("Second", "A", "Alice", &newer, &older),
+		},
+		{
+			"author", "then feed name",
+			item("First", "A", "Alice", &newer, &newer),
+			item("Second", "B", "Alice", &newer, &newer),
+		},
 	}
-
-	items := []Item{itemOlder, itemNewer}
-
-	sorted := sortItems(items, "feed-name")
-
-	// Since the authors match, it should fall back to publication date (descending)
-	// Therefore, the newer item should end up at index 0
-	if sorted[0].Title != "Newer Post" {
-		t.Errorf("Expected 'Newer Post' to come before 'Older Post' during fallback sort, got '%s' at index 0", sorted[0].FeedName)
-	}
-
-	if sorted[1].Title != "Older Post" {
-		t.Errorf("Expected 'Older Post' at index 1, got '%s'", sorted[1].FeedName)
+	for _, test := range tests {
+		t.Run(test.orderBy+" "+test.name, func(t *testing.T) {
+			got := sortItems([]Item{test.second, test.first}, test.orderBy)
+			if got[0].Title != "First" || got[1].Title != "Second" {
+				t.Errorf("got [%q, %q], want [First, Second]", got[0].Title, got[1].Title)
+			}
+		})
 	}
 }
 
