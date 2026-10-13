@@ -3,6 +3,7 @@ package tinyfeed
 import (
 	"slices"
 	"strings"
+	"time"
 )
 
 func sortItems(items []Item, orderBy string) []Item {
@@ -25,30 +26,28 @@ func sortItems(items []Item, orderBy string) []Item {
 	return items
 }
 
-func compareByPublicationDate(a, b Item) int {
-	if a.PublishedParsed == b.PublishedParsed {
-		return compareByUpdateDate(a, b)
-	}
-	if a.PublishedParsed == nil {
+// compareTimeDesc sorts newest first, nil last.
+func compareTimeDesc(a, b *time.Time) int {
+	switch {
+	case a == nil && b == nil:
+		return 0
+	case a == nil:
 		return 1
-	}
-	if b.PublishedParsed == nil {
+	case b == nil:
 		return -1
 	}
-	return b.PublishedParsed.Compare(*a.PublishedParsed)
+	return b.Compare(*a)
+}
+
+func compareByPublicationDate(a, b Item) int {
+	if c := compareTimeDesc(a.PublishedParsed, b.PublishedParsed); c != 0 {
+		return c
+	}
+	return compareByUpdateDate(a, b)
 }
 
 func compareByUpdateDate(a, b Item) int {
-	if a.UpdatedParsed == nil && b.UpdatedParsed == nil {
-		return 0
-	}
-	if a.UpdatedParsed == nil {
-		return 1
-	}
-	if b.UpdatedParsed == nil {
-		return -1
-	}
-	return b.UpdatedParsed.Compare(*a.UpdatedParsed)
+	return compareTimeDesc(a.UpdatedParsed, b.UpdatedParsed)
 }
 
 func compareByFeedName(a, b Item) int {
