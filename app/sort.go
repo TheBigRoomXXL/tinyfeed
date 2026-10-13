@@ -58,17 +58,22 @@ func compareByFeedName(a, b Item) int {
 }
 
 func compareByAuthor(a, b Item) int {
-	if a.Author == nil {
-		if b.Author == nil {
-			return compareByPublicationDate(a, b)
-		}
+	nameA, nameB := authorName(a), authorName(b)
+	switch {
+	case nameA == nameB:
+		return compareByPublicationDate(a, b)
+	case nameA == "":
 		return 1
-	}
-	if b.Author == nil {
+	case nameB == "":
 		return -1
 	}
-	if a.Author.Name == b.Author.Name {
-		return compareByPublicationDate(a, b)
+	return strings.Compare(nameA, nameB)
+}
+
+// authorName returns the item's author name, or "" when there is no author.
+func authorName(item Item) string {
+	if item.Author == nil {
+		return ""
 	}
-	return strings.Compare(a.Author.Name, b.Author.Name)
+	return item.Author.Name
 }

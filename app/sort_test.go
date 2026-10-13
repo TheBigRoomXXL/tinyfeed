@@ -184,9 +184,9 @@ func TestSortItemsWithMissingAuthors(t *testing.T) {
 			want: []string{"Alice", "Bob", "Newer", "Older"},
 		},
 		{
-			name:  "empty author name retains its order",
+			name:  "empty author name is treated as missing",
 			items: []Item{missing("Missing", nil), named("Alice", "Alice"), named("Empty", "")},
-			want:  []string{"Empty", "Alice", "Missing"},
+			want:  []string{"Alice", "Missing", "Empty"},
 		},
 	}
 	for _, test := range tests {
