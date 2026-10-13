@@ -11,19 +11,32 @@ func sortItems(items []Item, orderBy string) []Item {
 
 	switch orderBy {
 	case "publication-date":
-		cmp = compareByPublicationDate
+		cmp = compareChained(compareByPublicationDate, compareByUpdateDate)
 	case "update-date":
 		cmp = compareByUpdateDate
 	case "feed-name":
-		cmp = compareByFeedName
+		cmp = compareChained(compareByFeedName, compareByPublicationDate, compareByUpdateDate)
 	case "author":
-		cmp = compareByAuthor
+		cmp = compareChained(compareByAuthor, compareByPublicationDate, compareByUpdateDate)
 	default:
 		panic("invalid orderBy")
 	}
 
 	slices.SortStableFunc(items, cmp)
 	return items
+}
+
+// compareChained returns a comparison that applies each cmp in order and
+// returns the first non-zero result.
+func compareChained(cmps ...func(a, b Item) int) func(a, b Item) int {
+	return func(a, b Item) int {
+		for _, cmp := range cmps {
+			if c := cmp(a, b); c != 0 {
+				return c
+			}
+		}
+		return 0
+	}
 }
 
 // compareTimeDesc sorts newest first, nil last.
@@ -40,10 +53,7 @@ func compareTimeDesc(a, b *time.Time) int {
 }
 
 func compareByPublicationDate(a, b Item) int {
-	if c := compareTimeDesc(a.PublishedParsed, b.PublishedParsed); c != 0 {
-		return c
-	}
-	return compareByUpdateDate(a, b)
+	return compareTimeDesc(a.PublishedParsed, b.PublishedParsed)
 }
 
 func compareByUpdateDate(a, b Item) int {
@@ -51,9 +61,6 @@ func compareByUpdateDate(a, b Item) int {
 }
 
 func compareByFeedName(a, b Item) int {
-	if a.FeedName == b.FeedName {
-		return compareByPublicationDate(a, b)
-	}
 	return strings.Compare(a.FeedName, b.FeedName)
 }
 
@@ -61,7 +68,7 @@ func compareByAuthor(a, b Item) int {
 	nameA, nameB := authorName(a), authorName(b)
 	switch {
 	case nameA == nameB:
-		return compareByPublicationDate(a, b)
+		return 0
 	case nameA == "":
 		return 1
 	case nameB == "":

@@ -264,10 +264,6 @@ func TestSortItemsCompareDateValuesNotPointers(t *testing.T) {
 	itemA := Item{Item: &gofeed.Item{Title: "UpdatedOlder", PublishedParsed: &publishedA, UpdatedParsed: &older}}
 	itemB := Item{Item: &gofeed.Item{Title: "UpdatedNewer", PublishedParsed: &publishedB, UpdatedParsed: &newer}}
 
-	if c := compareByPublicationDate(itemA, itemB); c <= 0 {
-		t.Errorf("compareByPublicationDate = %d, want > 0 (fallback to update date)", c)
-	}
-
 	tests := []struct {
 		orderBy string
 		items   []Item
