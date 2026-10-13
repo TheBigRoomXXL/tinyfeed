@@ -12,7 +12,6 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"sort"
 	"sync"
 	"syscall"
 	"time"
@@ -176,16 +175,6 @@ func prepareItems(feeds []*gofeed.Feed, config *Config) []Item {
 		items[i].Published = html.UnescapeString(items[i].Published)
 		items[i].FeedName = html.UnescapeString(items[i].FeedName)
 	}
-
-	sort.SliceStable(items, func(i, j int) bool {
-		if items[i].PublishedParsed == nil {
-			return false
-		}
-		if items[j].PublishedParsed == nil {
-			return true
-		}
-		return items[i].PublishedParsed.After(*items[j].PublishedParsed)
-	})
 
 	items = sortItems(items, config.OrderBy)
 
