@@ -237,3 +237,75 @@ func TestSortItemByFeednameFallbackToPublicationDate(t *testing.T) {
 		t.Errorf("Expected 'Older Post' at index 1, got '%s'", sorted[1].FeedName)
 	}
 }
+
+func TestSortItemsByFeedNameAlphabetical(t *testing.T) {
+	feeds := []string{"b", "Feed10", "Feed2", "", "Feed", "B", "a"}
+	items := make([]Item, len(feeds))
+	for i, feed := range feeds {
+		items[i] = Item{Item: &gofeed.Item{}, FeedName: feed}
+	}
+	want := []string{"", "B", "Feed", "Feed10", "Feed2", "a", "b"}
+	got := sortItems(items, "feed-name")
+	for i, w := range want {
+		if got[i].FeedName != w {
+			t.Errorf("item %d = %q, want %q", i, got[i].FeedName, w)
+		}
+	}
+}
+
+// Regression for 38b93c9: equal dates held by distinct pointers must be
+// treated as equal and fall back to the next criterion.
+func TestSortItemsCompareDateValuesNotPointers(t *testing.T) {
+	newer := time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC)
+	older := newer.AddDate(0, 0, -1)
+	publishedA := newer
+	publishedB := newer // same value, different pointer
+
+	itemA := Item{Item: &gofeed.Item{Title: "UpdatedOlder", PublishedParsed: &publishedA, UpdatedParsed: &older}}
+	itemB := Item{Item: &gofeed.Item{Title: "UpdatedNewer", PublishedParsed: &publishedB, UpdatedParsed: &newer}}
+
+	if c := compareByPublicationDate(itemA, itemB); c <= 0 {
+		t.Errorf("compareByPublicationDate = %d, want > 0 (fallback to update date)", c)
+	}
+
+	tests := []struct {
+		orderBy string
+		items   []Item
+	}{
+		{"publication-date", []Item{itemA, itemB}},
+		{"feed-name", []Item{itemA, itemB}},
+		{"author", []Item{itemA, itemB}},
+	}
+	for _, test := range tests {
+		t.Run(test.orderBy, func(t *testing.T) {
+			got := sortItems(test.items, test.orderBy)
+			if got[0].Title != "UpdatedNewer" || got[1].Title != "UpdatedOlder" {
+				t.Errorf("got [%q, %q], want [UpdatedNewer, UpdatedOlder]", got[0].Title, got[1].Title)
+			}
+		})
+	}
+}
+
+// Regression for 489566a: an empty author name is equivalent to a missing
+// author, so both must produce the same sort.
+func TestSortItemsEmptyAuthorEqualsMissing(t *testing.T) {
+	newer := time.Date(2026, time.January, 2, 0, 0, 0, 0, time.UTC)
+	older := newer.AddDate(0, 0, -1)
+	feed := func(author *gofeed.Person) []Item {
+		return []Item{
+			{Item: &gofeed.Item{Title: "Special", Author: author, PublishedParsed: &older}},
+			{Item: &gofeed.Item{Title: "Missing", PublishedParsed: &newer}},
+			{Item: &gofeed.Item{Title: "Bob", Author: &gofeed.Person{Name: "Bob"}}},
+			{Item: &gofeed.Item{Title: "Alice", Author: &gofeed.Person{Name: "Alice"}}},
+		}
+	}
+
+	withMissing := sortItems(feed(nil), "author")
+	withEmpty := sortItems(feed(&gofeed.Person{Name: ""}), "author")
+
+	for i := range withMissing {
+		if withMissing[i].Title != withEmpty[i].Title {
+			t.Errorf("item %d: missing author gives %q, empty author gives %q", i, withMissing[i].Title, withEmpty[i].Title)
+		}
+	}
+}
