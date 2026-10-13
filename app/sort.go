@@ -1,77 +1,75 @@
 package tinyfeed
 
-import "sort"
+import (
+	"slices"
+	"strings"
+)
 
 func sortItems(items []Item, orderBy string) []Item {
-	var less func(i, j int) bool
+	var cmp func(a, b Item) int
 
 	switch orderBy {
 	case "publication-date":
-		less = sortByPublicationDate(items)
+		cmp = compareByPublicationDate
 	case "update-date":
-		less = sortByUpdateDate(items)
+		cmp = compareByUpdateDate
 	case "feed-name":
-		less = sortByFeedName(items)
+		cmp = compareByFeedName
 	case "author":
-		less = sortByAuthor(items)
+		cmp = compareByAuthor
 	default:
 		panic("invalid orderBy")
 	}
 
-	sort.SliceStable(items, less)
+	slices.SortStableFunc(items, cmp)
 	return items
 }
 
-func sortByPublicationDate(items []Item) func(i, j int) bool {
-	return func(i, j int) bool {
-		if items[i].PublishedParsed == items[j].PublishedParsed {
-			return sortByUpdateDate(items)(i, j)
-		}
-		if items[i].PublishedParsed == nil {
-			return false
-		}
-		if items[j].PublishedParsed == nil {
-			return true
-		}
-		return items[i].PublishedParsed.After(*items[j].PublishedParsed)
+func compareByPublicationDate(a, b Item) int {
+	if a.PublishedParsed == b.PublishedParsed {
+		return compareByUpdateDate(a, b)
 	}
+	if a.PublishedParsed == nil {
+		return 1
+	}
+	if b.PublishedParsed == nil {
+		return -1
+	}
+	return b.PublishedParsed.Compare(*a.PublishedParsed)
 }
 
-func sortByUpdateDate(items []Item) func(i, j int) bool {
-	return func(i, j int) bool {
-		if items[i].UpdatedParsed == nil {
-			return false
-		}
-		if items[j].UpdatedParsed == nil {
-			return true
-		}
-		return items[i].UpdatedParsed.After(*items[j].UpdatedParsed)
+func compareByUpdateDate(a, b Item) int {
+	if a.UpdatedParsed == nil && b.UpdatedParsed == nil {
+		return 0
 	}
+	if a.UpdatedParsed == nil {
+		return 1
+	}
+	if b.UpdatedParsed == nil {
+		return -1
+	}
+	return b.UpdatedParsed.Compare(*a.UpdatedParsed)
 }
 
-func sortByFeedName(items []Item) func(i, j int) bool {
-	return func(i, j int) bool {
-		if items[i].FeedName == items[j].FeedName {
-			return sortByPublicationDate(items)(i, j)
-		}
-		return items[i].FeedName < items[j].FeedName
+func compareByFeedName(a, b Item) int {
+	if a.FeedName == b.FeedName {
+		return compareByPublicationDate(a, b)
 	}
+	return strings.Compare(a.FeedName, b.FeedName)
 }
 
-func sortByAuthor(items []Item) func(i, j int) bool {
-	return func(i, j int) bool {
-		if items[i].Author == nil {
-			if items[j].Author == nil {
-				return sortByPublicationDate(items)(i, j)
-			}
-			return false
+func compareByAuthor(a, b Item) int {
+	if a.Author == nil {
+		if b.Author == nil {
+			return compareByPublicationDate(a, b)
 		}
-		if items[j].Author == nil {
-			return true
-		}
-		if items[i].Author.Name == items[j].Author.Name {
-			return sortByPublicationDate(items)(i, j)
-		}
-		return items[i].Author.Name < items[j].Author.Name
+		return 1
 	}
+	if b.Author == nil {
+		return -1
+	}
+	if a.Author.Name == b.Author.Name {
+		return compareByPublicationDate(a, b)
+	}
+	return strings.Compare(a.Author.Name, b.Author.Name)
 }
