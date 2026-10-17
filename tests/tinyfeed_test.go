@@ -84,7 +84,7 @@ func TestRunSingleFeed(t *testing.T) {
 			config.Urls = []string{server.URL + "/" + feed}
 			config.Output = outputPath
 
-			err := tinyfeed.Run(config)
+			err := tinyfeed.Run(&config)
 
 			if err != nil {
 				t.Fatal(err)
@@ -114,7 +114,7 @@ func TestRunAllFeeds(t *testing.T) {
 	config.Urls = feedsUrl
 	config.Output = outputPath
 
-	err := tinyfeed.Run(config)
+	err := tinyfeed.Run(&config)
 
 	if err != nil {
 		t.Fatal(err)
