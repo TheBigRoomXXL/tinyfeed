@@ -265,7 +265,7 @@ func TestSortItemsByFeedNameAlphabetical(t *testing.T) {
 	for i, feed := range feeds {
 		items[i] = Item{Item: &gofeed.Item{}, FeedName: feed}
 	}
-	want := []string{"", "B", "Feed", "Feed10", "Feed2", "a", "b"}
+	want := []string{"", "a", "B", "b", "Feed", "Feed10", "Feed2"}
 	got := sortItems(items, "feed-name")
 	for i, w := range want {
 		if got[i].FeedName != w {

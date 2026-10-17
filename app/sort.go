@@ -52,6 +52,14 @@ func compareTimeDesc(a, b *time.Time) int {
 	return b.Compare(*a)
 }
 
+func compareString(a, b string) int {
+	result := strings.Compare(strings.ToLower(a), strings.ToLower(b))
+	if result != 0 {
+		return result
+	}
+	return strings.Compare(a, b)
+}
+
 func compareByPublicationDate(a, b Item) int {
 	return compareTimeDesc(a.PublishedParsed, b.PublishedParsed)
 }
@@ -61,11 +69,11 @@ func compareByUpdateDate(a, b Item) int {
 }
 
 func compareByFeedName(a, b Item) int {
-	return strings.Compare(a.FeedName, b.FeedName)
+	return compareString(a.FeedName, b.FeedName)
 }
 
 func compareByLink(a, b Item) int {
-	return strings.Compare(a.Link, b.Link)
+	return compareString(a.Link, b.Link)
 }
 
 func compareByAuthor(a, b Item) int {
@@ -78,7 +86,7 @@ func compareByAuthor(a, b Item) int {
 	case nameB == "":
 		return -1
 	}
-	return strings.Compare(nameA, nameB)
+	return compareString(nameA, nameB)
 }
 
 // authorName returns the item's author name, or "" when there is no author.
