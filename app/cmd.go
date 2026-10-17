@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 )
 
 // implement flag.Value
@@ -40,7 +41,9 @@ type Config struct {
 	Daemon           bool
 	Interval         int64
 	OrderBy          string
-	Nonce            string
+	// The field bellow are only used during testing to ensure a stable ouput
+	Nonce     string
+	UpdatedAt time.Time
 }
 
 var DefaultConfig = Config{

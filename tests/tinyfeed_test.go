@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	tinyfeed "github.com/TheBigRoomXXL/tinyfeed/app"
 )
@@ -67,6 +68,7 @@ func Snapshot(t *testing.T, result []byte) {
 func BaseConfig() *tinyfeed.Config {
 	c := &tinyfeed.DefaultConfig
 	c.Nonce = "very-stable-nounce"
+	c.UpdatedAt, _ = time.Parse(time.UnixDate, "Mon Jan 2 15:04:05 MST 2006")
 	return c
 }
 

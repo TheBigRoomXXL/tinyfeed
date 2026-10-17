@@ -203,7 +203,10 @@ func printHTML(feeds []*gofeed.Feed, items []Item, config *Config) error {
 	if err != nil {
 		return fmt.Errorf("fail to load HTML template: %w", err)
 	}
-	currDate := time.Now()
+	currDate := config.UpdatedAt
+	if currDate.IsZero() {
+		currDate = time.Now()
+	}
 
 	nonce := config.Nonce
 	if nonce == "" {
