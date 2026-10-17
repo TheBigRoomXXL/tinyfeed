@@ -4,14 +4,14 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+	<title>Feed</title>
 
 	<meta http-equiv="Content-Security-Policy" content="
 		default-src 'none';
 		base-uri 'self';
 		img-src 'self' data: ;
-		style-src 'nonce-9lTB8q3ssNLHaOKSFLywyS6bglj0-8B7U1n0kcO2gl4K23PJ3oiLMZtufjoIZvzF6ueQ3D8H2VNsGIRqBZt0tFby1fMw3nTiIAMdzOqfibzIxwDpA5AxHPjOXl_fBtkBuDxpnlxyqT7xCSLJkexl9iDlpbKKvRCnrnxfzmJbKL5WqSyHNXu1zDMO1d69zI9bvhnhrgi9Kww529oWwh_I1XGf_ZwRRaHCyziW6qg8k3GZST4-aQeB6HqPL8QGkYggubWcc1-1Xg7QQoTtp0N_q0bGGa_7OtMiZk-D67Z_9M59A6F-eOWH3vrhkD3kNKFryDR9vvyCBA_gjdNzn0wMzQ==' ;
-		script-src 'nonce-9lTB8q3ssNLHaOKSFLywyS6bglj0-8B7U1n0kcO2gl4K23PJ3oiLMZtufjoIZvzF6ueQ3D8H2VNsGIRqBZt0tFby1fMw3nTiIAMdzOqfibzIxwDpA5AxHPjOXl_fBtkBuDxpnlxyqT7xCSLJkexl9iDlpbKKvRCnrnxfzmJbKL5WqSyHNXu1zDMO1d69zI9bvhnhrgi9Kww529oWwh_I1XGf_ZwRRaHCyziW6qg8k3GZST4-aQeB6HqPL8QGkYggubWcc1-1Xg7QQoTtp0N_q0bGGa_7OtMiZk-D67Z_9M59A6F-eOWH3vrhkD3kNKFryDR9vvyCBA_gjdNzn0wMzQ==' 'strict-dynamic' ;
+		style-src 'nonce-EuiAr-6x852FxuBkx7GLCO4TXuXtKEEEJfGAtj5NA-GWGxq6jIyfJLIfe4M5I9XKZLmzpoDPDYiWodj6rHk1v2A7FheW3qFTgtWTxO6sZDVz2PeVSUkt3s1rXCj6ULasITEhAq8e3QQciLpD9SkCbHKOC7ZKFtMvtzxQnoBxPCM5E0vF9-aH1XkPuBlxfTky4kyHp9lLrVGpvTJQ1sPAyYOXQLVBnoPfoefUEuoXJ-bcmQD6y7dkSsQCONvtBjnzvhdmlOXZ0aCt2MF-wAqBk4OaxoKFl_KIQyj5BJ9UvPiszdoirRCEnwXuCrOUuSyPjyle_2MZdtUOweYWhLOtwg==' ;
+		script-src 'nonce-EuiAr-6x852FxuBkx7GLCO4TXuXtKEEEJfGAtj5NA-GWGxq6jIyfJLIfe4M5I9XKZLmzpoDPDYiWodj6rHk1v2A7FheW3qFTgtWTxO6sZDVz2PeVSUkt3s1rXCj6ULasITEhAq8e3QQciLpD9SkCbHKOC7ZKFtMvtzxQnoBxPCM5E0vF9-aH1XkPuBlxfTky4kyHp9lLrVGpvTJQ1sPAyYOXQLVBnoPfoefUEuoXJ-bcmQD6y7dkSsQCONvtBjnzvhdmlOXZ0aCt2MF-wAqBk4OaxoKFl_KIQyj5BJ9UvPiszdoirRCEnwXuCrOUuSyPjyle_2MZdtUOweYWhLOtwg==' 'strict-dynamic' ;
     ">
 	<meta name="application-name" content="tinyfeed">
 	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
@@ -19,7 +19,7 @@
 	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
 	<meta name="referrer" content="same-origin">
 
-	<style nonce="9lTB8q3ssNLHaOKSFLywyS6bglj0-8B7U1n0kcO2gl4K23PJ3oiLMZtufjoIZvzF6ueQ3D8H2VNsGIRqBZt0tFby1fMw3nTiIAMdzOqfibzIxwDpA5AxHPjOXl_fBtkBuDxpnlxyqT7xCSLJkexl9iDlpbKKvRCnrnxfzmJbKL5WqSyHNXu1zDMO1d69zI9bvhnhrgi9Kww529oWwh_I1XGf_ZwRRaHCyziW6qg8k3GZST4-aQeB6HqPL8QGkYggubWcc1-1Xg7QQoTtp0N_q0bGGa_7OtMiZk-D67Z_9M59A6F-eOWH3vrhkD3kNKFryDR9vvyCBA_gjdNzn0wMzQ==">
+	<style nonce="EuiAr-6x852FxuBkx7GLCO4TXuXtKEEEJfGAtj5NA-GWGxq6jIyfJLIfe4M5I9XKZLmzpoDPDYiWodj6rHk1v2A7FheW3qFTgtWTxO6sZDVz2PeVSUkt3s1rXCj6ULasITEhAq8e3QQciLpD9SkCbHKOC7ZKFtMvtzxQnoBxPCM5E0vF9-aH1XkPuBlxfTky4kyHp9lLrVGpvTJQ1sPAyYOXQLVBnoPfoefUEuoXJ-bcmQD6y7dkSsQCONvtBjnzvhdmlOXZ0aCt2MF-wAqBk4OaxoKFl_KIQyj5BJ9UvPiszdoirRCEnwXuCrOUuSyPjyle_2MZdtUOweYWhLOtwg==">
 		:root {
 			color-scheme: dark light;
 
@@ -129,7 +129,7 @@
 
 <body>
 	<header>
-		<h1></h1>
+		<h1>Feed</h1>
 		
 	</header>
 	<main>
@@ -178,8 +178,8 @@
 	</main>
 	<footer>
 		<p>Last Updated On:
-			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
-				Saturday, 2026-10-17 11:12:48
+			<time id="update-at" datetime="2026-10-17T11:24:18&#43;02:00">
+				Saturday, 2026-10-17 11:24:18
 			</time>
 		</p>
 		<p>This page aggregate the following feeds:</p>
@@ -193,7 +193,7 @@
 	</footer>
 </body>
 
-<script type="module" nonce="9lTB8q3ssNLHaOKSFLywyS6bglj0-8B7U1n0kcO2gl4K23PJ3oiLMZtufjoIZvzF6ueQ3D8H2VNsGIRqBZt0tFby1fMw3nTiIAMdzOqfibzIxwDpA5AxHPjOXl_fBtkBuDxpnlxyqT7xCSLJkexl9iDlpbKKvRCnrnxfzmJbKL5WqSyHNXu1zDMO1d69zI9bvhnhrgi9Kww529oWwh_I1XGf_ZwRRaHCyziW6qg8k3GZST4-aQeB6HqPL8QGkYggubWcc1-1Xg7QQoTtp0N_q0bGGa_7OtMiZk-D67Z_9M59A6F-eOWH3vrhkD3kNKFryDR9vvyCBA_gjdNzn0wMzQ==">
+<script type="module" nonce="EuiAr-6x852FxuBkx7GLCO4TXuXtKEEEJfGAtj5NA-GWGxq6jIyfJLIfe4M5I9XKZLmzpoDPDYiWodj6rHk1v2A7FheW3qFTgtWTxO6sZDVz2PeVSUkt3s1rXCj6ULasITEhAq8e3QQciLpD9SkCbHKOC7ZKFtMvtzxQnoBxPCM5E0vF9-aH1XkPuBlxfTky4kyHp9lLrVGpvTJQ1sPAyYOXQLVBnoPfoefUEuoXJ-bcmQD6y7dkSsQCONvtBjnzvhdmlOXZ0aCt2MF-wAqBk4OaxoKFl_KIQyj5BJ9UvPiszdoirRCEnwXuCrOUuSyPjyle_2MZdtUOweYWhLOtwg==">
 	const updatedAtElement = document.getElementById("update-at");
 	const date = new Date(updatedAtElement.dateTime);
 	updatedAtElement.innerText = date.toLocaleString(undefined, {

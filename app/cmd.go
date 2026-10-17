@@ -42,13 +42,24 @@ type Config struct {
 	OrderBy          string
 }
 
+var DefaultConfig = Config{
+	Limit:            256,
+	LimitPerFeed:     256,
+	Timeout:          15,
+	RequestSemaphore: 16,
+	Name:             "Feed",
+	Interval:         1440,
+	OrderBy:          "publication-date",
+}
+
 func init() {
 	log.SetOutput(os.Stderr)
 	log.SetFlags(0)
 }
 
 func printHelp() {
-	log.Println(`Aggregate a collection of feeds into static HTML page
+	d := DefaultConfig
+	log.Printf(`Aggregate a collection of feeds into static HTML page
 
 Usage:
   tinyfeed [flags] [FEED_URL ...]
@@ -66,55 +77,57 @@ Flags:
   -D, --daemon               Whether to execute the program in a daemon mode.
   
   Customization flags:
-  -n, --name string          Title of the page. (default "Feed")
+  -n, --name string          Title of the page. (default "%s")
   -d, --description string   Add a description after the name of your page
   -s, --stylesheet string    Link to an external CSS stylesheet
   -S, --script string        Link to an external JavaScript file
   -t, --template string      Path to a custom HTML+Go template file.
 
   Configuration flags:
-  -I, --interval int         Duration in minutes between execution. Ignored if not in daemon mode. (default 1440)
-  -l, --limit int            How many articles to display in total (default 256)
-  -L, --limit-per-feed int   Maximum number of articles to display per feed (default 256)
+  -I, --interval int         Duration in minutes between execution. Ignored if not in daemon mode. (default %d)
+  -l, --limit int            How many articles to display in total (default %d)
+  -L, --limit-per-feed int   Maximum number of articles to display per feed (default %d)
   -q, --quiet                Add this flag to silence warnings.
-  -r, --requests int         How many simultaneous requests can be made (default 16)
-  -T, --timeout int          Timeout to get feeds in seconds (default 15)
-  -O, --order-by string      How to order the articles. Accept 'publication-date', 'update-date', 'feed-name','author'. (default publication-date)
+  -r, --requests int         How many simultaneous requests can be made (default %d)
+  -T, --timeout int          Timeout to get feeds in seconds (default %d)
+  -O, --order-by string      How to order the articles. Accept 'publication-date', 'update-date', 'feed-name','author'. (default %s)
 
   -h, --help                 help for tinyfeed
 
-For the full tinyfeed manual, please visit: https://feed.lovergne.dev/`)
+For the full tinyfeed manual, please visit: https://feed.lovergne.dev/`,
+		d.Name, d.Interval, d.Limit, d.LimitPerFeed, d.RequestSemaphore, d.Timeout, d.OrderBy,
+	)
 	os.Exit(0)
 }
 
 func parseCmd() (*Config, error) {
-	var config Config
+	config := DefaultConfig
 	config.Scripts = make(StringRepeatable, 0)
 	config.Stylesheets = make(StringRepeatable, 0)
 
 	fs := flag.NewFlagSet("tinyfeed", flag.ContinueOnError)
 	fs.Usage = func() {} // Disable default usage message
 
-	fs.IntVar(&config.Limit, "limit", 256, "How many articles to display in total")
-	fs.IntVar(&config.Limit, "l", 256, "How many articles to display in total")
+	fs.IntVar(&config.Limit, "limit", DefaultConfig.Limit, "How many articles to display in total")
+	fs.IntVar(&config.Limit, "l", DefaultConfig.Limit, "How many articles to display in total")
 
-	fs.IntVar(&config.LimitPerFeed, "limit-per-feed", 256, "Maximum number of articles to display per feed")
-	fs.IntVar(&config.LimitPerFeed, "L", 256, "Maximum number of articles to display per feed")
+	fs.IntVar(&config.LimitPerFeed, "limit-per-feed", DefaultConfig.LimitPerFeed, "Maximum number of articles to display per feed")
+	fs.IntVar(&config.LimitPerFeed, "L", DefaultConfig.LimitPerFeed, "Maximum number of articles to display per feed")
 
-	fs.IntVar(&config.RequestSemaphore, "requests", 16, "How many simulaneous requests can be made")
-	fs.IntVar(&config.RequestSemaphore, "r", 16, "How many simulaneous requests can be made")
+	fs.IntVar(&config.RequestSemaphore, "requests", DefaultConfig.RequestSemaphore, "How many simulaneous requests can be made")
+	fs.IntVar(&config.RequestSemaphore, "r", DefaultConfig.RequestSemaphore, "How many simulaneous requests can be made")
 
-	fs.IntVar(&config.Timeout, "timeout", 15, "Timeout to get feeds in seconds")
-	fs.IntVar(&config.Timeout, "T", 15, "Timeout to get feeds in seconds")
+	fs.IntVar(&config.Timeout, "timeout", DefaultConfig.Timeout, "Timeout to get feeds in seconds")
+	fs.IntVar(&config.Timeout, "T", DefaultConfig.Timeout, "Timeout to get feeds in seconds")
 
-	fs.StringVar(&config.Name, "name", "Feed", "Title of the page")
-	fs.StringVar(&config.Name, "n", "Feed", "Title of the page")
+	fs.StringVar(&config.Name, "name", DefaultConfig.Name, "Title of the page")
+	fs.StringVar(&config.Name, "n", DefaultConfig.Name, "Title of the page")
 
-	fs.StringVar(&config.Description, "description", "", "Add a description after the name of your page")
-	fs.StringVar(&config.Description, "d", "", "Add a description after the name of your page")
+	fs.StringVar(&config.Description, "description", DefaultConfig.Description, "Add a description after the name of your page")
+	fs.StringVar(&config.Description, "d", DefaultConfig.Description, "Add a description after the name of your page")
 
-	fs.BoolVar(&config.Quiet, "quiet", false, "Silence warnings")
-	fs.BoolVar(&config.Quiet, "q", false, "Silence warnings")
+	fs.BoolVar(&config.Quiet, "quiet", DefaultConfig.Quiet, "Silence warnings")
+	fs.BoolVar(&config.Quiet, "q", DefaultConfig.Quiet, "Silence warnings")
 
 	fs.Var(&config.Stylesheets, "stylesheet", "Link to an external CSS stylesheet")
 	fs.Var(&config.Stylesheets, "s", "Link to an external CSS stylesheet")
@@ -122,23 +135,23 @@ func parseCmd() (*Config, error) {
 	fs.Var(&config.Scripts, "script", "Link to an external JavaScript file")
 	fs.Var(&config.Scripts, "S", "Link to an external JavaScript file")
 
-	fs.StringVar(&config.TemplatePath, "template", "", "Path to a custom HTML+Go template file")
-	fs.StringVar(&config.TemplatePath, "t", "", "Path to a custom HTML+Go template file")
+	fs.StringVar(&config.TemplatePath, "template", DefaultConfig.TemplatePath, "Path to a custom HTML+Go template file")
+	fs.StringVar(&config.TemplatePath, "t", DefaultConfig.TemplatePath, "Path to a custom HTML+Go template file")
 
-	fs.StringVar(&config.Input, "input", "", "Path to a file with a list of feeds")
-	fs.StringVar(&config.Input, "i", "", "Path to a file with a list of feeds")
+	fs.StringVar(&config.Input, "input", DefaultConfig.Input, "Path to a file with a list of feeds")
+	fs.StringVar(&config.Input, "i", DefaultConfig.Input, "Path to a file with a list of feeds")
 
-	fs.StringVar(&config.Output, "output", "", "Path to a file to save the output to")
-	fs.StringVar(&config.Output, "o", "", "Path to a file to save the output to")
+	fs.StringVar(&config.Output, "output", DefaultConfig.Output, "Path to a file to save the output to")
+	fs.StringVar(&config.Output, "o", DefaultConfig.Output, "Path to a file to save the output to")
 
-	fs.BoolVar(&config.Daemon, "daemon", false, "Whether to execute the program in a daemon mode")
-	fs.BoolVar(&config.Daemon, "D", false, "Whether to execute the program in a daemon mode")
+	fs.BoolVar(&config.Daemon, "daemon", DefaultConfig.Daemon, "Whether to execute the program in a daemon mode")
+	fs.BoolVar(&config.Daemon, "D", DefaultConfig.Daemon, "Whether to execute the program in a daemon mode")
 
-	fs.Int64Var(&config.Interval, "interval", 1440, "Duration in minutes between execution. Ignored if not in daemon mode")
-	fs.Int64Var(&config.Interval, "I", 1440, "Duration in minutes between execution. Ignored if not in daemon mode")
+	fs.Int64Var(&config.Interval, "interval", DefaultConfig.Interval, "Duration in minutes between execution. Ignored if not in daemon mode")
+	fs.Int64Var(&config.Interval, "I", DefaultConfig.Interval, "Duration in minutes between execution. Ignored if not in daemon mode")
 
-	fs.StringVar(&config.OrderBy, "order-by", "publication-date", "How to order the articles")
-	fs.StringVar(&config.OrderBy, "O", "publication-date", "How to order the articles")
+	fs.StringVar(&config.OrderBy, "order-by", DefaultConfig.OrderBy, "How to order the articles")
+	fs.StringVar(&config.OrderBy, "O", DefaultConfig.OrderBy, "How to order the articles")
 
 	args, err := parseFlagsToTheEnd(fs)
 	if err != nil {

@@ -4,14 +4,14 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+	<title>Feed</title>
 
 	<meta http-equiv="Content-Security-Policy" content="
 		default-src 'none';
 		base-uri 'self';
 		img-src 'self' data: ;
-		style-src 'nonce-IGCUEie9SOZwpKdDF4nXbCQxcVGtsf6Z34yQGWofu879wTpTmF8kxChvdhoYdEcyEChGI9HTxo_5QUxS8tXWM0PainW3QTgbXHzfRpxTYGkUAAhhjb5SblYpCkj8c3zzgm8onVRB0p9ZeromEdS4iSS3pV36Z_vJXt6-JLMmrtgOUzZVBIpSgjMgO0L4JbV1JjBMANIozeefAOK6-_hcMTq44ebvFZVOE6FPrggKYPZoonoB6XGnBceNmXSRi3kVx5RkrToIjFR5cQG8LPYwEQqlieZFSDUKoO0MifzgE47r5gBJn7hsxzNTqxOsaq3G_1o55GXvh4kTEHTnf0Unbg==' ;
-		script-src 'nonce-IGCUEie9SOZwpKdDF4nXbCQxcVGtsf6Z34yQGWofu879wTpTmF8kxChvdhoYdEcyEChGI9HTxo_5QUxS8tXWM0PainW3QTgbXHzfRpxTYGkUAAhhjb5SblYpCkj8c3zzgm8onVRB0p9ZeromEdS4iSS3pV36Z_vJXt6-JLMmrtgOUzZVBIpSgjMgO0L4JbV1JjBMANIozeefAOK6-_hcMTq44ebvFZVOE6FPrggKYPZoonoB6XGnBceNmXSRi3kVx5RkrToIjFR5cQG8LPYwEQqlieZFSDUKoO0MifzgE47r5gBJn7hsxzNTqxOsaq3G_1o55GXvh4kTEHTnf0Unbg==' 'strict-dynamic' ;
+		style-src 'nonce-AELnCrTz8RcBr9APxH_jHBNlggxWoMTx1jWyHg4FinQOoH7kFp6Twooerb1rZJNLizNpxmcxuNM6IHqwuY_CSllgIjuy5hHmqEyU6618AttW70-FO0h3m6HCFfy8JSdjJn0YYHl7Qom-jQwbIF3WiG5UfgneRCuYwM5sChixkJkg3-iGSWPtzrCL1GRR6gxRwDbZ15NZCPF9t4A1M2GmuRM29IoZ8kBOtOnptU8gyV0-ZOTmECDAogQGV664NGxfhuREDmbn8Aa0mPRD-F0FLuoqYqjkkz1qiJAAXGMeH-bB6mLUIUn0ZWzzsjNqZz4MzGCjOXyf3LRCW9rD9cuyOA==' ;
+		script-src 'nonce-AELnCrTz8RcBr9APxH_jHBNlggxWoMTx1jWyHg4FinQOoH7kFp6Twooerb1rZJNLizNpxmcxuNM6IHqwuY_CSllgIjuy5hHmqEyU6618AttW70-FO0h3m6HCFfy8JSdjJn0YYHl7Qom-jQwbIF3WiG5UfgneRCuYwM5sChixkJkg3-iGSWPtzrCL1GRR6gxRwDbZ15NZCPF9t4A1M2GmuRM29IoZ8kBOtOnptU8gyV0-ZOTmECDAogQGV664NGxfhuREDmbn8Aa0mPRD-F0FLuoqYqjkkz1qiJAAXGMeH-bB6mLUIUn0ZWzzsjNqZz4MzGCjOXyf3LRCW9rD9cuyOA==' 'strict-dynamic' ;
     ">
 	<meta name="application-name" content="tinyfeed">
 	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
@@ -19,7 +19,7 @@
 	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
 	<meta name="referrer" content="same-origin">
 
-	<style nonce="IGCUEie9SOZwpKdDF4nXbCQxcVGtsf6Z34yQGWofu879wTpTmF8kxChvdhoYdEcyEChGI9HTxo_5QUxS8tXWM0PainW3QTgbXHzfRpxTYGkUAAhhjb5SblYpCkj8c3zzgm8onVRB0p9ZeromEdS4iSS3pV36Z_vJXt6-JLMmrtgOUzZVBIpSgjMgO0L4JbV1JjBMANIozeefAOK6-_hcMTq44ebvFZVOE6FPrggKYPZoonoB6XGnBceNmXSRi3kVx5RkrToIjFR5cQG8LPYwEQqlieZFSDUKoO0MifzgE47r5gBJn7hsxzNTqxOsaq3G_1o55GXvh4kTEHTnf0Unbg==">
+	<style nonce="AELnCrTz8RcBr9APxH_jHBNlggxWoMTx1jWyHg4FinQOoH7kFp6Twooerb1rZJNLizNpxmcxuNM6IHqwuY_CSllgIjuy5hHmqEyU6618AttW70-FO0h3m6HCFfy8JSdjJn0YYHl7Qom-jQwbIF3WiG5UfgneRCuYwM5sChixkJkg3-iGSWPtzrCL1GRR6gxRwDbZ15NZCPF9t4A1M2GmuRM29IoZ8kBOtOnptU8gyV0-ZOTmECDAogQGV664NGxfhuREDmbn8Aa0mPRD-F0FLuoqYqjkkz1qiJAAXGMeH-bB6mLUIUn0ZWzzsjNqZz4MzGCjOXyf3LRCW9rD9cuyOA==">
 		:root {
 			color-scheme: dark light;
 
@@ -129,7 +129,7 @@
 
 <body>
 	<header>
-		<h1></h1>
+		<h1>Feed</h1>
 		
 	</header>
 	<main>
@@ -3467,15 +3467,15 @@
 	</main>
 	<footer>
 		<p>Last Updated On:
-			<time id="update-at" datetime="2026-10-17T11:17:06&#43;02:00">
-				Saturday, 2026-10-17 11:17:06
+			<time id="update-at" datetime="2026-10-17T11:24:19&#43;02:00">
+				Saturday, 2026-10-17 11:24:19
 			</time>
 		</p>
 		<p>This page aggregate the following feeds:</p>
 		<div class="feed-list">
 			
 			<div>
-				<a href="https://nobloat.org" target="_blank">][ nobloat.org</a>
+				<a href="https://wizardzines.com" target="_blank">Wizard Zines</a>
 			</div>
 			
 			<div>
@@ -3483,55 +3483,11 @@
 			</div>
 			
 			<div>
-				<a href="https://paravoce.bearblog.dev/" target="_blank">ParaVocê Dev Blog</a>
+				<a href="https://nobloat.org" target="_blank">][ nobloat.org</a>
 			</div>
 			
 			<div>
-				<a href="https://adactio.com/journal/" target="_blank">Adactio: Journal</a>
-			</div>
-			
-			<div>
-				<a href="https://joshcollinsworth.com" target="_blank">Josh Collinsworth</a>
-			</div>
-			
-			<div>
-				<a href="https://blog.danslimmon.com" target="_blank">Dan Slimmon</a>
-			</div>
-			
-			<div>
-				<a href="https://serversfor.dev/" target="_blank">serversfor.dev</a>
-			</div>
-			
-			<div>
-				<a href="https://www.safjan.com/" target="_blank">Krystian Safjan&#39;s Blog</a>
-			</div>
-			
-			<div>
-				<a href="https://samcurry.net" target="_blank">Blog | Sam Curry</a>
-			</div>
-			
-			<div>
-				<a href="https://blog.janestreet.com" target="_blank">Jane Street Blog</a>
-			</div>
-			
-			<div>
-				<a href="https://blog.isosceles.com/" target="_blank">Isosceles Blog</a>
-			</div>
-			
-			<div>
-				<a href="https://btao.org/" target="_blank">Tao Bojlén</a>
-			</div>
-			
-			<div>
-				<a href="https://tonsky.me/" target="_blank">tonsky.me</a>
-			</div>
-			
-			<div>
-				<a href="https://solar.lowtechmagazine.com/posts/" target="_blank">LOW←TECH MAGAZINE English</a>
-			</div>
-			
-			<div>
-				<a href="https://sethmlarson.dev/" target="_blank">Seth Larson</a>
+				<a href="https://bell.bz/" target="_blank">Andy Bell</a>
 			</div>
 			
 			<div>
@@ -3539,27 +3495,59 @@
 			</div>
 			
 			<div>
-				<a href="https://wizardzines.com" target="_blank">Wizard Zines</a>
+				<a href="https://adactio.com/journal/" target="_blank">Adactio: Journal</a>
 			</div>
 			
 			<div>
-				<a href="https://buttondown.com/hillelwayne" target="_blank">Computer Things</a>
+				<a href="https://samcurry.net" target="_blank">Blog | Sam Curry</a>
 			</div>
 			
 			<div>
-				<a href="https://val.packett.cool/blog/" target="_blank">Val Packett&#39;s Blog</a>
+				<a href="https://tonsky.me/" target="_blank">tonsky.me</a>
 			</div>
 			
 			<div>
-				<a href="https://jakelazaroff.com/" target="_blank">jakelazaroff.com</a>
+				<a href="https://blog.danslimmon.com" target="_blank">Dan Slimmon</a>
 			</div>
 			
 			<div>
-				<a href="https://www.jsonfeed.org/" target="_blank">JSON Feed</a>
+				<a href="https://antithesis.com/" target="_blank">Antithesis blog</a>
 			</div>
 			
 			<div>
-				<a href="https://victoriametrics.com/" target="_blank">VictoriaMetrics: Simple, Reliable &amp; Efficient Observability on VictoriaMetrics</a>
+				<a href="https://www.safjan.com/" target="_blank">Krystian Safjan&#39;s Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://solar.lowtechmagazine.com/posts/" target="_blank">LOW←TECH MAGAZINE English</a>
+			</div>
+			
+			<div>
+				<a href="https://paravoce.bearblog.dev/" target="_blank">ParaVocê Dev Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://serversfor.dev/" target="_blank">serversfor.dev</a>
+			</div>
+			
+			<div>
+				<a href="https://rhodesmill.org/brandon/feed/" target="_blank">Let&#39;s Discuss the Matter Further</a>
+			</div>
+			
+			<div>
+				<a href="https://sethmlarson.dev/" target="_blank">Seth Larson</a>
+			</div>
+			
+			<div>
+				<a href="https://j3s.sh/" target="_blank">j3s.sh</a>
+			</div>
+			
+			<div>
+				<a href="https://www.troyhunt.com/" target="_blank">Troy Hunt&#39;s Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://internals-for-interns.com/" target="_blank">Internals for Interns</a>
 			</div>
 			
 			<div>
@@ -3567,11 +3555,67 @@
 			</div>
 			
 			<div>
-				<a href="http://journal.stuffwithstuff.com/" target="_blank">journal.stuffwithstuff.com</a>
+				<a href="https://hamvocke.com/" target="_blank">Ham Vocke</a>
+			</div>
+			
+			<div>
+				<a href="https://victoriametrics.com/" target="_blank">VictoriaMetrics: Simple, Reliable &amp; Efficient Observability on VictoriaMetrics</a>
+			</div>
+			
+			<div>
+				<a href="https://ferd.ca/" target="_blank">Ferd.ca</a>
+			</div>
+			
+			<div>
+				<a href="https://sixcolors.com/?feed=json" target="_blank">Six Colors</a>
+			</div>
+			
+			<div>
+				<a href="https://joshcollinsworth.com" target="_blank">Josh Collinsworth</a>
+			</div>
+			
+			<div>
+				<a href="https://blog.isosceles.com/" target="_blank">Isosceles Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://jakelazaroff.com/" target="_blank">jakelazaroff.com</a>
+			</div>
+			
+			<div>
+				<a href="https://btao.org/" target="_blank">Tao Bojlén</a>
+			</div>
+			
+			<div>
+				<a href="https://blog.janestreet.com" target="_blank">Jane Street Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://lewiscampbell.tech/" target="_blank">Lewis Campbell&#39;s Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://www.jsonfeed.org/" target="_blank">JSON Feed</a>
+			</div>
+			
+			<div>
+				<a href="https://wickstrom.tech/" target="_blank">Oskar Wickström</a>
 			</div>
 			
 			<div>
 				<a href="https://blog.codingconfessions.com" target="_blank">Confessions of a Code Addict</a>
+			</div>
+			
+			<div>
+				<a href="https://jvns.ca" target="_blank">Julia Evans</a>
+			</div>
+			
+			<div>
+				<a href="https://www.willem.dev/articles/" target="_blank">Boost Your Go/Golang Skills, One Article at a Time.</a>
+			</div>
+			
+			<div>
+				<a href="https://cliffle.com" target="_blank">Cliffle</a>
 			</div>
 			
 			<div>
@@ -3583,7 +3627,11 @@
 			</div>
 			
 			<div>
-				<a href="https://www.willem.dev/articles/" target="_blank">Boost Your Go/Golang Skills, One Article at a Time.</a>
+				<a href="https://www.openmymind.net/" target="_blank">openmymind.net</a>
+			</div>
+			
+			<div>
+				<a href="https://mastodon.social/@hytradboi" target="_blank">hytradboi</a>
 			</div>
 			
 			<div>
@@ -3591,11 +3639,31 @@
 			</div>
 			
 			<div>
-				<a href="https://sixcolors.com/?feed=json" target="_blank">Six Colors</a>
+				<a href="https://daniel.do" target="_blank">Daniel Immke</a>
+			</div>
+			
+			<div>
+				<a href="https://developer.mozilla.org/en-US/blog/" target="_blank">MDN Blog</a>
+			</div>
+			
+			<div>
+				<a href="http://journal.stuffwithstuff.com/" target="_blank">journal.stuffwithstuff.com</a>
+			</div>
+			
+			<div>
+				<a href="https://raphaelkabo.com/" target="_blank">Raphael Kabo&#39;s blog</a>
+			</div>
+			
+			<div>
+				<a href="https://bitbashing.io/" target="_blank">Bit Bashing</a>
 			</div>
 			
 			<div>
 				<a href="https://www.bitecode.dev" target="_blank">Bite code!</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCRSg-mANRvOGLkV30EyW4jw" target="_blank">Blue Turtle</a>
 			</div>
 			
 			<div>
@@ -3607,71 +3675,7 @@
 			</div>
 			
 			<div>
-				<a href="https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ" target="_blank">Acerola</a>
-			</div>
-			
-			<div>
-				<a href="https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q" target="_blank">Not An Engineer</a>
-			</div>
-			
-			<div>
-				<a href="https://www.youtube.com/channel/UCRSg-mANRvOGLkV30EyW4jw" target="_blank">Blue Turtle</a>
-			</div>
-			
-			<div>
-				<a href="https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g" target="_blank">Cup O&#39; Go</a>
-			</div>
-			
-			<div>
-				<a href="https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA" target="_blank">Adam Savage’s Tested</a>
-			</div>
-			
-			<div>
-				<a href="https://www.openmymind.net/" target="_blank">openmymind.net</a>
-			</div>
-			
-			<div>
-				<a href="https://mastodon.social/@hytradboi" target="_blank">hytradboi</a>
-			</div>
-			
-			<div>
-				<a href="https://wickstrom.tech/" target="_blank">Oskar Wickström</a>
-			</div>
-			
-			<div>
-				<a href="https://cargocollective.com" target="_blank">Sage Jenson</a>
-			</div>
-			
-			<div>
-				<a href="https://jvns.ca" target="_blank">Julia Evans</a>
-			</div>
-			
-			<div>
-				<a href="https://changelog.com/" target="_blank">Changelog</a>
-			</div>
-			
-			<div>
-				<a href="https://raphaelkabo.com/" target="_blank">Raphael Kabo&#39;s blog</a>
-			</div>
-			
-			<div>
-				<a href="https://daniel.do" target="_blank">Daniel Immke</a>
-			</div>
-			
-			<div>
-				<a href="https://lewiscampbell.tech/" target="_blank">Lewis Campbell&#39;s Blog</a>
-			</div>
-			
-			<div>
-				<a href="https://chriscoyier.net" target="_blank">Chris Coyier</a>
-			</div>
-			
-			<div>
-				<a href="https://lukeplant.me.uk/blog/" target="_blank">Luke Plant&#39;s home page</a>
-			</div>
-			
-			<div>
-				<a href="https://daringfireball.net/" target="_blank">Daring Fireball</a>
+				<a href="https://example.com" target="_blank">Feed</a>
 			</div>
 			
 			<div>
@@ -3679,43 +3683,31 @@
 			</div>
 			
 			<div>
+				<a href="https://daringfireball.net/" target="_blank">Daring Fireball</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ" target="_blank">Acerola</a>
+			</div>
+			
+			<div>
+				<a href="https://cargocollective.com" target="_blank">Sage Jenson</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q" target="_blank">Not An Engineer</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g" target="_blank">Cup O&#39; Go</a>
+			</div>
+			
+			<div>
+				<a href="https://grantslatton.com/" target="_blank">Grant Slatton&#39;s Blog</a>
+			</div>
+			
+			<div>
 				<a href="https://example.com" target="_blank">Feed</a>
-			</div>
-			
-			<div>
-				<a href="https://bitbashing.io/" target="_blank">Bit Bashing</a>
-			</div>
-			
-			<div>
-				<a href="https://example.com" target="_blank">Feed</a>
-			</div>
-			
-			<div>
-				<a href="https://developer.mozilla.org/en-US/blog/" target="_blank">MDN Blog</a>
-			</div>
-			
-			<div>
-				<a href="https://rhodesmill.org/brandon/feed/" target="_blank">Let&#39;s Discuss the Matter Further</a>
-			</div>
-			
-			<div>
-				<a href="https://hamvocke.com/" target="_blank">Ham Vocke</a>
-			</div>
-			
-			<div>
-				<a href="https://dave.cheney.net" target="_blank">Dave Cheney</a>
-			</div>
-			
-			<div>
-				<a href="https://www.troyhunt.com/" target="_blank">Troy Hunt&#39;s Blog</a>
-			</div>
-			
-			<div>
-				<a href="https://j3s.sh/" target="_blank">j3s.sh</a>
-			</div>
-			
-			<div>
-				<a href="https://bell.bz/" target="_blank">Andy Bell</a>
 			</div>
 			
 			<div>
@@ -3723,19 +3715,27 @@
 			</div>
 			
 			<div>
-				<a href="https://ferd.ca/" target="_blank">Ferd.ca</a>
+				<a href="https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA" target="_blank">Adam Savage’s Tested</a>
 			</div>
 			
 			<div>
-				<a href="https://antithesis.com/" target="_blank">Antithesis blog</a>
+				<a href="https://changelog.com/" target="_blank">Changelog</a>
 			</div>
 			
 			<div>
-				<a href="https://internals-for-interns.com/" target="_blank">Internals for Interns</a>
+				<a href="https://lukeplant.me.uk/blog/" target="_blank">Luke Plant&#39;s home page</a>
 			</div>
 			
 			<div>
-				<a href="https://petemillspaugh.com" target="_blank">Pete Millspaugh</a>
+				<a href="https://chriscoyier.net" target="_blank">Chris Coyier</a>
+			</div>
+			
+			<div>
+				<a href="https://dave.cheney.net" target="_blank">Dave Cheney</a>
+			</div>
+			
+			<div>
+				<a href="https://buttondown.com/hillelwayne" target="_blank">Computer Things</a>
 			</div>
 			
 			<div>
@@ -3747,7 +3747,11 @@
 			</div>
 			
 			<div>
-				<a href="https://cliffle.com" target="_blank">Cliffle</a>
+				<a href="https://petemillspaugh.com" target="_blank">Pete Millspaugh</a>
+			</div>
+			
+			<div>
+				<a href="https://val.packett.cool/blog/" target="_blank">Val Packett&#39;s Blog</a>
 			</div>
 			
 			<div>
@@ -3755,15 +3759,11 @@
 			</div>
 			
 			<div>
-				<a href="https://grantslatton.com/" target="_blank">Grant Slatton&#39;s Blog</a>
+				<a href="https://htmx.org" target="_blank">&lt;/&gt; htmx - high power tools for html</a>
 			</div>
 			
 			<div>
 				<a href="http://brooker.co.za/blog/" target="_blank">Marc Brooker&#39;s Blog</a>
-			</div>
-			
-			<div>
-				<a href="https://htmx.org" target="_blank">&lt;/&gt; htmx - high power tools for html</a>
 			</div>
 			
 			<div>
@@ -3782,7 +3782,7 @@
 	</footer>
 </body>
 
-<script type="module" nonce="IGCUEie9SOZwpKdDF4nXbCQxcVGtsf6Z34yQGWofu879wTpTmF8kxChvdhoYdEcyEChGI9HTxo_5QUxS8tXWM0PainW3QTgbXHzfRpxTYGkUAAhhjb5SblYpCkj8c3zzgm8onVRB0p9ZeromEdS4iSS3pV36Z_vJXt6-JLMmrtgOUzZVBIpSgjMgO0L4JbV1JjBMANIozeefAOK6-_hcMTq44ebvFZVOE6FPrggKYPZoonoB6XGnBceNmXSRi3kVx5RkrToIjFR5cQG8LPYwEQqlieZFSDUKoO0MifzgE47r5gBJn7hsxzNTqxOsaq3G_1o55GXvh4kTEHTnf0Unbg==">
+<script type="module" nonce="AELnCrTz8RcBr9APxH_jHBNlggxWoMTx1jWyHg4FinQOoH7kFp6Twooerb1rZJNLizNpxmcxuNM6IHqwuY_CSllgIjuy5hHmqEyU6618AttW70-FO0h3m6HCFfy8JSdjJn0YYHl7Qom-jQwbIF3WiG5UfgneRCuYwM5sChixkJkg3-iGSWPtzrCL1GRR6gxRwDbZ15NZCPF9t4A1M2GmuRM29IoZ8kBOtOnptU8gyV0-ZOTmECDAogQGV664NGxfhuREDmbn8Aa0mPRD-F0FLuoqYqjkkz1qiJAAXGMeH-bB6mLUIUn0ZWzzsjNqZz4MzGCjOXyf3LRCW9rD9cuyOA==">
 	const updatedAtElement = document.getElementById("update-at");
 	const date = new Date(updatedAtElement.dateTime);
 	updatedAtElement.innerText = date.toLocaleString(undefined, {

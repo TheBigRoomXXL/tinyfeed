@@ -65,13 +65,7 @@ func Snapshot(t *testing.T, result []byte) {
 }
 
 func BaseConfig() *tinyfeed.Config {
-	return &tinyfeed.Config{
-		Timeout:          1,
-		RequestSemaphore: 16,
-		Limit:            256,
-		LimitPerFeed:     256,
-		OrderBy:          "publication-date",
-	}
+	return &tinyfeed.DefaultConfig
 }
 
 func TestRunSingleFeed(t *testing.T) {
