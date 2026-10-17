@@ -11,13 +11,13 @@ func sortItems(items []Item, orderBy string) []Item {
 
 	switch orderBy {
 	case "publication-date":
-		cmp = compareChained(compareByPublicationDate, compareByUpdateDate, compareByAuthor, compareByFeedName)
+		cmp = compareChained(compareByPublicationDate, compareByUpdateDate, compareByAuthor, compareByFeedName, compareByLink)
 	case "update-date":
-		cmp = compareChained(compareByUpdateDate, compareByPublicationDate, compareByAuthor, compareByFeedName)
+		cmp = compareChained(compareByUpdateDate, compareByPublicationDate, compareByAuthor, compareByFeedName, compareByLink)
 	case "feed-name":
-		cmp = compareChained(compareByFeedName, compareByPublicationDate, compareByUpdateDate, compareByAuthor)
+		cmp = compareChained(compareByFeedName, compareByPublicationDate, compareByUpdateDate, compareByAuthor, compareByLink)
 	case "author":
-		cmp = compareChained(compareByAuthor, compareByPublicationDate, compareByUpdateDate, compareByFeedName)
+		cmp = compareChained(compareByAuthor, compareByPublicationDate, compareByUpdateDate, compareByFeedName, compareByLink)
 	default:
 		panic("invalid orderBy")
 	}
@@ -62,6 +62,10 @@ func compareByUpdateDate(a, b Item) int {
 
 func compareByFeedName(a, b Item) int {
 	return strings.Compare(a.FeedName, b.FeedName)
+}
+
+func compareByLink(a, b Item) int {
+	return strings.Compare(a.Link, b.Link)
 }
 
 func compareByAuthor(a, b Item) int {
