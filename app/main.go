@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"slices"
 	"sync"
 	"syscall"
 	"time"
@@ -95,39 +96,29 @@ func Run(config *Config) error {
 }
 
 func parseFeeds(url_list []string, config *Config) []*gofeed.Feed {
-	var sem = make(chan struct{}, config.RequestSemaphore)
-	var results = make(chan *gofeed.Feed)
+	sem := make(chan struct{}, config.RequestSemaphore)
+	results := make([]*gofeed.Feed, len(url_list))
 	var wg sync.WaitGroup
-	wg.Add(len(url_list))
 
 	fp := gofeed.NewParser()
 	fp.UserAgent = "tinyfeed/v1"
 	fp.Client = &http.Client{Timeout: time.Duration(config.Timeout * int(time.Second))}
 
-	for _, url := range url_list {
-		go func(url string) {
-			defer func() {
-				wg.Done()
-				<-sem
-			}()
+	for i, url := range url_list {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
 			sem <- struct{}{}
-			results <- parseFeed(url, fp, config)
-		}(url)
+			defer func() { <-sem }()
+			results[i] = parseFeed(url, fp, config)
+		}()
 	}
+	wg.Wait()
 
-	go func() {
-		wg.Wait()
-		close(sem)
-		close(results)
-	}()
+	// Discard failed fetch
+	success := slices.DeleteFunc(results, func(f *gofeed.Feed) bool { return f == nil })
 
-	feeds := []*gofeed.Feed{}
-	for feed := range results {
-		if feed != nil {
-			feeds = append(feeds, feed)
-		}
-	}
-	return feeds
+	return success
 }
 
 func parseFeed(url string, fp *gofeed.Parser, config *Config) *gofeed.Feed {
