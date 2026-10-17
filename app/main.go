@@ -134,6 +134,7 @@ func parseFeed(url string, fp *gofeed.Parser, config *Config) *gofeed.Feed {
 		feed.FeedLink = url
 	}
 
+	sortFeedItems(feed, config.OrderBy)
 	feed.Items = feed.Items[:min(len(feed.Items), config.LimitPerFeed)]
 
 	return feed

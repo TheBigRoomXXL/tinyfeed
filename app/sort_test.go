@@ -326,3 +326,23 @@ func TestSortItemsEmptyAuthorEqualsMissing(t *testing.T) {
 		}
 	}
 }
+
+func TestSortFeedItemsBeforeLimit(t *testing.T) {
+	base := time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)
+	var items []*gofeed.Item
+	for i := range 5 {
+		published := base.AddDate(0, 0, i)
+		items = append(items, &gofeed.Item{Title: published.Format(time.DateOnly), PublishedParsed: &published})
+	}
+	feed := &gofeed.Feed{Title: "Oldest First", Items: items}
+
+	sortFeedItems(feed, "publication-date")
+	limited := feed.Items[:2]
+
+	want := []string{"2026-01-05", "2026-01-04"}
+	for i, item := range limited {
+		if item.Title != want[i] {
+			t.Errorf("item %d = %q, want %q", i, item.Title, want[i])
+		}
+	}
+}

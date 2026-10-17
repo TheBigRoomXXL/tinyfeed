@@ -4,26 +4,37 @@ import (
 	"slices"
 	"strings"
 	"time"
+
+	"github.com/mmcdole/gofeed"
 )
 
 func sortItems(items []Item, orderBy string) []Item {
-	var cmp func(a, b Item) int
+	slices.SortStableFunc(items, itemComparator(orderBy))
+	return items
+}
 
+// sortFeedItems sorts a single feed's items in place using the same order as
+// sortItems, so that truncating them keeps the items that would be displayed.
+func sortFeedItems(feed *gofeed.Feed, orderBy string) {
+	cmp := itemComparator(orderBy)
+	slices.SortStableFunc(feed.Items, func(a, b *gofeed.Item) int {
+		return cmp(Item{a, feed.Title}, Item{b, feed.Title})
+	})
+}
+
+func itemComparator(orderBy string) func(a, b Item) int {
 	switch orderBy {
 	case "publication-date":
-		cmp = compareChained(compareByPublicationDate, compareByUpdateDate, compareByAuthor, compareByFeedName, compareByLink)
+		return compareChained(compareByPublicationDate, compareByUpdateDate, compareByAuthor, compareByFeedName, compareByLink)
 	case "update-date":
-		cmp = compareChained(compareByUpdateDate, compareByPublicationDate, compareByAuthor, compareByFeedName, compareByLink)
+		return compareChained(compareByUpdateDate, compareByPublicationDate, compareByAuthor, compareByFeedName, compareByLink)
 	case "feed-name":
-		cmp = compareChained(compareByFeedName, compareByPublicationDate, compareByUpdateDate, compareByAuthor, compareByLink)
+		return compareChained(compareByFeedName, compareByPublicationDate, compareByUpdateDate, compareByAuthor, compareByLink)
 	case "author":
-		cmp = compareChained(compareByAuthor, compareByPublicationDate, compareByUpdateDate, compareByFeedName, compareByLink)
+		return compareChained(compareByAuthor, compareByPublicationDate, compareByUpdateDate, compareByFeedName, compareByLink)
 	default:
 		panic("invalid orderBy")
 	}
-
-	slices.SortStableFunc(items, cmp)
-	return items
 }
 
 // compareChained returns a comparison that applies each cmp in order and
