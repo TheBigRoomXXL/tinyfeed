@@ -65,10 +65,10 @@ func Snapshot(t *testing.T, result []byte) {
 	}
 }
 
-func BaseConfig() *tinyfeed.Config {
-	c := &tinyfeed.DefaultConfig
+func BaseConfig() tinyfeed.Config {
+	c := tinyfeed.DefaultConfig
 	c.Nonce = "very-stable-nounce"
-	c.UpdatedAt, _ = time.Parse(time.UnixDate, "Mon Jan 2 15:04:05 MST 2006")
+	c.UpdatedAt = time.Date(2006, 1, 2, 3, 4, 5, 6, time.UTC)
 	return c
 }
 
