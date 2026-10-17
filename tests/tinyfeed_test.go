@@ -65,7 +65,9 @@ func Snapshot(t *testing.T, result []byte) {
 }
 
 func BaseConfig() *tinyfeed.Config {
-	return &tinyfeed.DefaultConfig
+	c := &tinyfeed.DefaultConfig
+	c.Nonce = "very-stable-nounce"
+	return c
 }
 
 func TestRunSingleFeed(t *testing.T) {

@@ -205,6 +205,11 @@ func printHTML(feeds []*gofeed.Feed, items []Item, config *Config) error {
 	}
 	currDate := time.Now()
 
+	nonce := config.Nonce
+	if nonce == "" {
+		nonce = generateNonce(256)
+	}
+
 	data := struct {
 		// Metadata is an arbitrary map, there is no backward compatibility promise on it's content.
 		// Changing it's content won't be concidered breaking change. (But we keep it as stable as possible)
@@ -219,7 +224,7 @@ func printHTML(feeds []*gofeed.Feed, items []Item, config *Config) error {
 		Metadata: map[string]string{
 			"name":            config.Name,
 			"description":     config.Description,
-			"nonce":           generateNonce(256),
+			"nonce":           nonce,
 			"day":             currDate.Weekday().String(),
 			"datetime":        currDate.Format(time.DateTime),
 			"datetimeRFC3339": currDate.Format(time.RFC3339),

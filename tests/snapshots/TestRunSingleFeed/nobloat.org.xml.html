@@ -10,8 +10,8 @@
 		default-src 'none';
 		base-uri 'self';
 		img-src 'self' data: ;
-		style-src 'nonce-pFK71fz1PZbu2j_872lSqxplRFVPk8s3q4PQ7e8HHotNkKKGSwVGIQejt9ZO1HtBNhjPd1PfIsxXxgi7lJh1mw93T9pznPhhn5kJI7cvFBzxqKfPqLqqOkUEiAcR_jof0sWk7Lj2r6NLFu4KzalAV6wn-NKCHcFCm5n5qP3oIhXJZYbFVR1r8JKknQQ4brmpVmMr1o7rbEMO0DD_6QAhBPSpV8VnkKZbWCDAwxSfXJGDzSRj9j7wY2zmIEzUQNkCkAvHPWV5I1MN4b9gABqQCoBHe-Xc6XOhVVB5KCUXTMdD3iZBk2IrJ_FakgxPgqDy_dAxwKH6lw2pjIS3OJOCZQ==' ;
-		script-src 'nonce-pFK71fz1PZbu2j_872lSqxplRFVPk8s3q4PQ7e8HHotNkKKGSwVGIQejt9ZO1HtBNhjPd1PfIsxXxgi7lJh1mw93T9pznPhhn5kJI7cvFBzxqKfPqLqqOkUEiAcR_jof0sWk7Lj2r6NLFu4KzalAV6wn-NKCHcFCm5n5qP3oIhXJZYbFVR1r8JKknQQ4brmpVmMr1o7rbEMO0DD_6QAhBPSpV8VnkKZbWCDAwxSfXJGDzSRj9j7wY2zmIEzUQNkCkAvHPWV5I1MN4b9gABqQCoBHe-Xc6XOhVVB5KCUXTMdD3iZBk2IrJ_FakgxPgqDy_dAxwKH6lw2pjIS3OJOCZQ==' 'strict-dynamic' ;
+		style-src 'nonce-very-stable-nounce' ;
+		script-src 'nonce-very-stable-nounce' 'strict-dynamic' ;
     ">
 	<meta name="application-name" content="tinyfeed">
 	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
@@ -19,7 +19,7 @@
 	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
 	<meta name="referrer" content="same-origin">
 
-	<style nonce="pFK71fz1PZbu2j_872lSqxplRFVPk8s3q4PQ7e8HHotNkKKGSwVGIQejt9ZO1HtBNhjPd1PfIsxXxgi7lJh1mw93T9pznPhhn5kJI7cvFBzxqKfPqLqqOkUEiAcR_jof0sWk7Lj2r6NLFu4KzalAV6wn-NKCHcFCm5n5qP3oIhXJZYbFVR1r8JKknQQ4brmpVmMr1o7rbEMO0DD_6QAhBPSpV8VnkKZbWCDAwxSfXJGDzSRj9j7wY2zmIEzUQNkCkAvHPWV5I1MN4b9gABqQCoBHe-Xc6XOhVVB5KCUXTMdD3iZBk2IrJ_FakgxPgqDy_dAxwKH6lw2pjIS3OJOCZQ==">
+	<style nonce="very-stable-nounce">
 		:root {
 			color-scheme: dark light;
 
@@ -178,8 +178,8 @@
 	</main>
 	<footer>
 		<p>Last Updated On:
-			<time id="update-at" datetime="2026-10-17T11:24:18&#43;02:00">
-				Saturday, 2026-10-17 11:24:18
+			<time id="update-at" datetime="2026-10-17T11:35:34&#43;02:00">
+				Saturday, 2026-10-17 11:35:34
 			</time>
 		</p>
 		<p>This page aggregate the following feeds:</p>
@@ -193,7 +193,7 @@
 	</footer>
 </body>
 
-<script type="module" nonce="pFK71fz1PZbu2j_872lSqxplRFVPk8s3q4PQ7e8HHotNkKKGSwVGIQejt9ZO1HtBNhjPd1PfIsxXxgi7lJh1mw93T9pznPhhn5kJI7cvFBzxqKfPqLqqOkUEiAcR_jof0sWk7Lj2r6NLFu4KzalAV6wn-NKCHcFCm5n5qP3oIhXJZYbFVR1r8JKknQQ4brmpVmMr1o7rbEMO0DD_6QAhBPSpV8VnkKZbWCDAwxSfXJGDzSRj9j7wY2zmIEzUQNkCkAvHPWV5I1MN4b9gABqQCoBHe-Xc6XOhVVB5KCUXTMdD3iZBk2IrJ_FakgxPgqDy_dAxwKH6lw2pjIS3OJOCZQ==">
+<script type="module" nonce="very-stable-nounce">
 	const updatedAtElement = document.getElementById("update-at");
 	const date = new Date(updatedAtElement.dateTime);
 	updatedAtElement.innerText = date.toLocaleString(undefined, {

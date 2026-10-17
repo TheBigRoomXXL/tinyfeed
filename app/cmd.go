@@ -40,6 +40,7 @@ type Config struct {
 	Daemon           bool
 	Interval         int64
 	OrderBy          string
+	Nonce            string
 }
 
 var DefaultConfig = Config{
