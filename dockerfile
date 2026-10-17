@@ -1,7 +1,7 @@
 # ╔═════════════════════════════════════════════════╗
 # ║                  BUILD STAGE                    ║
 # ╚═════════════════════════════════════════════════╝
-FROM golang:1.23.1-alpine3.20 AS build
+FROM golang:1.26.9-alpine3.24 AS build
 
 # Install the dependencies
 RUN apk add upx
