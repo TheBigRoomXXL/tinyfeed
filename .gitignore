@@ -28,3 +28,4 @@ builds/
 # Generated documentation site
 site/
 .cache/
+coverprof
