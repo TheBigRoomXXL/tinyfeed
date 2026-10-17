@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-d8Fp0P0NBL1QGYPlzd8D3ko6o8a5OBRuFFbGCcczg82NUyEoq-xRIfi3VM9FkV5-fHafQnleClnTGVPVw4wkE5mxTAOVWSlaHWibo0Pv7w5weNu9yQf_PATKKXVdsDjgfCCOhvGaiU5Xu59yZU18Xm5aJKusTqp8uOWHgYFyVy8H5rTwgGz4UaoAW8AfWjNTjmTTDu2MaqqKC2XbfejHM2h_8jVJuBvh9sw_nRLmKG1STmCLzAmQM3fJCeKPSuT0fw8wi0Ii4_XK5yZP7Yc9SeRVdqnkHa2ApqB0N4WywJGSkgaDv61KzIUtI05U7Ih5PTc-24HPPS0O4h7KCduDtQ==' ;
+		script-src 'nonce-d8Fp0P0NBL1QGYPlzd8D3ko6o8a5OBRuFFbGCcczg82NUyEoq-xRIfi3VM9FkV5-fHafQnleClnTGVPVw4wkE5mxTAOVWSlaHWibo0Pv7w5weNu9yQf_PATKKXVdsDjgfCCOhvGaiU5Xu59yZU18Xm5aJKusTqp8uOWHgYFyVy8H5rTwgGz4UaoAW8AfWjNTjmTTDu2MaqqKC2XbfejHM2h_8jVJuBvh9sw_nRLmKG1STmCLzAmQM3fJCeKPSuT0fw8wi0Ii4_XK5yZP7Yc9SeRVdqnkHa2ApqB0N4WywJGSkgaDv61KzIUtI05U7Ih5PTc-24HPPS0O4h7KCduDtQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="d8Fp0P0NBL1QGYPlzd8D3ko6o8a5OBRuFFbGCcczg82NUyEoq-xRIfi3VM9FkV5-fHafQnleClnTGVPVw4wkE5mxTAOVWSlaHWibo0Pv7w5weNu9yQf_PATKKXVdsDjgfCCOhvGaiU5Xu59yZU18Xm5aJKusTqp8uOWHgYFyVy8H5rTwgGz4UaoAW8AfWjNTjmTTDu2MaqqKC2XbfejHM2h_8jVJuBvh9sw_nRLmKG1STmCLzAmQM3fJCeKPSuT0fw8wi0Ii4_XK5yZP7Yc9SeRVdqnkHa2ApqB0N4WywJGSkgaDv61KzIUtI05U7Ih5PTc-24HPPS0O4h7KCduDtQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;pXypQ6d_iDg target="_blank">
+					<h2>INSIDE a Nuclear Reactor Core - Smarter Every Day 317</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-26">2026-09-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;vS6HEes8daw target="_blank">
+					<h2>The PROBLEM with Capitalism - Smarter Every Day 316</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-26">2026-07-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;5lCWqEFVzbY target="_blank">
+					<h2>They Call it &#34;The Taco Turn&#34; and it&#39;s Genius - Smarter Every Day 315</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-31">2026-05-31</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;WtQ64nSbdY4 target="_blank">
+					<h2>What Everyone Sees... But I Don&#39;t (The Johari Window) - Smarter Every Day 314</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-11">2026-04-11</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;-0JKHuzJ67A target="_blank">
+					<h2>Everything About Disc Golf Aerodynamics - Smarter Every Day 313</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-06">2026-03-06</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;XwBZx1cXEdM target="_blank">
+					<h2>Why Do Spinning Things Do This? - Smarter Every Day 312</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-11">2026-01-11</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;v0afQ6w3Bjw target="_blank">
+					<h2>Refueling a NUCLEAR REACTOR - Smarter Every Day 311</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-03">2025-11-03</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;dt_CG_xRnrY target="_blank">
+					<h2>Pompeii Changed How I Think About The Roman Empire - Smarter Every Day 310</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-07">2025-09-07</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;cRaKMTK7ea0 target="_blank">
+					<h2>I Went Into a Nuclear Plant and It Changed How I Think About Radiation - Smarter Every Day 309</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-13">2025-07-13</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;3ZTGwcHQfLY target="_blank">
+					<h2>I Tried To Make Something In America (The Smarter Scrubber Experiment) - Smarter Every Day 308</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-08">2025-06-08</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;8nilP--GFLY target="_blank">
+					<h2>The Unsolved Mystery of Impact Flashes - Smarter Every Day 307</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-31">2025-03-31</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;JVROsxtjoCw target="_blank">
+					<h2>I Explored the World&#39;s First Nuclear Power Plant (and How It Works) - Smarter Every Day 306</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-31">2025-01-31</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;lylCYkgC63Q target="_blank">
+					<h2>The Backwards Brain Tractor - Smarter Every Day 305</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-15">2024-12-15</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;jDusS--bZZA target="_blank">
+					<h2>The Incredibly Unique Triple Barreled Pistol...  - Smarter Every Day 304</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-24">2024-11-24</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;JJofuF2zcTE target="_blank">
+					<h2>Live From Space - Smarter Every Day 303</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-27">2024-10-27</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UC6107grRI4m0o2-emgoDnAA" target="_blank">SmarterEveryDay</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="d8Fp0P0NBL1QGYPlzd8D3ko6o8a5OBRuFFbGCcczg82NUyEoq-xRIfi3VM9FkV5-fHafQnleClnTGVPVw4wkE5mxTAOVWSlaHWibo0Pv7w5weNu9yQf_PATKKXVdsDjgfCCOhvGaiU5Xu59yZU18Xm5aJKusTqp8uOWHgYFyVy8H5rTwgGz4UaoAW8AfWjNTjmTTDu2MaqqKC2XbfejHM2h_8jVJuBvh9sw_nRLmKG1STmCLzAmQM3fJCeKPSuT0fw8wi0Ii4_XK5yZP7Yc9SeRVdqnkHa2ApqB0N4WywJGSkgaDv61KzIUtI05U7Ih5PTc-24HPPS0O4h7KCduDtQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

@@ -92,3 +92,4 @@ docker build .
 - Always try to add a test
 - When writing tests, favor table-driven tests to cover more cases
 - Don't just test the happy path, test the failure cases.
+- Unit tests live in `app/`, integration tests live in `tests`

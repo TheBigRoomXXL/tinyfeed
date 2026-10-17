@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-wNmx7k-lrEh8bDodZx6KM49bkYekoe2u6N1Q-xB7KdXzqvh2kxc74aNNbVe6GBEW1gWl4jive9y4ADfMN7t26Xtx1dzwR3LYUO-FMcXDVSB224wvbQsSRgZZ5rxDNELGBxrXqAcvUwxMob__oGyS3lQqw1EKzuFRJ4n369S2RRq9ETRDZBVqzwtlBVQwAHrBW1SrqNdfIPFMI4OaXUeNWnC088KuIyeeUDgIaC8g9hf-sqZ7TxLIFcoSg51CVPbJugO24CbNWSTFAcLRS4EaZ54qjk8_PzZr29suDXXtEFxL05_nwU5hJ83P-VP7zGPYji7s8nRZJGYaLs8C1OIhOA==' ;
+		script-src 'nonce-wNmx7k-lrEh8bDodZx6KM49bkYekoe2u6N1Q-xB7KdXzqvh2kxc74aNNbVe6GBEW1gWl4jive9y4ADfMN7t26Xtx1dzwR3LYUO-FMcXDVSB224wvbQsSRgZZ5rxDNELGBxrXqAcvUwxMob__oGyS3lQqw1EKzuFRJ4n369S2RRq9ETRDZBVqzwtlBVQwAHrBW1SrqNdfIPFMI4OaXUeNWnC088KuIyeeUDgIaC8g9hf-sqZ7TxLIFcoSg51CVPbJugO24CbNWSTFAcLRS4EaZ54qjk8_PzZr29suDXXtEFxL05_nwU5hJ83P-VP7zGPYji7s8nRZJGYaLs8C1OIhOA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="wNmx7k-lrEh8bDodZx6KM49bkYekoe2u6N1Q-xB7KdXzqvh2kxc74aNNbVe6GBEW1gWl4jive9y4ADfMN7t26Xtx1dzwR3LYUO-FMcXDVSB224wvbQsSRgZZ5rxDNELGBxrXqAcvUwxMob__oGyS3lQqw1EKzuFRJ4n369S2RRq9ETRDZBVqzwtlBVQwAHrBW1SrqNdfIPFMI4OaXUeNWnC088KuIyeeUDgIaC8g9hf-sqZ7TxLIFcoSg51CVPbJugO24CbNWSTFAcLRS4EaZ54qjk8_PzZr29suDXXtEFxL05_nwU5hJ83P-VP7zGPYji7s8nRZJGYaLs8C1OIhOA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://bell.bz/in-response-to-the-death-of-web-development-education/ target="_blank">
+					<h2>In response to “The death of web development education”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://bell.bz" target="_blank">bell.bz</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bell.bz/youll-miss-publishers-when-theyre-gone/ target="_blank">
+					<h2>You’ll miss publishers when they’re gone</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://bell.bz" target="_blank">bell.bz</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bell.bz/an-rss-feed-for-a-daily-album-recommendation/ target="_blank">
+					<h2>An RSS feed for a daily album recommendation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://bell.bz" target="_blank">bell.bz</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bell.bz/removing-algorithmic-feed-slop-from-my-life/ target="_blank">
+					<h2>Removing algorithmic feed slop from my life</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://bell.bz" target="_blank">bell.bz</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bell.bz/youll-miss-the-soul-when-its-gone/ target="_blank">
+					<h2>You’ll miss the soul when it’s gone</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-03">2026-07-03</time>
+					|
+					<a href="https://bell.bz" target="_blank">bell.bz</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://bell.bz/" target="_blank">Andy Bell</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="wNmx7k-lrEh8bDodZx6KM49bkYekoe2u6N1Q-xB7KdXzqvh2kxc74aNNbVe6GBEW1gWl4jive9y4ADfMN7t26Xtx1dzwR3LYUO-FMcXDVSB224wvbQsSRgZZ5rxDNELGBxrXqAcvUwxMob__oGyS3lQqw1EKzuFRJ4n369S2RRq9ETRDZBVqzwtlBVQwAHrBW1SrqNdfIPFMI4OaXUeNWnC088KuIyeeUDgIaC8g9hf-sqZ7TxLIFcoSg51CVPbJugO24CbNWSTFAcLRS4EaZ54qjk8_PzZr29suDXXtEFxL05_nwU5hJ83P-VP7zGPYji7s8nRZJGYaLs8C1OIhOA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

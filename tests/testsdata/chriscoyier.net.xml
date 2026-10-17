@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Chris Coyier</title>
+	<atom:link href="https://chriscoyier.net/feed/" rel="self" type="application/rss+xml" />
+	<link>https://chriscoyier.net</link>
+	<description>Web craftsman, blogger, author, speaker.</description>
+	<lastBuildDate>Tue, 13 Oct 2026 15:42:39 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	
+
+<image>
+	<url>https://i0.wp.com/chriscoyier.net/wp-content/uploads/2021/07/IsUISvAq_400x400.jpg?fit=32%2C32&#038;quality=89&#038;ssl=1</url>
+	<title>Chris Coyier</title>
+	<link>https://chriscoyier.net</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+<site xmlns="com-wordpress:feed-additions:1">74074248</site>	<item>
+		<title>Archived Tweets</title>
+		<link>https://chriscoyier.net/2026/10/13/archived-tweets/</link>
+					<comments>https://chriscoyier.net/2026/10/13/archived-tweets/#comments</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Tue, 13 Oct 2026 13:48:19 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=29830</guid>
+
+					<description><![CDATA[I finally got around to importing my whole historical Twitter archive (just my own original tweets, not replies or retweets) into this WordPress site as a proper Custom Post Type: https://chriscoyier.net/tweets I haven&#8217;t added it to the navigation or anything else on the site yet. Not sure what I want to do there. Just feels [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">I finally got around to importing my whole historical Twitter archive (just my own original tweets, not replies or retweets) into this WordPress site as a proper Custom Post Type:</p>
+
+
+
+<p class="wp-block-paragraph"><a href="https://chriscoyier.net/tweets">https://chriscoyier.net/tweets</a></p>
+
+
+
+<p class="wp-block-paragraph">I haven&#8217;t added it to the navigation or anything else on the site yet. Not sure what I want to do there. Just feels good having my own data. The Tweets show up in the Jetpack-powered search too, which I&#8217;ve found nice.</p>
+
+
+
+<p class="wp-block-paragraph">I used <a href="https://github.com/shawnhooper/twitter-archive-to-wp">this</a> and hacked it up a bit to fit my needs, and so I didn&#8217;t have to leave it as a permanently installed plugin.</p>
+
+
+
+<p class="wp-block-paragraph">It&#8217;s coming at a weird time, with quite a few people &#8220;going back&#8221; to Twitter. </p>
+
+
+
+<p class="wp-block-paragraph">It&#8217;s actually called X now; I&#8217;m aware. It&#8217;s named after the hand gesture you do when Elon Musk asks if you&#8217;d like to come over for a dinner party: 🙅‍♂️</p>
+
+
+
+<p class="wp-block-paragraph">Casey Newton just saying, &#8220;Look, I tried, but X is where the action is,&#8221; and John Gruber being like, &#8220;Take a whiff; the Elon stench is gone.&#8221;</p>
+
+
+
+<p class="wp-block-paragraph">I understand both of those things. I honestly really like both Mastodon and Bluesky, but after years and years, the fun and engagement have never reached old Twitter norms. And I miss that! </p>
+
+
+
+<p class="wp-block-paragraph">But it also feels like you have to ignore <em>a lot</em> of bad behavior to use a platform that Elon Musk not only owns but literally bought to be his megaphone and power center. Do people not remember the horrible shit he would do on a near-daily basis? Tasteless, dangerous, and often both. </p>
+
+
+
+<p class="wp-block-paragraph">I can remind you! Here&#8217;s just one straw from a haystack.</p>
+
+
+
+<p class="wp-block-paragraph">Elon loves him some Trump. They are big buddies! Elon shouldered up to Trump for the power, and Trump gave it to him. Elon decided to take this power (granted to him by a scepter touch? apparently?) and created a real government organization called DOGE, which is a joke name, named after a joke cryptocurrency that is inherently corrupt. DOGE&#8217;s job was to make the government &#8220;more efficient&#8221; by eliminating funding for tons of stuff. One of the things they did was entirely get rid of the USDS, which was the organization that did incredible work, ya know, making governmental websites <em>far more efficient.</em> Now, our government makes <a href="https://www.whitehouse.gov/arcade/rio-run/">racist video games</a> on the web instead. Not kidding. That&#8217;s a fucking game on our own government&#8217;s website, where you play a white dude who walks around a page collecting brown people to deport. </p>
+
+
+
+<p class="wp-block-paragraph">I find it more than a little hard to swallow.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/13/archived-tweets/feed/</wfw:commentRss>
+			<slash:comments>6</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">29830</post-id>	</item>
+		<item>
+		<title>Atomic Wall Clocks</title>
+		<link>https://chriscoyier.net/2026/10/12/atomic-wall-clocks/</link>
+					<comments>https://chriscoyier.net/2026/10/12/atomic-wall-clocks/#comments</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Mon, 12 Oct 2026 22:37:41 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=29827</guid>
+
+					<description><![CDATA[Look at this clock. It&#8217;s a clock. I bought it once because I needed&#8230; a clock. It&#8217;s $29, which is totally reasonable for&#8230; a clock. Then it was Daylight Saving Time one day, and I went to update it, but&#8230; it was already updated. That&#8217;s because: The Atomic Time Feature conveniently allows the clock to [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Look at <a href="https://link.amazon/B0eiEiBNP">this clock</a>.</p>
+
+
+
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" fetchpriority="high" decoding="async" width="1024" height="1023" data-attachment-id="29828" data-permalink="https://chriscoyier.net/2026/10/12/atomic-wall-clocks/lacross-atomic-wall-clock/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/lacross-atomic-wall-clock.jpg?fit=1500%2C1499&amp;quality=89&amp;ssl=1" data-orig-size="1500,1499" data-comments-opened="1" data-image-title="lacross-atomic-wall-clock" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/lacross-atomic-wall-clock.jpg?fit=1024%2C1023&amp;quality=89&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/lacross-atomic-wall-clock.jpg?resize=1024%2C1023&#038;quality=89&#038;ssl=1" alt="A round wall clock with a white face, black numbers, and black hands, labeled with 'LA CROSSE TECHNOLOGY' and 'ATOMIC TIME'." class="wp-image-29828" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/lacross-atomic-wall-clock.jpg?resize=1024%2C1023&amp;quality=89&amp;ssl=1 1024w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/lacross-atomic-wall-clock.jpg?resize=300%2C300&amp;quality=89&amp;ssl=1 300w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/lacross-atomic-wall-clock.jpg?resize=150%2C150&amp;quality=89&amp;ssl=1 150w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/lacross-atomic-wall-clock.jpg?resize=768%2C767&amp;quality=89&amp;ssl=1 768w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/lacross-atomic-wall-clock.jpg?w=1500&amp;quality=89&amp;ssl=1 1500w" sizes="(max-width: 1000px) 100vw, 1000px" /></figure>
+
+
+
+<p class="wp-block-paragraph">It&#8217;s a clock. </p>
+
+
+
+<p class="wp-block-paragraph">I bought it once because I needed&#8230; a clock.</p>
+
+
+
+<p class="wp-block-paragraph">It&#8217;s $29, which is totally reasonable for&#8230; a clock.</p>
+
+
+
+<p class="wp-block-paragraph">Then it was Daylight Saving Time one day, and I went to update it, but&#8230; it was already updated. </p>
+
+
+
+<p class="wp-block-paragraph">That&#8217;s because: </p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">The Atomic Time Feature conveniently allows the clock to sync with the WWVB radio transmission from Fort Collins, CO, for accurate time updates.</p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">That&#8217;s amazing? </p>
+
+
+
+<p class="wp-block-paragraph">It listens to a radio signal and adjusts itself to the correct time, even during major time changes. </p>
+
+
+
+<p class="wp-block-paragraph">What a kick-ass UX, while seemingly being no more expensive. </p>
+
+
+
+<p class="wp-block-paragraph">Also: you can just put one battery in it to work, or you can put 2 batteries in it, and it&#8217;ll work longer, or 3 batteries, and it&#8217;ll last over 5 years. </p>
+
+
+
+<p class="wp-block-paragraph">What the what. </p>
+
+
+
+<p class="wp-block-paragraph">Now it just needs to dust itself, and it&#8217;ll be the greatest home device ever.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/12/atomic-wall-clocks/feed/</wfw:commentRss>
+			<slash:comments>3</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">29827</post-id>	</item>
+		<item>
+		<title>EPS?</title>
+		<link>https://chriscoyier.net/2026/10/12/eps/</link>
+					<comments>https://chriscoyier.net/2026/10/12/eps/#comments</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Mon, 12 Oct 2026 16:06:35 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=29823</guid>
+
+					<description><![CDATA[I remember working in digital prepress decades ago that .eps files were just kinda weird, and I didn&#8217;t love it when I had to deal with them. Like, what even made this? Why? I assumed it was some kind of antiquated software or practice, and I&#8217;d just deal with it, and eventually the world would [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">I remember working in digital prepress <em>decades ago</em> that <code>.eps</code> files were just kinda weird, and I didn&#8217;t love it when I had to deal with them. Like, <em>what even made this?</em> Why? I assumed it was some kind of antiquated software or practice, and I&#8217;d just deal with it, and eventually the world would improve. </p>
+
+
+
+<p class="wp-block-paragraph">But here we are in 2026, and EPS is still here. How I come across EPS files is that it&#8217;s the download format from stock art sites that deliver vector artwork. </p>
+
+
+
+<p class="wp-block-paragraph">It actually <em>sorta</em> makes sense:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Stock art sites can&#8217;t deliver vectors as like <code>.ai</code> (The Adobe Illustrator format, now a funny and unfortunate file extension) because it&#8217;s too vendor-specific. Not everyone uses Adobe software, and that format changes on a whim. </li>
+
+
+
+<li>Stock art can&#8217;t deliver in <code>.svg</code>, even though it&#8217;s a great open format, because it&#8217;s too web-specific. Graphic designers use vector art too, and SVG isn&#8217;t designed for the CMYK world of print. </li>
+
+
+
+<li>Stock art sites can&#8217;t deliver in <code>.pdf</code> because it&#8217;s just too weird. It doesn&#8217;t scream &#8220;editable source art&#8221; like it needs to.</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">But EPS is still weird! It&#8217;s a &#8220;frozen&#8221; format in that it hasn&#8217;t been touched in decades. That&#8217;s kinda good, but it feels like if Adobe really wanted to entirely move on from supporting it at all, they could. Plus, you get no preview for EPS files whatsoever. </p>
+
+
+
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" decoding="async" width="1024" height="867" data-attachment-id="29824" data-permalink="https://chriscoyier.net/2026/10/12/eps/screenshot-2026-10-12-at-8-51-30-am/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.51.30-AM.png?fit=1342%2C1136&amp;quality=80&amp;ssl=1" data-orig-size="1342,1136" data-comments-opened="1" data-image-title="Screenshot 2026-10-12 at 8.51.30 AM" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.51.30-AM.png?fit=1024%2C867&amp;quality=80&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.51.30-AM.png?resize=1024%2C867&#038;quality=80&#038;ssl=1" alt="A file preview window displaying an EPS file icon, including the filename 'shutterstock_2253535573.eps', file size of 381 KB, and last modified date stamp." class="wp-image-29824" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.51.30-AM.png?resize=1024%2C867&amp;quality=80&amp;ssl=1 1024w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.51.30-AM.png?resize=300%2C254&amp;quality=80&amp;ssl=1 300w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.51.30-AM.png?resize=768%2C650&amp;quality=80&amp;ssl=1 768w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.51.30-AM.png?w=1342&amp;quality=80&amp;ssl=1 1342w" sizes="(max-width: 1000px) 100vw, 1000px" /></figure>
+
+
+
+<p class="wp-block-paragraph">That makes EPS files feel like a pretty low-class citizen on macOS. </p>
+
+
+
+<p class="wp-block-paragraph">OK, so EPS is a non-proprietary format that more-than-Adobe software can deal with, fine. </p>
+
+
+
+<p class="wp-block-paragraph">Can Figma open them?</p>
+
+
+
+<figure class="wp-block-image size-full"><img data-recalc-dims="1" decoding="async" width="736" height="450" data-attachment-id="29825" data-permalink="https://chriscoyier.net/2026/10/12/eps/screenshot-2026-10-12-at-8-55-02-am/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.55.02-AM.png?fit=736%2C450&amp;quality=80&amp;ssl=1" data-orig-size="736,450" data-comments-opened="1" data-image-title="Screenshot 2026-10-12 at 8.55.02 AM" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.55.02-AM.png?fit=736%2C450&amp;quality=80&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.55.02-AM.png?resize=736%2C450&#038;quality=80&#038;ssl=1" alt="Error message indicating a file import failure due to unrecognized format or conversion failure for 'shutterstock_2255355573.eps'." class="wp-image-29825" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.55.02-AM.png?w=736&amp;quality=80&amp;ssl=1 736w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-12-at-8.55.02-AM.png?resize=300%2C183&amp;quality=80&amp;ssl=1 300w" sizes="(max-width: 736px) 100vw, 736px" /></figure>
+
+
+
+<p class="wp-block-paragraph"> Nope. </p>
+
+
+
+<p class="wp-block-paragraph">Can Sketch open them? <a href="https://www.sketch.com/support/troubleshooting/mac-app/import-eps-files/">Nope</a>. </p>
+
+
+
+<p class="wp-block-paragraph">So by avoiding too much Adobe lock-in using EPS format, that locks me into needing to keep Adobe Illustrator around so I have something that can open an EPS file and get it converted into something useful.</p>
+
+
+
+<p class="wp-block-paragraph">I feel like just going full SVG would be the way to go, and I imagine print designers could figure it out. </p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/12/eps/feed/</wfw:commentRss>
+			<slash:comments>8</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">29823</post-id>	</item>
+		<item>
+		<title>Dave&#8217;s Rule of Life</title>
+		<link>https://chriscoyier.net/2026/10/11/daves-rule-of-life/</link>
+					<comments>https://chriscoyier.net/2026/10/11/daves-rule-of-life/#comments</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Sun, 11 Oct 2026 13:45:28 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=29818</guid>
+
+					<description><![CDATA[Dave, from #735: Never trust an adult over 35 who can&#8217;t explain what they need from you in a bulleted list. I&#8217;m thinking like a laptop sticker or t-shirt, right? A little AI slop to help pick a direction can be helpful. We&#8217;ll see we&#8217;ll see.]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Dave, from <a href="https://shoptalkshow.com/735/">#735</a>:</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">Never trust an adult over 35 who can&#8217;t explain what they need from you in a bulleted list.</p>
+</blockquote>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-9-16 wp-has-aspect-ratio ticss-d6ee3c55"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="Dave&amp;apos;s rule of life: Never trust adults over 35 without a bulleted list" width="422" height="750" src="https://www.youtube.com/embed/p3Knthl4ZMU?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<p class="wp-block-paragraph">I&#8217;m thinking like a laptop sticker or t-shirt, right? </p>
+
+
+
+<p class="wp-block-paragraph">A little AI slop to help pick a direction can be helpful. </p>
+
+
+
+<div class="wp-block-columns is-layout-flex wp-container-core-columns-is-layout-8f761849 wp-block-columns-is-layout-flex">
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" loading="lazy" decoding="async" width="1024" height="1024" data-attachment-id="29820" data-permalink="https://chriscoyier.net/2026/10/11/daves-rule-of-life/1205c7b6-b35c-491c-b936-744b2a6a78ac/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/1205c7b6-b35c-491c-b936-744b2a6a78ac.png?fit=1254%2C1254&amp;quality=80&amp;ssl=1" data-orig-size="1254,1254" data-comments-opened="1" data-image-title="1205c7b6-b35c-491c-b936-744b2a6a78ac" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/1205c7b6-b35c-491c-b936-744b2a6a78ac.png?fit=1024%2C1024&amp;quality=80&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/1205c7b6-b35c-491c-b936-744b2a6a78ac.png?resize=1024%2C1024&#038;quality=80&#038;ssl=1" alt="Beige t-shirt with black text that reads 'Never trust an adult over 35 who can’t explain what they need from you in a bulleted list.'" class="wp-image-29820" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/1205c7b6-b35c-491c-b936-744b2a6a78ac.png?resize=1024%2C1024&amp;quality=80&amp;ssl=1 1024w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/1205c7b6-b35c-491c-b936-744b2a6a78ac.png?resize=150%2C150&amp;quality=80&amp;ssl=1 150w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/1205c7b6-b35c-491c-b936-744b2a6a78ac.png?resize=300%2C300&amp;quality=80&amp;ssl=1 300w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/1205c7b6-b35c-491c-b936-744b2a6a78ac.png?resize=768%2C768&amp;quality=80&amp;ssl=1 768w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/1205c7b6-b35c-491c-b936-744b2a6a78ac.png?w=1254&amp;quality=80&amp;ssl=1 1254w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></figure>
+</div>
+
+
+
+<div class="wp-block-column is-layout-flow wp-block-column-is-layout-flow">
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" loading="lazy" decoding="async" width="1024" height="1024" data-attachment-id="29821" data-permalink="https://chriscoyier.net/2026/10/11/daves-rule-of-life/404d7c3c-3576-4bc9-a2b7-cffa26e61682/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/404d7c3c-3576-4bc9-a2b7-cffa26e61682.png?fit=1254%2C1254&amp;quality=80&amp;ssl=1" data-orig-size="1254,1254" data-comments-opened="1" data-image-title="404d7c3c-3576-4bc9-a2b7-cffa26e61682" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/404d7c3c-3576-4bc9-a2b7-cffa26e61682.png?fit=1024%2C1024&amp;quality=80&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/404d7c3c-3576-4bc9-a2b7-cffa26e61682.png?resize=1024%2C1024&#038;quality=80&#038;ssl=1" alt="Black t-shirt with a graphic design featuring a skull, chains, and red lightning bolts. The text reads 'Never Trust an Adult Over 35 Who Can't Explain What They Need From You in a Bulleted List'." class="wp-image-29821" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/404d7c3c-3576-4bc9-a2b7-cffa26e61682.png?resize=1024%2C1024&amp;quality=80&amp;ssl=1 1024w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/404d7c3c-3576-4bc9-a2b7-cffa26e61682.png?resize=150%2C150&amp;quality=80&amp;ssl=1 150w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/404d7c3c-3576-4bc9-a2b7-cffa26e61682.png?resize=300%2C300&amp;quality=80&amp;ssl=1 300w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/404d7c3c-3576-4bc9-a2b7-cffa26e61682.png?resize=768%2C768&amp;quality=80&amp;ssl=1 768w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/404d7c3c-3576-4bc9-a2b7-cffa26e61682.png?w=1254&amp;quality=80&amp;ssl=1 1254w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></figure>
+</div>
+</div>
+
+
+
+<p class="wp-block-paragraph">We&#8217;ll see we&#8217;ll see.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/11/daves-rule-of-life/feed/</wfw:commentRss>
+			<slash:comments>3</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">29818</post-id>	</item>
+		<item>
+		<title>Media Diet</title>
+		<link>https://chriscoyier.net/2026/10/10/media-diet-11/</link>
+					<comments>https://chriscoyier.net/2026/10/10/media-diet-11/#comments</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Sat, 10 Oct 2026 19:08:07 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=29810</guid>
+
+					<description><![CDATA[Not much screen time for me lately, so this is a few months&#8217; worth. But I have enjoyed some things! I have all these shows that I really wanna finish, but just can&#8217;t get the gumption to do it. Lanterns didn&#8217;t hit for me. I&#8217;m only slogging through Hacks season 2. I would love to [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Not much screen time for me lately, so this is a few months&#8217; worth. But I have enjoyed some things!</p>
+
+
+
+<ul class="wp-block-list">
+<li><a href="https://www.imdb.com/title/tt40822983/">My Brother the Minotaur</a>: Really well-done kids&#8217; adventure show, begging for a second season.</li>
+
+
+
+<li><a href="https://www.imdb.com/title/tt18259538/">Avatar Aang</a>: Thick with fan service, and that&#8217;s exactly what I wanted from the ol&#8217; gang, all grown up and still at it. I hope they keep making stuff in this universe.</li>
+
+
+
+<li><a href="https://www.imdb.com/title/tt31491435/">Tires</a>: Season 3 was full of heart, somehow. Caring about Shane Gillis&#8217; love life wasn&#8217;t on my bingo card this year, but I was into it.</li>
+
+
+
+<li><a href="https://www.imdb.com/title/tt14688458/">Silo</a>: Likewise, Season 3 was the best yet. Nice to have a feeling of where it&#8217;s going. </li>
+
+
+
+<li><a href="https://www.imdb.com/title/tt33296751/">Tuner</a>: Somehow they got Dustin Hoffman to be a Zac Bryan lookalike&#8217;s dad in this absolutely perfectly formulaic crime/love romp.</li>
+
+
+
+<li><a href="https://www.imdb.com/title/tt35522483/">Nirvanna the Band the Show the Movie</a>: So fun. What a unique style of comedy. Led me to some <a href="https://bsky.app/profile/chriscoyier.net/post/3mx3vakh4hs27">weird math</a>.</li>
+</ul>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<p class="wp-block-paragraph">I have all these shows that I really wanna finish, but just can&#8217;t get the gumption to do it. Lanterns didn&#8217;t hit for me. I&#8217;m only slogging through Hacks season 2. I would love to finish For All Mankind, but I just can never get momentum. </p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/10/media-diet-11/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">29810</post-id>	</item>
+		<item>
+		<title>Multipage</title>
+		<link>https://chriscoyier.net/2026/10/09/multipage/</link>
+					<comments>https://chriscoyier.net/2026/10/09/multipage/#comments</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Sat, 10 Oct 2026 01:37:58 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=29811</guid>
+
+					<description><![CDATA[Just noting Mat&#8217;s Multipage Version zine rules. I bought both issues right away. It&#8217;s weird, it&#8217;s funny, it&#8217;s a work of art, and you might even learn something. The page that is a spliced version of Marc Andreeson proposing the IMG tag in HTML with all his recent crazy shit about how he &#8220;has&#8221; zero [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Just noting Mat&#8217;s <a href="https://ko-fi.com/wilto/shop">Multipage Version</a> zine rules. I bought both issues right away.</p>
+
+
+
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" loading="lazy" decoding="async" width="768" height="1024" data-attachment-id="29812" data-permalink="https://chriscoyier.net/2026/10/09/multipage/img_0050/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0050-scaled-1.jpeg?fit=1920%2C2560&amp;quality=89&amp;ssl=1" data-orig-size="1920,2560" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;3.72&quot;,&quot;camera&quot;:&quot;iPhone 18 Pro Max&quot;,&quot;created_timestamp&quot;:&quot;1790321747&quot;,&quot;focal_length&quot;:&quot;6.9299998280517&quot;,&quot;iso&quot;:&quot;400&quot;,&quot;shutter_speed&quot;:&quot;0.016666666666667&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="IMG_0050" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0050-scaled-1.jpeg?fit=768%2C1024&amp;quality=89&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0050.jpeg?resize=768%2C1024&#038;quality=89&#038;ssl=1" alt="A blurred cover of a magazine titled 'MULTIPAGE VERSION #02 IMAGES', featuring pixelated graphics and multilingual player instructions." class="wp-image-29812" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0050-scaled-1.jpeg?resize=768%2C1024&amp;quality=89&amp;ssl=1 768w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0050-scaled-1.jpeg?resize=225%2C300&amp;quality=89&amp;ssl=1 225w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0050-scaled-1.jpeg?resize=432%2C576&amp;quality=89&amp;ssl=1 432w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0050-scaled-1.jpeg?w=1152&amp;quality=89&amp;ssl=1 1152w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0050-scaled-1.jpeg?w=1536&amp;quality=89&amp;ssl=1 1536w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0050-scaled-1.jpeg?w=1920&amp;quality=89&amp;ssl=1 1920w" sizes="auto, (max-width: 768px) 100vw, 768px" /></figure>
+
+
+
+<p class="wp-block-paragraph">It&#8217;s weird, it&#8217;s funny, it&#8217;s a work of art, and you might even learn something. </p>
+
+
+
+<p class="wp-block-paragraph">The page that is a spliced version of Marc Andreeson <a href="http://1997.webhistory.org/www.lists/www-talk.1993q1/0182.html">proposing the IMG tag in HTML</a> with all his recent crazy shit about how he &#8220;has&#8221;<a href="https://www.fastcompany.com/91510739/why-marc-andreessens-zero-introspection-approach-will-get-you-nowhere"> zero introspection</a> is, as previously mentioned, a work of art.</p>
+
+
+
+<p class="wp-block-paragraph"></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/09/multipage/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">29811</post-id>	</item>
+		<item>
+		<title>Justice for CSS</title>
+		<link>https://chriscoyier.net/2026/10/09/justice-for-css/</link>
+					<comments>https://chriscoyier.net/2026/10/09/justice-for-css/#respond</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Fri, 09 Oct 2026 19:52:58 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=29805</guid>
+
+					<description><![CDATA[Fun seeing CSS be a topic in WIRED. Pete Millspaugh shouting out some greats: One programmer recently re-created Doom in CSS. Others have used it to build holographic Pokémon cards and 3D-rendering engines. Cassidy Williams, who competed in this year’s inaugural March MadCSS tournament, built an experimental database-query engine entirely in CSS. I mean, hell [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Fun seeing <a href="https://www.wired.com/story/justice-for-css/">CSS be a topic in WIRED</a>. Pete Millspaugh shouting out some greats:</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">One programmer recently re-created <a href="https://cssdoom.wtf/" target="_blank" rel="noopener"><em>Doom</em> in CSS</a>. Others have used it to build <a href="https://poke-holo.simey.me/" target="_blank" rel="noopener">holographic Pokémon cards</a> and <a href="https://polycss.com/gallery/" target="_blank" rel="noopener">3D-rendering engines</a>. Cassidy Williams, who competed in this year’s inaugural <a href="https://madcss.com/" target="_blank" rel="noopener">March MadCSS tournament</a>, built an experimental database-query engine entirely in CSS.</p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">I mean, hell yeah. </p>
+
+
+
+<p class="wp-block-paragraph">Allow me to just&#8230;</p>
+
+
+
+<div class="wp-block-cp-codepen-gutenberg-embed-block cp_embed_wrapper"><iframe id="cp_embed_KwdoyEN" src="//codepen.io/anon/embed/KwdoyEN?height=650&amp;theme-id=1&amp;slug-hash=KwdoyEN&amp;default-tab=result" height="650" scrolling="no" frameborder="0" allowfullscreen allowpaymentrequest name="CodePen Embed KwdoyEN" title="CodePen Embed KwdoyEN" class="cp_embed_iframe" style="width:100%;overflow:hidden">CodePen Embed Fallback</iframe></div>
+
+
+
+<div class="wp-block-cp-codepen-gutenberg-embed-block cp_embed_wrapper"><iframe id="cp_embed_xxGYWQG" src="//codepen.io/anon/embed/preview/xxGYWQG?height=600&amp;theme-id=1&amp;slug-hash=xxGYWQG&amp;default-tab=result" height="600" scrolling="no" frameborder="0" allowfullscreen allowpaymentrequest name="CodePen Embed xxGYWQG" title="CodePen Embed xxGYWQG" class="cp_embed_iframe" style="width:100%;overflow:hidden">CodePen Embed Fallback</iframe></div>
+
+
+
+<div class="wp-block-cp-codepen-gutenberg-embed-block cp_embed_wrapper"><iframe id="cp_embed_RwNzxN" src="//codepen.io/anon/embed/preview/RwNzxN?height=650&amp;theme-id=1&amp;slug-hash=RwNzxN&amp;default-tab=result" height="650" scrolling="no" frameborder="0" allowfullscreen allowpaymentrequest name="CodePen Embed RwNzxN" title="CodePen Embed RwNzxN" class="cp_embed_iframe" style="width:100%;overflow:hidden">CodePen Embed Fallback</iframe></div>
+
+
+
+<div class="wp-block-cp-codepen-gutenberg-embed-block cp_embed_wrapper"><iframe id="cp_embed_XWMXwvJ" src="//codepen.io/anon/embed/XWMXwvJ?height=550&amp;theme-id=1&amp;slug-hash=XWMXwvJ&amp;default-tab=result" height="550" scrolling="no" frameborder="0" allowfullscreen allowpaymentrequest name="CodePen Embed XWMXwvJ" title="CodePen Embed XWMXwvJ" class="cp_embed_iframe" style="width:100%;overflow:hidden">CodePen Embed Fallback</iframe></div>
+
+
+
+<div class="wp-block-cp-codepen-gutenberg-embed-block cp_embed_wrapper"><iframe id="cp_embed_KKGOpMZ" src="//codepen.io/anon/embed/KKGOpMZ?height=850&amp;theme-id=1&amp;slug-hash=KKGOpMZ&amp;default-tab=result" height="850" scrolling="no" frameborder="0" allowfullscreen allowpaymentrequest name="CodePen Embed KKGOpMZ" title="CodePen Embed KKGOpMZ" class="cp_embed_iframe" style="width:100%;overflow:hidden">CodePen Embed Fallback</iframe></div>
+
+
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+
+
+<p class="wp-block-paragraph">And I think Adam did it first!</p>
+
+
+
+<div class="wp-block-cp-codepen-gutenberg-embed-block cp_embed_wrapper"><iframe id="cp_embed_oNOMRav" src="//codepen.io/anon/embed/oNOMRav?height=700&amp;theme-id=1&amp;slug-hash=oNOMRav&amp;default-tab=result" height="700" scrolling="no" frameborder="0" allowfullscreen allowpaymentrequest name="CodePen Embed oNOMRav" title="CodePen Embed oNOMRav" class="cp_embed_iframe" style="width:100%;overflow:hidden">CodePen Embed Fallback</iframe></div>
+
+
+
+<p class="wp-block-paragraph"></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/09/justice-for-css/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">29805</post-id>	</item>
+		<item>
+		<title>Glasses</title>
+		<link>https://chriscoyier.net/2026/10/07/glasses/</link>
+					<comments>https://chriscoyier.net/2026/10/07/glasses/#comments</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Wed, 07 Oct 2026 14:15:00 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=14091</guid>
+
+					<description><![CDATA[How it started: How it&#8217;s going: This is my prescription: I think it means nearsightedness. I&#8217;m mostly fine with close-up objects (like my phone/computer), but things 10+ feet away are blurry. The glasses help! Nice for driving and being inside large buildings. As my vision got worse, I honestly thought I just had watery eyes [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">How it started:</p>
+
+
+
+<figure class="wp-block-embed is-type-rich is-provider-bluesky wp-block-embed-bluesky"><div class="wp-block-embed__wrapper">
+<blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:xhhcrzsilpamjmz4dvrpt7df/app.bsky.feed.post/3ms2kti2s6s2x" data-bluesky-cid="bafyreid7pzh3o6kiqwjmlxa5wxjcblckzywox2rbx4hy3kuv5cf7kjs2ue"><p lang="en">you ever get to your mid fourties and have your eyesight drop off a friggin cliff</p>&mdash; <a href="https://bsky.app/profile/did:plc:xhhcrzsilpamjmz4dvrpt7df?ref_src=embed">Chris Coyier (@chriscoyier.net)</a> <a href="https://bsky.app/profile/did:plc:xhhcrzsilpamjmz4dvrpt7df/post/3ms2kti2s6s2x?ref_src=embed">2026-08-01T22:55:16.944Z</a></blockquote><script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+</div></figure>
+
+
+
+<p class="wp-block-paragraph">How it&#8217;s going:</p>
+
+
+
+<figure class="wp-block-image size-large is-resized"><img data-recalc-dims="1" loading="lazy" decoding="async" width="768" height="1024" data-attachment-id="14092" data-permalink="https://chriscoyier.net/2026/10/07/glasses/img_0065/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0065-scaled.jpeg?fit=1920%2C2560&amp;quality=89&amp;ssl=1" data-orig-size="1920,2560" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.9&quot;,&quot;camera&quot;:&quot;iPhone 18 Pro Max&quot;,&quot;created_timestamp&quot;:&quot;1790412485&quot;,&quot;focal_length&quot;:&quot;2.71484375&quot;,&quot;iso&quot;:&quot;125&quot;,&quot;shutter_speed&quot;:&quot;0.016666666666667&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="IMG_0065" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0065-scaled.jpeg?fit=768%2C1024&amp;quality=89&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0065-768x1024-1.jpeg?resize=768%2C1024&#038;quality=89&#038;ssl=1" alt="A man with a bald head and glasses, wearing a light-colored sweatshirt, standing in a well-lit interior space with stairs in the background." class="wp-image-14092" style="width:602px;height:auto" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0065-scaled.jpeg?w=768&amp;quality=89&amp;ssl=1 768w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0065-scaled.jpeg?resize=225%2C300&amp;quality=89&amp;ssl=1 225w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0065-scaled.jpeg?resize=1152%2C1536&amp;quality=89&amp;ssl=1 1152w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0065-scaled.jpeg?resize=1536%2C2048&amp;quality=89&amp;ssl=1 1536w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0065-scaled.jpeg?w=1920&amp;quality=89&amp;ssl=1 1920w" sizes="auto, (max-width: 768px) 100vw, 768px" /></figure>
+
+
+
+<p class="wp-block-paragraph">This is my prescription:</p>
+
+
+
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" loading="lazy" decoding="async" width="1024" height="576" data-attachment-id="14095" data-permalink="https://chriscoyier.net/2026/10/07/glasses/screenshot-3/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0022-1-scaled.jpeg?fit=2560%2C1439&amp;quality=89&amp;ssl=1" data-orig-size="2560,1439" data-comments-opened="1" data-image-meta="{&quot;caption&quot;:&quot;Screenshot&quot;,&quot;title&quot;:&quot;Screenshot&quot;}" data-image-title="Screenshot" data-image-description="" data-image-caption="&lt;p&gt;Screenshot&lt;/p&gt;
+" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0022-1-scaled.jpeg?fit=1024%2C576&amp;quality=89&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0022-1.jpeg?resize=1024%2C576&#038;quality=89&#038;ssl=1" alt="A medical document from Bend Ophthalmology detailing an eye examination for a patient named Chris Coyier, including examination dates, provider information, and visual acuity measurements." class="wp-image-14095" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0022-1-scaled.jpeg?resize=1024%2C576&amp;quality=89&amp;ssl=1 1024w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0022-1-scaled.jpeg?resize=300%2C169&amp;quality=89&amp;ssl=1 300w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0022-1-scaled.jpeg?resize=767%2C431&amp;quality=89&amp;ssl=1 767w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0022-1-scaled.jpeg?resize=1536%2C864&amp;quality=89&amp;ssl=1 1536w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/IMG_0022-1-scaled.jpeg?resize=2048%2C1152&amp;quality=89&amp;ssl=1 2048w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></figure>
+
+
+
+<p class="wp-block-paragraph">I think it means nearsightedness. I&#8217;m mostly fine with close-up objects (like my phone/computer), but things 10+ feet away are blurry. The glasses help! Nice for driving and being inside large buildings.</p>
+
+
+
+<p class="wp-block-paragraph">As my vision got worse, I honestly thought I just had watery eyes a lot, and that caused the blur.</p>
+
+
+
+<p class="wp-block-paragraph">I got prescription sunglasses, too. I got a buy-two discount from Warby Parker, where I went in person to pick out glasses, plus my insurance covered part of it. It was a fairly nice experience, and the glasses arrived relatively quickly. I already want to buy an alternate pair just for styling options.</p>
+
+
+
+<p class="wp-block-paragraph">I&#8217;m trying to ride the big change to my face with an attitude change too, leaning into the &#8220;personality-free dad in the school drop-off line&#8221; I was born to be. OK, I&#8217;m off to make banal comments about newspaper headlines over white toast.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/07/glasses/feed/</wfw:commentRss>
+			<slash:comments>9</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">14091</post-id>	</item>
+		<item>
+		<title>Kelsey</title>
+		<link>https://chriscoyier.net/2026/10/06/kelsey/</link>
+					<comments>https://chriscoyier.net/2026/10/06/kelsey/#respond</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Tue, 06 Oct 2026 16:05:46 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=14078</guid>
+
+					<description><![CDATA[My sister is in a currently-running-on-TV political ad. It&#8217;s against the republican chucklefuck Tom Tiffany who was one of those anti-American dingleberries that claimed Biden &#8220;stole the election&#8221; and thinks Trumps tariff plans are super neato. Kelsey&#8217;s journey with healthcare insurance has been pretty rough. She gets denied for medications and treatments all the time, [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">My sister is in a currently-running-on-TV political ad.</p>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="Kelsey" width="500" height="281" src="https://www.youtube.com/embed/LgGFAlepe-4?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<p class="wp-block-paragraph">It&#8217;s against the republican chucklefuck Tom Tiffany who was one of those anti-American dingleberries that claimed Biden &#8220;stole the election&#8221; and thinks Trumps tariff plans are super neato. </p>
+
+
+
+<p class="wp-block-paragraph">Kelsey&#8217;s journey with healthcare insurance has been pretty rough. She gets denied for medications and treatments all the time, which to me is pure criminal behavior akin to attempted murder. Any politician doing anything other than forcing healthcare insurance companies to actually help the people they cover (ya know: Americans) can piss up a rope. </p>
+
+
+
+<p class="wp-block-paragraph">She&#8217;s sharing her cancer journey herself in a multi-part series on social media sites. Like:</p>
+
+
+
+<figure class="wp-block-embed is-type-rich is-provider-instagram wp-block-embed-instagram"><div class="wp-block-embed__wrapper">
+<blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/Ddo_RrUyknV/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:500px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/Ddo_RrUyknV/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a></div></blockquote><script async src="//platform.instagram.com/en_US/embeds.js"></script>
+</div></figure>
+
+
+
+<p class="wp-block-paragraph"></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/06/kelsey/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">14078</post-id>	</item>
+		<item>
+		<title>WordPress MCP</title>
+		<link>https://chriscoyier.net/2026/10/05/wordpress-mcp/</link>
+					<comments>https://chriscoyier.net/2026/10/05/wordpress-mcp/#comments</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Mon, 05 Oct 2026 13:54:59 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=14055</guid>
+
+					<description><![CDATA[I&#8217;ve still got all my WordPress sites on Pressable and happily so; I think they do a good job! They do everything you&#8217;d expect a WordPress host to do. The things I specifically like are: On that last point, I appreciated this little one-clicker: With that on (and presumably because I also use Jetpack and [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">I&#8217;ve still got all my WordPress sites on <a href="https://pressable.com/">Pressable</a> and happily so; I think they do a good job! They do everything you&#8217;d expect a WordPress host to do. The things I specifically like are:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Customer support is good/fast, including free movement of sites</li>
+
+
+
+<li>Deploying from a GitHub repo is a first-class citizen</li>
+
+
+
+<li>Perfectly good DNS management</li>
+
+
+
+<li>No need for extra security, performance, or update plugins</li>
+
+
+
+<li>Things are generally with-the-grain of the WordPress ecosystem</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">On that last point, I appreciated this little one-clicker:</p>
+
+
+
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" loading="lazy" decoding="async" width="1024" height="618" data-attachment-id="14061" data-permalink="https://chriscoyier.net/2026/10/05/wordpress-mcp/cleanshot-2026-10-05-at-6-17-01-am2x/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/CleanShot-2026-10-05-at-6.17.01-AM%402x.png?fit=1730%2C1044&amp;quality=80&amp;ssl=1" data-orig-size="1730,1044" data-comments-opened="1" data-image-title="CleanShot 2026-10-05 at 6.17.01 AM@2x" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/CleanShot-2026-10-05-at-6.17.01-AM%402x.png?fit=1024%2C618&amp;quality=80&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/CleanShot-2026-10-05-at-6.17.01-AM%402x.png?resize=1024%2C618&#038;quality=80&#038;ssl=1" alt="Screenshot of a site management dashboard displaying various site tools including Basic Authentication, Data Transfer, Maintenance Mode, Multisite Support, and an active WordPress MCP Adapter option." class="wp-image-14061" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/CleanShot-2026-10-05-at-6.17.01-AM%402x.png?resize=1024%2C618&amp;quality=80&amp;ssl=1 1024w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/CleanShot-2026-10-05-at-6.17.01-AM%402x.png?resize=300%2C181&amp;quality=80&amp;ssl=1 300w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/CleanShot-2026-10-05-at-6.17.01-AM%402x.png?resize=767%2C463&amp;quality=80&amp;ssl=1 767w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/CleanShot-2026-10-05-at-6.17.01-AM%402x.png?resize=1536%2C927&amp;quality=80&amp;ssl=1 1536w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/CleanShot-2026-10-05-at-6.17.01-AM%402x.png?w=1730&amp;quality=80&amp;ssl=1 1730w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></figure>
+
+
+
+<p class="wp-block-paragraph">With that on (and presumably because I also use Jetpack and thus WordPress.com?), I can auth an agent like Claude Code that supports MCPs and get it connected. </p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large is-resized"><img data-recalc-dims="1" loading="lazy" decoding="async" width="1024" height="715" data-attachment-id="14063" data-permalink="https://chriscoyier.net/2026/10/05/wordpress-mcp/screenshot-2026-10-05-at-6-32-00-am/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.32.00-AM.png?fit=1438%2C1004&amp;quality=80&amp;ssl=1" data-orig-size="1438,1004" data-comments-opened="1" data-image-title="Screenshot 2026-10-05 at 6.32.00 AM" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.32.00-AM.png?fit=1024%2C715&amp;quality=80&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.32.00-AM.png?resize=1024%2C715&#038;quality=80&#038;ssl=1" alt="Screenshot of a command line interface displaying the management of MCP servers, highlighting project, local, and user MCPs along with associated tools." class="wp-image-14063" style="aspect-ratio:1.4321869089165358;width:570px;height:auto" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.32.00-AM.png?resize=1024%2C715&amp;quality=80&amp;ssl=1 1024w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.32.00-AM.png?resize=300%2C209&amp;quality=80&amp;ssl=1 300w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.32.00-AM.png?resize=768%2C536&amp;quality=80&amp;ssl=1 768w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.32.00-AM.png?w=1438&amp;quality=80&amp;ssl=1 1438w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></figure>
+</div>
+
+
+<p class="wp-block-paragraph">Now I can, for instance, tell my agent to go make a draft blog post quick about something I&#8217;m thinking about, so I won&#8217;t forget about it. </p>
+
+
+
+<p class="wp-block-paragraph">Just to be meta, I&#8217;ll have it look at this blog post and make sure I don&#8217;t say anything weird about elephants. </p>
+
+
+
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" loading="lazy" decoding="async" width="1024" height="640" data-attachment-id="14066" data-permalink="https://chriscoyier.net/2026/10/05/wordpress-mcp/screenshot-2026-10-05-at-6-41-14-am/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.41.14-AM-scaled.png?fit=2560%2C1601&amp;quality=80&amp;ssl=1" data-orig-size="2560,1601" data-comments-opened="1" data-image-title="Screenshot 2026-10-05 at 6.41.14 AM" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.41.14-AM-scaled.png?fit=1024%2C640&amp;quality=80&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.41.14-AM.png?resize=1024%2C640&#038;quality=80&#038;ssl=1" alt="A screenshot of a WordPress post editing interface, showcasing a sidebar with plugin options and a command line interface open with text about elephants and a color-coded project management structure." class="wp-image-14066" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.41.14-AM-scaled.png?resize=1024%2C640&amp;quality=80&amp;ssl=1 1024w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.41.14-AM-scaled.png?resize=300%2C188&amp;quality=80&amp;ssl=1 300w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.41.14-AM-scaled.png?resize=768%2C480&amp;quality=80&amp;ssl=1 768w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.41.14-AM-scaled.png?resize=1536%2C960&amp;quality=80&amp;ssl=1 1536w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.41.14-AM-scaled.png?resize=2048%2C1280&amp;quality=80&amp;ssl=1 2048w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></figure>
+
+
+
+<p class="wp-block-paragraph">And it easily caught me! </p>
+
+
+
+<figure class="wp-block-image size-large"><img data-recalc-dims="1" loading="lazy" decoding="async" width="1024" height="312" data-attachment-id="14067" data-permalink="https://chriscoyier.net/2026/10/05/wordpress-mcp/screenshot-2026-10-05-at-6-42-15-am/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.42.15-AM-scaled.png?fit=2560%2C779&amp;quality=80&amp;ssl=1" data-orig-size="2560,779" data-comments-opened="1" data-image-title="Screenshot 2026-10-05 at 6.42.15 AM" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.42.15-AM-scaled.png?fit=1024%2C312&amp;quality=80&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.42.15-AM.png?resize=1024%2C312&#038;quality=80&#038;ssl=1" alt="Screenshot of a text editor showing a draft from WordPress with notes regarding elephants and a code connector." class="wp-image-14067" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.42.15-AM-scaled.png?resize=1024%2C312&amp;quality=80&amp;ssl=1 1024w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.42.15-AM-scaled.png?resize=300%2C91&amp;quality=80&amp;ssl=1 300w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.42.15-AM-scaled.png?resize=766%2C233&amp;quality=80&amp;ssl=1 766w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.42.15-AM-scaled.png?resize=1536%2C468&amp;quality=80&amp;ssl=1 1536w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/10/Screenshot-2026-10-05-at-6.42.15-AM-scaled.png?w=2048&amp;quality=80&amp;ssl=1 2048w" sizes="auto, (max-width: 1000px) 100vw, 1000px" /></figure>
+
+
+
+<p class="wp-block-paragraph">I think I&#8217;m more likely to use this for very rote tasks like making sure my headers are Title Case, and things are formatted like I want them to be, matching a style guide. </p>
+
+
+
+<p class="wp-block-paragraph">I think it pairs nicely with having a &#8220;SKILL.md&#8221; file for it, which can be home-base for a style guide like that. The skill could have stuff in it like &#8220;only ever touch draft blog posts&#8221;, &#8220;make sure blocks of code are labelled for what type of code they are&#8221;, &#8220;make sure images are self-hosted&#8221;, &#8220;make sure anything I&#8217;m linking to looks correct and the link is valid&#8221;. </p>
+
+
+
+<p class="wp-block-paragraph">I friggin&#8217; hate AI slop writing, so please know I have no interest in automating anything around that. </p>
+
+
+
+<p class="wp-block-paragraph">But as someone who has authored and edited one billion blog posts, some intelligent automation of certain rote tasks is appealing.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/05/wordpress-mcp/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">14055</post-id>	</item>
+		<item>
+		<title>im Water</title>
+		<link>https://chriscoyier.net/2026/10/04/im-water/</link>
+					<comments>https://chriscoyier.net/2026/10/04/im-water/#respond</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Sun, 04 Oct 2026 13:58:55 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=14056</guid>
+
+					<description><![CDATA[This promotional video is either too weird or not weird enough, but I like core idea of im Water: a carrying strap for a water bottle designed into the label itself. The family business had a screen printing business growing up, including a big die cutting machine, which could totally be used for a job [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">This promotional video is either too weird or not weird enough, but I like core idea of <a href="https://imwater.com/">im Water</a>: a carrying strap for a water bottle designed into the label itself. </p>
+
+
+
+		<figure class="wp-block-jetpack-videopress jetpack-videopress-player wp-block-jetpack-videopress--has-max-width" style="max-width: 337px;" >
+			<div class="jetpack-videopress-player__wrapper"> <iframe loading="lazy" title="VideoPress Video Player" aria-label="VideoPress Video Player" width="421" height="750" src="https://videopress.com/embed/C0Kg9phW?cover=1&amp;autoPlay=0&amp;controls=1&amp;loop=0&amp;muted=1&amp;persistVolume=0&amp;playsinline=1&amp;preloadContent=metadata&amp;useAverageColor=1&amp;hd=0" frameborder="0" allowfullscreen data-resize-to-parent="true" allow="clipboard-write; presentation"></iframe><script src='https://v0.wordpress.com/js/next/videopress-iframe.js?m=1790791280'></script></div>
+			
+			
+		</figure>
+		
+
+
+<p class="wp-block-paragraph">The family business had a screen printing business growing up, including a big die cutting machine, which could totally be used for a job like this. </p>
+
+
+
+<p class="wp-block-paragraph">I suspect the strength of the plastic involved would require basically&#8230; more plastic. Which I don&#8217;t super love for a world that makes too much throw-away plastic. Not to mention the fact that these are labels you apply to your own water bottles, not that just come like this, is strange, but I imagine it&#8217;s just a concept they hope to sell. I just think the idea is really clever.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/10/04/im-water/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		<enclosure url="https://videos.files.wordpress.com/C0Kg9phW/e15ab6c446d74a8a8c7c72d6d4750c74.mp4" length="24313480" type="video/mp4" />
+
+		<post-id xmlns="com-wordpress:feed-additions:1">14056</post-id>	</item>
+		<item>
+		<title>Experience with Nectar Beds</title>
+		<link>https://chriscoyier.net/2026/09/30/experience-with-nectar-beds/</link>
+					<comments>https://chriscoyier.net/2026/09/30/experience-with-nectar-beds/#respond</comments>
+		
+		<dc:creator><![CDATA[Chris Coyier]]></dc:creator>
+		<pubDate>Wed, 30 Sep 2026 15:28:14 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<guid isPermaLink="false">https://chriscoyier.net/?p=14042</guid>
+
+					<description><![CDATA[I recently bought a bed setup from Nectar. (This is not an ad; I just prefer linking to things.) I needed a quick setup for a guest room, and an online ad showing the no-hardware bamboo bed frame caught my attention. The pieces just slide together! Which means they&#8217;ll just slide apart! Advertising works. The [&#8230;]]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">I recently bought a bed setup from <a href="https://www.nectarsleep.com/bed-frames">Nectar</a>. (This is not an ad; I just prefer linking to things.)</p>
+
+
+
+<p class="wp-block-paragraph">I needed a quick setup for a guest room, and an online ad showing the no-hardware bamboo bed frame caught my attention. The pieces just slide together! Which means they&#8217;ll just slide apart! Advertising works. </p>
+
+
+
+<p class="wp-block-paragraph">The mattress and bedding came fairly quickly (3 days?) but I noticed on the box the <em>size</em> of the bedding was not what I ordered, which made me think the mattress was wrong too. </p>
+
+
+
+<p class="wp-block-paragraph">The bed frame was listed as shipping in about <em>6 weeks.</em> </p>
+
+
+
+<p class="wp-block-paragraph">So it was a double whammy. I feel like when you order a bed online, it needs to arrive quickly. They are competing with The Bed Store Down The Street, where I can get a bed today. I definitely didn&#8217;t have 6 weeks for a bed to arrive. And now, even if it did, I didn&#8217;t have the right bedding for it. </p>
+
+
+
+<p class="wp-block-paragraph">So I grabbed my sword and shield and entered the Realm of Customer Support. </p>
+
+
+
+<p class="wp-block-paragraph">Like everywhere, they have it wrapped in a thick condom of AI. </p>
+
+
+
+<p class="wp-block-paragraph">Fortunately, my sharpened sword could pierce it by basically writing &#8220;this needs to be looked at by a human.&#8221; During the course of things, I also called and could get to a human using a similar tactic. </p>
+
+
+
+<p class="wp-block-paragraph">They suggested I switch the finish (i.e., from a light color to a dark color) of the bed frame, and that it could ship immediately. Fortunately, it didn&#8217;t matter that much. They also sent me a return label for the bedding. </p>
+
+
+
+<p class="wp-block-paragraph">They pushed back on the mattress, though, because I didn&#8217;t originally provide a photo proving the mattress itself was the wrong size. I just assumed it was because it came with the wrong-size bedding. Turns out their pushback was warranted, as I carved into the plastic packaging enough to confirm it was actually the correct-size mattress. I&#8217;m down with that pushback; it saved me an awkward and annoying trip to FedEx. </p>
+
+
+
+<p class="wp-block-paragraph">The new bedding and frame came relatively quickly after that, and they refunded a small percentage of the price for the inconvenience. </p>
+
+
+
+<p class="wp-block-paragraph">Honestly, it was a pretty decent customer experience interaction, aside from the AI condom. It makes me wonder if that is really necessary. Humans are capable of such excellent customer support, shouldn&#8217;t they just <em>do it?</em> </p>
+
+
+
+<figure class="wp-block-image size-large is-resized"><img data-recalc-dims="1" loading="lazy" decoding="async" width="768" height="1024" data-attachment-id="14043" data-permalink="https://chriscoyier.net/2026/09/30/experience-with-nectar-beds/img_0096/" data-orig-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/09/IMG_0096-scaled-1.jpeg?fit=1920%2C2560&amp;quality=89&amp;ssl=1" data-orig-size="1920,2560" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;1.48&quot;,&quot;camera&quot;:&quot;iPhone 18 Pro Max&quot;,&quot;created_timestamp&quot;:&quot;1790752946&quot;,&quot;focal_length&quot;:&quot;6.9299998280517&quot;,&quot;iso&quot;:&quot;200&quot;,&quot;shutter_speed&quot;:&quot;0.016666666666667&quot;,&quot;orientation&quot;:&quot;1&quot;}" data-image-title="IMG_0096" data-image-description="" data-image-caption="" data-large-file="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/09/IMG_0096-scaled-1.jpeg?fit=768%2C1024&amp;quality=89&amp;ssl=1" src="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/09/IMG_0096.jpeg?resize=768%2C1024&#038;quality=89&#038;ssl=1" alt="Close-up view of a wooden bed frame with visible slats and a white bed sheet, featuring a brown comforter on top." class="wp-image-14043" style="width:468px;height:auto" srcset="https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/09/IMG_0096-scaled-1.jpeg?resize=768%2C1024&amp;quality=89&amp;ssl=1 768w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/09/IMG_0096-scaled-1.jpeg?resize=225%2C300&amp;quality=89&amp;ssl=1 225w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/09/IMG_0096-scaled-1.jpeg?resize=432%2C576&amp;quality=89&amp;ssl=1 432w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/09/IMG_0096-scaled-1.jpeg?resize=1152%2C1536&amp;quality=89&amp;ssl=1 1152w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/09/IMG_0096-scaled-1.jpeg?w=1536&amp;quality=89&amp;ssl=1 1536w, https://i0.wp.com/chriscoyier.net/wp-content/uploads/2026/09/IMG_0096-scaled-1.jpeg?w=1920&amp;quality=89&amp;ssl=1 1920w" sizes="auto, (max-width: 768px) 100vw, 768px" /></figure>
+
+
+
+<p class="wp-block-paragraph">In the end, the bed is perfectly fine. Good, maybe. The frame is nicely designed and really does just fit together with literally zero hardware. I can&#8217;t vouch for the mattress over many nights of sleep yet, but it feels fine.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://chriscoyier.net/2026/09/30/experience-with-nectar-beds/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">14042</post-id>	</item>
+	</channel>
+</rss>

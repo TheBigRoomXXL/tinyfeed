@@ -1,0 +1,2844 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-RojW3LU_HFLnVB-ZYiEB51wwlmF5_wwXJpkbC05-RlhRHjIgOSdiLoBiq87WX_rOwKlV-cwp77ZSCnSZljOv444IQEG__498rVzTzxwjj7t4kru5njM8ghLnh8-m0xjun6uzxARvC4aE4X2JRGUS3dEmGqt1Dn_ZwwbVIBQ6s2IcWChbUzDOr4FB5E_N2UEnIaOdJu31RAT3zn93qLnhcuv0L1u2aMQk1dmBnRIkfZZcJh-GWol3HixGB_m-gGvH705pBxqDUCO2upf1GxWopCFhRaRuvJFC6LiM9JCFhkOBIpRT_dG9DRb4jWX6jV_1sp1QzojNC241wXrWYTvl-g==' ;
+		script-src 'nonce-RojW3LU_HFLnVB-ZYiEB51wwlmF5_wwXJpkbC05-RlhRHjIgOSdiLoBiq87WX_rOwKlV-cwp77ZSCnSZljOv444IQEG__498rVzTzxwjj7t4kru5njM8ghLnh8-m0xjun6uzxARvC4aE4X2JRGUS3dEmGqt1Dn_ZwwbVIBQ6s2IcWChbUzDOr4FB5E_N2UEnIaOdJu31RAT3zn93qLnhcuv0L1u2aMQk1dmBnRIkfZZcJh-GWol3HixGB_m-gGvH705pBxqDUCO2upf1GxWopCFhRaRuvJFC6LiM9JCFhkOBIpRT_dG9DRb4jWX6jV_1sp1QzojNC241wXrWYTvl-g==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="RojW3LU_HFLnVB-ZYiEB51wwlmF5_wwXJpkbC05-RlhRHjIgOSdiLoBiq87WX_rOwKlV-cwp77ZSCnSZljOv444IQEG__498rVzTzxwjj7t4kru5njM8ghLnh8-m0xjun6uzxARvC4aE4X2JRGUS3dEmGqt1Dn_ZwwbVIBQ6s2IcWChbUzDOr4FB5E_N2UEnIaOdJu31RAT3zn93qLnhcuv0L1u2aMQk1dmBnRIkfZZcJh-GWol3HixGB_m-gGvH705pBxqDUCO2upf1GxWopCFhRaRuvJFC6LiM9JCFhkOBIpRT_dG9DRb4jWX6jV_1sp1QzojNC241wXrWYTvl-g==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-10-08-deepthi-sigireddi-from-supabase.html target="_blank">
+					<h2>Deepthi Sigireddi from Supabase</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-10-04-compression-and-concatenation-on-the-web.html target="_blank">
+					<h2>Compression and concatenation on the web</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-04">2026-10-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-09-27-full-text-search-and-postgresql.html target="_blank">
+					<h2>Full text search and PostgreSQL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-09-13-query-plan-rewriting-in-postgresql.html target="_blank">
+					<h2>Query plan rewriting in PostgreSQL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-13">2026-09-13</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-09-06-data-races-and-the-limits-of-threadsanitizer-in-c-and-go.html target="_blank">
+					<h2>Data races and the limits of ThreadSanitizer in C and Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-06">2026-09-06</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-08-23-another-look-at-sqlite-wal-reset.html target="_blank">
+					<h2>Another look at SQLite&#39;s WAL-Reset bug</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-23">2026-08-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-08-16-transactions-in-cassandra.html target="_blank">
+					<h2>The road to ACID transactions in Cassandra 6</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-16">2026-08-16</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-08-14-hourly-updates.html target="_blank">
+					<h2>Hourly updates to jobs and the feed</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-14">2026-08-14</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-08-05-touring-the-consensus-six-months-in.html target="_blank">
+					<h2>Touring The Consensus, six months in</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-05">2026-08-05</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-06-27-the-feature-in-oxcaml-more-languages-should-steal.html target="_blank">
+					<h2>The feature in OxCaml that more languages should steal</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-27">2026-06-27</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-07-23-wasmgc-in-wastime.html target="_blank">
+					<h2>WasmGC in Wasmtime</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-23">2026-06-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-07-19-observing-gos-garbage-collector-old-and-new.html target="_blank">
+					<h2>Observing Go&#39;s garbage collector, old and new</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-19">2026-06-19</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-06-15-doing-the-rounds.html target="_blank">
+					<h2>Doing the rounds</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-15">2026-06-15</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-06-11-this-week-in-infrastructure.html target="_blank">
+					<h2>This week in infrastructure</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-11">2026-06-11</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-07-11-of-forks-and-clones-and-package-management.html target="_blank">
+					<h2>Of forks and clones and package management</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-11">2026-06-11</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-06-06-python-3-14-garbage-collection-rigamarole.html target="_blank">
+					<h2>Python 3.14 garbage collection rigamarole</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-06">2026-06-06</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-05-20-yeunjoo-choi-on-chromium.html target="_blank">
+					<h2>Yeunjoo Choi from Igalia on Chromium</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-20">2026-05-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-05-18-serving-files-three-ways.html target="_blank">
+					<h2>Serving files over HTTP three ways: synchronous, epoll, and io_uring</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-18">2026-05-18</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-05-02-automating-hermitage.html target="_blank">
+					<h2>Automating Hermitage to see how transactions differ in MySQL and MariaDB</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-02">2026-05-02</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-04-26-branimir-lambov-from-ibm-on-cassandra.html target="_blank">
+					<h2>Branimir Lambov from IBM on Cassandra</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-26">2026-04-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-04-16-who-even-uses-jemalloc-anyway.html target="_blank">
+					<h2>Who even uses jemalloc in 2026 anyway? (many major projects)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-16">2026-04-16</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-04-08-jobs-funding-and-companies.html target="_blank">
+					<h2>How jobs, events, and funding work on The Consensus</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-08">2026-04-08</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-04-03-who-contributed-to-datafusion-53.html target="_blank">
+					<h2>Who contributed to DataFusion 53</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-03">2026-04-03</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-03-29-taking-galera-for-a-spin.html target="_blank">
+					<h2>Taking multi-master MariaDB for a spin, reproducing a Jepsen report</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-29">2026-03-29</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-03-19-developer-spotlight-somtochi-onyekwere.html target="_blank">
+					<h2>Developer Spotlight: Somtochi Onyekwere from Fly.io</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-19">2026-03-19</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-03-19-a-static-site-generator.html target="_blank">
+					<h2>A static site generator and website transferring under 20kB</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-19">2026-03-19</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-03-12-mojos-not-yet-python.html target="_blank">
+					<h2>Mojo&#39;s not (yet) Python</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-12">2026-03-12</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-03-02-source-available-projects-and-their-ai-contribution-policies.html target="_blank">
+					<h2>Source-available projects and their AI contribution policies</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-02">2026-03-02</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-02-26-datafusion-contributor-spotlight-kosta-tarasov.html target="_blank">
+					<h2>Open Source Contributor Spotlight: Kosta Tarasov and DataFusion</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-26">2026-02-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-02-25-i-started-a-company.html target="_blank">
+					<h2>I started a software research company</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-25">2026-02-25</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-02-22-we-have-pgvector-at-home.html target="_blank">
+					<h2>We have pgvector at home</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-22">2026-02-22</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-02-15-generating-vector-embeddings-locally.html target="_blank">
+					<h2>Generating vector embeddings for semantic search locally</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-15">2026-02-15</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-02-08-paths-of-mysql-vector-search-edition.html target="_blank">
+					<h2>Paths of MySQL, vector search edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-08">2026-02-08</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-02-02-companies-behind-postgres-18.html target="_blank">
+					<h2>Companies behind Postgres 18 development</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-02">2026-02-02</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-01-19-llms-and-your-career.html target="_blank">
+					<h2>LLMs and your career</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-19">2026-01-19</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-01-03-distinguishing-yourself.html target="_blank">
+					<h2>Distinguishing yourself early in your career as a developer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-03">2026-01-03</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-12-31-year-in-community.html target="_blank">
+					<h2>Year in community</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-31">2025-12-31</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-12-23-year-in-books.html target="_blank">
+					<h2>Year in books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-23">2025-12-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-11-26-psqls-scripting-language-turing-complete-or-fibonacci-psql.html target="_blank">
+					<h2>Is psql&#39;s scripting language Turing complete? Or: fibonacci in psql</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-26">2025-11-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-11-03-an-individual-can-change-an-organization.html target="_blank">
+					<h2>An individual can change an organization</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-03">2025-11-03</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-10-24-transaction-pooling-postgres-pgcat.html target="_blank">
+					<h2>Transaction pooling for Postgres with pgcat</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-24">2025-10-24</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-09-15-what-is-systems-and-how-do-i-learn.html target="_blank">
+					<h2>In response to a developer asking about systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-15">2025-09-15</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-09-10-simple-clustering-and-replication-solution-postgres.html target="_blank">
+					<h2>A simple clustering and replication solution for Postgres</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-10">2025-09-10</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-09-04-analytics-query-goes-6x-faster-edb-postgres-distributeds-new-analytics-engine.html target="_blank">
+					<h2>Analytics query goes 6x faster with EDB Postgres Distributed&#39;s new analytics engine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-04">2025-09-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-08-14-set-single-node-edb-postgres-distributed-cluster-ubuntu.html target="_blank">
+					<h2>Set up a single-node EDB Postgres Distributed cluster on Ubuntu</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-14">2025-08-14</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-08-09-what-even-is-distributed-systems.html target="_blank">
+					<h2>What even is distributed systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-09">2025-08-09</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-07-31-stack-traces-postgres-errors-backtracefunctions.html target="_blank">
+					<h2>Stack traces for Postgres errors with backtrace_functions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-31">2025-07-31</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-06-28-want-to-meet-people-charge-them.html target="_blank">
+					<h2>Want to meet people, try charging them for it?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-28">2025-06-28</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-06-21-debugging-memory-leaks-postgres-jemalloc-edition.html target="_blank">
+					<h2>Debugging memory leaks in Postgres, jemalloc edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-21">2025-06-21</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-05-26-cheerleading.html target="_blank">
+					<h2>Cheerleading</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-26">2025-05-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-05-22-debugging-memory-leaks-postgres-heaptrack-edition.html target="_blank">
+					<h2>Debugging memory leaks in Postgres, heaptrack edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-22">2025-05-22</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-04-22-burn-your-title.html target="_blank">
+					<h2>Screw your title</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-22">2025-04-22</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-04-20-transactions-are-a-protocol.html target="_blank">
+					<h2>Transactions are a protocol</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-20">2025-04-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-03-27-things-that-go-wrong-with-disk-io.html target="_blank">
+					<h2>Things that go wrong with disk IO</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-27">2025-03-27</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-03-25-phil-eaton-on-technical-blogging.html target="_blank">
+					<h2>Phil Eaton on Technical Blogging</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-25">2025-03-25</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-02-28-minimal-downtime-postgres-major-version-upgrades-edb-postgres-distributed.html target="_blank">
+					<h2>Minimal downtime Postgres major version upgrades with EDB Postgres Distributed</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-28">2025-02-28</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-02-15-from-web-developer-to-database-developer-in-10-years.html target="_blank">
+					<h2>From web developer to database developer in 10 years</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-15">2025-02-15</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-01-29-edit-for-clarity.html target="_blank">
+					<h2>Edit for clarity</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-29">2025-01-29</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-01-25-an-explosion-of-transitive-dependencies.html target="_blank">
+					<h2>An explosion of transitive dependencies</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-25">2025-01-25</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-01-22-embedding-python-rust-tests.html target="_blank">
+					<h2>Embedding Python in Rust (for tests)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-22">2025-01-22</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2025-01-17-logical-replication-postgres-basics.html target="_blank">
+					<h2>Logical replication in Postgres: Basics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-17">2025-01-17</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-12-31-how-i-run-a-coffee-club.html target="_blank">
+					<h2>How I run a coffee club</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-31">2024-12-31</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-12-26-volleyball-in-nyc.html target="_blank">
+					<h2>Picking up volleyball in NYC with Goodrec and New York Urban</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-26">2024-12-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-11-28-1-million-views.html target="_blank">
+					<h2>1 million page views</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-28">2024-11-28</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-11-06-exploring-postgress-arena-allocator-writing-http-server-scratch.html target="_blank">
+					<h2>Exploring Postgres&#39;s arena allocator by writing an HTTP server from scratch</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-06">2024-11-06</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-11-05-effective-unemployment-and-social-media.html target="_blank">
+					<h2>Effective unemployment and social media</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-05">2024-11-05</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-10-31-checking-linearizability-in-go.html target="_blank">
+					<h2>Checking linearizability in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-31">2024-10-31</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-10-08-intuitions-for-distributed-consensus.html target="_blank">
+					<h2>Intuitions for Distributed Consensus by Phil Eaton</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-08">2024-10-08</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-09-29-build-a-serverless-acid-database-with-this-one-neat-trick.html target="_blank">
+					<h2>Build a serverless ACID database with this one neat trick (atomic PutIfAbsent)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-29">2024-09-29</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-09-23-be-someone-who-does-things.html target="_blank">
+					<h2>Be someone who does things</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-23">2024-09-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-08-24-obsession.html target="_blank">
+					<h2>Obsession</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-24">2024-08-24</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-08-20-deterministic-simulation-testing.html target="_blank">
+					<h2>What&#39;s the big deal about Deterministic Simulation Testing?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-20">2024-08-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-07-30-delightful-production-grade-replication-postgres.html target="_blank">
+					<h2>Delightful, production-grade replication for Postgres</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-30">2024-07-30</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-07-07-systems-meetups.html target="_blank">
+					<h2>A reawakening of systems programming meetups</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-07">2024-07-07</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-07-01-a-write-ahead-log-is-not-a-universal-part-of-durability.html target="_blank">
+					<h2>A write-ahead log is not a universal part of durability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-01">2024-07-01</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-06-17-limitations-llm-or-why-are-we-doing-rag.html target="_blank">
+					<h2>The limitations of LLMs, or why are we doing RAG?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-17">2024-06-17</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-06-14-confusion-is-a-muse.html target="_blank">
+					<h2>Confusion is a muse</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-14">2024-06-14</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-05-30-how-i-run-book-clubs.html target="_blank">
+					<h2>How I run a software book club</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-30">2024-05-30</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-05-16-mvcc.html target="_blank">
+					<h2>Implementing MVCC and major SQL transaction isolation levels</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-16">2024-05-16</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-04-10-what-makes-a-great-tech-blog.html target="_blank">
+					<h2>What makes a great technical blog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-10">2024-04-10</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-04-05-company-paper-club.html target="_blank">
+					<h2>A paper reading club at work; databases and distributed systems research</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-05">2024-04-05</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-03-27-finding-memory-leaks-in-postgres-c-code.html target="_blank">
+					<h2>Finding memory leaks in Postgres C code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-27">2024-03-27</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-03-15-zig-rust-and-other-languages.html target="_blank">
+					<h2>Zig, Rust, and other languages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-15">2024-03-15</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-03-11-first-month-on-a-database-team.html target="_blank">
+					<h2>First month on a database team</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-11">2024-03-11</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-02-08-an-intuition-for-distributed-consensus-in-oltp-systems.html target="_blank">
+					<h2>An intuition for distributed consensus in OLTP systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-08">2024-02-08</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2024-01-09-minimal-in-memory-storage-engine-for-mysql.html target="_blank">
+					<h2>Writing a minimal in-memory storage engine for MySQL/MariaDB</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-09">2024-01-09</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-12-26-make-your-own-way.html target="_blank">
+					<h2>Make your own way</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-27">2023-12-27</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-11-19-exploring-a-postgres-query-plan.html target="_blank">
+					<h2>Exploring a Postgres query plan</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-19">2023-11-19</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-11-01-postgres-table-access-methods.html target="_blank">
+					<h2>Writing a storage engine for Postgres: an in-memory Table Access Method</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-01">2023-11-01</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-10-19-write-file-to-disk-with-io_uring.html target="_blank">
+					<h2>io_uring basics: Writing a file to disk</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-19">2023-10-19</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-10-05-go-database-sql-overhead-on-insert-heavy-workloads.html target="_blank">
+					<h2>Go database driver overhead on insert-heavy workloads</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-05">2023-10-05</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-10-01-intercepting-and-modifying-linux-system-calls-with-ptrace.html target="_blank">
+					<h2>Intercepting and modifying Linux system calls with ptrace</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-01">2023-10-01</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-09-21-how-do-databases-execute-expressions.html target="_blank">
+					<h2>How do databases execute expressions?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-21">2023-09-21</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/eight-years-of-tech-meetups.html target="_blank">
+					<h2>Eight years of organizing tech meetups</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-04">2023-09-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-08-15-thinking-about-functional-programming.html target="_blank">
+					<h2>Thinking about functional programming</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-15">2023-08-15</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-07-11-we-put-a-distributed-database-in-the-browse.html target="_blank">
+					<h2>We put a distributed database in the browser – and made a game of it</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-11">2023-07-11</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-06-19-metaprogramming-in-zig-and-parsing-css.html target="_blank">
+					<h2>Metaprogramming in Zig and parsing CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-19">2023-06-19</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-05-25-raft.html target="_blank">
+					<h2>Implementing the Raft distributed consensus protocol in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-25">2023-05-25</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/books-developers-should-read.html target="_blank">
+					<h2>Two books I recommend to developers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-16">2023-05-16</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/high-quality-subreddits-you-should-be-following.html target="_blank">
+					<h2>My favorite software subreddits</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-16">2023-05-16</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/errors-and-zig.html target="_blank">
+					<h2>Errors and Zig</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-21">2023-03-21</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-02-18-neal-gabler-walt-disney-notes.html target="_blank">
+					<h2>Notes from Neal Gabler&#39;s Walt Disney</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-18">2023-02-18</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-01-30-livescheme.html target="_blank">
+					<h2>Lessons learned streaming building a Scheme-like interpreter in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-30">2023-01-30</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/effective-product-manager.html target="_blank">
+					<h2>An effective product manager</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-23">2023-01-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-01-12-year-in-books.html target="_blank">
+					<h2>The year in books: 2022</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-12">2023-01-12</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-01-04-compiler-resources.html target="_blank">
+					<h2>Favorite compiler and interpreter resources</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-05">2023-01-05</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-01-04-book-recommendations.html target="_blank">
+					<h2>General book recommendations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-04">2023-01-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2023-01-01-letter-to-a-frontend-developer-asking-about-database-development.html target="_blank">
+					<h2>In response to a frontend developer asking about database development</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-01">2023-01-01</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/is-it-worth-writing-about.html target="_blank">
+					<h2>Is it worth writing about?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-01">2022-12-01</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/a-friendly-abstraction-over-iouring-and-kqueue.html target="_blank">
+					<h2>A Programmer-Friendly I/O Abstraction Over io_uring and kqueue</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-23">2022-11-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/zigrocks-sql.html target="_blank">
+					<h2>Writing a SQL database, take two: Zig and RocksDB</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-13">2022-11-13</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/zigrocks.html target="_blank">
+					<h2>A minimal RocksDB example with Zig</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-30">2022-10-30</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/a-database-without-dynamic-memory.html target="_blank">
+					<h2>A database without dynamic memory allocation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-12">2022-10-12</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/minimal-key-value-store-with-hashicorp-raft.html target="_blank">
+					<h2>A minimal distributed key-value database with Hashicorp&#39;s Raft library</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-17">2022-09-17</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/whats-the-big-deal-about-key-value-databases.html target="_blank">
+					<h2>What&#39;s the big deal about key-value databases like FoundationDB and RocksDB?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-23">2022-08-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2022-08-21-sqlite-limited-builtin-functions.html target="_blank">
+					<h2>SQLite has pretty limited builtin functions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-21">2022-08-21</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2022-07-25-database-integration-testing.html target="_blank">
+					<h2>Container scheduling strategies for integration testing 14 different databases in Github Actions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-25">2022-07-25</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/implementing-a-jq-clone-in-go.html target="_blank">
+					<h2>Implementing a simple jq clone in Go, and basics of Go memory profiling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-10">2022-07-10</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2022-06-11-year-in-review.html target="_blank">
+					<h2>One year as a solo dev building open-source data tools without funding</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-10">2022-06-10</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/distributed-postgres.html target="_blank">
+					<h2>Let&#39;s build a distributed Postgres proof of concept</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-17">2022-05-17</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/sqlite-in-go-with-and-without-cgo.html target="_blank">
+					<h2>SQLite in Go, with and without cgo</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-12">2022-05-12</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/event-handler-attributes.html target="_blank">
+					<h2>HTML event handler attributes: down the rabbit hole</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-26">2022-04-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/console-101.html target="_blank">
+					<h2>Interview With Phil of DataStation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-17">2022-04-17</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/sql-parsers.html target="_blank">
+					<h2>Surveying SQL parser libraries in a few high-level languages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-11">2022-04-11</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/documentdb.html target="_blank">
+					<h2>Writing a document database from scratch in Go: Lucene-like filters and indexes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-28">2022-03-28</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/improving-go-json-encoding-performance-for-large-arrays-of-objects.html target="_blank">
+					<h2>Speeding up Go&#39;s builtin JSON encoder up to 55% for large arrays of objects</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-03">2022-03-03</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/handling-email-from-gmail-smtp-protocol-basics.html target="_blank">
+					<h2>SMTP protocol basics from scratch in Go: receiving email from Gmail</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-20">2022-02-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/the-world-of-postgresql-wire-compatibility.html target="_blank">
+					<h2>The world of PostgreSQL wire compatibility</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-08">2022-02-08</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/recommending-a-book.html target="_blank">
+					<h2>How to recommend books, or, stop recommending SICP</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-31">2022-01-31</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/bootloader-basics.html target="_blank">
+					<h2>Bootloader basics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-23">2022-01-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/dsq.html target="_blank">
+					<h2>dsq: Commandline tool for running SQL queries against JSON, CSV, Excel, Parquet, and more.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-11">2022-01-11</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/analyzing-large-json-files-via-partial-json-parsing.html target="_blank">
+					<h2>Analyzing large JSON files via partial JSON parsing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-06">2022-01-06</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/year-in-books-2021.html target="_blank">
+					<h2>The year in books: 11 to recommend in 2021</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-05">2022-01-05</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/lua-in-rust.html target="_blank">
+					<h2>Writing a minimal Lua implementation with a virtual machine from scratch in Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-28">2021-12-28</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/sqlserver-in-github-actions.html target="_blank">
+					<h2>Running SQL Server in a container on Github Actions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-16">2021-12-16</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/implementing-zip-in-go-unzipping.html target="_blank">
+					<h2>Implementing zip archiving in Golang: unzipping</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-23">2021-11-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/benchmarking-esbuild-swc-typescript-babel.html target="_blank">
+					<h2>Benchmarking esbuild, swc, tsc, and babel for React/JSX projects</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-13">2021-11-13</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/building-a-nested-css-rule-expander.html target="_blank">
+					<h2>Building a fast SCSS-like rule expander for CSS using fuzzy parsing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-31">2021-10-31</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/exploring-plpgsql-forth-like.html target="_blank">
+					<h2>Exploring PL/pgSQL part two: implementing a Forth-like interpreter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-29">2021-10-29</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/exploring-plpgsql.html target="_blank">
+					<h2>Exploring PL/pgSQL: Strings, arrays, recursion, and parsing JSON</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-24">2021-10-24</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/experimenting-with-column-and-row-oriented-datastructures.html target="_blank">
+					<h2>Experimenting with column- and row-oriented datastructures</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-18">2021-10-18</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/notes-on-running-electron.html target="_blank">
+					<h2>Notes on running Electron</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-13">2021-10-13</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/javascript-implementations.html target="_blank">
+					<h2>Enumerating and analyzing 40&#43; non-V8 JavaScript implementations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-21">2021-09-21</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/writing-a-simple-json-library-in-modern-cpp.html target="_blank">
+					<h2>Writing a simple JSON library from scratch: a tour through modern C&#43;&#43;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-26">2021-08-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/parser-generators-vs-handwritten-parsers-survey-2021.html target="_blank">
+					<h2>Parser generators vs. handwritten parsers: surveying major language implementations in 2021</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-21">2021-08-21</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/practical-common-lisp-on-the-jvm.html target="_blank">
+					<h2>Practical? Common Lisp on the JVM: A quick intro to ABCL for modern web apps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-05">2021-08-05</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/writing-an-efficient-javascript-object-previewer.html target="_blank">
+					<h2>Writing an efficient object previewer for JavaScript</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-15">2021-07-15</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/react-without-webpack.html target="_blank">
+					<h2>React without webpack: fast path to a working app from scratch</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-08">2021-07-08</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/controlled-select-element-in-react-has-weird-ux.html target="_blank">
+					<h2>Controlled HTML select element in React has weird default UX</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-06-25">2021-06-25</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/leaders-share-company-success-stories.html target="_blank">
+					<h2>Leaders, you need to share organization success stories more frequently</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-06-22">2021-06-22</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/languages-you-can-run-in-the-browser.html target="_blank">
+					<h2>Languages you can run in the browser, part 1: Python, JavaScript, SQLite</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-06-17">2021-06-17</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/coolest-tech-companies-in-nyc-2021.html target="_blank">
+					<h2>Coolest hard-tech companies in NYC 2021</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-06-04">2021-06-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/writing-a-template-library-in-python.html target="_blank">
+					<h2>Writing a Jinja-inspired template library in Python</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-05-23">2021-05-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/learning-a-new-codebase-hacking-nginx.html target="_blank">
+					<h2>Learning a new codebase: hacking on nginx</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-04-04">2021-04-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/practicing-recursion.html target="_blank">
+					<h2>How to get better at recursion</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-07">2021-03-07</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/extending-gosql-to-support-limit-and-offset.html target="_blank">
+					<h2>Extending gosql to supporting LIMIT and OFFSET</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-23">2021-01-23</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/year-in-books-2020.html target="_blank">
+					<h2>The year in books: 20 to recommend in 2020</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-27">2020-12-27</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/static-analysis-with-semgrep.html target="_blank">
+					<h2>Static analysis with semgrep: practical examples using Docker</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-20">2020-12-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/emulating-amd64-starting-with-elf.html target="_blank">
+					<h2>Emulating linux/AMD64 userland: interpreting an ELF binary</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-26">2020-11-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/the-impact-of-management-teams-on-startups-and-enterprises.html target="_blank">
+					<h2>The impact of management teams as a decision-making group, in startups and enterprise</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-11">2020-11-11</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/standard-ml-in-2020.html target="_blank">
+					<h2>Standard ML in 2020</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-25">2020-10-25</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/the-case-for-comments-in-code.html target="_blank">
+					<h2>The case for comments in code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-07">2020-09-07</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/writing-a-simple-python-compiler.html target="_blank">
+					<h2>Writing a simple Python compiler: 1. hello, fibonacci</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-08-16">2020-08-16</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/a-single-node-kubernetes-cluster-without-virtualization-or-a-container-registry.html target="_blank">
+					<h2>A single-node Kubernetes cluster without virtualization or a container registry</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-25">2020-07-25</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/generating-a-full-stack-application-from-a-database.html target="_blank">
+					<h2>Generating a full-stack application from a database</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-14">2020-06-14</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/generating-a-rest-api-from-a-database.html target="_blank">
+					<h2>Generating a REST API from a database</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-06">2020-06-06</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/rfcs-and-asynchronous-first-culture.html target="_blank">
+					<h2>RFCs and asynchronous-first culture</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-16">2020-05-16</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/database-basics-a-database-sql-driver.html target="_blank">
+					<h2>Writing a SQL database from scratch in Go: 4. a database/sql driver</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-10">2020-05-10</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/database-basics-indexes.html target="_blank">
+					<h2>Writing a SQL database from scratch in Go: 3. indexes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-01">2020-05-01</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/database-basics-expressions-and-where.html target="_blank">
+					<h2>Writing a SQL database from scratch in Go: 2. binary expressions and WHERE filters</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-12">2020-04-12</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/studying-with-inbox-zero.html target="_blank">
+					<h2>Studying foreign languages with inbox zero</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-04">2020-04-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/reviewing-the-surface-book-2.html target="_blank">
+					<h2>Reviewing the Surface Book 2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-03-18">2020-03-18</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/database-basics.html target="_blank">
+					<h2>Writing a SQL database from scratch in Go: 1. SELECT, INSERT, CREATE and a REPL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-03-06">2020-03-06</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/a-minimal-rest-api-in-java.html target="_blank">
+					<h2>A minimal REST API in Java</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-01">2020-02-01</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/compiler-basics-an-x86-upgrade.html target="_blank">
+					<h2>Writing a lisp compiler from scratch in JavaScript: 6. an x86 upgrade</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-08">2019-12-08</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/confusion-disengagement-in-meetings.html target="_blank">
+					<h2>Confusion and disengagement in meetings</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-11-30">2019-11-30</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/interpreting-go.html target="_blank">
+					<h2>Interpreting Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-12">2019-10-12</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/administering-kubernetes-is-hard.html target="_blank">
+					<h2>Administering Kubernetes is hard</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-09-30">2019-09-30</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/unit-testing-c-code-with-gtest.html target="_blank">
+					<h2>Unit testing C code with gtest</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-08-31">2019-08-31</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/emulator-basics-system-calls.html target="_blank">
+					<h2>Writing an x86 emulator from scratch in JavaScript: 2. system calls</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-07-20">2019-07-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/compiler-basics-llvm-system-calls.html target="_blank">
+					<h2>Writing a lisp compiler from scratch in JavaScript: 6. LLVM system calls</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-06-22">2019-06-22</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/emulator-basics-a-stack-and-register-machine.html target="_blank">
+					<h2>Writing an x86 emulator from scratch in JavaScript: 1. a stack and register machine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-05-21">2019-05-21</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/tail-call-elimination.html target="_blank">
+					<h2>Tail call elimination</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-05-14">2019-05-14</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/compiler-basics-llvm-conditionals.html target="_blank">
+					<h2>Writing a lisp compiler from scratch in JavaScript: 4. LLVM conditionals and compiling fibonacci</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-05-04">2019-05-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/responsibility-and-ownership.html target="_blank">
+					<h2>Responsibility and ownership</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-04-30">2019-04-30</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/interpreting-typescript.html target="_blank">
+					<h2>Interpreting TypeScript</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-04-14">2019-04-14</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/web-server-basics-http-and-sockets.html target="_blank">
+					<h2>Writing a web server from scratch: 1. HTTP and sockets</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-04-06">2019-04-06</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/writing-a-simple-json-path-parser.html target="_blank">
+					<h2>Writing a simple JSON path parser</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-03-27">2019-03-27</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/compiler-basics-llvm.html target="_blank">
+					<h2>Writing a lisp compiler from scratch in JavaScript: 3. LLVM</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-03-10">2019-03-10</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/aot-compilation-of-javascript-with-v8.html target="_blank">
+					<h2>AOT-compilation of Javascript with V8</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-02-26">2019-02-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/windows.html target="_blank">
+					<h2>Windows</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-01-20">2019-01-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/compiler-basics-functions.html target="_blank">
+					<h2>Writing a lisp compiler from scratch in JavaScript: 2. user-defined functions and variables</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-01-20">2019-01-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/compiler-basics-lisp-to-assembly.html target="_blank">
+					<h2>Writing a lisp compiler from scratch in JavaScript: 1. lisp to assembly</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-11-20">2018-11-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/on-nyc-tokyo-and-seoul.html target="_blank">
+					<h2>On NYC, Tokyo and Seoul</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-10-20">2018-10-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/why-and-how-to-read-books.html target="_blank">
+					<h2>Why (and how) to read books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-09-26">2018-09-26</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/compiling-dynamic-programming-languages.html target="_blank">
+					<h2>Compiling dynamic programming languages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-09-02">2018-09-02</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/btest-a-language-agnostic-test-runner.html target="_blank">
+					<h2>btest: a language agnostic test runner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-08-04">2018-08-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/writing-to-be-read.html target="_blank">
+					<h2>Writing to be read</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-05-18">2018-05-18</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/writing-a-simple-json-parser.html target="_blank">
+					<h2>Writing a simple JSON parser</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-05-06">2018-05-06</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/finishing-up-a-freebsd-experiment.html target="_blank">
+					<h2>Finishing up a FreeBSD experiment</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-04-28">2018-04-28</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/book-review-ansi-common-lisp.html target="_blank">
+					<h2>Book Review: ANSI Common Lisp</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-03-25">2018-03-25</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/starting-a-minimal-common-lisp-project.html target="_blank">
+					<h2>Starting a minimal Common Lisp project</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-03-05">2018-03-05</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/project-highlight-bsdscheme.html target="_blank">
+					<h2>Interview with the D Language Blog: BSDScheme</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-01-20">2018-01-20</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/first-few-hurdles-writing-a-scheme-interpreter.html target="_blank">
+					<h2>First few hurdles writing a Scheme interpreter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-01-10">2018-01-10</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/deploying-freebsd-on-linode-unattended-in-minutes.html target="_blank">
+					<h2>Deploying FreeBSD on Linode unattended in minutes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-03-11">2017-03-11</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/walking-through-a-basic-racket-web-service.html target="_blank">
+					<h2>Walking through a basic Racket web service</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-12-29">2016-12-29</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="http://notes.eatonphil.com/" target="_blank">Notes on software development</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="RojW3LU_HFLnVB-ZYiEB51wwlmF5_wwXJpkbC05-RlhRHjIgOSdiLoBiq87WX_rOwKlV-cwp77ZSCnSZljOv444IQEG__498rVzTzxwjj7t4kru5njM8ghLnh8-m0xjun6uzxARvC4aE4X2JRGUS3dEmGqt1Dn_ZwwbVIBQ6s2IcWChbUzDOr4FB5E_N2UEnIaOdJu31RAT3zn93qLnhcuv0L1u2aMQk1dmBnRIkfZZcJh-GWol3HixGB_m-gGvH705pBxqDUCO2upf1GxWopCFhRaRuvJFC6LiM9JCFhkOBIpRT_dG9DRb4jWX6jV_1sp1QzojNC241wXrWYTvl-g==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom/"><channel><title>Andy Bell</title><description>Get my posts as soon as they go live!</description><link>https://bell.bz/</link><atom:link href="https://bell.bz/rss.xml" rel="self" type="application/rss+xml"/><item><title>In response to “The death of web development education”</title><link>https://bell.bz/in-response-to-the-death-of-web-development-education/</link><guid isPermaLink="true">https://bell.bz/in-response-to-the-death-of-web-development-education/</guid><pubDate>Wed, 30 Sep 2026 08:30:41 GMT</pubDate><content:encoded>
+&lt;p&gt;I read Mat​hia⁠s S​chäf⁠er’s excellent post, titled &lt;a href=&quot;https://molily.de/web-dev-education/&quot;&gt;&lt;em&gt;The death of web development education&lt;/em&gt;&lt;/a&gt;. I was thinking about how I can contribute to the conversation and really struggled to articulate the problem.&lt;/p&gt;
+
+
+
+&lt;p&gt;The most effective way I can contribute, in my opinion, is a crude sketch I just did of &lt;a href=&quot;https://piccalil.li/courses/&quot;&gt;Piccalilli&lt;/a&gt;‘s Stripe chart for all time sales:&lt;/p&gt;
+
+
+
+&lt;figure&gt;&lt;img loading=&quot;lazy&quot; width=&quot;1024&quot; height=&quot;561&quot; src=&quot;https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-30-at-09.21.20@2x-1024x561.jpg&quot; alt=&quot;A line chart showing sporadic peaks, but healthy sales with a sudden drop-off to an almost flat-line situation. The drop-off is labelled 2026 &quot; srcset=&quot;https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-30-at-09.21.20@2x-1024x561.jpg 1024w, https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-30-at-09.21.20@2x-300x164.jpg 300w, https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-30-at-09.21.20@2x-767x420.jpg 767w, https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-30-at-09.21.20@2x-1536x841.jpg 1536w, https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-30-at-09.21.20@2x.jpg 1574w&quot; /&gt;&lt;/figure&gt;
+
+
+
+&lt;p&gt;&lt;strong&gt;That’s a whopping 67.5% reduction since 2025…&lt;/strong&gt;&lt;/p&gt;
+
+
+
+&lt;p&gt;Pretty bleak, huh? Something really does have to change or &lt;a href=&quot;https://bell.bz/youll-miss-publishers-when-theyre-gone/&quot;&gt;you’ll miss publishers when they’re gone&lt;/a&gt;.&lt;/p&gt;
+
+
+
+&lt;p&gt;&lt;/p&gt;
+</content:encoded></item><item><title>You’ll miss publishers when they’re gone</title><link>https://bell.bz/youll-miss-publishers-when-theyre-gone/</link><guid isPermaLink="true">https://bell.bz/youll-miss-publishers-when-theyre-gone/</guid><pubDate>Fri, 18 Sep 2026 09:16:49 GMT</pubDate><content:encoded>
+&lt;p&gt;Ever since &lt;a href=&quot;https://piccalil.li/&quot;&gt;Piccalilli&lt;/a&gt; started to get traction, I’ve always seen &lt;a href=&quot;https://css-tricks.com/&quot;&gt;CSS-Tricks&lt;/a&gt;, &lt;a href=&quot;https://www.smashingmagazine.com/&quot;&gt;Smashing Magazine&lt;/a&gt; and &lt;a href=&quot;https://alistapart.com&quot;&gt;A List Apart&lt;/a&gt; (among others) as peers. We all help each other behind the scenes and importantly, back each other.&lt;/p&gt;
+
+
+
+&lt;p&gt;When CSS-Tricks was initially acquired by DigitalOcean, I was really happy for &lt;a href=&quot;https://chriscoyier.net/&quot;&gt;Chris&lt;/a&gt;. The work that he’d put into that publication was unreal with thousands of articles published along with elevating writers (including me) to building audiences of their own. It’s certainly something I try to emulate on Piccalilli, inspired by CSS-Tricks and Chris.&lt;/p&gt;
+
+
+
+&lt;p&gt;I was happy for DigitalOcean too because they genuinely invested in education at the time, with great success prior to their takeover of CSS-Tricks. So much so, that SaaS companies like &lt;a href=&quot;https://blog.logrocket.com/&quot;&gt;LogRocket emulated that approach&lt;/a&gt; with their own success. Investing in &lt;em&gt;giving back&lt;/em&gt; actually works!&lt;/p&gt;
+
+
+
+&lt;p&gt;What we didn’t foresee at the time of CSS-Tricks’ acquisition was that DigitalOcean would &lt;a href=&quot;https://geoffgraham.me/why-css-tricks-has-been-quiet/&quot;&gt;treat the publication with such disdain&lt;/a&gt;…&lt;em&gt;twice&lt;/em&gt;. I think &lt;a href=&quot;https://ericwbailey.website/published/css-tricks-could-be-a-co-op/&quot;&gt;Eric has the right idea of the why&lt;/a&gt;:&lt;/p&gt;
+
+
+
+&lt;blockquote&gt;
+&lt;p&gt;The corporate model of ownership can be a risk. If infrastructure is not part of a corporation’s core strategy, it is not a priority. And if it is not a priority it is effectively dead. You learn this lesson repeatedly working in accessibility.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+
+&lt;p&gt;You could argue “well, Andy, Piccalilli serves to promote Set Studio” and you’re &lt;em&gt;sort of&lt;/em&gt; right there. It no doubt brings eyes over to &lt;a href=&quot;https://set.studio/&quot;&gt;Set Studio&lt;/a&gt;, but the intrinsic link is there to verify that we &lt;strong&gt;know what we’re talking about&lt;/strong&gt;, so people can &lt;em&gt;trust&lt;/em&gt; what they read. The only goal of Piccalilli, now and forever, is to &lt;strong&gt;bring the workers of our industry up together&lt;/strong&gt;.&lt;/p&gt;
+
+
+
+&lt;p&gt;The problem with that and I guess, CSS-Tricks’ offering (which is very much a similar attitude) is &lt;em&gt;that&lt;/em&gt; doesn’t make numbers go up. The parasite class of tech leaders need the numbers to go up, always, remember. Saying that, I’m not sure which numbers go up when you &lt;a href=&quot;https://omarchy.org/news/2026/09/digitalocean-joins-as-founding-corporate-patron/&quot;&gt;invest $3 million in a disgusting racist’s linux project&lt;/a&gt; 🤷‍♂️&lt;/p&gt;
+
+
+
+&lt;h2&gt;It all comes down to funding, I’m afraid&lt;/h2&gt;
+
+
+
+&lt;p&gt;Long time readers of Piccalilli will notice we’ve slowed down a lot this year. Unfortunately, I had to &lt;a href=&quot;https://bell.bz/its-been-a-very-hard-year/&quot;&gt;make a rapid change to our strategy&lt;/a&gt; and focus on Set Studio as our industry’s priorities changed, seemingly overnight. It’s a shame because &lt;a href=&quot;https://bell.bz/were-aiming-to-run-piccalilli-full-time/&quot;&gt;I really did want Piccalilli to be our (mostly) sole focus here&lt;/a&gt;.&lt;/p&gt;
+
+
+
+&lt;p&gt;When you (rightly) pay writers fairly for their work, the costs build up really quickly. To their credit, CSS-Tricks were publishing multiple guest authored articles a week, which will have been costly! Not to mention paying the core CSS-Tricks team, like my very good pal, &lt;a href=&quot;https://geoffgraham.me/&quot;&gt;Geoff&lt;/a&gt;, to keep the wheels turning.&lt;/p&gt;
+
+
+
+&lt;p&gt;With financial backing of companies like DigitalOcean or in the past, advertisers, this is all possible. This already feels like a distant past though, but it doesn’t have to be.&lt;/p&gt;
+
+
+
+&lt;p&gt;Let me make it clear: without people at the top of their game sharing their experience and knowledge — regardless of whatever “game changing” technology is in place — we are pulling up the ladders and committing our industry to stagnation and death. We’ve already fucked it up over the last few years for junior developers by instead of investing in them, playing the slot machines (also known as LLMs) to — you guessed it — make the money number go up, but there’s still hope for recovery.&lt;/p&gt;
+
+
+
+&lt;p&gt;The message I want to get out is there are good organisations out there who are still willing to invest in people and their education. We need them &lt;em&gt;now&lt;/em&gt; to show everyone how it’s done. It certainly looks better on your company than investing in Linux, racist edition.&lt;/p&gt;
+
+
+
+&lt;p&gt;If you’re running an organisation that wants to help but doesn’t know how, &lt;a href=&quot;https://bell.bz/links/&quot;&gt;give me shout&lt;/a&gt;. I can advise and link you up with the right people. I really want CSS-Tricks and the development publishing world to not just survive, but &lt;em&gt;thrive&lt;/em&gt;. We have to all do so much more to make that happen, so let’s do exactly that.&lt;/p&gt;
+
+
+
+&lt;p&gt;&lt;/p&gt;
+</content:encoded></item><item><title>An RSS feed for a daily album recommendation</title><link>https://bell.bz/an-rss-feed-for-a-daily-album-recommendation/</link><guid isPermaLink="true">https://bell.bz/an-rss-feed-for-a-daily-album-recommendation/</guid><pubDate>Wed, 16 Sep 2026 09:34:46 GMT</pubDate><content:encoded>
+&lt;p&gt;My &lt;a href=&quot;https://bell.bz/music-collection/random.xml&quot;&gt;music collection&lt;/a&gt; is ever-growing and I have a habit of listening to the same stuff on repeat. Mostly, it’s overwhelm-related because as you can see by this &lt;a href=&quot;https://bell.bz/music-collection/covers/&quot;&gt;album covers view&lt;/a&gt;, there’s &lt;em&gt;a lot&lt;/em&gt; to choose from.&lt;/p&gt;
+
+
+
+&lt;p&gt;I thought RSS could be useful here, so I wrote a little feed that picks a random album, each day, then serves that as the single RSS item. This works great because my RSS reader, &lt;a href=&quot;https://feedbin.com/&quot;&gt;Feedbin&lt;/a&gt; will happily build those up if I don’t get around to checking.&lt;/p&gt;
+
+
+
+&lt;p&gt;&lt;a href=&quot;https://bell.bz/music-collection/random.xml&quot;&gt;Try it for yourself&lt;/a&gt;. You might discover something you love!&lt;/p&gt;
+
+
+
+&lt;p&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Removing algorithmic feed slop from my life</title><link>https://bell.bz/removing-algorithmic-feed-slop-from-my-life/</link><guid isPermaLink="true">https://bell.bz/removing-algorithmic-feed-slop-from-my-life/</guid><pubDate>Mon, 14 Sep 2026 09:32:04 GMT</pubDate><content:encoded>
+&lt;p&gt;Recently, during a very relaxing holiday in Cyprus, I had a revelation of sorts: my brain was rotting. I know this because I read &lt;em&gt;a lot&lt;/em&gt; of books on holiday. It’s the only time I do read books!&lt;/p&gt;
+
+
+
+&lt;p&gt;Well, I &lt;em&gt;did&lt;/em&gt; read a lot on holiday, but the last couple of years I really struggled to focus.&lt;/p&gt;
+
+
+
+&lt;p&gt;I used to put it down to “I’m just super tired, man, I don’t have the mental strength to concentrate” but that was probably only a part of it. I struggle to concentrate &lt;em&gt;all the time&lt;/em&gt; — brains, innit — but it looks like algorithmic feeds of content, such as Instagram, TikTok and Bluesky (For You feed) have been doing a lot more damage to that existing problem than I thought.&lt;/p&gt;
+
+
+
+&lt;p&gt;I decided to cut loose. I deleted Instagram, TikTok and Bluesky from my phone because I don’t use anything else. The feeling I had, for the first couple of days after that was the exact same feeling I had in attempts to quit nicotine, which was rather concerning. I persisted though, leaning more and more into my beloved RSS feeds whenever I had a pang to pick up my phone and scroll.&lt;/p&gt;
+
+
+
+&lt;p&gt;I get my Bluesky content via RSS too, via a little system I’ve been tinkering with. I don’t like to miss what my pals are up to — especially where there’s an opportunity to signal boost — but I also think there’s value in reading posts from my peers and others. This is serviced well by my RSS setup, so if you see me in your notifications tab, that’s why. When I Log On™ to Bluesky, all I see is this:&lt;/p&gt;
+
+
+
+&lt;figure&gt;&lt;img loading=&quot;lazy&quot; width=&quot;1024&quot; height=&quot;476&quot; src=&quot;https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-14-at-10.28.10@2x-1024x476.jpg&quot; alt=&quot;The default home view on bluesky. There&apos;s no feeds in the tabs and the microcopy says &amp;quot;Whoops! Looks like you unpinned all your feeds. But don&apos;t worry, you can add some below 😄&amp;quot; with buttons to add recommended feeds and browse other feeds&quot; srcset=&quot;https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-14-at-10.28.10@2x-1024x476.jpg 1024w, https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-14-at-10.28.10@2x-300x139.jpg 300w, https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-14-at-10.28.10@2x-768x357.jpg 768w, https://andy-bell.imgix.net/2026/09/CleanShot-2026-09-14-at-10.28.10@2x.jpg 1196w&quot; /&gt;&lt;/figure&gt;
+
+
+
+&lt;h2&gt;My brain is starting to work again&lt;/h2&gt;
+
+
+
+&lt;p&gt;No surprises here! I’m feeling a lot less &lt;em&gt;ground down&lt;/em&gt; and my brain is working much better, only after a week. My phone always has battery too, which is handy.&lt;/p&gt;
+
+
+
+&lt;p&gt;The thing that’s really surprised me is I’m sleeping so much better than I was. I’ve had a hard rule for years: my phone doesn’t come into the bedroom, but even then, my brain was clearly struggling to relax after watching TikTok for an hour or whatever.&lt;/p&gt;
+
+
+
+&lt;p&gt;I’m going to keep going with this to see where it takes me. I’ll miss sending good videos to my pals in Instagram and discovering new music to listen to, but that’s about it. The algorithms on that service, as well as TikTok (since the Americans took over) are really quite shit when you think about it and if you think about it even more, the content you do actually end up seeing really doesn’t improve your life at all. It just fills time.&lt;/p&gt;
+
+
+
+&lt;h2&gt;Wrapping up&lt;/h2&gt;
+
+
+
+&lt;p&gt;I guess I’m in a pretty fortunate position. I don’t rely on these services for my income so I have the option to just leave. I feel really bad for those who do rely on these services because it must feel like a prison a lot of the time.&lt;/p&gt;
+
+
+
+&lt;p&gt;I’m also fortunate that I’m not rotting my brain talking to LLMs all day either. I can see the immense damage that is having on &lt;em&gt;everyone&lt;/em&gt; that is into this technology. If you’re thinking “not me, though”, I’m afraid to say that yes, you too. I see it every day in my peers and it’s rather distressing. Protecting your intelligence is, and will continue to be, the most important thing to do. That’s a topic for another day though!&lt;/p&gt;
+
+
+
+&lt;p&gt;Try removing yourself from algorithmic feed slop. It’s only affected me in a positive way so far, so it’s certainly worth a shot if you’re also feeling like &lt;em&gt;your&lt;/em&gt; brain is rotting too.&lt;/p&gt;
+</content:encoded></item><item><title>You’ll miss the soul when it’s gone</title><link>https://bell.bz/youll-miss-the-soul-when-its-gone/</link><guid isPermaLink="true">https://bell.bz/youll-miss-the-soul-when-its-gone/</guid><pubDate>Fri, 03 Jul 2026 13:22:43 GMT</pubDate><content:encoded>
+&lt;p&gt;Pretty grim day of news in the industry today, with &lt;a href=&quot;https://whitep4nth3r.com/blog/goodbye-forever-probably/&quot;&gt;Salma Alam-Naylor stepping away from developer relations work permanently&lt;/a&gt;, &lt;a href=&quot;https://bsky.app/profile/joshwcomeau.com/post/3mpqjxa5kyk2o&quot;&gt;Josh Comeau taking a sabbatical from making courses&lt;/a&gt; and &lt;a href=&quot;https://bsky.app/profile/cassiecodes.bsky.social/post/3mpqlqfsfik2k&quot;&gt;GSAP’s once-vibrant forums descending into a ghost town&lt;/a&gt;.&lt;/p&gt;
+
+
+
+&lt;p&gt;The reason your token guzzler “produces” anything that could be described as “good” is because of the years of hard work from &lt;strong&gt;people that actually care deeply&lt;/strong&gt;. The reason what we do &lt;em&gt;was&lt;/em&gt; fun was because of the &lt;em&gt;soul&lt;/em&gt; that these great people — along with many, many others — brought to the table. They inspired us to better ourselves and make genuinely good stuff. That’s increasingly no longer the case as these people nope out of the industry.&lt;/p&gt;
+
+
+
+&lt;p&gt;Anyway, enjoy your gruel. It’s all you’re gonna be getting. &lt;/p&gt;
+
+
+
+&lt;p&gt;&lt;/p&gt;
+</content:encoded></item></channel></rss>

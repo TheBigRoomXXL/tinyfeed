@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-LMMLpnWlL1c7sHuqRxtTq-3GYBppe9F6Q1svUzvfWlCTE2sQovu3JNKc2JVOPh_S53K2vv6Ax9--lrm-Z93jqnoWnYaJbW0UHUac6wHX0iIokbFrNLNdrbVmDP6VAdD1nrtxREKB_X2niiLCVKzt646wI1mGrxk1ROUU8bGAegVMWBIRZOzzJrj0LBXYQxTS56R_Y2tXqf_ZRS-efFCC9iDw6XosgUPKDwkcg1MyYk1DrFXxqWjG-KmulZvDKniVfjCptl-aoJL56WTLymQ7RW7xUl6LJ_GEH3UDQpInzJJa2V6PtAuWY1T69pm42EjxgcKuhbvIxCynecwJIT9OqQ==' ;
+		script-src 'nonce-LMMLpnWlL1c7sHuqRxtTq-3GYBppe9F6Q1svUzvfWlCTE2sQovu3JNKc2JVOPh_S53K2vv6Ax9--lrm-Z93jqnoWnYaJbW0UHUac6wHX0iIokbFrNLNdrbVmDP6VAdD1nrtxREKB_X2niiLCVKzt646wI1mGrxk1ROUU8bGAegVMWBIRZOzzJrj0LBXYQxTS56R_Y2tXqf_ZRS-efFCC9iDw6XosgUPKDwkcg1MyYk1DrFXxqWjG-KmulZvDKniVfjCptl-aoJL56WTLymQ7RW7xUl6LJ_GEH3UDQpInzJJa2V6PtAuWY1T69pm42EjxgcKuhbvIxCynecwJIT9OqQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="LMMLpnWlL1c7sHuqRxtTq-3GYBppe9F6Q1svUzvfWlCTE2sQovu3JNKc2JVOPh_S53K2vv6Ax9--lrm-Z93jqnoWnYaJbW0UHUac6wHX0iIokbFrNLNdrbVmDP6VAdD1nrtxREKB_X2niiLCVKzt646wI1mGrxk1ROUU8bGAegVMWBIRZOzzJrj0LBXYQxTS56R_Y2tXqf_ZRS-efFCC9iDw6XosgUPKDwkcg1MyYk1DrFXxqWjG-KmulZvDKniVfjCptl-aoJL56WTLymQ7RW7xUl6LJ_GEH3UDQpInzJJa2V6PtAuWY1T69pm42EjxgcKuhbvIxCynecwJIT9OqQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/tupo target="_blank">
+					<h2>The story of Tupo, my new daily logic puzzle</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/in-defense-of-two-state-theme-toggles target="_blank">
+					<h2>In defense of two-state theme toggles</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-21">2026-08-21</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/productivity target="_blank">
+					<h2>LLMs and performative productivity</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-05">2026-06-05</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/man-cereal target="_blank">
+					<h2>Man Cereal</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-03">2026-03-03</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/baby-review target="_blank">
+					<h2>My review of the Nüborn Baby at 3 months</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-16">2026-01-16</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/2025 target="_blank">
+					<h2>2025 Year in Review</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-30">2025-12-30</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/sloptimism target="_blank">
+					<h2>AI optimism is a class privilege</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-03">2025-12-03</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/alchemy target="_blank">
+					<h2>Alchemy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-09">2025-11-09</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/titles-matter target="_blank">
+					<h2>Titles matter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-26">2025-08-26</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/the-blissful-zen-of-a-good-side-project target="_blank">
+					<h2>The blissful zen of a good side project</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-04">2025-04-04</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/goodbye-griff target="_blank">
+					<h2>Goodbye, Griff. You were a good boy.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-27">2025-01-27</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/rare-words-in-common-phrases target="_blank">
+					<h2>Rare words in common phrases, and how to avoid getting them wrong</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-24">2025-01-24</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/enjoyed-in-2024 target="_blank">
+					<h2>Things I enjoyed in 2024</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-24">2024-12-24</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/childlike-and-childish target="_blank">
+					<h2>The childlike and the childish</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-06">2024-11-06</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/response-to-defending-open-source target="_blank">
+					<h2>A response to &#34;Defending Open Source: Protecting the Future of WordPress&#34;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-05">2024-11-05</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/fire-matt target="_blank">
+					<h2>If WordPress is to survive, Matt Mullenweg must be removed</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-27">2024-09-27</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/fwiw target="_blank">
+					<h2>For whatever it&#39;s worth: my advice on job hunting in tech</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-07">2024-06-07</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/ten-years-of-code target="_blank">
+					<h2>A decade of code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-10">2024-05-10</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/glove80-followup target="_blank">
+					<h2>Follow-up: the Glove80 after six months</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-08">2024-04-08</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/devaluing-frontend target="_blank">
+					<h2>The quiet, pervasive devaluation of frontend</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-07">2024-03-07</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/copilot target="_blank">
+					<h2>I worry our Copilot is leaving some passengers behind</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-13">2024-02-13</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/enjoyed-in-2023 target="_blank">
+					<h2>Things I enjoyed in 2023</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-30">2023-12-30</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/glove80-first-impressions target="_blank">
+					<h2>First impressions of the MoErgo Glove80 ergonomic keyboard</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-24">2023-10-24</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/layoffs-are-bullshit target="_blank">
+					<h2>A message from the Captain of the S.S. Layoff</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-04">2023-10-04</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/tailwind-is-smart-steering target="_blank">
+					<h2>Classic rock, Mario Kart, and why we can&#39;t agree on Tailwind</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-26">2023-09-26</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/antiquated-react target="_blank">
+					<h2>Things you forgot (or never knew) because of React</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-04">2023-08-04</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/alfred-raycast target="_blank">
+					<h2>Alfred vs. Raycast: my constant debate</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-24">2023-07-24</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/sveltekit-page-transitions target="_blank">
+					<h2>Adding page transitions in SvelteKit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-01">2023-03-01</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/great-transitions target="_blank">
+					<h2>Ten tips for better CSS transitions and animations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-28">2023-02-28</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/easing-curves target="_blank">
+					<h2>Understanding easing and cubic-bezier curves in CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-22">2023-02-22</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/moonlander target="_blank">
+					<h2>Impressions of the ZSA Moonlander at one month</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-24">2023-01-24</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/never-use-px-for-font-size target="_blank">
+					<h2>Why you should never use px to set font-size in CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-28">2022-10-28</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/42-for-42 target="_blank">
+					<h2>Forty-two</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-26">2022-10-26</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/sveltekit-breaking-changes target="_blank">
+					<h2>Breaking changes in SvelteKit, August 2022</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-17">2022-08-17</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/self-fulfilling-prophecy-of-react target="_blank">
+					<h2>The self-fulfilling prophecy of React</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-27">2022-07-27</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/announcing-hondo target="_blank">
+					<h2>Announcing Hondo</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-14">2022-07-14</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/accessible-toggle-buttons target="_blank">
+					<h2>Building accessible toggle buttons (with examples for Svelte, Vue, and React)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-19">2022-05-19</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/debugging-ios-on-mac target="_blank">
+					<h2>Debugging iOS Safari (when all you have is a Mac)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-10">2022-05-10</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/css-grid-bar-charts target="_blank">
+					<h2>Creating dynamic bar charts with CSS grid</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-24">2022-03-24</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/build-static-sveltekit-markdown-blog target="_blank">
+					<h2>Let&#39;s learn SvelteKit by building a static Markdown blog from scratch</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-27">2021-12-27</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/add-blog-comments-static-site target="_blank">
+					<h2>Adding blog comments to your static site with utterances</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-06">2021-11-06</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/converting-from-gridsome-to-sveltekit target="_blank">
+					<h2>Converting from Gridsome to SvelteKit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-04">2021-10-04</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/introducing-svelte-comparing-with-react-vue target="_blank">
+					<h2>Introducing Svelte, and Comparing Svelte with React and Vue</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-01">2021-10-01</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/goodbye-wordpress target="_blank">
+					<h2>Goodbye, WordPress</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-01">2021-02-01</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/announcing-quina-my-first-app target="_blank">
+					<h2>Announcing Quina (My First App)!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-10">2020-12-10</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/creating-custom-gutenberg-blocks-with-the-block-lab-plugin target="_blank">
+					<h2>How to Create Custom Editor Blocks with Block Lab</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-14">2020-06-14</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/a-new-headless-site-with-gridsome target="_blank">
+					<h2>A New Headless Site with Gridsome</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-06">2020-06-06</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/goodbye-instagram target="_blank">
+					<h2>This isn&#39;t the Time, But it&#39;s the Perfect Time; Goodbye, Instagram</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-03">2020-06-03</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/how-to-connect-local-with-codekit target="_blank">
+					<h2>How to Connect Local with CodeKit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-21">2020-02-21</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/confirm-all-ids-are-unique-in-an-array-of-javascript-objects-using-map-and-sets target="_blank">
+					<h2>How to Check Uniqueness in an Array of Objects in JavaScript</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-17">2020-02-17</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/adding-gutenberg-full-and-wide-width-image-support-to-your-wordpress-theme target="_blank">
+					<h2>Adding Gutenberg Full- and Wide-Width Image Support to Your WordPress Theme</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-03-16">2019-03-16</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/lets-learn-css-variables target="_blank">
+					<h2>Let&#39;s Learn CSS Variables!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-02-25">2018-02-25</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/new-site-new-theme-for-2018 target="_blank">
+					<h2>New Site, New Theme for 2018</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-01-02">2018-01-02</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/five-ways-to-become-a-better-designer-that-arent-design target="_blank">
+					<h2>Five Ways to Become a Better Designer (That Aren&#39;t Design)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-02-04">2017-02-04</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/essential-tools-wordpress-development target="_blank">
+					<h2>My Essential Tools for WordPress Development</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-06-25">2016-06-25</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/the-five-things-i-wish-somebody-had-told-me-as-a-design-student target="_blank">
+					<h2>The Five Things I Wish Somebody Had Told Me as a Design Student</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-02-21">2016-02-21</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/wordpress-child-theme-explanation target="_blank">
+					<h2>WordPress Child Theme Explanation and Walkthrough</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-12-31">2015-12-31</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/why-designers-shouldnt-remake-other-designers-logos target="_blank">
+					<h2>Why Designers Shouldn&#39;t &#34;Fix&#34; Other Designers&#39; Logos</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-09-04">2015-09-04</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/8-student-portfolio-mistakes target="_blank">
+					<h2>8 Mistakes to Avoid in Your Student Design Portfolio</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-08-20">2015-08-20</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/profit-is-not-a-value target="_blank">
+					<h2>Profit is Not a Value</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-08-05">2015-08-05</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/filetypes target="_blank">
+					<h2>Understanding the Difference Between Image and Vector File Types</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-06-11">2015-06-11</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/pantone target="_blank">
+					<h2>Pantone, Color, and What I Wish I Had Known Sooner as a Designer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-04-01">2015-04-01</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/12-things target="_blank">
+					<h2>Social Media, Compulsion, and the 12 Things I Learned on My Break from Facebook</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-03-27">2015-03-27</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://joshcollinsworth.com" target="_blank">Josh Collinsworth</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="LMMLpnWlL1c7sHuqRxtTq-3GYBppe9F6Q1svUzvfWlCTE2sQovu3JNKc2JVOPh_S53K2vv6Ax9--lrm-Z93jqnoWnYaJbW0UHUac6wHX0iIokbFrNLNdrbVmDP6VAdD1nrtxREKB_X2niiLCVKzt646wI1mGrxk1ROUU8bGAegVMWBIRZOzzJrj0LBXYQxTS56R_Y2tXqf_ZRS-efFCC9iDw6XosgUPKDwkcg1MyYk1DrFXxqWjG-KmulZvDKniVfjCptl-aoJL56WTLymQ7RW7xUl6LJ_GEH3UDQpInzJJa2V6PtAuWY1T69pm42EjxgcKuhbvIxCynecwJIT9OqQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

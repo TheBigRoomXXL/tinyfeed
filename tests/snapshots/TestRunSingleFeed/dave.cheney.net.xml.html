@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-xDNRI2f2ufyJEh3EROQyVvGAKWYL932gvi2r3sjy-lujQ9TG6J9QE2G0G3Ls8iSS_Sxtl3R6sOkBPFQfc8VrYecZG-cr0SyxZdoi3t5lURL3DBKwCjh0iBcopZ5nmaTYoCO0jm9iPPN38n4kCxFn0mSC7Mbn1A6GQfVzaTJt7mjZPb0z6O8vxjePt3LFQl46phlDNsimmyFHb2tk2keBCV9Vssch65gi94SBPn8g2OFvrGdfmasAtCr_iDUOWbw-f3m6B88SZmvfxDr1UVJSMlZqsPt_3_kz64ng73DupROK8K_M9Hw4boi-H3aF56Ee9DRmQf3TI7xYUxd7qSLqUA==' ;
+		script-src 'nonce-xDNRI2f2ufyJEh3EROQyVvGAKWYL932gvi2r3sjy-lujQ9TG6J9QE2G0G3Ls8iSS_Sxtl3R6sOkBPFQfc8VrYecZG-cr0SyxZdoi3t5lURL3DBKwCjh0iBcopZ5nmaTYoCO0jm9iPPN38n4kCxFn0mSC7Mbn1A6GQfVzaTJt7mjZPb0z6O8vxjePt3LFQl46phlDNsimmyFHb2tk2keBCV9Vssch65gi94SBPn8g2OFvrGdfmasAtCr_iDUOWbw-f3m6B88SZmvfxDr1UVJSMlZqsPt_3_kz64ng73DupROK8K_M9Hw4boi-H3aF56Ee9DRmQf3TI7xYUxd7qSLqUA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="xDNRI2f2ufyJEh3EROQyVvGAKWYL932gvi2r3sjy-lujQ9TG6J9QE2G0G3Ls8iSS_Sxtl3R6sOkBPFQfc8VrYecZG-cr0SyxZdoi3t5lURL3DBKwCjh0iBcopZ5nmaTYoCO0jm9iPPN38n4kCxFn0mSC7Mbn1A6GQfVzaTJt7mjZPb0z6O8vxjePt3LFQl46phlDNsimmyFHb2tk2keBCV9Vssch65gi94SBPn8g2OFvrGdfmasAtCr_iDUOWbw-f3m6B88SZmvfxDr1UVJSMlZqsPt_3_kz64ng73DupROK8K_M9Hw4boi-H3aF56Ee9DRmQf3TI7xYUxd7qSLqUA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://dave.cheney.net/2025/12/18/pop-quiz-what-time-was-it target="_blank">
+					<h2>Pop quiz: what time was it?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-18">2025-12-18</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2025/11/27/pointer-pop-quiz target="_blank">
+					<h2>Pointer pop quiz</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-27">2025-11-27</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2024/02/22/microblog-testmain-can-cause-one-to-question-reality target="_blank">
+					<h2>Microblog: TestMain can cause one to question reality</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-21">2024-02-21</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2021/01/05/a-few-bytes-here-a-few-there-pretty-soon-youre-talking-real-memory target="_blank">
+					<h2>A few bytes here, a few there, pretty soon you’re talking real memory</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-05">2021-01-05</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/12/15/the-story-of-the-one-line-fix target="_blank">
+					<h2>The story of the one line fix</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-15">2020-12-15</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/06/19/how-to-dump-the-gossafunc-graph-for-a-method target="_blank">
+					<h2>How to dump the GOSSAFUNC graph for a method</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-19">2020-06-19</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/05/24/diamond-interface-composition-in-go-1-14 target="_blank">
+					<h2>Diamond interface composition in Go 1.14</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-24">2020-05-24</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/05/16/fatihs-question target="_blank">
+					<h2>Fatih’s question</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-16">2020-05-16</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/05/09/ensmallening-go-binaries-by-prohibiting-comparisons target="_blank">
+					<h2>Ensmallening Go binaries by prohibiting comparisons</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-09">2020-05-09</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/05/02/mid-stack-inlining-in-go target="_blank">
+					<h2>Mid-stack inlining in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-02">2020-05-02</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/04/25/inlining-optimisations-in-go target="_blank">
+					<h2>Inlining optimisations in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-25">2020-04-25</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/03/10/go-test-v-streaming-output target="_blank">
+					<h2>go test -v streaming output</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-03-10">2020-03-10</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/03/01/are-large-slices-more-expensive-than-smaller-ones target="_blank">
+					<h2>Are large slices more expensive than smaller ones?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-03-01">2020-03-01</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2020/02/23/the-zen-of-go target="_blank">
+					<h2>The Zen of Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-23">2020-02-23</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2019/12/08/dynamically-scoped-variables-in-go target="_blank">
+					<h2>Dynamically scoped variables in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-08">2019-12-08</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2019/12/05/internets-of-interest-15-the-queen-of-the-skies target="_blank">
+					<h2>Internets of Interest #15: The Queen of the Skies</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-05">2019-12-05</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2019/12/04/complementary-engineering-indicators target="_blank">
+					<h2>Complementary engineering indicators</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-04">2019-12-04</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2019/11/18/internets-of-interest-14-unix-v0 target="_blank">
+					<h2>Internets of interest #14: UNIX v0</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-11-17">2019-11-17</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2019/11/16/internets-of-interest-warner-losh-on-the-first-ten-years-of-unix target="_blank">
+					<h2>Internets of interest: Warner Losh on the first ten years of UNIX</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-11-16">2019-11-16</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://dave.cheney.net/2019/10/06/use-internal-packages-to-reduce-your-public-api-surface target="_blank">
+					<h2>Use internal packages to reduce your public API surface</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-06">2019-10-06</time>
+					|
+					<a href="https://dave.cheney.net" target="_blank">dave.cheney.net</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://dave.cheney.net" target="_blank">Dave Cheney</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="xDNRI2f2ufyJEh3EROQyVvGAKWYL932gvi2r3sjy-lujQ9TG6J9QE2G0G3Ls8iSS_Sxtl3R6sOkBPFQfc8VrYecZG-cr0SyxZdoi3t5lURL3DBKwCjh0iBcopZ5nmaTYoCO0jm9iPPN38n4kCxFn0mSC7Mbn1A6GQfVzaTJt7mjZPb0z6O8vxjePt3LFQl46phlDNsimmyFHb2tk2keBCV9Vssch65gi94SBPn8g2OFvrGdfmasAtCr_iDUOWbw-f3m6B88SZmvfxDr1UVJSMlZqsPt_3_kz64ng73DupROK8K_M9Hw4boi-H3aF56Ee9DRmQf3TI7xYUxd7qSLqUA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

@@ -1,0 +1,4 @@
+<rss version="2.0"><channel><title>Feed</title><link>https://example.com</link><description>Feed</description>
+<item><title>Older</title><link>https://example.com/older</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate></item>
+<item><title>Newer</title><link>https://example.com/newer</link><pubDate>Fri, 02 Jan 2026 00:00:00 +0000</pubDate></item>
+</channel></rss>

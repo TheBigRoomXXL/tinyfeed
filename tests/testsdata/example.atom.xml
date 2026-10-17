@@ -1,0 +1,4 @@
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Feed</title><id>https://example.com</id><updated>2026-01-02T00:00:00Z</updated>
+<entry><title>Older</title><id>https://example.com/older</id><published>2026-01-01T00:00:00Z</published><updated>2026-01-01T00:00:00Z</updated></entry>
+<entry><title>Newer</title><id>https://example.com/newer</id><published>2026-01-02T00:00:00Z</published><updated>2026-01-02T00:00:00Z</updated></entry>
+</feed>

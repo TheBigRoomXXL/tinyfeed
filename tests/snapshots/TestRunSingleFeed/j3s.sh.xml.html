@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-xMFh-hpUw5kZdSSbrYqdUviWmResYBIYGB7gy7kU0Xq5BAxU7pBQKq2OWVsPdxRiKJzOHHWrqRbRk7GaoJ55UklQIT1bAlDDGl3DbhA1ODZlZRUEIV6E0s3gpMFMwyI-5aFDD0aFLpwjqXjpnXItrlZyuPhY0hmj6E3obMqyMfa-m_aV66pOKcxL2BIlh8B7tQmU5m66DqFkodwfu5ncqVXVwIhbBcKwAnyWL03duAdAHluFtsG6BufR0Vdz_0Q7PXwNBg9GNy83pBjoPn1qTI-pNlEMcBhqU1iYb2Q7FClXaHvUVcDltthDoGmV5T7mRcHkPr_3hsjM4d1vHp8dvw==' ;
+		script-src 'nonce-xMFh-hpUw5kZdSSbrYqdUviWmResYBIYGB7gy7kU0Xq5BAxU7pBQKq2OWVsPdxRiKJzOHHWrqRbRk7GaoJ55UklQIT1bAlDDGl3DbhA1ODZlZRUEIV6E0s3gpMFMwyI-5aFDD0aFLpwjqXjpnXItrlZyuPhY0hmj6E3obMqyMfa-m_aV66pOKcxL2BIlh8B7tQmU5m66DqFkodwfu5ncqVXVwIhbBcKwAnyWL03duAdAHluFtsG6BufR0Vdz_0Q7PXwNBg9GNy83pBjoPn1qTI-pNlEMcBhqU1iYb2Q7FClXaHvUVcDltthDoGmV5T7mRcHkPr_3hsjM4d1vHp8dvw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="xMFh-hpUw5kZdSSbrYqdUviWmResYBIYGB7gy7kU0Xq5BAxU7pBQKq2OWVsPdxRiKJzOHHWrqRbRk7GaoJ55UklQIT1bAlDDGl3DbhA1ODZlZRUEIV6E0s3gpMFMwyI-5aFDD0aFLpwjqXjpnXItrlZyuPhY0hmj6E3obMqyMfa-m_aV66pOKcxL2BIlh8B7tQmU5m66DqFkodwfu5ncqVXVwIhbBcKwAnyWL03duAdAHluFtsG6BufR0Vdz_0Q7PXwNBg9GNy83pBjoPn1qTI-pNlEMcBhqU1iYb2Q7FClXaHvUVcDltthDoGmV5T7mRcHkPr_3hsjM4d1vHp8dvw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://abyss.fish/tree-style_invite_systems_reduce_AI_slop target="_blank">
+					<h2>tree-style invite systems reduce AI slop</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-14">2026-03-14</time>
+					|
+					<a href="https://abyss.fish" target="_blank">abyss.fish</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/all-eyes-on-minneapolis.html target="_blank">
+					<h2>all eyes on minneapolis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-31">2026-01-31</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/it-took-a-big-cup.html target="_blank">
+					<h2>it took a big cup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-04">2025-06-04</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/blogs-rot-wikis-wait.html target="_blank">
+					<h2>blogs rot. wikis wait.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-01">2025-01-01</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/trainwreck-design.html target="_blank">
+					<h2>trainwreck design</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-14">2024-08-14</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/stop-using-fandom.html target="_blank">
+					<h2>Stop Using Fandom</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-16">2024-06-16</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/my-deployment-platform-is-a-shell-script.html target="_blank">
+					<h2>my deployment platform is a shell script</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-09">2024-04-09</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/recover-lost-text-by-coredumping-firefox.html target="_blank">
+					<h2>recover lost text by coredumping firefox</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-20">2023-10-20</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/shell-tip-print-json-with-printf.html target="_blank">
+					<h2>shell tip: print json with printf</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-06">2023-10-06</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/a-new-rss-feed-reader.html target="_blank">
+					<h2>a new rss feed reader</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-20">2023-03-20</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://j3s.sh/thought/write-posix-shell.html target="_blank">
+					<h2>write posix shell</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-10">2023-03-10</time>
+					|
+					<a href="https://j3s.sh" target="_blank">j3s.sh</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://j3s.sh/" target="_blank">j3s.sh</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="xMFh-hpUw5kZdSSbrYqdUviWmResYBIYGB7gy7kU0Xq5BAxU7pBQKq2OWVsPdxRiKJzOHHWrqRbRk7GaoJ55UklQIT1bAlDDGl3DbhA1ODZlZRUEIV6E0s3gpMFMwyI-5aFDD0aFLpwjqXjpnXItrlZyuPhY0hmj6E3obMqyMfa-m_aV66pOKcxL2BIlh8B7tQmU5m66DqFkodwfu5ncqVXVwIhbBcKwAnyWL03duAdAHluFtsG6BufR0Vdz_0Q7PXwNBg9GNy83pBjoPn1qTI-pNlEMcBhqU1iYb2Q7FClXaHvUVcDltthDoGmV5T7mRcHkPr_3hsjM4d1vHp8dvw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

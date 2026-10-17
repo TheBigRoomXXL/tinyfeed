@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>Something Similar</title>
+ <link href="http://www.somethingsimilar.com/feed" rel="self"/>
+ <link href="https://www.somethingsimilar.com/"/>
+ <updated>2017-01-23T22:59:13-08:00</updated>
+ <id>http://www.somethingsimilar.com/</id>
+ <author>
+   <name>Jeff Hodges</name>
+   <email>jeff@somethingsimilar.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>A couple of phone calls to Congresspeople</title>
+   <link href="https://www.somethingsimilar.com/2017/01/23/a-couple-of-phone-calls-to-congresspeople/"/>
+   <updated>2017-01-23T22:59:13-08:00</updated>
+   <id>http://somethingsimilar.com/2017/01/23/a-couple-of-phone-calls-to-congresspeople/</id>
+   <content type="html">&lt;p&gt;I&amp;rsquo;ve just heard that one of my senators, Senator Feinstein, has voted to confirm
+Representative Pompeo for CIA Director. Rep. Pompeo has left the door wide open
+for him to
+&lt;a href=&#34;http://www.thedailybeast.com/articles/2017/01/20/trump-cia-pick-leaves-door-open-to-waterboarding-more-spying-on-americans.html&#34;&gt;bring back torture&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I am embarrassed that I didn&amp;rsquo;t reach out as a consituent to make it clear what I
+expected of her. I&amp;rsquo;m angry that she’s let us down. I couldn’t imagine that she
+would ever vote to support any part of the Trump agenda. Sen. Feinstein doesn&amp;rsquo;t
+seem to understand the moment we are in, so it&amp;rsquo;s up to us to let her know.&lt;/p&gt;
+&lt;p&gt;Whatever she got for that vote, it was a bad trade. The worst of all possible
+options is that she did it for free. We have to resist compromising ourselves by
+supporting the Trump agenda of deceit, bigotry, and sexism or we will find
+justice impossible to achieve.&lt;/p&gt;
+&lt;p&gt;Join me in calling your members of Congress. Below is what I’m going to say to
+her and the other members of Congress that represent me when their offices
+open. Maybe these scripts will help you with your phone calls.&lt;/p&gt;
+&lt;p&gt;There’s some handy sites out there that’ll
+&lt;a href=&#34;http://act.commoncause.org/site/PageServer?pagename=sunlight_advocacy_list_page&#34;&gt;help you find your representatives and their contact numbers&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For Senator Dianne Feinstein:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hi, I’m Jeff Hodges. I’m a Democrat living in the Mission of San Francisco.&lt;/p&gt;
+&lt;p&gt;Yesterday, I heard that Senator Feinstein had voted to confirm Representative
+Pompeo as the new CIA director. As someone who voted for her in 2012, I’m
+embarrassed and angry that she would vote to confirm any of Trump’s cabinet
+picks, but most especially a man who could not commit to writing a stance
+against torture.&lt;/p&gt;
+&lt;p&gt;Voting confirming any of the Trump cabinet picks, is a confirmation of the
+Trump agenda. An agenda of deceit, bigotry, and sexism is an agenda we must
+resist against and I hope all of Senator Feinstein’s future votes reflect
+that. Bipartisanship is not compatible with resistance. Thank you for your
+time.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;For Senator Kamala Harris:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hi, I’m Jeff Hodges. I’m a Democrat living in the Mission of San Francisco.&lt;/p&gt;
+&lt;p&gt;I wanted to thank Senator Harris for her vote against Representative Pompeo and
+the rest of the Trump cabinet picks. I’m grateful that Senator Harris was able
+to understand the moment we were in. That’s exactly the kind of resistance
+to the Trump agenda I had hoped she would bring. Thank you very much for your
+time.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;For Representative Nancy Pelosi:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hi, I’m Jeff Hodges. I’m a Democrat living in the Mission of San Francisco.&lt;/p&gt;
+&lt;p&gt;I just got off the phone with the offices of Senator Feinstein and Senator
+Harris. Those were two very different phone calls. I&amp;rsquo;m calling today because I
+wanted Representative Pelosi to know how important it is to me that her
+colleagues in the Senate did not vote to confirm the Trump picks, and that all
+of the Democrats in Congress continued to vote against the Trump agenda in all
+of its forms. Thank you for your time.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I can&amp;rsquo;t believe this is the world we&amp;rsquo;re living in.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Code to Read When Learning Go</title>
+   <link href="https://www.somethingsimilar.com/2013/12/26/code-to-read-when-learning-go/"/>
+   <updated>2013-12-26T20:15:00-08:00</updated>
+   <id>http://somethingsimilar.com/2013/12/26/code-to-read-when-learning-go/</id>
+   <content type="html">&lt;p&gt;When folks ask me how they should learn Go, I usually say:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Run through the activities in &lt;a href=&#34;http://tour.golang.org/#1&#34;&gt;A Tour of Go&lt;/a&gt;, then read &lt;a href=&#34;http://golang.org/doc/effective_go.html&#34;&gt;Effective
+Go&lt;/a&gt; (and maybe check out &lt;a href=&#34;https://gobyexample.com/&#34;&gt;Go By Example&lt;/a&gt;), and then
+read some code.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This seems to work well for them. But the last part could use some examples of
+good, clear, idiomatic code to read. Let me do my part there.&lt;/p&gt;
+&lt;p&gt;Now, I&amp;rsquo;m holding these up as someone who already knows Go, didn&amp;rsquo;t use all of
+these to learn Go, and, perhaps worse, came to Go already knowing how to
+program. But even with these caveats, these are codebases that are useful to
+learn from.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/bmizerany/pat&#34;&gt;pat&lt;/a&gt; (&lt;a href=&#34;http://godoc.org/github.com/bmizerany/pat&#34;&gt;godoc&lt;/a&gt;) - Pat is a cute, small library that provides
+Sinatra-like HTTP handling in Go on top of the already fairly easy to use
+&lt;a href=&#34;http://golang.org/pkg/net/http/&#34;&gt;&lt;code&gt;net/http&lt;/code&gt;&lt;/a&gt; Handlers. It&amp;rsquo;s a breeze to read. Feature-ful Go projects
+often have just a handful of files in them, gathering power from they way they
+combine the standard library in a particular convenient and narrower fashion
+than the original API. Pat is a great example of that (and Go&amp;rsquo;s stdlib being
+good enough for production is to be commended). It integrates well with other
+code you&amp;rsquo;ll use simply by relying on the interfaces in the &lt;code&gt;net/http&lt;/code&gt; library.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://code.google.com/p/codesearch/&#34;&gt;codesearch&lt;/a&gt; (&lt;a href=&#34;http://godoc.org/code.google.com/p/codesearch/&#34;&gt;godoc&lt;/a&gt;) - To see how a larger
+project can fit together, I recommend the codesearch project. It&amp;rsquo;s use of the
+regexp package&amp;rsquo;s &lt;a href=&#34;http://golang.org/pkg/regexp/syntax/&#34;&gt;abstract syntax tree API&lt;/a&gt; to implement
+regexp search is wonderful. For maximum understanding, pair this code with
+Russ Cox&amp;rsquo;s articles on &lt;a href=&#34;http://swtch.com/~rsc/regexp/regexp4.html&#34;&gt;how to implement searching with regular expressions in
+queries&lt;/a&gt;. I don&amp;rsquo;t want to undersell that article. It describes how
+Google&amp;rsquo;s (now defunct) Code Search solved that problem and how codesearch, the
+Go implementation Russ wrote, works. The whole series of articles on regular
+expressions is good, but this one article is especially fun. My workplace
+shipped this project internally and it&amp;rsquo;s pretty much Solved™ our code
+search problems.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/golang/groupcache&#34;&gt;groupcache&lt;/a&gt; (&lt;a href=&#34;http://godoc.org/github.com/golang/groupcache&#34;&gt;godoc&lt;/a&gt;) - Groupcache is another
+larger codebase for those interested in that, and contains plenty of goodies
+within. It&amp;rsquo;s part of the &lt;a href=&#34;http://dl.google.com&#34;&gt;dl.google.com&lt;/a&gt;, Blogger and Google Code
+architecture, and is, in many ways, a &amp;ldquo;smarter memcached&amp;rdquo; as a library. The
+&lt;a href=&#34;https://github.com/golang/groupcache/#readme&#34;&gt;README&lt;/a&gt; details its design. From its ownership model
+designed to avoid &lt;a href=&#34;http://en.wikipedia.org/wiki/Thundering_herd_problem&#34;&gt;thundering herds&lt;/a&gt;, to the
+&lt;a href=&#34;http://godoc.org/github.com/golang/groupcache/singleflight&#34;&gt;singleflight&lt;/a&gt; implementation of request collapsing, to the
+&lt;a href=&#34;http://godoc.org/github.com/golang/groupcache#Stats&#34;&gt;interface for extracting stats&lt;/a&gt;, groupcache is a maturely
+designed piece of software. Not just good code, but wise distributed system
+design is inside.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://golang.org/pkg/net/http/&#34;&gt;net/http&lt;/a&gt; - The net/http library is very Go-y, and used everywhere
+in the Go community. It&amp;rsquo;s been hardened for production use at scale and HTTP
+1.x is a very hard protocol to get right, so it&amp;rsquo;s not always the easiest
+read. That said, it&amp;rsquo;s worth learning how such a common building block was
+designed. It also provides capabilities like &lt;a href=&#34;http://golang.org/pkg/net/http/pprof/&#34;&gt;net/http/pprof&lt;/a&gt; that
+takes Go&amp;rsquo;s built-in profiler and makes it available over the web. (Reading
+&lt;a href=&#34;http://blog.golang.org/profiling-go-programs&#34;&gt;Profiling Go Programs&lt;/a&gt; is really nice, by the by. Be sure to check
+out the goroutine blocking profiler.)&lt;/p&gt;
+&lt;p&gt;There are so many more projects I could talk about. Especially ones using the
+Go AST tooling (like in &lt;a href=&#34;http://godoc.org&#34;&gt;godoc.org&lt;/a&gt;&amp;rsquo;s &lt;a href=&#34;https://github.com/garyburd/gddo&#34;&gt;gddo&lt;/a&gt; codebase), or the
+surprisingly clear crypto libraries (like &lt;a href=&#34;http://golang.org/pkg/crypto/subtle/&#34;&gt;&lt;code&gt;crypto/subtle&lt;/code&gt;&lt;/a&gt;) but time
+and space won&amp;rsquo;t permit it. Poke your nose around, search for projects on &lt;a href=&#34;http://go-search.org/&#34;&gt;Go
+Search&lt;/a&gt;, and write some code. One of Go&amp;rsquo;s major selling points is
+it&amp;rsquo;s readability, even to those inexperienced in it, and just digging in is
+worth your time.&lt;/p&gt;
+&lt;p&gt;(And, if you do nothing else, read &lt;a href=&#34;http://golang.org/doc/effective_go.html&#34;&gt;Effective Go&lt;/a&gt;.)&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>A Story About a Photograph</title>
+   <link href="https://www.somethingsimilar.com/2013/12/09/a-story-about-a-photograph/"/>
+   <updated>2013-12-09T08:15:00-08:00</updated>
+   <id>http://somethingsimilar.com/2013/12/09/a-story-about-a-photograph/</id>
+   <content type="html">&lt;p&gt;&lt;a href=&#34;https://twitter.com/j4cob&#34;&gt;Jacob&lt;/a&gt; and I shipped &lt;a href=&#34;https://blog.twitter.com/2013/forward-secrecy-at-twitter-0&#34;&gt;Forward Secrecy&lt;/a&gt; at Twitter. A little
+while later, the New York Times asked to take some photos of the two of us for
+the &lt;a href=&#34;http://bits.blogs.nytimes.com/2013/11/22/twitter-toughening-its-security-to-thwart-government-snoops/?_r=0&#34;&gt;couple&lt;/a&gt; of &lt;a href=&#34;http://www.nytimes.com/2013/12/05/technology/internet-firms-step-up-efforts-to-stop-spying.html?pagewanted=1&amp;amp;_r=1&#34;&gt;pieces&lt;/a&gt; they were writing about
+what Twitter and other companies were doing in response to the Snowden
+revelations.&lt;/p&gt;
+&lt;p&gt;When the photographer came, he asked us to work next to each other in a way
+that &amp;ldquo;didn&amp;rsquo;t look too fake&amp;rdquo;. Alright, authenticity is important, so Jacob and
+I started poking at this DH parameter thing we&amp;rsquo;d been meaning to investigate.&lt;/p&gt;
+&lt;p&gt;Ten minutes later, the photographer says &amp;ldquo;alright, we&amp;rsquo;re done over here. Let&amp;rsquo;s
+go to the next spot.&amp;rdquo; But we don&amp;rsquo;t look up, and Jacob says &amp;ldquo;wait, one more
+run&amp;rdquo; while I give a distracted &amp;ldquo;one minute&amp;rdquo; wave.&lt;/p&gt;
+&lt;p&gt;I think it was real enough for him.&lt;/p&gt;
+&lt;img src=&#34;/images/jsha_and_me_pfs_roofdeck.jpg&#34; alt=&#34;Two engineers on a roof deck in front of a keyboard. One bites his lip in concentration with hands on the keyboard while the other points at the laptop&#39;s screen&#34;&gt;
+&lt;p&gt;I kind of like the shot better in &lt;a href=&#34;https://twitter.com/jmhodges/status/408723656689205248&#34;&gt;greyscale&lt;/a&gt;. Credit to &lt;a href=&#34;http://www.noahbergerphoto.com/&#34;&gt;Noah
+Berger&lt;/a&gt; for the shot.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Notes on Distributed Systems for Young Bloods</title>
+   <link href="https://www.somethingsimilar.com/2013/01/14/notes-on-distributed-systems-for-young-bloods/"/>
+   <updated>2013-01-14T08:15:00-08:00</updated>
+   <id>http://somethingsimilar.com/2013/01/14/notes-on-distributed-systems-for-young-bloods/</id>
+   <content type="html">&lt;p&gt;I&amp;rsquo;ve been thinking about the lessons distributed systems engineers learn on
+the job. A great deal of our instruction is through scars made by mistakes
+made in production traffic. These scars are useful reminders, sure, but it&amp;rsquo;d
+be better to have more engineers with the full count of their fingers.&lt;/p&gt;
+&lt;p&gt;New systems engineers will find the &lt;a href=&#34;http://en.wikipedia.org/wiki/Fallacies_of_Distributed_Computing&#34;&gt;Fallacies of Distributed
+Computing&lt;/a&gt; and the &lt;a href=&#34;http://codahale.com/you-cant-sacrifice-partition-tolerance/&#34;&gt;CAP theorem&lt;/a&gt; as part of their
+self-education. But these are abstract pieces without the direct, actionable
+advice the inexperienced engineer needs to start moving&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. It&amp;rsquo;s surprising
+how little context new engineers are given when they start out.&lt;/p&gt;
+&lt;p&gt;Below is a list of some lessons I&amp;rsquo;ve learned as a distributed systems engineer
+that are worth being told to a new engineer. Some are subtle, and some are
+surprising, but none are controversial. This list is for the new distributed
+systems engineer to guide their thinking about the field they are taking
+on. It&amp;rsquo;s not comprehensive, but it&amp;rsquo;s a good beginning.&lt;/p&gt;
+&lt;p&gt;The worst characteristic of this list is that it focuses on technical problems
+with little discussion of social problems an engineer may run into. Since
+distributed systems require more machines and more capital, their engineers
+tend to work with more teams and larger organizations. The social stuff is
+usually the hardest part of any software developer&amp;rsquo;s job, and, perhaps,
+especially so with distributed systems development.&lt;/p&gt;
+&lt;p&gt;Our background, education, and experience bias us towards a technical solution
+even when a social solution would be more efficient, and more pleasing. Let&amp;rsquo;s
+try to correct for that. People are less finicky than computers, even if their
+interface is a little less standardized.&lt;/p&gt;
+&lt;p&gt;Alright, here we go.&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;fail&#34; href=&#34;#fail&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Distributed systems are different because they fail often.&lt;/strong&gt; When asked what
+separates distributed systems from other fields of software engineering, the
+new engineer often cites latency, believing that&amp;rsquo;s what makes distributed
+computation hard.&lt;/p&gt;
+&lt;p&gt;But they&amp;rsquo;re wrong. What sets distributed systems engineering apart is the
+probability of failure and, worse, the probability of partial failure. If a
+well-formed mutex unlock fails with an error, we can assume the process is
+unstable and crash it. But the failure of a distributed mutex&amp;rsquo;s unlock must be
+built into the lock protocol.&lt;/p&gt;
+&lt;p&gt;Systems engineers that haven&amp;rsquo;t worked in distributed computation will come up
+with ideas like &amp;ldquo;well, it&amp;rsquo;ll just send the write to both machines&amp;rdquo; or &amp;ldquo;it&amp;rsquo;ll
+just keep retrying the write until it succeeds&amp;rdquo;. These engineers haven&amp;rsquo;t
+completely accepted (though they usually intellectually recognize) that
+networked systems fail more than systems that exist on only a single machine
+and that failures tend to be partial instead of total. One of the writes may
+succeed while the other fails, and so now how do we get a consistent view of
+the data? These partial failures are much harder to reason about.&lt;/p&gt;
+&lt;p&gt;Switches go down, garbage collection pauses make leaders &amp;ldquo;disappear&amp;rdquo;,
+socket writes seem to succeed but have actually failed on the other machine, a
+slow disk drive on one machine causes a communication protocol in the whole
+cluster to crawl, and so on. Reading from local memory is simply more stable
+than reading across a few switches.&lt;/p&gt;
+&lt;p&gt;Design for failure. &lt;a href=&#34;#fail&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;robustdist&#34; href=&#34;#robustdist&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Writing robust distributed systems costs more than writing robust
+single-machine systems.&lt;/strong&gt; Creating a robust distributed solution requires more
+money than a single-machine solution because there are failures that only
+occur with many machines. Virtual machine and cloud technology make
+distributed systems engineering cheaper but not as cheap as being able to
+design, implement, and test on a computer you already own. And there are
+failure conditions that are difficult to replicate on a single
+machine. Whether it&amp;rsquo;s because they only occur on dataset sizes much larger
+than can be fit on a shared machine, or in the network conditions found in
+datacenters, distributed systems tend to need actual, not simulated,
+distribution to flush out their bugs. Simulation is, of course, very useful. &lt;a href=&#34;#robustdist&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;robustoss&#34; href=&#34;#robustoss&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Robust, open source distributed systems are much less common than robust,
+single-machine systems.&lt;/strong&gt; The cost of running many machines for long periods
+of time is a burden on open source communities. Hobbyists and dilettantes are
+the engines of open source software and they do not have the financial
+resources available to explore or fix many of the problems a distributed
+system will have. Hobbyists write open source code for fun in their free time
+and with machines they already own. It&amp;rsquo;s much harder to find open source
+developers who are willing to spin up, maintain, and pay for a bunch of
+machines.&lt;/p&gt;
+&lt;p&gt;Some of this slack has been taken up by engineers working for corporate
+entities. However, the priorities of their organization may not be in line
+with the priorities of your organization.&lt;/p&gt;
+&lt;p&gt;While some in the open source community are aware of this problem, it&amp;rsquo;s not
+yet solved. This is hard. &lt;a href=&#34;#robustoss&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;coord&#34; href=&#34;#coord&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Coordination is very hard.&lt;/strong&gt; Avoid coordinating machines wherever
+possible. This is often described as &amp;ldquo;horizontal scalability&amp;rdquo;. The real trick
+of horizontal scalability is independence &amp;ndash; being able to get data to
+machines such that communication and consensus between those machines is kept
+to a minimum. Every time two machines have to agree on something, the service
+becomes harder to implement. Information has an upper limit to the speed it can
+travel, and networked communication is flakier than you think, and your idea
+of what constitutes consensus is probably wrong. Learning about the &lt;a href=&#34;http://en.wikipedia.org/wiki/Two_Generals%27_Problem&#34;&gt;Two
+Generals&lt;/a&gt; and &lt;a href=&#34;http://en.wikipedia.org/wiki/Byzantine_Generals%27_Problem&#34;&gt;Byzantine Generals&lt;/a&gt; problems is useful
+here. (Oh, and Paxos really is &lt;a href=&#34;http://research.google.com/pubs/pub33002.html&#34;&gt;very hard to implement&lt;/a&gt;; that&amp;rsquo;s not
+grumpy old engineers thinking they know better than you.) &lt;a href=&#34;#coord&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;memory&#34; href=&#34;#memory&#34;&gt;#&lt;/a&gt; &lt;strong&gt;If you can fit your problem in memory, it&amp;rsquo;s probably trivial.&lt;/strong&gt; To a
+distributed systems engineer, problems that are local to one machine are
+easy. Figuring out how to process data quickly is harder when the data is a
+few switches away instead of a few pointer dereferences away. In a distributed
+system, the well-worn efficiency tricks documented since the beginning of
+computer science no longer apply. Plenty of literature and implementations are
+available for algorithms that run on a single machine because the majority of
+computation has been done on singular, uncoordinated machines. Significantly
+fewer exist for distributed systems. &lt;a href=&#34;#memory&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;slow&#34; href=&#34;#slow&#34;&gt;#&lt;/a&gt; &lt;strong&gt;&amp;ldquo;It&amp;rsquo;s slow&amp;rdquo; is the hardest problem you&amp;rsquo;ll ever debug.&lt;/strong&gt; &amp;ldquo;It&amp;rsquo;s slow&amp;rdquo; might
+mean one or more of the number of systems involved in performing a user
+request is slow. It might mean one or more of the parts of a pipeline of
+transformations across many machines is slow. &amp;ldquo;It&amp;rsquo;s slow&amp;rdquo; is hard, in part,
+because the problem statement doesn&amp;rsquo;t provide many clues to the location of the
+flaw. Partial failures, ones that don&amp;rsquo;t show up on the graphs you usually look
+up, are lurking in a dark corner. And, until the degradation becomes very
+obvious, you won&amp;rsquo;t receive as many resources (time, money, and tooling) to
+solve it. &lt;a href=&#34;http://research.google.com/pubs/pub36356.html&#34;&gt;Dapper&lt;/a&gt; and &lt;a href=&#34;http://engineering.twitter.com/2012/06/distributed-systems-tracing-with-zipkin.html&#34;&gt;Zipkin&lt;/a&gt; were built for a reason. &lt;a href=&#34;#slow&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;backpressure&#34; href=&#34;#backpressure&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Implement backpressure throughout your system.&lt;/strong&gt; Backpressure is the
+signaling of failure from a serving system to the requesting system and how
+the requesting system handles those failures to prevent overloading itself and
+the serving system. Designing for backpressure means bounding resource
+use during times of overload and times of system failure. This is one
+of the basic building blocks of creating a robust distributed system.&lt;/p&gt;
+&lt;p&gt;Implementations of backpressure usually involve either dropping new
+messages on the floor, or shipping errors back to users (and incrementing
+a metric in both cases) when a resource becomes limited or failures
+occur. Timeouts and exponential back-offs on connections and requests to other
+systems are also essential.&lt;/p&gt;
+&lt;p&gt;Without backpressure mechanisms in place, cascading failure or unintentional
+message loss become likely. When a system is not able to handle the failures
+of another, it tends to emit failures to another system that depends on it. &lt;a href=&#34;#backpressure&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;partial&#34; href=&#34;#partial&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Find ways to be partially available.&lt;/strong&gt; Partial availability is being able to
+return some results even when parts of your system is failing.&lt;/p&gt;
+&lt;p&gt;Search is an ideal case to explore here. Search systems trade-off between how
+good their results are and how long they will keep a user waiting. A typical
+search system sets a time limit on how long it will search its documents, and,
+if that time limit expires before all of its documents are searched, it will
+return whatever results it has gathered. This makes search easier to scale in
+the face of intermittent slowdowns, and errors because those failures are
+treated the same as not being able to search all of their documents. The
+system allows for partial results to be returned to the user and its
+resilience is increased.&lt;/p&gt;
+&lt;p&gt;And consider a private messaging feature in a web application. At some point, no
+matter what you do, enough storage machines for private messaging will be down
+at the same time that your users will notice. So what kind of partial failure do
+we want in this system?&lt;/p&gt;
+&lt;p&gt;This takes some thought. People are generally more okay with private messaging
+being down for them (and maybe some other users) than they are with all users
+having some of their messages go missing. If the service is overloaded or one of
+its machines are down, failing out just a small fraction of the userbase is
+preferable to missing data for a larger fraction. And, on top of that choice, we
+probably don&amp;rsquo;t want an unrelated feature, like public image upload, to be
+affected just because private messaging is having a problem. How much work are
+we willing to do to keep those failure domains separate?&lt;/p&gt;
+&lt;p&gt;Being able to recognize these kinds of trade-offs in partial availability is
+good to have in your toolbox. &lt;a href=&#34;#partial&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;metrics&#34; href=&#34;#metrics&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Metrics are the only way to get your job done.&lt;/strong&gt; Exposing metrics (such as
+latency percentiles, increasing counters on certain actions, rates of change)
+is the only way to cross the gap from what you believe your system does in
+production and what it actually is doing. Knowing how the system&amp;rsquo;s behavior on
+day 20 is different from its behavior on day 15 is the difference between
+successful engineering and failed shamanism. Of course, metrics are necessary
+to understand problems and behavior, but they are not sufficient to know what
+to do next.&lt;/p&gt;
+&lt;p&gt;A diversion into logging. Log files are good to have, but they tend to
+lie. For example, it&amp;rsquo;s very common for the logging of a few error classes to
+take up a large proportion of a space in a log file but, in actuality, occur
+in a very low proportion of requests. Because logging successes is redundant
+in most cases (and would blow out the disk in most cases) and because
+engineers often guess wrong on which kinds of error classes are useful to see,
+log files get filled up with all sorts of odd bits and bobs. Prefer logging as
+if someone who has not seen the code will be reading the logs.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve seen a good number of outages extended by another engineer (or myself)
+over-emphasizing something odd we saw in the log without first checking it
+against the metrics. I&amp;rsquo;ve also seen another engineer (or myself)
+Sherlock-Holmes&amp;rsquo;ing an entire set of failed behaviors from a handful of log
+lines. But note: a) we remember those successes because they are so very rare
+and b) you&amp;rsquo;re not Sherlock unless the metrics or the experiments back up the
+story. &lt;a href=&#34;#metrics&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;percentiles&#34; href=&#34;#percentiles&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Use percentiles, not averages.&lt;/strong&gt; Percentiles (50th, 99th, 99.9th, 99.99th)
+are more accurate and informative than averages in the vast majority of
+distributed systems. Using a mean assumes that the metric under evaluation
+follows a bell curve but, in practice, this describes very few metrics an
+engineer cares about. &amp;ldquo;Average latency&amp;rdquo; is a commonly reported metric, but
+I&amp;rsquo;ve never once seen a distributed system whose latency followed a bell
+curve. If the metric doesn&amp;rsquo;t follow a bell curve, the average is meaningless
+and leads to incorrect decisions and understanding. Avoid the trap by talking
+in percentiles. Default to percentiles, and you&amp;rsquo;ll better understand how users
+really see your system. &lt;a href=&#34;#percentiles&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;capacity&#34; href=&#34;#capacity&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Learn to estimate your capacity.&lt;/strong&gt; You&amp;rsquo;ll learn how many seconds are in a
+day because of this. Knowing how many machines you need to perform a task is
+the difference between a long-lasting system, and one that needs to be
+replaced 3 months into its job. Or, worse, needs to be replaced before you
+finish productionizing it.&lt;/p&gt;
+&lt;p&gt;Consider tweets. How many tweet ids can you fit in memory on a common machine?
+Well, a typical machine at the end of 2012 has 24 GB of memory, you&amp;rsquo;ll need an
+overhead of 4-5 GB for the OS, another couple, at least, to handle requests,
+and a tweet id is 8 bytes. This is the kind of back of the envelope
+calculation you&amp;rsquo;ll find yourself doing. Jeff Dean&amp;rsquo;s &lt;a href=&#34;http://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf&#34;&gt;Numbers Everyone Should
+Know&lt;/a&gt; slide is a good expectation-setter. &lt;a href=&#34;#capacity&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;flags&#34; href=&#34;#flags&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Feature flags are how infrastructure is rolled out.&lt;/strong&gt; &amp;ldquo;Feature flags&amp;rdquo; are a
+common way product engineers roll out new features in a system. Feature flags
+are typically associated with frontend A/B testing where they are used to show
+a new design or feature to only some of the userbase. But they are a powerful
+way of replacing infrastructure as well.&lt;/p&gt;
+&lt;p&gt;Too many projects have failed because they went for the &amp;ldquo;big cutover&amp;rdquo; or a
+series of &amp;ldquo;big cutovers&amp;rdquo; that were then forced into rollbacks by bugs found too
+late. By using feature flags instead, you&amp;rsquo;ll gain confidence in your project and
+mitigate the costs of failure.&lt;/p&gt;
+&lt;p&gt;Suppose you&amp;rsquo;re going from a single database to a service that hides the details
+of a new storage solution. Using a feature flag, you can slowly ramp up writes
+to the new service in parallel to the writes to the old database to make sure
+its write path is correct and fast enough. After the write path is at 100% and
+backfilling into the service&amp;rsquo;s datastore is complete, you can use a separate
+feature flag to start reading from the service, without using the data in user
+responses, to check for performance problems. Another feature flag can be used
+to perform comparison checks on read of the data from the old system and the new
+one. And one final flag can be used to slowly ramp up the &amp;ldquo;real&amp;rdquo; reads from the
+new system.&lt;/p&gt;
+&lt;p&gt;By breaking up the deployment into multiple steps and affording yourself quick
+and partial reactions with feature flags, you make it easier to find bugs and
+performance problems as they occur during ramp up instead of at a &amp;ldquo;big bang&amp;rdquo;
+release time. If an issue occurs, you can just tamp the feature flag setting
+back down to a lower (perhaps, zero) setting immediately. Adjusting the rates
+lets you debug and experiment at different amounts of traffic knowing that any
+problem you hit isn&amp;rsquo;t a total disaster. With feature flags, you can also choose
+other migration strategies, like moving requests over on a per-user basis, that
+provide better insight into the new system. And when your new service is still
+being prototyped, you can use flags at a low setting to have your new system
+consume fewer resources.&lt;/p&gt;
+&lt;p&gt;Now, feature flags sound like a terrible mess of conditionals to a classically
+trained developer or a new engineer with well-intentioned training. And the use
+of feature flags means accepting that having multiple versions of infrastructure
+and data is a norm, not an rarity. This is a deep lesson. What works well for
+single-machine systems sometimes falters in the face of distributed problems.&lt;/p&gt;
+&lt;p&gt;Feature flags are best understood as a trade-off, trading local complexity (in
+the code, in one system) for global simplicity and resilience. &lt;a href=&#34;#flags&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;idspace&#34; href=&#34;#idspace&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Choose id spaces wisely.&lt;/strong&gt; The space of ids you choose for your system will
+shape your system.&lt;/p&gt;
+&lt;p&gt;The more ids required to get to a piece of data, the more options you have in
+partitioning the data. The fewer ids required to get a piece of data, the
+easier it is to consume your system&amp;rsquo;s output.&lt;/p&gt;
+&lt;p&gt;Consider version 1 of the Twitter API. All operations to get, create, and
+delete tweets were done with respect to a single numeric id for each
+tweet. The tweet id is a simple 64-bit number that is not connected to any
+other piece of data. As the number of tweets goes up, it becomes clear that
+creating user tweet timelines and the timeline of other user&amp;rsquo;s subscriptions
+may be efficiently constructed if all of the tweets by the same user were
+stored on the same machine.&lt;/p&gt;
+&lt;p&gt;But the public API requires every tweet be addressable by just the tweet
+id. To partition tweets by user, a lookup service would have to be
+constructed. One that knows what user owns which tweet id. Doable, if
+necessary, but with a non-trivial cost.&lt;/p&gt;
+&lt;p&gt;An alternative API could have required the user id in any tweet look up and,
+initially, simply used the tweet id for storage until user-partitioned storage
+came online. Another alternative would have included the user id in the tweet
+id itself at the cost of tweet ids no longer being k-sortable and numeric.&lt;/p&gt;
+&lt;p&gt;Watch out for what kind of information you encode in your ids, explicitly and
+implicitly. Clients may use the structure of your ids to de-anonymize private
+data, crawl your system in unexpected ways (auto-incrementing ids are a
+typical sore point), or perform a &lt;a href=&#34;https://www.owasp.org/index.php/Top_10_2010-A4-Insecure_Direct_Object_References&#34;&gt;host of other attacks&lt;/a&gt;. &lt;a href=&#34;#idspace&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;dataloc&#34; href=&#34;#dataloc&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Exploit data-locality.&lt;/strong&gt; The closer the processing and caching of your data
+is kept to its persistent storage, the more efficient your processing, and the
+easier it will be to keep your caching consistent and fast. Networks have more
+failures and more latency than pointer dereferences and &lt;code&gt;fread(3)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Of course, data-locality means being nearby in space, but it also means nearby
+in time. If multiple users are making the same expensive request at nearly the
+same time, perhaps their requests can be joined into one. If multiple instances
+of requests for the same kind of data are made near to one another, they could
+be joined into one larger request. Doing so often affords lower communication
+overheard and easier fault management. &lt;a href=&#34;#dataloc&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;cached&#34; href=&#34;#cached&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Writing cached data back to persistent storage is bad.&lt;/strong&gt; This happens in
+more systems than you&amp;rsquo;d think. Especially ones originally designed by people
+less experienced in distributed systems. Many systems you&amp;rsquo;ll inherit will have
+this flaw. If the implementers talk about &amp;ldquo;Russian-doll caching&amp;rdquo;, you have a
+large chance of hitting highly visible bugs. This entry could have been left
+out of the list, but I have a special hate in my heart for it. A common
+presentation of this flaw is user information (e.g. screennames, emails, and
+hashed passwords) mysteriously reverting to a previous value. &lt;a href=&#34;#cached&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;domore&#34; href=&#34;#domore&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Computers can do more than you think they can.&lt;/strong&gt; In the field today, there&amp;rsquo;s
+plenty of misinformation about what a machine is capable of from practitioners
+that do not have a great deal of experience.&lt;/p&gt;
+&lt;p&gt;At the end of 2012, a light web server had 6 or more processors, 24 GB of
+memory and more disk space than you can use. A relatively complex &lt;a href=&#34;http://en.wikipedia.org/wiki/Create,_read,_update_and_delete&#34;&gt;CRUD&lt;/a&gt;
+application in a modern language runtime on a single machine is trivially
+capable of doing thousands of requests per second within a few hundred
+milliseconds. And that&amp;rsquo;s a deep lower bound. In terms of operational ability,
+hundreds of requests per second per machine is not something to brag about in
+most cases.&lt;/p&gt;
+&lt;p&gt;Greater performance is not hard to come by, especially if you are willing to
+profile your application and introduce efficiencies based on your
+measurements. &lt;a href=&#34;#domore&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;cap&#34; href=&#34;#cap&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Use the CAP theorem to critique systems.&lt;/strong&gt; The CAP theorem isn&amp;rsquo;t something
+you can build a system out of. It&amp;rsquo;s not a theorem you can take as a first
+principle and derive a working system from. It&amp;rsquo;s much too general in its
+purview, and the space of possible solutions too broad.&lt;/p&gt;
+&lt;p&gt;However, it is well-suited for critiquing a distributed system design, and
+understanding what trade-offs need to be made. Taking a system design and
+iterating through the constraints CAP puts on its subsystems will leave you
+with a better design at the end. For homework, apply the CAP theorem&amp;rsquo;s
+constraints to a real world implementation of Russian-doll caching.&lt;/p&gt;
+&lt;p&gt;One last note: Out of C, A, and P, you &lt;a href=&#34;http://codahale.com/you-cant-sacrifice-partition-tolerance/&#34;&gt;can&amp;rsquo;t choose CA&lt;/a&gt;. &lt;a href=&#34;#cap&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a name=&#34;services&#34; href=&#34;#services&#34;&gt;#&lt;/a&gt; &lt;strong&gt;Extract services.&lt;/strong&gt; &amp;ldquo;Service&amp;rdquo; here means &amp;ldquo;a distributed system that
+incorporates higher-level logic than a storage system and typically has a
+request-response style API&amp;rdquo;. Be on the lookout for code changes that would be
+easier to do if the code existed in a separate service instead of in your
+system.&lt;/p&gt;
+&lt;p&gt;An extracted service provides the benefits of encapsulation typically
+associated with creating libraries. However, extracting out a service improves
+on creating libraries by allowing for changes to be deployed faster and easier
+than upgrading the libraries in its client systems. (Of course, if the
+extracted service is hard to deploy, the client systems are the ones that
+become easier to deploy.) This ease is owed to the fewer code and operational
+dependencies in the smaller, extracted service and the strict boundary it
+creates makes it harder to &amp;ldquo;take shortcuts&amp;rdquo; that a library allows for. These
+shortcuts almost always make it harder to migrate the internals or the client
+systems to new versions.&lt;/p&gt;
+&lt;p&gt;The coordination costs of using a service is also much lower than a shared
+library when there are multiple client systems. Upgrading a library, even with
+no API changes needed, requires coordinating deploys of each client
+system. This gets harder when data corruption is possible if the deploys are
+performed out of order (and it&amp;rsquo;s harder to predict that it will
+happen). Upgrading a library also has a higher social coordination cost than
+deploying a service if the client systems have different maintainers. Getting
+others aware of and willing to upgrade is surprisingly difficult because their
+priorities may not align with yours.&lt;/p&gt;
+&lt;p&gt;The canonical service use case is to hide a storage layer that will be
+undergoing changes. The extracted service has an API that is more convenient,
+and reduced in surface area compared to the storage layer it fronts. By
+extracting a service, the client systems don&amp;rsquo;t have to know about the
+complexities of the slow migration to a new storage system or format and only
+the new service has to be evaluated for bugs that will certainly be found with
+the new storage layout.&lt;/p&gt;
+&lt;p&gt;There are a great deal of operational and social issues to consider when doing
+this. I cannot do them justice here. Another article will have to be written. &lt;a href=&#34;#services&#34;&gt;#&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Much love to my reviewers &lt;a href=&#34;https://twitter.com/dehora&#34;&gt;Bill de hÓra&lt;/a&gt;, &lt;a href=&#34;https://twitter.com/coda&#34;&gt;Coda Hale&lt;/a&gt;, &lt;a href=&#34;https://twitter.com/jdmaturen&#34;&gt;JD
+Maturen&lt;/a&gt;, &lt;a href=&#34;https://twitter.com/nora&#34;&gt;Micaela McDonald&lt;/a&gt;, and &lt;a href=&#34;https://twitter.com/tnm&#34;&gt;Ted Nyman&lt;/a&gt;. Your
+insight and care was invaluable.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt; (2016-08-15): I&amp;rsquo;ve added permalinks for each section and cleaned up
+some text in the sections on coordination, data-locality, feature flags, and
+backpressure.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34;&gt;
+&lt;p&gt;Of course, Rotem-Gal-Oz&amp;rsquo;s &lt;a href=&#34;http://www.rgoarchitects.com/Files/fallacies.pdf&#34;&gt;take on the fallacies&lt;/a&gt; is very good.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Monorail (n., jargon)</title>
+   <link href="https://www.somethingsimilar.com/2012/07/23/monorail/"/>
+   <updated>2012-07-23T08:20:00-07:00</updated>
+   <id>http://somethingsimilar.com/2012/07/23/monorail/</id>
+   <content type="html">&lt;p&gt;&lt;strong&gt;monorail&lt;/strong&gt; &lt;em&gt;(n., jargon)&lt;/em&gt; - A &lt;a href=&#34;http://www.laputan.org/mud/mud.html#Abstract&#34;&gt;Big Ball of
+Mud&lt;/a&gt; codebase that began as a
+web application (esp. one written in a dynamic language) but grew into other
+responsibilities beyond serving HTTP traffic to users. A monorail is created
+when a webapp does not have its responsibilities moved to other services as
+the demands of the product grow (e.g. offline processing, managing complex
+data storage, user authentication). Coined by &lt;a href=&#34;http://twitter.com/jeanpaul&#34;&gt;Jean-Paul
+Cozzatti&lt;/a&gt; in 2010, &amp;ldquo;monorail&amp;rdquo; is a portmanteau of
+the words &amp;ldquo;monolithic&amp;rdquo; and &amp;ldquo;Ruby on Rails&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;While it&amp;rsquo;s difficult to determine the exact point that a webapp becomes a
+&amp;ldquo;monorail&amp;rdquo;, a webapp is certainly a monorail when it begins to write
+to and read from a distributed queue.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;Don&amp;rsquo;t put that in the monorail.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;It&amp;rsquo;ll save us weeks of developer time if we do it in the monorail.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;Nobody owned anything in the monorail because everyone&amp;rsquo;s code touched
+everyone else&amp;rsquo;s.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Finding go.crypto and go.net</title>
+   <link href="https://www.somethingsimilar.com/2012/05/24/finding-go.crypto-and-go.net/"/>
+   <updated>2012-05-24T12:52:00-07:00</updated>
+   <id>http://somethingsimilar.com/2012/05/24/finding-go.crypto-and-go.net/</id>
+   <content type="html">&lt;p&gt;It&amp;rsquo;s kind of a pain in the ass to find the go.crypto and go.net packages and
+there&amp;rsquo;s wonderful goodies in both of them. To ease that, I&amp;rsquo;m writing this up
+with some pointers to them and some small discussion on a few of my favorite
+libraries within them.&lt;/p&gt;
+&lt;h2 id=&#34;gocrypto&#34;&gt;go.crypto&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;go.crypto&lt;/code&gt; source code is &lt;a href=&#34;http://code.google.com/p/go/source/checkout?repo=crypto&#34;&gt;available in the go project&lt;/a&gt;. Note
+the drop down that let&amp;rsquo;s you pick it or the other &amp;ldquo;subrepos&amp;rdquo; of the Go project
+proper.&lt;/p&gt;
+&lt;p&gt;To install one of the libraries (let&amp;rsquo;s call it $LIB) in &lt;code&gt;go.crypto&lt;/code&gt;, run:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go get code.google.com/p/go.crypto/$LIB
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All of the libraries in &lt;code&gt;go.crypto&lt;/code&gt; and &lt;code&gt;go.net&lt;/code&gt; are written entirely in
+Go. The documentation for all of the &lt;code&gt;go.crypto&lt;/code&gt; libraries is &lt;a href=&#34;http://gopkgdoc.appspot.com/pkg/code.google.com/p/go.crypto&#34;&gt;available on
+gopkgdoc&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;cryptobcrypt&#34;&gt;crypto/bcrypt&lt;/h3&gt;
+&lt;p&gt;I&amp;rsquo;m going down my favorites alphabetically and that just so happens to mean
+that the library I wrote is first. Fancy that.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;crypto/bcrypt&lt;/code&gt; is an implementation of the &lt;code&gt;bcrypt&lt;/code&gt; algorithm. &lt;code&gt;bcrypt&lt;/code&gt;
+is an easy-to-use, and very secure means of hashing passwords (and other
+secrets) such that they cannot be reversed and are very difficult to brute
+force. Additionally, &lt;code&gt;bcrypt&lt;/code&gt; allows you to specify how difficult the hashed
+password should be to brute force (and, therefore, how difficult it is to hash
+later when, say, a user logs in). It also provides a means of migrating your
+data to a more difficult cost as Moore&amp;rsquo;s law takes hold by embedding the cost
+you specified as part of the generated hash.&lt;/p&gt;
+&lt;p&gt;Using &lt;code&gt;crypto/bcrypt&lt;/code&gt; is straight-forward. To generate a new hash from a users
+password to be stored in a database:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import (
+    &amp;quot;code.google.com/p/go.crypto/bcrypt&amp;quot;
+)
+
+func hashMyPassword(password []byte) []byte {
+    // bcrypt.DefaultCost can be substituted for any number between
+    // bcrypt.MinimumCost and bcrypt.MaximumCost, inclusively.
+    return bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When checking the whether a &lt;code&gt;bcrypt&lt;/code&gt; hash matches a password given by a user,
+you MUST use &lt;code&gt;bcrypt.CompareHashAndPassword&lt;/code&gt;, which is cryptographically
+secure (using the lovely &lt;a href=&#34;http://golang.org/pkg/crypto/subtle&#34;&gt;&lt;code&gt;crypto/subtle&lt;/code&gt; package&lt;/a&gt; in the standard
+library).&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;bcrypt.CompareHashAndPassword&lt;/code&gt; returns nil when the passwords match, and an
+error otherwise. This is a little odd, but you&amp;rsquo;ll only use it one or two
+places in your system.&lt;/p&gt;
+&lt;p&gt;You MUST NOT use &lt;code&gt;bytes.Equal&lt;/code&gt; to compare the returned &lt;code&gt;[]byte&lt;/code&gt; with what is
+in your database. Using the naive equality check will make your service
+&lt;a href=&#34;http://codahale.com/a-lesson-in-timing-attacks/&#34;&gt;susceptible to timing attacks&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Example usage:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import (
+    &amp;quot;code.google.com/p/go.crypto/bcrypt&amp;quot;
+)
+
+func isCorrectPassword(user *User, password []byte) boolean {
+    hashedPassword := user.HashedPassword()
+    return bcrypt.CompareHashAndPassword(hashedPassword, password) == nil
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Installation of &lt;code&gt;crypto/bcrypt&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go get code.google.com/p/go.crypto/bcrypt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;a href=&#34;http://gopkgdoc.appspot.com/pkg/code.google.com/p/go.crypto/bcrypt&#34;&gt;API documentation&lt;/a&gt; of &lt;code&gt;crypto/bcrypt&lt;/code&gt; is available on
+gopkgdoc.&lt;/p&gt;
+&lt;h3 id=&#34;cryptossh&#34;&gt;crypto/ssh&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;crypto/ssh&lt;/code&gt; is a SSH client and server library. This API is too large to give
+a great set of examples for, but I&amp;rsquo;ll give the basics of its networking code.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;crypto/ssh&lt;/code&gt; package makes great use of the &lt;code&gt;net.Dial&lt;/code&gt;, &lt;code&gt;net.Conn&lt;/code&gt;, and
+&lt;code&gt;net.Listener&lt;/code&gt; patterns of building up network connections.&lt;/p&gt;
+&lt;p&gt;Making an SSH connection to a server and using it is easy:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import (
+    &amp;quot;code.google.com/p/go.crypto/ssh&amp;quot;
+    &amp;quot;net&amp;quot;
+    &amp;quot;net/http&amp;quot;
+)
+
+func tunnelToPrivateServer() (*http.Response, error) {
+    config := &amp;amp;ssh.ClientConfig{...}
+    client, err := ssh.Dial(&amp;quot;tcp&amp;quot;, &amp;quot;example.com:22&amp;quot;, config)
+    if err != nil {
+        return nil, err
+    }
+    defer client.Close()
+    // client is a *ssh.ClientConn that satisfies the net.Conn interface
+    // but it can also be used to tunnel to private resources.
+    tr := &amp;amp;http.Transport{
+        Dial: func(network, addr string) (net.Conn, error) {
+            return client.Dial(network, addr)
+        },
+    }
+    httpClient := &amp;amp;http.Client{Transport: tr}
+    return httpClient.Get(&amp;quot;http://private.example.com/secrets.txt&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Setting up an SSH client terminal or server is slightly more complicated and I
+defer to the helpful examples in the documentation for &lt;a href=&#34;http://go.pkgdoc.org/code.google.com/p/go.crypto/ssh#Dial&#34;&gt;ssh.Dial&lt;/a&gt;
+and &lt;a href=&#34;http://go.pkgdoc.org/code.google.com/p/go.crypto/ssh#Listen&#34;&gt;ssh.Listen&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Installation of &lt;code&gt;crypto/ssh&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go get code.google.com/p/go.crypto/ssh
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;a href=&#34;http://go.pkgdoc.org/code.google.com/p/go.crypto/ssh&#34;&gt;API documentation&lt;/a&gt; of &lt;code&gt;crypto/ssh&lt;/code&gt; is available on gopkgdoc.&lt;/p&gt;
+&lt;h2 id=&#34;gonet&#34;&gt;go.net&lt;/h2&gt;
+&lt;p&gt;The &lt;code&gt;go.net&lt;/code&gt; source code is &lt;a href=&#34;http://code.google.com/p/go/source/checkout?repo=net&#34;&gt;available in the go project&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To install one of the libraries (let&amp;rsquo;s call it $LIB) in &lt;code&gt;go.net&lt;/code&gt;, run:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go get code.google.com/p/go.net/$LIB
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The documentation for all of the &lt;code&gt;go.net&lt;/code&gt; libraries is &lt;a href=&#34;http://gopkgdoc.appspot.com/pkg/code.google.com/p/go.net&#34;&gt;available on
+gopkgdoc&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;netspdy&#34;&gt;net/spdy&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;net/spdy&lt;/code&gt; is a library implementing the SPDY protocol. As of this writing, it
+implements version 2 of the protocol. Unfortunately, I&amp;rsquo;ve not had the chance
+to play with this library, yet, so I&amp;rsquo;m going to skip making an example. I&amp;rsquo;d
+recommend watching that space.&lt;/p&gt;
+&lt;p&gt;Installation of &lt;code&gt;net/spdy&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go get code.google.com/p/go.net/spdy
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;a href=&#34;http://go.pkgdoc.org/code.google.com/p/go.net/spdy&#34;&gt;API documentation&lt;/a&gt; of &lt;code&gt;net/spdy&lt;/code&gt; is available on gopkgdoc.&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>

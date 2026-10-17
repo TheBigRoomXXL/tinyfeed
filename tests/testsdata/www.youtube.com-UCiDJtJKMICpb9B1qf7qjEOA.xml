@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+ <link rel="self" href="http://www.youtube.com/feeds/videos.xml?channel_id=UCiDJtJKMICpb9B1qf7qjEOA"/>
+ <id>yt:channel:iDJtJKMICpb9B1qf7qjEOA</id>
+ <yt:channelId>iDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+ <title>Adam Savage’s Tested</title>
+ <link rel="alternate" href="https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA"/>
+ <author>
+  <name>Adam Savage’s Tested</name>
+  <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+ </author>
+ <published>2010-03-08T19:17:09+00:00</published>
+ <entry>
+  <id>yt:video:1DGT2s8o2L8</id>
+  <yt:videoId>1DGT2s8o2L8</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Adam Savage Stunned by 3D Printed Rubber!</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=1DGT2s8o2L8"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-16T14:00:02+00:00</published>
+  <updated>2026-10-16T16:48:58+00:00</updated>
+  <media:group>
+   <media:title>Adam Savage Stunned by 3D Printed Rubber!</media:title>
+   <media:content url="https://www.youtube.com/v/1DGT2s8o2L8?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/1DGT2s8o2L8/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Adam and Norm try their hand at 3D printing flexible rubber using the new @Formlabs Form Studio 1 3D printer. Here's how Adam plans to incorporate this material into his costume and prop builds, and what you should know about how printing rubber differs from standard hard resins. We also visit Formlabs' material science research labs to learn how they develop their resins and their advice for how to post-process prints. 
+
+Form Studio 1 resin 3D printer: https://tidd.ly/3VMM41W
+Disclosure: This product was sent to us by the manufacturer for purposes of review and is not sponsored. 
+
+Models printed: 
+Notre Dame Cathedral: https://www.myminifactory.com/object/3d-print-notre-dame-de-paris-cathedral-91899
+Eddie robot: https://www.paul-braddock.com/products/eddie-robot-3d-print-files
+Disclosure: Tested may earn an affiliate commission when you buy through the links here.
+
+Shot by Josh Self and edited by Norman Chan
+Music by Jinglepunks
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+00:00 - Formlabs Flexible 80A Resin
+00:52 - First Test: 100-Micron Vertical Print &amp; Surface Finish
+02:00 - Understanding Shore 80A Durometer
+02:34 - Solid Adam Carbonite &amp; Drop Test
+03:37 - Paintability &amp; Surface Finishing 
+04:02 - Hollow Wall Thickness Test
+04:54 - Engineering Applications
+06:53 - Gothic Cathedral &amp; Flying Buttresses
+08:41 -Formlabs HQ Materials Science Lab
+10:43 - Evolution of Photopolymers
+12:39 - Chemistry Behind Elasticity &amp; Toughness
+15:12 - Priorities in Resin Formulation &amp; Washability
+17:41 - Form 4 &amp; Next-Gen SLA Tech
+20:03 - Flexible 80A V1 vs. New Formulation
+22:11 - Post-Processing Tips
+24:33 - Prototyping vs. Production-Grade Additive Manufacturing
+27:05 - Dialing in Print Reliability &amp; Slicer Presets
+29:13 - Resolution &amp; Fine Details in Resin Formulations
+31:54 - Removing a Fresh Rubber Print from the Build Platform
+33:56 - Two-Stage Curing Process
+35:33 - Revealing the Ultra-Thin Hollow Mask
+37:13 - Using Internal Supports as Functional Infill
+38:11 - Final Thoughts
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!
+
+#3dprinting #resinprinter</media:description>
+   <media:community>
+    <media:starRating count="1578" average="5.00" min="1" max="5"/>
+    <media:statistics views="103604"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:-irEzY_vLuk</id>
+  <yt:videoId>-irEzY_vLuk</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Adam Savage Upgrades His Gibson Les Paul Guitar!</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=-irEzY_vLuk"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-15T14:00:22+00:00</published>
+  <updated>2026-10-15T22:44:08+00:00</updated>
+  <media:group>
+   <media:title>Adam Savage Upgrades His Gibson Les Paul Guitar!</media:title>
+   <media:content url="https://www.youtube.com/v/-irEzY_vLuk?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/-irEzY_vLuk/hqdefault.jpg" width="480" height="360"/>
+   <media:description>For his birthday this year, Adam bought himself a Gibson Les Paul guitar--one of his favorite guitar designs that he's love admired. This chinese variant of the Tokai Gibson model is ripe for upgrading, so Adam commences swapping out all of its wiring system, from pickups to pots. Rewiring ends up being a complicated process, but Adam rewards his persistance with an aesthetic upgrade: adding an engine turn finish to two panels on the back of the guitar!
+
+Complete Guitar Wiring by Gerry Hays: https://amzn.to/4yUhgek
+Disclosure: Tested may earn an affiliate commission when you buy through the links here.
+
+Shot by Adam Savage and edited by Josh Self
+Music by Jinglepunks
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!
+
+#adamsavage #onedaybuilds #guitar
+
+0:00 Guitar Project Intro
+1:53 Stripping and Prep
+5:02 Wiring 
+10:45 Engine Turn Decoration
+14:09 Machining Mistakes
+18:43 Final assembly</media:description>
+   <media:community>
+    <media:starRating count="5393" average="5.00" min="1" max="5"/>
+    <media:statistics views="273437"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:gQKQLC-Z4jQ</id>
+  <yt:videoId>gQKQLC-Z4jQ</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>$700 Formlabs Form Studio 1 3D Printer Review</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=gQKQLC-Z4jQ"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-14T13:00:32+00:00</published>
+  <updated>2026-10-16T15:44:24+00:00</updated>
+  <media:group>
+   <media:title>$700 Formlabs Form Studio 1 3D Printer Review</media:title>
+   <media:content url="https://www.youtube.com/v/gQKQLC-Z4jQ?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/gQKQLC-Z4jQ/hqdefault.jpg" width="480" height="360"/>
+   <media:description>We test and review the newly announced Formlabs Form Studio 1, a $700 3D printer that directly competes wtih hobbyist resin printers. After over 300 hours of printing, here's how model miniatures, clear parts, and even flexible rubber prints look up close. Plus, a deep dive into the engineering of the Studio 1 at @Formlabs to learn how they made a comparable printer to the Form 4 at a fraction of the price. 
+
+Form Studio 1 resin 3D printer: https://tidd.ly/3VMM41W
+Testing Formlabs Flexible 80A 3D printed rubber: https://youtu.be/1DGT2s8o2L8
+Disclosure: This product was sent to us by the manufacturer for purposes of review and is not sponsored. 
+
+Models printed: 
+Hagglethorn Hollow Evermaze: https://gamefound.com/en/projects/hagglethorn-hollow-hobbies/hagglethorn-hollow-evermaze
+Age of Mecha: https://teccotoys.com/
+Eddie robot: https://www.paul-braddock.com/products/eddie-robot-3d-print-files
+Notre Dame Cathedral: https://www.myminifactory.com/object/3d-print-notre-dame-de-paris-cathedral-91899
+Disclosure: Tested may earn an affiliate commission when you buy through the links here.
+
+Correction: the touchpoints we tested were 160 microns and 100 microns, not 16 and 10 microns. 
+
+Shot by Josh Self and edited by Norman Chan
+Music by Jinglepunks
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+00:00 - Formlabs Studio 1 Overview
+02:27 - Form 4 Comparison, Build Volume &amp; Resolution
+04:16 - Hardware Features &amp; Upgrades
+05:35 - Resin Tanks &amp; Open Material License
+08:16 - Interview with Formlabs Product Lead
+09:44 - Optics, LED Array &amp; Custom LCD Masking Layer
+13:13 - Release Texture &amp; Low Peel Forces
+14:33 - Thermal Heating &amp; Hardware Optimizations
+17:17 - Force Sensors &amp; Tank Design
+21:23 - Viscosity &amp; Mechanical Mixer Trade-offs
+24:17 - Print Quality Tests &amp; Alpha Resins
+26:03 - Alpha Model Resin vs. Standard Gray Resin
+27:24 - High-Detail Miniatures &amp; Support Settings Test
+31:43 - Support Touch Point Audio Demo 
+33:01 - Testing Clear &amp; Flexible 80A Resins
+34:44 - Third-Party Resins
+36:03 - Pricing, Ecosystem Costs &amp; Competitor Comparison
+40:01 - Is It the Resin Game-Changer?
+
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!
+
+#3dprinting #resinprinter</media:description>
+   <media:community>
+    <media:starRating count="1920" average="5.00" min="1" max="5"/>
+    <media:statistics views="197611"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:kqxsRuJ7hiU</id>
+  <yt:videoId>kqxsRuJ7hiU</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Adam Savage Unboxes the Crown of Bethmora!</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=kqxsRuJ7hiU"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-13T14:00:39+00:00</published>
+  <updated>2026-10-14T13:00:18+00:00</updated>
+  <media:group>
+   <media:title>Adam Savage Unboxes the Crown of Bethmora!</media:title>
+   <media:content url="https://www.youtube.com/v/kqxsRuJ7hiU?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/kqxsRuJ7hiU/hqdefault.jpg" width="480" height="360"/>
+   <media:description>On Adam's first day back from a monthlong vacation, he unboxes a few items that arrived at the workshop, including an impressively sized circle drawing tool, a practical bike helmet mirror accessory, and a stunning prop replica from Hellboy 2! Made by RelicMaker on the Replica Prop Forum, this gold-plated Crown of Bethmora replica has exactly the kind of heft Adam likes in a prop. Let's see if it fits!
+
+Adam's Hellboy Mechaglove build: https://www.youtube.com/watch?v=HJd4sJfpOLU
+Relic Maker Crown of Bethmora replica: https://www.etsy.com/listing/4571985389/hellboy-2-crown-of-bethmora-crown-of-the
+WindFire Designs Circle Tools: https://windfiredesigns.com/Tools/CircleTool/index.html
+Safe Zone helmet mirror: https://www.efficientvelo.com/tools/safe-zone-helmet-mirror-1
+
+Shot by Adam Savage and edited by Norman Chan
+Music by Jinglepunks
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!
+
+#adamsavage #hellboy #props</media:description>
+   <media:community>
+    <media:starRating count="2222" average="5.00" min="1" max="5"/>
+    <media:statistics views="150506"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:p8NFfCNXLRo</id>
+  <yt:videoId>p8NFfCNXLRo</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Humanity's Greatest Engineering Feat?</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=p8NFfCNXLRo"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-12T14:00:38+00:00</published>
+  <updated>2026-10-12T17:51:19+00:00</updated>
+  <media:group>
+   <media:title>Humanity's Greatest Engineering Feat?</media:title>
+   <media:content url="https://www.youtube.com/v/p8NFfCNXLRo?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/p8NFfCNXLRo/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Adam Savage visits Smithsonian's @airandspace for a first look at an extraordinary new addition to the collection: the Pathfinder for the James Webb Space Telescope (JWST)! Space history curator Samantha Thompson walks Adam through this full-scale engineering model, which was essential to proving out the telescope's multi-stage origami unfolding, extreme temperature tolerances, and precision optics before the real JWST launched a million miles into deep space. Adam inspects the massive backplane structure, the secondary mirror assembly, and two real beryllium hexagonal mirrors — one uncoated and one coated in microscopically thin gold — to explore the engineering marvels that paved the way for one of humanity's greatest engineering achievements!
+
+National Air and Space Museum: https://airandspace.si.edu/
+Visit the National Air and Space Museum's Udvar Hazy Center: https://www.si.edu/museums/air-and-space-museum-udvar-hazy-center
+Visit the National Air and Space Museum's downtown museum: https://airandspace.si.edu/
+Smithsonian Institution: https://www.si.edu/
+James Webb Space Telescope’s Pathfinder and Parker Solar Probe: https://airandspace.si.edu/newsroom/press-releases/national-air-and-space-museum-welcomes-james-webb-space-telescopes
+Preserving WWII’s Most Battle-Damaged Bomber: https://youtu.be/9BNKu8WBO8M
+The Reason This Space Docking Module Was Androgynous: 
+https://youtu.be/9VcVtuutdpE
+Adam Savage Visits National Air and Space Museum's Restoration Hangar: https://youtu.be/WFSnf0MSAFc
+More videos from Smithsonian's Air and Space Museum: https://www.youtube.com/watch?v=5c0BsBCx4Sw&amp;list=PLJtitKU0CAeiJ7tjkIqcrRPfIYZHPW643
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+Chapters:
+00:00 - JWST Pathfinder?
+01:40 - Space vs. Rocket Abuse
+02:35 - Budget, Risk, &amp; Engineering Perfection
+03:08 - Origami Telescope
+04:00 - Gravity vs. Zero-G
+04:42 - Anatomy
+05:08 - Beryllium Mirrors
+05:40 - Flattest Surfaces Ever Made
+06:20 - Deployable Secondary Mirror Assembly
+07:10 - Best-Traveled Ground Telescope
+08:04 - Golden &amp; Silver Reflections
+08:44 - Securing the Pathfinder
+09:20 - Bunny Suits
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!</media:description>
+   <media:community>
+    <media:starRating count="3273" average="5.00" min="1" max="5"/>
+    <media:statistics views="265215"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:q_2Vrljn3F0</id>
+  <yt:videoId>q_2Vrljn3F0</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>The Tiny Mistake That Proved How This Movie Prop Was Built</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=q_2Vrljn3F0"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-11T14:00:05+00:00</published>
+  <updated>2026-10-15T03:26:30+00:00</updated>
+  <media:group>
+   <media:title>The Tiny Mistake That Proved How This Movie Prop Was Built</media:title>
+   <media:content url="https://www.youtube.com/v/q_2Vrljn3F0?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/q_2Vrljn3F0/hqdefault.jpg" width="480" height="360"/>
+   <media:description>In this live-stream excerpt, Adam Savage answers a question from Tested member Oz.DeLorean about the transcendent feeling of &quot;walking in the footsteps&quot; of previous prop builders. Adam shares his experience replicating Stanley Kubrick’s iconic director’s chair, uncovering the hidden witness marks left behind by the original makers, and what it feels like to connect with makers across decades. Plus, in response to another question from Tested member gmphil, Adam shares a quick and accessible tip for weathering painted black props.
+
+Join this channel to support Tested and get access to perks, like asking Adam a question:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Discord: https://www.discord.gg/tested
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+Chapters:
+0:00 – Connecting with Past Prop Makers
+1:01 – Replicating Kubrick’s Chair
+3:47 – Original Witness Marks
+4:39 – The Maker's &quot;Séance&quot; 
+6:16 – Weathering a Black Painted Blaster
+7:31 – Edge Weathering Techniques for Plastic Props
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!</media:description>
+   <media:community>
+    <media:starRating count="2124" average="5.00" min="1" max="5"/>
+    <media:statistics views="161585"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:8RwRwyxMmQY</id>
+  <yt:videoId>8RwRwyxMmQY</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Movie Quotes That Reshaped Adam Savage's Worldview</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=8RwRwyxMmQY"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-10T14:00:00+00:00</published>
+  <updated>2026-10-14T03:54:45+00:00</updated>
+  <media:group>
+   <media:title>Movie Quotes That Reshaped Adam Savage's Worldview</media:title>
+   <media:content url="https://www.youtube.com/v/8RwRwyxMmQY?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/8RwRwyxMmQY/hqdefault.jpg" width="480" height="360"/>
+   <media:description>What are some film quotes that have stuck with Adam Savage from a moral/philosophical perspective, such as: &quot;Nothing is right or wrong; it's either the law or it's not the law&quot;? In this live stream excerpt Adam answers this question from Tested member Ziz62266, whom we thank for their support! What are some of your favorite philosophical movie lines, and what films are they from?
+
+Join this channel to support Tested and get access to perks, like asking Adam a question:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+00:00 - Philosophical Movie Quotes
+00:43 - Movie Quotes as Family Shorthand 
+02:11 - Citizen Kane
+03:12 - Raiders of the Lost Ark
+03:42 - Gladiator
+04:01 - The Talented Mr. Ripley &amp; Lord of the Rings
+05:00 - 30 Rock
+05:14 - Say Anything &amp; Almost Famous
+06:14 - Jerry Maguire
+07:14 - RoboCop &amp; Frank Miller's Elektra: Assassin
+08:08 - The Verdict &amp; The Spanish Prisoner
+08:54 - State and Main
+09:16 - Spartan
+11:37 - Heist
+13:17 - Why Great Dialogue Creates Worldviews
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!</media:description>
+   <media:community>
+    <media:starRating count="2291" average="5.00" min="1" max="5"/>
+    <media:statistics views="132557"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:VcaCwGFN-bU</id>
+  <yt:videoId>VcaCwGFN-bU</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Meet an Androgynous Space Docking Module</title>
+  <link rel="alternate" href="https://www.youtube.com/shorts/VcaCwGFN-bU"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-09T21:25:36+00:00</published>
+  <updated>2026-10-09T22:16:43+00:00</updated>
+  <media:group>
+   <media:title>Meet an Androgynous Space Docking Module</media:title>
+   <media:content url="https://www.youtube.com/v/VcaCwGFN-bU?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/VcaCwGFN-bU/hqdefault.jpg" width="480" height="360"/>
+   <media:description>At Smithsonian's @airandspaceMuseum #Apollo curator Dr. Teasel Muir-Harmony shows #AdamSavage the APAS-75 (Androgynous Peripheral Assembly System) from the 1975 Apollo-Soyuz Test Project and explains why #androgynous is part of the docking module’s name. What do you think?</media:description>
+   <media:community>
+    <media:starRating count="41107" average="5.00" min="1" max="5"/>
+    <media:statistics views="1384798"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:wGxzcsSf7to</id>
+  <yt:videoId>wGxzcsSf7to</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>The Best Thing Adam Savage Found in Aircraft Salvage</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=wGxzcsSf7to"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-09T14:00:08+00:00</published>
+  <updated>2026-10-09T17:10:36+00:00</updated>
+  <media:group>
+   <media:title>The Best Thing Adam Savage Found in Aircraft Salvage</media:title>
+   <media:content url="https://www.youtube.com/v/wGxzcsSf7to?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/wGxzcsSf7to/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Adam is a collector of, among many things, chairs; no two in his workshop are alike and each has a unique story. So it's about time for Adam to give a tour of the aircraft seats he's acquired over the years, including two he picked up during the production of Mythbusters. Let's take a closer look at the pilot's chair and ejection seat!
+
+Shot by Adam Savage and edited by Norman Chan
+Music by Jinglepunks
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Discord: https://www.discord.gg/tested
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!
+
+#adamsavage #aviation</media:description>
+   <media:community>
+    <media:starRating count="3141" average="5.00" min="1" max="5"/>
+    <media:statistics views="221304"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:xd8Fqs-j0gw</id>
+  <yt:videoId>xd8Fqs-j0gw</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Uncovering the Secrets of a Rare WWI Fabric Biplane</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=xd8Fqs-j0gw"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-08T14:00:08+00:00</published>
+  <updated>2026-10-12T03:37:40+00:00</updated>
+  <media:group>
+   <media:title>Uncovering the Secrets of a Rare WWI Fabric Biplane</media:title>
+   <media:content url="https://www.youtube.com/v/xd8Fqs-j0gw?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/xd8Fqs-j0gw/hqdefault.jpg" width="480" height="360"/>
+   <media:description>It's been five years since Adam Savage first saw this Lincoln-Standard Tourabout (Modified Standard J-1) at @airandspace's Mary Baker Engen Restoration Hangar, and it's time to check in on the aircraft's progress courtesy of museum specialists Jay Flanagan and Heather Moosher! From uncovering improvised barnstormer repairs (like fruit-crate wood hidden inside the wings) and matching period-accurate lumber to the art of envelope-sewing, rib stitching, and applying butyrate dope to cotton fabric, see how the Smithsonian team honors early aviation craftspeople while preserving this iconic biplane for future generations.
+
+An Expert Craftsman Rebuilds a Vintage Airplane: https://airandspace.si.edu/collection-objects/lincoln-standard-tourabout-modified-standard-j-1/nasm_A19640620000
+Lincoln-Standard Tourabout: https://airandspace.si.edu/collection-objects/lincoln-standard-tourabout-modified-standard-j-1/nasm_A19640620000
+Adam Savage Examines the Lincoln-Standard J-1 (2022): https://youtu.be/93D-JZ_QtUI
+National Air and Space Museum: https://airandspace.si.edu/
+Visit the National Air and Space Museum's Udvar Hazy Center: https://www.si.edu/museums/air-and-space-museum-udvar-hazy-center
+Visit the National Air and Space Museum's downtown museum: https://airandspace.si.edu/
+Smithsonian Institution: https://www.si.edu/
+Adam Savage Visits National Air and Space Museum's Restoration Hangar: https://youtu.be/WFSnf0MSAFc
+More videos from Smithsonian's Air and Space Museum: https://www.youtube.com/watch?v=5c0BsBCx4Sw&amp;list=PLJtitKU0CAeiJ7tjkIqcrRPfIYZHPW643
+
+Learn more about the Smithsonian National Air and Space Museum: https://airandspace.si.edu/
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+Chapters:
+00:00 - Lincoln Standard Restoration
+00:38 - History of the J-1 Trainer
+02:13 - Scale Reference Model
+03:40 - Uncovering Improvised Repairss
+06:48 - Selecting the Right Woods
+09:30 - Structural Wing Repairs
+12:22 - 40-Pound Wing Panel
+15:15 - Rigging, Tension, &amp; Biplane Assembly
+16:32 - Vintage Cockpit Details
+20:14 - Aircraft Grade-A Cotton
+21:16 - Sewing Wing Envelopes
+22:43 - Applying Nitrate Cellulose
+26:30 - Rib Stitching &amp; Seine Knots
+29:21 - Plunging the Fabric
+31:07 - Communing with the Past
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!</media:description>
+   <media:community>
+    <media:starRating count="3147" average="5.00" min="1" max="5"/>
+    <media:statistics views="223425"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:FEDaFVvygbw</id>
+  <yt:videoId>FEDaFVvygbw</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Adam Savage Upgrades His Workshop Lathe!</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=FEDaFVvygbw"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-07T14:00:10+00:00</published>
+  <updated>2026-10-12T03:37:52+00:00</updated>
+  <media:group>
+   <media:title>Adam Savage Upgrades His Workshop Lathe!</media:title>
+   <media:content url="https://www.youtube.com/v/FEDaFVvygbw?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/FEDaFVvygbw/hqdefault.jpg" width="480" height="360"/>
+   <media:description>What does it take to move in a big machining tool into Adam's workshop? After cutting his teeth with the Shenwai lathe he's had in his shop for over a decade, Adam brings in a new precision lathe to level up his skills. This beautiful Monarch lathe finds its new home next to Adam's pantograph mill, and Adam starts disassembling its parts to clean and personalize. 
+
+Clickspring's video about the world's first precision lathe: https://www.youtube.com/watch?v=4pK3O43Jddg
+
+Shot by Adam Savage and edited by Norman Chan
+Music by Jinglepunks
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Discord: https://www.discord.gg/tested
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+00:00 - Shinwei Chieftain
+01:19 - Monarch 10EE
+02:18 - Toolroom Lathes
+04:34 - 30 Years of Lathe Experience
+05:36 - Quality Tools &amp; Anvils
+06:48 - Prepping Cave Floor
+10:35 - Clearing Space
+12:19 - Precision Rigging
+13:48 - Unloading Tooling
+16:33 - First Impressions
+18:10 - Shop Reorganization
+20:42 - Organizing Tooling Drawers
+23:47 - Teardown 
+25:03 - Adjusting the Gib 
+27:50 - Reassembly &amp; Way Oil
+29:00 - Why Kids Should Take Things Apart
+31:17 - Thrust Bearing
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!
+
+#adamsavage  #workshop #machining</media:description>
+   <media:community>
+    <media:starRating count="6524" average="5.00" min="1" max="5"/>
+    <media:statistics views="428765"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:V5FfRfIm_4Q</id>
+  <yt:videoId>V5FfRfIm_4Q</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Adam Savage Meets The Smile Machine</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=V5FfRfIm_4Q"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-06T14:00:10+00:00</published>
+  <updated>2026-10-10T06:56:57+00:00</updated>
+  <media:group>
+   <media:title>Adam Savage Meets The Smile Machine</media:title>
+   <media:content url="https://www.youtube.com/v/V5FfRfIm_4Q?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/V5FfRfIm_4Q/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Adam unboxes The Smile Machine, an experimental cargo scooter with embedded solar panels for charging anywhere with visibility to the sun. After a few rides around the city, Adam reports on how it handles and the kind of attention it garnered. Here's why a last-mile electrical vehicle like this makes sense to Adam, and why it's important for a product like this to exist. 
+
+Lightfoot Smile Machine: https://www.lightfoot.solar/
+Disclosure: This product was loaned to us for purposes of review and is not sponsored. 
+
+Shot by Adam Savage and edited by Norman Chan
+Music by Jinglepunks
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+00:00 - The Smile Machine
+00:55 - Unboxing
+02:20 - Mobility Mission
+04:00 - Specs, Battery, &amp; Solar Charging
+05:30 - Lightfoot Cargo Scooter
+06:25 - Cargo Storage
+07:48 - First Impressions
+08:40 - Controls
+10:30 - Design 
+12:00 - Test Ride
+13:26 - Traffic Impressions
+15:10 - Everyday Usability
+16:15 - Security, Locking, &amp; Practicality
+17:07 - Solar Efficiency
+18:55 - Final Thoughts
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!
+
+#adamsavage #scooter #electricvehicle</media:description>
+   <media:community>
+    <media:starRating count="9083" average="5.00" min="1" max="5"/>
+    <media:statistics views="538792"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:130c5_6tecs</id>
+  <yt:videoId>130c5_6tecs</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Why It's Harder to Build a Mini Suit of Armor</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=130c5_6tecs"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-05T14:00:25+00:00</published>
+  <updated>2026-10-09T09:30:01+00:00</updated>
+  <media:group>
+   <media:title>Why It's Harder to Build a Mini Suit of Armor</media:title>
+   <media:content url="https://www.youtube.com/v/130c5_6tecs?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/130c5_6tecs/hqdefault.jpg" width="480" height="360"/>
+   <media:description>At Tony Swatton's workshop, Adam can't help but be drawn to this miniature suit of armor! Tony explains the origins of this piece, what it took to make it, and why it's actually harder to make a child's armor than a full-sized suit. 
+
+Find Tony Swatton's builds at https://thetonyswatton.com/ and subscribe to his new channel at https://www.youtube.com/@TheTonySwatton 
+
+Shot by Joey Fameli and edited by Norman Chan
+Music by Jinglepunks
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+
+Join this channel to support Tested and get access to perks:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Discord: https://www.discord.gg/tested
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+00:00 - Sword and Stone
+01:30 - Child-Sized Armor
+02:06 - 96-Hour Armor Build
+03:17 - Scale Challenges
+04:12 - Gauntlet Details
+05:15 - Helmets and Difficult Curves
+06:40 - 16th-Century Style 
+07:27 - Early Armor Stories
+08:21 - Fitting &amp; Safety for Kids
+09:17 - Metal Punches and Hole Patterns
+10:10 - John Cleese 
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!
+
+#adamsavage #tonyswatton #armor</media:description>
+   <media:community>
+    <media:starRating count="1537" average="5.00" min="1" max="5"/>
+    <media:statistics views="98503"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:PGYcEISGWJA</id>
+  <yt:videoId>PGYcEISGWJA</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Adam Savage’s Exhausting MythBusters Spinoff Experience</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=PGYcEISGWJA"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-04T14:00:33+00:00</published>
+  <updated>2026-10-09T09:31:10+00:00</updated>
+  <media:group>
+   <media:title>Adam Savage’s Exhausting MythBusters Spinoff Experience</media:title>
+   <media:content url="https://www.youtube.com/v/PGYcEISGWJA?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/PGYcEISGWJA/hqdefault.jpg" width="480" height="360"/>
+   <media:description>What's the best way to transition from working alone to working with others? Why did Unchained Reaction only get six episodes on Discovery Channel? In this live stream Adam Savage answers these questions from @claytations and @DFriendly, whom we thank for their support!
+
+Adam Savage Incognito as No-Face at New York Comic Con! https://youtu.be/GvXHvH4LVU8
+Adam Savage Visits the Puppet Props Workshop of Silo! https://youtu.be/Y9MBRQaeWsg
+Adam Savage's One Day Builds: No-Face Animatronic Mouth! https://youtu.be/PGYcEISGWJA
+Watch Unchained Reaction: https://play.discoveryplus.com/show/780427f8-7f07-499a-a35d-bf1eb70996fd
+Join this channel to support Tested and get access to perks, like asking Adam a question:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+Instagram: https://www.instagram.com/testedcom/
+Facebook: http://www.facebook.com/testedcom
+TikTok: https://www.tiktok.com/@testedcom
+Discord: https://www.discord.gg/tested
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+00:00 - Delegating
+00:23 - Perfectionism
+01:04 - Bruce Springsteen
+02:37 - Best Results
+04:39 - Art vs. Client Builds
+05:23 - Unchained Reaction
+07:13 - An Exhausting Schedule
+08:22 - Celebrity Work Ethic
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!</media:description>
+   <media:community>
+    <media:starRating count="2543" average="5.00" min="1" max="5"/>
+    <media:statistics views="177481"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:kewL6XmW4wo</id>
+  <yt:videoId>kewL6XmW4wo</yt:videoId>
+  <yt:channelId>UCiDJtJKMICpb9B1qf7qjEOA</yt:channelId>
+  <title>Adam Savage's Worst Workshop Injury</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=kewL6XmW4wo"/>
+  <author>
+   <name>Adam Savage’s Tested</name>
+   <uri>https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA</uri>
+  </author>
+  <published>2026-10-03T14:00:25+00:00</published>
+  <updated>2026-10-07T07:50:24+00:00</updated>
+  <media:group>
+   <media:title>Adam Savage's Worst Workshop Injury</media:title>
+   <media:content url="https://www.youtube.com/v/kewL6XmW4wo?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/kewL6XmW4wo/hqdefault.jpg" width="480" height="360"/>
+   <media:description>&quot;How do you mentally recover from injury in a workshop? I chopped part of my thumb off with my table saw on Sunday and now I can barely even think about using the saw to finish the project.&quot; So asked Tested member skipperstu9375; here's Adam' Savage's answer! What are YOUR workshop injury stories?
+
+Adam Savage Explains His Scary Hand Injury! https://youtu.be/eaGnyaR2B7s
+Adam Savage Sets Up His Shop's Second Lathe! https://youtu.be/Jd1aVr-0u9w
+Join this channel to support Tested and get access to perks, like asking a question, like asking Adam a question:
+https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA/join
+
+Subscribe for more videos (and click the bell for notifications):  http://www.youtube.com/subscription_center?add_user=testedcom
+Tested and Adam Savage Ts, stickers, (de) merit badges and more: https://tested-store.com
+Savage Merchandising: https://adamsavage.com/
+About Tested: https://www.tested.com/about
+Meet Adam in Person: https://www.tested.com/events
+TikTok: https://www.tiktok.com/@testedcom
+Instagram: https://www.instagram.com/testedcom/
+Twitter: http://www.twitter.com/testedcom
+Facebook: http://www.facebook.com/testedcom
+Amazon Storefront: http://www.amazon.com/shop/adamsavagestested
+Audio Described and Accessible Videos: https://www.youtube.com/playlist?list=PLJtitKU0CAeiQLgj4PZ9onSW6YXIz5ADR
+
+Intro bumper by Abe Dieckman
+
+Thanks for watching!</media:description>
+   <media:community>
+    <media:starRating count="2656" average="5.00" min="1" max="5"/>
+    <media:statistics views="169941"/>
+   </media:community>
+  </media:group>
+ </entry>
+</feed>

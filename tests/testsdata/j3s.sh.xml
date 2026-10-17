@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>j3s.sh</title>
+  <link rel="self" href="https://j3s.sh/feed.atom" />
+  <link href="https://j3s.sh/" />
+  <updated>2026-01-31T00:00:00.000Z</updated>
+  <author>
+    <name>Jes Olson</name>
+  </author>
+  <id>https://j3s.sh/</id>
+
+  <entry>
+    <title>tree-style invite systems reduce AI slop</title>
+    <link href="https://abyss.fish/tree-style_invite_systems_reduce_AI_slop"/>
+    <id>https://abyss.fish/tree-style_invite_systems_reduce_AI_slop</id>
+    <updated>2026-03-14T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>all eyes on minneapolis</title>
+    <link href="https://j3s.sh/thought/all-eyes-on-minneapolis.html"/>
+    <id>https://j3s.sh/thought/all-eyes-on-minneapolis.html</id>
+    <updated>2026-01-31T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>it took a big cup</title>
+    <link href="https://j3s.sh/thought/it-took-a-big-cup.html"/>
+    <id>https://j3s.sh/thought/it-took-a-big-cup.html</id>
+    <updated>2025-06-04T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>blogs rot. wikis wait.</title>
+    <link href="https://j3s.sh/thought/blogs-rot-wikis-wait.html"/>
+    <id>https://j3s.sh/thought/blogs-rot-wikis-wait.html</id>
+    <updated>2025-01-01T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>trainwreck design</title>
+    <link href="https://j3s.sh/thought/trainwreck-design.html"/>
+    <id>https://j3s.sh/thought/trainwreck-design.html</id>
+    <updated>2024-08-14T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>Stop Using Fandom</title>
+    <link href="https://j3s.sh/thought/stop-using-fandom.html"/>
+    <id>https://j3s.sh/thought/stop-using-fandom.html</id>
+    <updated>2024-06-16T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>my deployment platform is a shell script</title>
+    <link href="https://j3s.sh/thought/my-deployment-platform-is-a-shell-script.html"/>
+    <id>https://j3s.sh/thought/my-deployment-platform-is-a-shell-script.html</id>
+    <updated>2024-04-09T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>recover lost text by coredumping firefox</title>
+    <link href="https://j3s.sh/thought/recover-lost-text-by-coredumping-firefox.html"/>
+    <id>https://j3s.sh/thought/recover-lost-text-by-coredumping-firefox.html</id>
+    <updated>2023-10-20T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>shell tip: print json with printf</title>
+    <link href="https://j3s.sh/thought/shell-tip-print-json-with-printf.html"/>
+    <id>https://j3s.sh/thought/shell-tip-print-json-with-printf.html</id>
+    <updated>2023-10-06T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>a new rss feed reader</title>
+    <link href="https://j3s.sh/thought/a-new-rss-feed-reader.html"/>
+    <id>https://j3s.sh/thought/a-new-rss-feed-reader.html</id>
+    <updated>2023-03-20T00:00:00.000Z</updated>
+  </entry>
+
+  <entry>
+    <title>write posix shell</title>
+    <link href="https://j3s.sh/thought/write-posix-shell.html"/>
+    <id>https://j3s.sh/thought/write-posix-shell.html</id>
+    <updated>2023-03-10T00:00:00.000Z</updated>
+  </entry>
+
+</feed>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-sT7ENM14MCrzMlBYweIScny09C5ZA7FJb6vKxpqldq8gmMToPEjx-8pfZ7PuR_9JZSSt_U6gCnBuvHG41vWoxIWYyr74cC_SHSaoSNrjJZYnp4CXJ5Zfe7E7GR0dbUkgy3HUvzThTlDmFwz1395-Ppd7Nyd9gJGeVbF8JSanH8DujBbVVQsGCoEE0YxpKeJ4FyFhY5VtDEqepmrCPlilFP6aPCUQcun8W5y6n_tivYiKvXNsEy7GiIkHXuhBA2T2bbLC-SBaVdiE97mBh8PYsK6RI1a6ZPMbsAyccR34eZMB7gVMGp5WR85CNrsCrDwOQSAxGfi9jobtHRbzyJhdyg==' ;
+		script-src 'nonce-sT7ENM14MCrzMlBYweIScny09C5ZA7FJb6vKxpqldq8gmMToPEjx-8pfZ7PuR_9JZSSt_U6gCnBuvHG41vWoxIWYyr74cC_SHSaoSNrjJZYnp4CXJ5Zfe7E7GR0dbUkgy3HUvzThTlDmFwz1395-Ppd7Nyd9gJGeVbF8JSanH8DujBbVVQsGCoEE0YxpKeJ4FyFhY5VtDEqepmrCPlilFP6aPCUQcun8W5y6n_tivYiKvXNsEy7GiIkHXuhBA2T2bbLC-SBaVdiE97mBh8PYsK6RI1a6ZPMbsAyccR34eZMB7gVMGp5WR85CNrsCrDwOQSAxGfi9jobtHRbzyJhdyg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="sT7ENM14MCrzMlBYweIScny09C5ZA7FJb6vKxpqldq8gmMToPEjx-8pfZ7PuR_9JZSSt_U6gCnBuvHG41vWoxIWYyr74cC_SHSaoSNrjJZYnp4CXJ5Zfe7E7GR0dbUkgy3HUvzThTlDmFwz1395-Ppd7Nyd9gJGeVbF8JSanH8DujBbVVQsGCoEE0YxpKeJ4FyFhY5VtDEqepmrCPlilFP6aPCUQcun8W5y6n_tivYiKvXNsEy7GiIkHXuhBA2T2bbLC-SBaVdiE97mBh8PYsK6RI1a6ZPMbsAyccR34eZMB7gVMGp5WR85CNrsCrDwOQSAxGfi9jobtHRbzyJhdyg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;YJVYX8tllj4 target="_blank">
+					<h2>How to blur images at 20,000 FPS (or 50 microseconds)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;mGuYUEuVDYc target="_blank">
+					<h2>Understanding TETRIS As a Game Developer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-12">2026-07-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;x-DIGi8Sc9E target="_blank">
+					<h2>&#34;Indie&#34; game doesn&#39;t mean anything at all!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-30">2026-01-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;JstW96GM1TQ target="_blank">
+					<h2>Everything I Made And Played in 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-24">2025-12-24</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;ERiXDhLHxmo target="_blank">
+					<h2>&#34;Generative AI&#34; is not what you think it is</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-30">2025-11-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;au9pce-xg5s target="_blank">
+					<h2>Reverse Engineering The Graphics Of Silksong</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-30">2025-10-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;I1JBiZrZ_XM target="_blank">
+					<h2>Making A Game Where You Create Life</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-31">2025-08-31</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;5LNzH495CQI target="_blank">
+					<h2>The Terribly Tragic, Totally Avoidable, Absolute Collapse Of The Gaming Industry</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-29">2025-07-29</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;J1OdPrO7GD0 target="_blank">
+					<h2>Sculpting Terrain With Math</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-30">2025-06-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;y84bG19sg6U target="_blank">
+					<h2>Reverse Engineering The PS1 Aesthetic</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-27">2025-04-27</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;DxUY42r_6Cg target="_blank">
+					<h2>What is Perlin Noise?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-30">2025-03-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;5y1Oin7CcI4 target="_blank">
+					<h2>How Game Engines Make Shaders Easy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-26">2025-02-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;ccgl0vh8es8 target="_blank">
+					<h2>Why I&#39;m Moving To Godot In 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-30">2024-12-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;_4DtmRcTbhk target="_blank">
+					<h2>The Problem With Procedural Generation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-30">2024-11-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/McbCLuWpGWk target="_blank">
+					<h2>Procedurally Generated Fractals 2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-30">2024-11-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ" target="_blank">Acerola</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="sT7ENM14MCrzMlBYweIScny09C5ZA7FJb6vKxpqldq8gmMToPEjx-8pfZ7PuR_9JZSSt_U6gCnBuvHG41vWoxIWYyr74cC_SHSaoSNrjJZYnp4CXJ5Zfe7E7GR0dbUkgy3HUvzThTlDmFwz1395-Ppd7Nyd9gJGeVbF8JSanH8DujBbVVQsGCoEE0YxpKeJ4FyFhY5VtDEqepmrCPlilFP6aPCUQcun8W5y6n_tivYiKvXNsEy7GiIkHXuhBA2T2bbLC-SBaVdiE97mBh8PYsK6RI1a6ZPMbsAyccR34eZMB7gVMGp5WR85CNrsCrDwOQSAxGfi9jobtHRbzyJhdyg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

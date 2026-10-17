@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+ <link rel="self" href="http://www.youtube.com/feeds/videos.xml?channel_id=UCQG40havu4kNpB4pxUDQhYQ"/>
+ <id>yt:channel:QG40havu4kNpB4pxUDQhYQ</id>
+ <yt:channelId>QG40havu4kNpB4pxUDQhYQ</yt:channelId>
+ <title>Acerola</title>
+ <link rel="alternate" href="https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ"/>
+ <author>
+  <name>Acerola</name>
+  <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+ </author>
+ <published>2016-02-26T23:15:21+00:00</published>
+ <entry>
+  <id>yt:video:YJVYX8tllj4</id>
+  <yt:videoId>YJVYX8tllj4</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>How to blur images at 20,000 FPS (or 50 microseconds)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=YJVYX8tllj4"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2026-09-24T19:30:44+00:00</published>
+  <updated>2026-09-30T03:58:24+00:00</updated>
+  <media:group>
+   <media:title>How to blur images at 20,000 FPS (or 50 microseconds)</media:title>
+   <media:content url="https://www.youtube.com/v/YJVYX8tllj4?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/YJVYX8tllj4/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Blurring an image is a great place to start with learning shaders, but not for the reasons you'd expect! 
+
+CHECK THIS OUT: https://www.dithering.rocks/paper 
+
+Topics covered in this video: Box blur, race conditions, gaussian blur, separable convolutions, gpu texture sampling, kawase blur, upsample blur, dual kawase blur, judging blur quality 
+
+Support me on Patreon! 
+https://www.patreon.com/acerola_t 
+
+Socials: 
+BlueSky: https://bsky.app/profile/acerola.gg 
+Twitter: https://twitter.com/Acerola_t 
+Twitch: https://www.twitch.tv/acerola 
+Discord: https://discord.gg/FxGQvbfm6Y 
+Code: https://github.com/GarrettGunnell/AcerolaFX-Godot/tree/main/Effects/Blur 
+
+Music: 
+Afternoon Break - Persona 3 OST 
+Boy In The Windmill - Higurashi OST 
+Junes Theme - Persona 4 OST 
+Shipmeister's Shanty - Kingdom Hearts II OST 
+Digital Root - 999 OST 
+Null Moon - Silent Hill 2 OST 
+Underground Club - VA11-HALL-A OST 
+Tough Decision - Zero Time Dilemma OST 
+Midori Eyes - Paradise Killer OST 
+During The Test - Persona 3 OST 
+Theme Of Deduction (Beyond The Logic) - The Great Ace Attorney OST 
+Overture To Pursuit - The Great Ace Attorney OST 
+Persuasion -4th- - The Hundred Line OST 
+Like A Dream Come True - Persona 4 OST 
+Story - Tetris Magical Challenge OST 
+Placidity - Virtue's Last Reward OST 
+Talk!Talk! - The Hundred Line OST 
+Cross Examination (Moderato) - The Great Ace Attorney OST 
+Straying Suspense - The Great Ace Attorney OST 
+Cross Examination (Allegro) - The Great Ace Attorney OST 
+Closing Argument - The Great Ace Attorney OST 
+Yin-Yang - Paranormasight OST 
+Mocking Bop - Paranormasight OST 
+Crime Busting With A Smile! - Paranormasight OST 
+Recollection - 999 OST 
+Won The Case - The Great Ace Attorney OST 
+Hundred Days (ver. 100) - The Hundred Line OST 
+Lake - Pokemon Diamond OST 
+Prof. Omochao - Sonic Adventure 2 OST 
+True - Silent Hill 2 OST 
+Ode To Heroes - Metaphor ReFantazio OST 
+
+Thanks for watching! 
+No Generative AI or LLMs were used in the making of this video.
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola  #gamedev #godot #shaders</media:description>
+   <media:community>
+    <media:starRating count="12461" average="5.00" min="1" max="5"/>
+    <media:statistics views="491452"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:mGuYUEuVDYc</id>
+  <yt:videoId>mGuYUEuVDYc</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>Understanding TETRIS As a Game Developer</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=mGuYUEuVDYc"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2026-07-12T00:35:39+00:00</published>
+  <updated>2026-10-13T01:42:19+00:00</updated>
+  <media:group>
+   <media:title>Understanding TETRIS As a Game Developer</media:title>
+   <media:content url="https://www.youtube.com/v/mGuYUEuVDYc?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/mGuYUEuVDYc/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Tetris is most likely the best selling game of all time, which is all anyone ever talks about, so today we'll be talking about the actual game itself. How did Tetris evolve from its first inception to its latest release? When did mechanics we all associate with the game actually come into existence? Why is Tetris even good in the first place? I'm not sure! So I spent the past 7 months figuring it out. Please enjoy!
+
+Be sure to check out General Translation for all your general translation needs! - https://dithering.rocks/GT 
+
+Make your own Tetris tier list - https://tiermaker.com/create/official-tetris-games-19482603
+
+Topics covered: the complete history of TETRIS games, every TETRIS game mechanic explained (mostly), how the graphics of TETRIS games work, rotation systems, rng systems, movement systems, and of course why TETRIS is actually a good game and how each variation of each system can radically change the experience 
+
+No AI was used in the making of this video.
+
+Support me on Patreon! 
+https://www.patreon.com/acerola_t 
+
+Socials: 
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t 
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+
+Sources:
+https://canonfire.net/post/767223541074722816/tetris-forever-is-marketing-disguised-as-a
+https://www.tetrisconcept.net/threads/june-6-1984.2411/
+https://nationalcioreview.com/articles-insights/tech-time-travel/tech-time-travel-tetris-is-released-to-the-world/
+https://simon.lc/tetris-timeline
+https://tetris.wiki/List_of_official_Tetris_games
+https://tetris.wiki/Tetris_Guideline
+https://web.archive.org/web/20241121203747/https://www.nintendolife.com/reviews/switch-eshop/tetris-forever
+
+Chapters:
+0:00 Intro
+3:12 Morphogenetic Dissonance
+7:11 The First Tetris
+29:28 Arcade Rivals
+50:54 The Nintendo Dark Age
+1:11:03 End Of Exclusivity
+1:49:45 A New Tetris
+2:11:58 The Second First Tetris
+2:34:42 The Complete History
+3:02:49 Morphogenetic Resonance
+3:08:43 Why Is Tetris Good?
+3:35:44 Conclusion
+  
+Thanks for watching! 
+
+This video is dedicated to my friend, Alotryx. 
+
+#acerola #gamedev #godot</media:description>
+   <media:community>
+    <media:starRating count="6054" average="5.00" min="1" max="5"/>
+    <media:statistics views="127163"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:x-DIGi8Sc9E</id>
+  <yt:videoId>x-DIGi8Sc9E</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>&quot;Indie&quot; game doesn't mean anything at all!</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=x-DIGi8Sc9E"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2026-01-30T20:04:54+00:00</published>
+  <updated>2026-10-09T00:51:40+00:00</updated>
+  <media:group>
+   <media:title>&quot;Indie&quot; game doesn't mean anything at all!</media:title>
+   <media:content url="https://www.youtube.com/v/x-DIGi8Sc9E?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/x-DIGi8Sc9E/hqdefault.jpg" width="480" height="360"/>
+   <media:description>To learn for free on Brilliant for a full 30 days, go to http://brilliant.org/Acerola Brilliant’s also given 20% off an annual Premium subscription, which gives you unlimited daily access to everything on Brilliant! 
+
+The Game Awards 2025 sparked yet another round of indie discourse with Expedition 33's historical sweep causing many to ask what does it actually mean for a game to be &quot;indie&quot;?
+
+No AI was used in the making of this video.
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+
+Music:
+Afternoon Break - Persona 3
+Hundred Days - The Hundred Line
+Junes - Persona 4
+This Mysterious Feeling - Persona 3
+Those Who Dwell In The Shadows - Va11Halla
+Airport - Peak
+The Gaze - Look Outside
+The Sluice - Darkest Dungeon 2
+Words - The Hundred Line
+Just Like This - Persona 3
+Alleycat - Persona 5
+In A Moment's Time - Skullgirls
+Midori Eyes - Paradise Killer
+Talk!Talk! - The Hundred Line
+Mr. Whiskey - Dispatch
+Logic And Trick - The Great Ace Attorney
+Boy in the Windmill - Higurashi
+During The Test - Persona 3
+Every Day Is Night - Va11Halla
+Ode To Heroes - Metaphor ReFantazio
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev #expedition33</media:description>
+   <media:community>
+    <media:starRating count="8726" average="5.00" min="1" max="5"/>
+    <media:statistics views="101729"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:JstW96GM1TQ</id>
+  <yt:videoId>JstW96GM1TQ</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>Everything I Made And Played in 2025</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=JstW96GM1TQ"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2025-12-24T18:00:58+00:00</published>
+  <updated>2026-10-03T14:18:08+00:00</updated>
+  <media:group>
+   <media:title>Everything I Made And Played in 2025</media:title>
+   <media:content url="https://www.youtube.com/v/JstW96GM1TQ?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/JstW96GM1TQ/hqdefault.jpg" width="480" height="360"/>
+   <media:description>To learn for free on Brilliant, go to https://www.brilliant.org/acerola and get 20% off an annual Premium subscription for unlimited daily access to everything! 
+
+2025 really sucked
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+
+Music:
+Afternoon Break - Persona 3
+Hundred Days - The Hundred Line
+Junes - Persona 4
+This Mysterious Feeling - Persona 3
+During The Test - Persona 3
+Midori Eyes - Paradise Killer
+GO!GO!STYLE! - Paradise Killer
+Sandgem Town - Pokemon Diamond
+Just Like This - Persona 3
+The Path Is Open - Persona 3
+Talk!Talk! - The Hundred Line OST
+Signs Of Love - Persona 4 OST
+Gold Saucer - Final Fantasy VII OST
+Grimm - Hollow Knight OST
+The Sluice - Darkest Dungeon 2 OST
+Radiant Cry Of Life - Monster Hunter Rise OST
+The Gaze - Look Outside OST
+Invasion (Ver. 100) - The Hundred Line OST
+Airport - Peak OST
+I'm Different - Portal 2 OST
+Graveyard D (Storm) - The King Is Watching OST
+Character Gacha - Uma Musume Pretty Derby OST
+Thanks - Higurashi Kai OST
+Phantom - Silksong OST
+Day - No, I'm Not a Human OST
+Every Home Has a Heart - Town To City OST
+Dizziness Drawn to a Faint Flame - Silent Hill f OST
+The Necropolis - Hades 2 OST
+Morning - Darkwood OST
+The Yeti Queen - Ball X Pit OST
+Mr. Whiskey - Andrew Arcadi (Dispatch OST)
+Life Will Change - Persona 5 OST
+familiar - rj lake and peak divide
+Like A Dream Come True - Persona 4 OST
+Words - The Hundred Line OST
+Etude Op. 10, No. 3 (Tristesse) - Chopin (perf. Acerola)
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #godot #gamedev</media:description>
+   <media:community>
+    <media:starRating count="8371" average="5.00" min="1" max="5"/>
+    <media:statistics views="90304"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:ERiXDhLHxmo</id>
+  <yt:videoId>ERiXDhLHxmo</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>&quot;Generative AI&quot; is not what you think it is</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=ERiXDhLHxmo"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2025-11-30T14:14:17+00:00</published>
+  <updated>2026-10-01T19:45:25+00:00</updated>
+  <media:group>
+   <media:title>&quot;Generative AI&quot; is not what you think it is</media:title>
+   <media:content url="https://www.youtube.com/v/ERiXDhLHxmo?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/ERiXDhLHxmo/hqdefault.jpg" width="480" height="360"/>
+   <media:description>To learn for free on Brilliant, go to https://www.brilliant.org/acerola and get 20% off an annual Premium subscription for unlimited daily access to everything! 
+
+The generative ai situation is crazy, what does it really mean to be AI generated? Why are people so upset at Larian Studios and other game developers being open about ai usage?
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+
+Sources:
+Database of 16,000 Artists Used to Train Midjourney AI, Including 6-Year-Old Child, Garners Criticism - Karen K. Ho
+ChatGPT violated copyright law by ‘learning’ from song lyrics, German court rules - Deborah Cole, Philip Oltermann
+Caution: ChatGPT Doesn’t Know What You Are Asking and Doesn’t Know What It Is Saying - S Casey Laizure
+‘Impossible’ to create AI tools like ChatGPT without copyrighted material, OpenAI says - Dan Milmo
+Microsoft launches Copilot AI function in Excel, but warns not to use it in 'any task requiring accuracy or reproducibility' - Stevie Bonifield
+ChatGPT made me delusional - @EddyBurback 
+OpenAI faces 7 lawsuits claiming ChatGPT drove people to suicide, delusions - Barbara Ortutay
+Coke’s New AI-Generated Ad Required 100 Staff and 70,000 AI-Generated Clips, and It Still Looks Like Garbage - Frank Landymore
+The majority of traffic from Elon Musk's X may have been fake during the Super Bowl, report suggests - Matt Binder
+Study: AI &quot;inbreeding&quot; may cause model collapse for tools like ChatGPT, Microsoft Copilot - Jez Corden
+The Ecological Cost of AI Is Much Higher Than You Think - Alistair Alexander
+OpenAI’s colossal AI data center targets would consume as much electricity as entire nation of India — 250GW target would require 30 million GPUs annually to ensure continuous operation, emit twice as much carbon dioxide as ExxonMobil - Jowi Morales
+Data centers bring money to small towns. But do they also bring jobs? - Stephan Bisaha
+
+Music:
+Afternoon Break - Persona 3
+Hundred Days - The Hundred Line
+Junes - Persona 4
+Sandgem Town - Pokemon Diamond
+Goldfalls Casino - HuniePop
+This Mysterious Feeling - Persona 3
+In A Moment's Time - Skullgirls
+Midori Eyes - Paradise Killer
+GO!GO!STYLE! - Paradise Killer
+Crisis - Persona 3
+Just Like This - Persona 3
+Alleycat - Persona 5
+During The Test - Persona 3
+Boy In The Windmill - Higurashi
+Layer Cake - Persona 5
+Words - The Hundred Line
+Talk!Talk! - The Hundred Line
+Logic And Trick - The Great Ace Attorney
+Climax Reasoning - Danganronpa V3
+Pursuit - The Great Ace Attorney
+Ode To Heroes - Metaphor Refantazio
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #machinelearning #generativeai</media:description>
+   <media:community>
+    <media:starRating count="37369" average="5.00" min="1" max="5"/>
+    <media:statistics views="391253"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:au9pce-xg5s</id>
+  <yt:videoId>au9pce-xg5s</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>Reverse Engineering The Graphics Of Silksong</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=au9pce-xg5s"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2025-10-30T18:01:47+00:00</published>
+  <updated>2026-10-09T00:52:12+00:00</updated>
+  <media:group>
+   <media:title>Reverse Engineering The Graphics Of Silksong</media:title>
+   <media:content url="https://www.youtube.com/v/au9pce-xg5s?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/au9pce-xg5s/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Play War Thunder now with my links, and get a massive, free bonus pack including vehicles, boosters and more on PC and consoles! PC: https://playwt.link/acerola | Mobile: https://wtm.game/acerola 
+
+No spoilers!
+
+Silksong is finally here and with it numerous new areas to explore filled with beautiful hand painted art. How does a game like this actually work behind the scenes and how can we use shaders to fix some common problems plaguing them?
+
+Topics covered: Painter's algorithm, depth of field, parallax mapping, particles, bloom, color banding, bayer dithering and debanding, interleaved gradient noise
+
+No AI was used in the making of this video.
+
+Additional Resources:
+https://blog.demofox.org/2022/01/01/interleaved-gradient-noise-a-different-kind-of-low-discrepancy-sequence/
+https://blog.frost.kiwi/GLSL-noise-and-radial-gradient/
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+
+Music:
+Afternoon Break - Persona 3
+Hundred Days - The Hundred Line
+Junes - Persona 4
+Boy In The Windmill - Higurashi
+In A Moment's Time - Skullgirls
+This Mysterious Feeling - Persona 3
+During The Test - Persona 3
+Midori Eyes - Paradise Killer
+Sandgem Town - Pokemon Diamond
+Crisis - Persona 3
+Talk!Talk! - The Hundred Line
+Logic And Trick - Ace Attorney
+Layer Cake - Persona 5
+Words - The Hundred Line
+Unavoidable Battle - Persona 3
+Judgement - Sonny Boy
+A New Frontier - Va11Halla
+Master Of Shadow - Persona 3 
+Like A Dream Come True - Persona 4
+Every Day Is Night - Va11Halla
+Ode To Heroes - Metaphor Refantazio
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev #godot #graphics #silksong</media:description>
+   <media:community>
+    <media:starRating count="23290" average="5.00" min="1" max="5"/>
+    <media:statistics views="341369"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:I1JBiZrZ_XM</id>
+  <yt:videoId>I1JBiZrZ_XM</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>Making A Game Where You Create Life</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=I1JBiZrZ_XM"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2025-08-31T17:08:46+00:00</published>
+  <updated>2026-10-01T09:29:34+00:00</updated>
+  <media:group>
+   <media:title>Making A Game Where You Create Life</media:title>
+   <media:content url="https://www.youtube.com/v/I1JBiZrZ_XM?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/I1JBiZrZ_XM/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Thanks to GameMaker for sponsoring the video - Download GameMaker for free and start today: https://opr.as/GM-Acerola 
+
+Cellular automata is a popular topic for good reason, being able to produce wildly complex outputs from simple foundations. Is it the first step towards genuine artificial life? Or is it just an illusion?
+
+Topics covered: Cellular automata, the game of life, multi-neighborhood cellular automata
+
+No AI was used in the making of this video.
+
+References:
+https://slackermanz.com/understanding-multiple-neighborhood-cellular-automata/
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+Code: https://github.com/GarrettGunnell/God-Machine
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev #godot #graphics #shaders</media:description>
+   <media:community>
+    <media:starRating count="24825" average="5.00" min="1" max="5"/>
+    <media:statistics views="445478"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:5LNzH495CQI</id>
+  <yt:videoId>5LNzH495CQI</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>The Terribly Tragic, Totally Avoidable, Absolute Collapse Of The Gaming Industry</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=5LNzH495CQI"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2025-07-29T12:45:08+00:00</published>
+  <updated>2026-10-02T00:45:35+00:00</updated>
+  <media:group>
+   <media:title>The Terribly Tragic, Totally Avoidable, Absolute Collapse Of The Gaming Industry</media:title>
+   <media:content url="https://www.youtube.com/v/5LNzH495CQI?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/5LNzH495CQI/hqdefault.jpg" width="480" height="360"/>
+   <media:description>The stop killing games situation is crazy -- sign the petition https://www.stopkillinggames.com/
+
+Bungie Voice Actor -- @mokadevs 
+
+No AI was used in the making of this video.
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+
+Music:
+Afternoon Break - Persona 3 OST
+Hundred Days - The Hundred Line OST
+In A Moment's Time - Skullgirls OST
+New Game - WORLD OF HORROR OST
+Midori Eyes - Paradise Killer OST
+GO!GO!STYLE - Paradise Killer OST
+Talk! Talk! - The Hundred Line OST
+Police Station - Persona OST
+During The Test - Persona 3 OST
+Those Who Dwell In Shadows - Va11Halla OST
+Just Like This - Persona 3 OST
+Words - The Hundred Line OST
+A New Frontier - Va11Halla OST
+This Mysterious Feeling - Persona 3 OST
+Like A Dream Come True - Persona 4 OST
+Every Day Is Night - Va11Halla OST
+Fearful Experience - Persona 3 OST
+Your Love Is A Drug - Va11Halla OST
+Shipmeisters' Shanty - Kingdom Hearts 2 OST
+Underground Club - Va11Halla OST
+Gold Saucer - Final Fantasy VII OST
+Sandgem Town (Day) - Pokemon Diamond OST
+Lake - Pokemon Diamond OST
+Neon District - Va11Halla OST
+Climactic Reasoning - Danganronpa 2 OST
+Gold Falls Casino - Huniepop OST
+Butterfly Kiss - Persona 5 OST
+Moonlit Melee - Skullgirls OST
+City Of Tears - Hollow Knight OST
+Layer Cake - Persona 5 OST
+Logic And Trick - The Great Ace Attorney OST
+With Renewed Hope, We Continue Forward - Va11Halla OST
+Tristesse - Chopin (From The Hundred Line OST)
+Ode To Heroes - Metaphor Refantazio OST
+
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev</media:description>
+   <media:community>
+    <media:starRating count="32351" average="5.00" min="1" max="5"/>
+    <media:statistics views="433024"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:J1OdPrO7GD0</id>
+  <yt:videoId>J1OdPrO7GD0</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>Sculpting Terrain With Math</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=J1OdPrO7GD0"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2025-06-30T13:50:37+00:00</published>
+  <updated>2026-10-03T14:40:41+00:00</updated>
+  <media:group>
+   <media:title>Sculpting Terrain With Math</media:title>
+   <media:content url="https://www.youtube.com/v/J1OdPrO7GD0?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/J1OdPrO7GD0/hqdefault.jpg" width="480" height="360"/>
+   <media:description>To try everything Brilliant has to offer for free for a full 30 days, visit https://brilliant.org/Acerola/ or scan the QR code onscreen—or you can click on the link in the description. You’ll also get 20% off an annual premium subscription. #ad
+
+Generating entire worlds sounds like so much fun, but where do you even start?
+
+Topics covered: Draw calls, triangle winding order, face culling, vertex shader displacement, fractional brownian motion
+
+No AI was used in the making of this video.
+
+Join the Dirt Jam!
+https://itch.io/jam/acerola-dirt-jam/
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+Code: https://github.com/GarrettGunnell/Godot-Terrain
+
+Music:
+Afternoon Break - Persona 3 OST
+Hundred Days - The Hundred Line OST
+Junes Theme - Persona 4 OST
+During The Test - Persona 3 OST
+Midori Eyes - Paradise Killer OST
+GO!GO!STYLE - Paradise Killer OST
+Persuasion - The Hundred Line OST
+Words - The Hundred Line OST
+Layer Cake - Persona 5 OST
+Talk!Talk! - The Hundred Line OST
+Ode To Heroes - Metaphor ReFantazio OST
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev #godot #graphics #shaders</media:description>
+   <media:community>
+    <media:starRating count="12851" average="5.00" min="1" max="5"/>
+    <media:statistics views="175624"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:y84bG19sg6U</id>
+  <yt:videoId>y84bG19sg6U</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>Reverse Engineering The PS1 Aesthetic</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=y84bG19sg6U"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2025-04-27T20:22:33+00:00</published>
+  <updated>2026-10-09T00:54:18+00:00</updated>
+  <media:group>
+   <media:title>Reverse Engineering The PS1 Aesthetic</media:title>
+   <media:content url="https://www.youtube.com/v/y84bG19sg6U?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/y84bG19sg6U/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Check out STREET UNI X! https://store.steampowered.com/app/2204900/STREET_UNI_X/?utm_source=YouTube&amp;utm_campaign=Acerola  
+
+The indie game space has seen a rapid rise in games emulating the style of the ps1 era. So, how did the ps1 work? Why did ps1 games look like that? How can we recreate these effects?
+
+Topics covered: Texturing, Model View Projection, Rasterization, Perspective Division, Affine Texture Mapping, Vertex Colors, Gouraud Shading (Vertex Lighting), Silent Hill Fog, Distance Fog, Quantization, Dithering
+
+No AI was used in the making of this video.
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+Code: https://github.com/GarrettGunnell/Godot-PSX
+
+Resources:
+https://www.copetti.org/writings/consoles/playstation/
+https://www.songho.ca/opengl/gl_projectionmatrix.html
+https://learnopengl.com/Getting-started/Coordinate-Systems
+https://danielilett.com/2021-11-06-tut5-21-ps1-affine-textures/
+https://pikuma.com/blog/how-to-make-ps1-graphics
+https://psx-spx.consoledev.net/graphicsprocessingunitgpu/
+https://en.wikipedia.org/wiki/PlayStation_technical_specification
+
+Music:
+Afternoon Break - Persona 3 OST
+In A Moment's Time - Skullgirls OST
+Midori Eyes - Paradise Killer OST
+During The Test - Persona 3 OST
+GO!GO!STYLE - Paradise Killer OST
+Sandgem Town (Day) - Pokemon Diamond OST
+Layer Cake - Persona 5 OST
+Poems In The Fog - OMORI OST
+The Fog - Persona 4 OST
+Every Day Is Night - VA-11 Hall-A OST
+Junes Theme - Persona 4 OST
+Ode To Heroes - Metaphor ReFantazio OST
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev #godot #graphics #shaders</media:description>
+   <media:community>
+    <media:starRating count="18789" average="5.00" min="1" max="5"/>
+    <media:statistics views="273397"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:DxUY42r_6Cg</id>
+  <yt:videoId>DxUY42r_6Cg</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>What is Perlin Noise?</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=DxUY42r_6Cg"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2025-03-30T16:25:20+00:00</published>
+  <updated>2026-10-01T09:23:58+00:00</updated>
+  <media:group>
+   <media:title>What is Perlin Noise?</media:title>
+   <media:content url="https://www.youtube.com/v/DxUY42r_6Cg?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/DxUY42r_6Cg/hqdefault.jpg" width="480" height="360"/>
+   <media:description>To try everything Brilliant has to offer for free for a full 30 days, visit https://brilliant.org/Acerola/ or scan the QR code onscreen—or you can click on the link in the description. You’ll also get 20% off an annual premium subscription. #ad
+
+Perlin noise is something many of you have heard of, but how does it actually work?
+
+Topics covered: how computers generate random numbers, pseudo random number generators, hash functions, linear interpolation, bilinear interpolation, easing functions, value noise, gradient noise, perlin noise
+
+No AI was used in the making of this video.
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+Code: Will be available in the future, for now please check out the provided resources
+
+Resources:
+https://www.reedbeta.com/blog/hash-functions-for-gpu-rendering/
+https://developer.nvidia.com/gpugems/gpugems/part-i-natural-effects/chapter-5-implementing-improved-perlin-noise
+https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/perlin-noise-part-2/perlin-noise.html
+https://mathworld.wolfram.com/SpherePointPicking.html
+
+Music:
+Afternoon Break - Persona 3 OST
+In A Moment's Time - Skullgirls OST
+Junes Theme - Persona 4 OST
+New Game - WORLD OF HORROR OST
+Midori Eyes - Paradise Killer OST
+GO!GO!STYLE - Paradise Killer OST
+Sandgem Town (Day) - Pokemon Diamond OST
+During The Test - Persona 3 OST
+Ode To Heroes - Metaphor ReFantazio OST
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev #godot #graphics #shaders</media:description>
+   <media:community>
+    <media:starRating count="12753" average="5.00" min="1" max="5"/>
+    <media:statistics views="176187"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:5y1Oin7CcI4</id>
+  <yt:videoId>5y1Oin7CcI4</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>How Game Engines Make Shaders Easy</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=5y1Oin7CcI4"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2025-02-26T12:40:38+00:00</published>
+  <updated>2026-10-10T02:24:26+00:00</updated>
+  <media:group>
+   <media:title>How Game Engines Make Shaders Easy</media:title>
+   <media:content url="https://www.youtube.com/v/5y1Oin7CcI4?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/5y1Oin7CcI4/hqdefault.jpg" width="480" height="360"/>
+   <media:description>To try everything Brilliant has to offer for free for a full 30 days, visit https://brilliant.org/Acerola/ you’ll also get 20% off an annual premium subscription! #ad
+
+Shaders are difficult to get a handle on but modern commercial engines have done as much as they can to make them as easy as possible! Today we learn how shaders work under the hood and how we can recreate Unity's shader APIs.
+
+Topics covered: what is a graphics engine, shader language wrapping, shader uniform caching, automated shader compilation
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+Code: https://github.com/GarrettGunnell/Acerola-Compute
+
+Music:
+Afternoon Break - Persona 3 OST
+In A Moment's Time - Skullgirls OST
+Junes Theme - Persona 4 OST
+New Game - WORLD OF HORROR OST
+Midori Eyes - Paradise Killer OST
+GO!GO!STYLE - Paradise Killer OST
+Sandgem Town (Day) - Pokemon Diamond OST
+During The Test - Persona 3 OST
+Everyday Is Night - VA-11 Hall-A OST
+Ode To Heroes - Metaphor ReFantazio OST
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev #godot #graphics #shaders</media:description>
+   <media:community>
+    <media:starRating count="11836" average="5.00" min="1" max="5"/>
+    <media:statistics views="160258"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:ccgl0vh8es8</id>
+  <yt:videoId>ccgl0vh8es8</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>Why I'm Moving To Godot In 2025</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=ccgl0vh8es8"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2024-12-30T13:34:45+00:00</published>
+  <updated>2026-10-05T14:45:54+00:00</updated>
+  <media:group>
+   <media:title>Why I'm Moving To Godot In 2025</media:title>
+   <media:content url="https://www.youtube.com/v/ccgl0vh8es8?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/ccgl0vh8es8/hqdefault.jpg" width="480" height="360"/>
+   <media:description>To try everything Brilliant has to offer for free for a full 30 days, visit https://brilliant.org/Acerola/ you’ll also get 20% off an annual premium subscription! #ad
+
+After years spent in Unity I have finally made the decision to move to Godot starting next year.
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+BlueSky: https://bsky.app/profile/acerola.gg
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+Github: https://github.com/GarrettGunnell
+
+Music:
+Afternoon Break - Persona 3 OST
+Signs Of Love - Persona 4 OST
+Junes Theme - Persona 4 OST
+In A Moment's Time - Skullgirls OST
+Midori Eyes - Paradise Killer OST
+During The Test - Persona 3 OST
+Ode To Heroes - Metaphor Refantazio OST
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev #unity3d #godot #shaders</media:description>
+   <media:community>
+    <media:starRating count="20542" average="5.00" min="1" max="5"/>
+    <media:statistics views="260576"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:_4DtmRcTbhk</id>
+  <yt:videoId>_4DtmRcTbhk</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>The Problem With Procedural Generation</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=_4DtmRcTbhk"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2024-11-30T15:12:27+00:00</published>
+  <updated>2026-10-01T09:05:13+00:00</updated>
+  <media:group>
+   <media:title>The Problem With Procedural Generation</media:title>
+   <media:content url="https://www.youtube.com/v/_4DtmRcTbhk?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/_4DtmRcTbhk/hqdefault.jpg" width="480" height="360"/>
+   <media:description>The first 500 people to use my link will get a 1 month free trial of Skillshare: https://skl.sh/acerola11241 ! #ad
+
+Procedural generation is the core concept driving all of the roguelikes you know and love as well as sandbox games such as Minecraft and No Man's Sky, but it comes at a cost! 
+
+Topics covered: procedural generation definition, axis aligned bounding boxes, parallel reduction
+
+References:
+https://www.lkouniv.ac.in/site/writereaddata/siteContent/202004291246170576rohit_parallel_reduction.pdf
+https://developer.download.nvidia.com/assets/cuda/files/reduction.pdf
+
+Support me on Patreon!
+https://www.patreon.com/acerola_t
+
+Socials:
+Twitter: https://twitter.com/Acerola_t
+Twitch: https://www.twitch.tv/acerola
+Discord: https://discord.gg/FxGQvbfm6Y
+Code: https://github.com/GarrettGunnell/Iterated-Function-Systems
+
+Music:
+Afternoon Break - Persona 3 OST
+In A Moment's Time - Skullgirls OST
+White Space - OMORI (Perf. Acerola)
+Junes Theme - Persona 4 OST
+Sandgem Town (Day) - Pokemon Diamond OST
+Midori Eyes - Paradise Killer OST
+Gold Saucer - Final Fantasy VII OST
+GO!GO!STYLE - Paradise Killer OST
+Shipmeister's Shanty - Kingdom Hearts 2 OST
+During The Test - Persona 3 OST
+Underground Club - VA-11 Hall-A OST
+Crisis - Persona 3 OST
+Lifebeat Of Lilim - VA-11 Hall-A OST
+Everyday Is Night - VA-11 Hall-A OST
+Ode To Heroes - Metaphor ReFantazio OST
+
+Thanks for watching!
+
+This video is dedicated to my friend, Alotryx.
+
+#acerola #gamedev #unity3d #graphics #shaders</media:description>
+   <media:community>
+    <media:starRating count="26172" average="5.00" min="1" max="5"/>
+    <media:statistics views="419643"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:McbCLuWpGWk</id>
+  <yt:videoId>McbCLuWpGWk</yt:videoId>
+  <yt:channelId>UCQG40havu4kNpB4pxUDQhYQ</yt:channelId>
+  <title>Procedurally Generated Fractals 2</title>
+  <link rel="alternate" href="https://www.youtube.com/shorts/McbCLuWpGWk"/>
+  <author>
+   <name>Acerola</name>
+   <uri>https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ</uri>
+  </author>
+  <published>2024-11-30T15:02:14+00:00</published>
+  <updated>2026-10-01T05:04:58+00:00</updated>
+  <media:group>
+   <media:title>Procedurally Generated Fractals 2</media:title>
+   <media:content url="https://www.youtube.com/v/McbCLuWpGWk?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/McbCLuWpGWk/hqdefault.jpg" width="480" height="360"/>
+   <media:description>60 seconds of epic procedurally generated fractal action
+
+Learn more in the video on the project: https://youtu.be/1L-x_DH3Uvg</media:description>
+   <media:community>
+    <media:starRating count="1240" average="5.00" min="1" max="5"/>
+    <media:statistics views="15174"/>
+   </media:community>
+  </media:group>
+ </entry>
+</feed>

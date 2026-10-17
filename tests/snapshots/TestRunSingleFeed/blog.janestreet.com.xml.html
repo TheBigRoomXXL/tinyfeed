@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-THCU8X-S6EZx4sKtZrPrxAkkke8AX6eEj1rkZhH5450f7f3agIbwB13GPLlEanBq0kxuQmJdcQnZYQ4WpnfmKafpmDcpl6SFtg58q9A-4bDqTw1OpT-GyvUhqIL9TgaaZg8ec2eCv7d7sqypE0jI-tY2RisyxaqCoqZ0j8gEiPg69wjl9w482yYDeXLL-EBM5EQx6rR1Pk3aBWNhYZwJazxb5FdvniRU3oPVjSlYAxiMtHRtFj7u5rQdFVtInZ5jkBFHLE5G1aQQp9i9ZGLW5BdcFRshnfgFZ55pMHPBdbNEtAy0sy_OqLP-TMfRiTEvaxmMujm_uEyMGrQKTGy1eQ==' ;
+		script-src 'nonce-THCU8X-S6EZx4sKtZrPrxAkkke8AX6eEj1rkZhH5450f7f3agIbwB13GPLlEanBq0kxuQmJdcQnZYQ4WpnfmKafpmDcpl6SFtg58q9A-4bDqTw1OpT-GyvUhqIL9TgaaZg8ec2eCv7d7sqypE0jI-tY2RisyxaqCoqZ0j8gEiPg69wjl9w482yYDeXLL-EBM5EQx6rR1Pk3aBWNhYZwJazxb5FdvniRU3oPVjSlYAxiMtHRtFj7u5rQdFVtInZ5jkBFHLE5G1aQQp9i9ZGLW5BdcFRshnfgFZ55pMHPBdbNEtAy0sy_OqLP-TMfRiTEvaxmMujm_uEyMGrQKTGy1eQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="THCU8X-S6EZx4sKtZrPrxAkkke8AX6eEj1rkZhH5450f7f3agIbwB13GPLlEanBq0kxuQmJdcQnZYQ4WpnfmKafpmDcpl6SFtg58q9A-4bDqTw1OpT-GyvUhqIL9TgaaZg8ec2eCv7d7sqypE0jI-tY2RisyxaqCoqZ0j8gEiPg69wjl9w482yYDeXLL-EBM5EQx6rR1Pk3aBWNhYZwJazxb5FdvniRU3oPVjSlYAxiMtHRtFj7u5rQdFVtInZ5jkBFHLE5G1aQQp9i9ZGLW5BdcFRshnfgFZ55pMHPBdbNEtAy0sy_OqLP-TMfRiTEvaxmMujm_uEyMGrQKTGy1eQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://blog.janestreet.com/flex-model-an-event-driven-feature-engineering-system/ target="_blank">
+					<h2>Flex Model: an event-driven feature engineering system</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/config-management-orchestrator-for-windows/ target="_blank">
+					<h2>Building and testing a config management orchestrator for Windows</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/scaling-and-benchmarking-a-critical-message-bus/ target="_blank">
+					<h2>Scaling and benchmarking a critical message bus using a new indexing strategy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/how-recurring-network-maintenance-exposed-6-bugs/ target="_blank">
+					<h2>How recurring network maintenance exposed 6 bugs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/asic-puzzle-results/ target="_blank">
+					<h2>Results from the ASIC puzzle</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/linux-engineering-kernel-reporter-index/ target="_blank">
+					<h2>A resilient kernel log reporter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/linux-engineering-depot-fuse-index/ target="_blank">
+					<h2>A FUSE server for our in-house storage backend</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/wrought-2026/ target="_blank">
+					<h2>What the interns have wrought, special jumbo 2026 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/wrought-2026-sp/ target="_blank">
+					<h2>What the SP interns have wrought, 2026 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/trading-off-compute-for-memory-with-activation-checkpointing/ target="_blank">
+					<h2>Trading off compute for memory with activation checkpointing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/tdoe-intern-projects-2026/ target="_blank">
+					<h2>What the TDOE interns have wrought, 2026 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/mitigating-memorization-in-llms/ target="_blank">
+					<h2>Mitigating memorization in LLMs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/can-you-use-autoregressive-diffusion-to-generate-market-data/ target="_blank">
+					<h2>Can you use autoregressive diffusion to generate market data?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/a-study-of-sequence-weighting-at-scale/ target="_blank">
+					<h2>A study of sequence weighting at scale</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/protocol-emulator-asic-competition/ target="_blank">
+					<h2>Can you design a chip? Announcing the protocol emulator ASIC competition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-10">2026-09-10</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/can-you-reverse-engineer-an-asic/ target="_blank">
+					<h2>Can you reverse engineer an ASIC?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-05">2026-08-05</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/oxcaml-typesafe-reference-counting-python/ target="_blank">
+					<h2>Using OxCaml to implement type-safe reference counting between OCaml and Python</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-15">2026-06-15</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/formal-methods-at-jane-street-index/ target="_blank">
+					<h2>Formal methods and the future of programming</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-07">2026-06-07</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/strace-ui-bonsai-term-and-the-tui-renaissance/ target="_blank">
+					<h2>strace-ui, Bonsai_term, and the TUI renaissance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-26">2026-05-26</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/using-group-theory-to-explore-positional-encodings-attention/ target="_blank">
+					<h2>Using group theory to explore the space of positional encodings for attention</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-22">2026-04-22</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/can-you-reverse-engineer-our-neural-network/ target="_blank">
+					<h2>Can you reverse engineer our neural network?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-24">2026-02-24</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/advent-of-fpga-challenge-2025-results/ target="_blank">
+					<h2>Results from the Advent of FPGA Challenge</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-11">2026-02-11</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/i-design-with-claude-code-more-than-figma-now-index/ target="_blank">
+					<h2>I design with Claude more than Figma now</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-05">2026-02-05</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/fun-with-algebraic-effects-hardcaml/ target="_blank">
+					<h2>Fun with Algebraic Effects - from Toy Examples to Hardcaml Simulations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-06">2026-01-06</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/getting-from-tested-to-battle-tested/ target="_blank">
+					<h2>Getting from tested to battle-tested</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-03">2025-12-03</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/advent-of-fpga-challenge-2025/ target="_blank">
+					<h2>Advent of FPGA — A Jane Street Challenge</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-24">2025-11-24</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/wrought-2025/ target="_blank">
+					<h2>What the interns have wrought, 2025 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-27">2025-08-27</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/a-higgs-bugson-in-the-linux-kernel/ target="_blank">
+					<h2>A Higgs-bugson in the Linux Kernel</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-02">2025-07-02</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/introducing-oxcaml/ target="_blank">
+					<h2>Introducing OxCaml</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-14">2025-06-14</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/advent-of-hardcaml-2024/ target="_blank">
+					<h2>Advent of Hardcaml</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-22">2025-03-22</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/how-we-accidentally-built-a-better-build-system-for-ocaml-index/ target="_blank">
+					<h2>How we accidentally built a better build system for OCaml</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-24">2025-01-24</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/developer-education-at-jane-street-index/ target="_blank">
+					<h2>Developer education at Jane Street</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-04">2024-10-04</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/icfp-2024-index/ target="_blank">
+					<h2>ICFP 2024</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-29">2024-08-29</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/what-the-interns-have-wrought-2024-edition-index/ target="_blank">
+					<h2>What the interns have wrought, 2024 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-26">2024-08-26</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/visualizing-piecewise-linear-neural-networks/ target="_blank">
+					<h2>Visualizing piecewise linear neural networks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-22">2024-07-22</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/what-the-interns-have-wrought-2023/ target="_blank">
+					<h2>What the interns have wrought, 2023 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-12">2023-09-12</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/oxidizing-ocaml-parallelism/ target="_blank">
+					<h2>Oxidizing OCaml: Data Race Freedom</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-01">2023-09-01</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/were-sponsoring-some3/ target="_blank">
+					<h2>We&#39;re sponsoring SoME3</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-06">2023-07-06</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/oxidizing-ocaml-ownership/ target="_blank">
+					<h2>Oxidizing OCaml: Rust-Style Ownership</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-21">2023-06-21</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/oxidizing-ocaml-locality/ target="_blank">
+					<h2>Oxidizing OCaml: Locality</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-26">2023-05-26</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/building-reproducible-python-environments-with-xars/ target="_blank">
+					<h2>Building reproducible Python environments with XARs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-14">2023-04-14</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/the-joy-of-expect-tests/ target="_blank">
+					<h2>What if writing tests was a joyful experience?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-09">2023-01-09</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/zero-knowledge-fpgas-hardcaml/ target="_blank">
+					<h2>Accelerating zk-SNARKs - MSM and NTT algorithms on FPGAs with Hardcaml</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-07">2022-12-07</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/visualizing-information-propagation-in-markets-index/ target="_blank">
+					<h2>Visualizing information propagation in markets</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-23">2022-11-23</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/computations-that-differentiate-debug-and-document-themselves/ target="_blank">
+					<h2>Computations that differentiate, debug, and document themselves</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-17">2022-11-17</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/graduate-research-fellowship/ target="_blank">
+					<h2>Introducing the Jane Street Graduate Research Fellowship</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-30">2022-08-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/what-the-interns-have-wrought-2022/ target="_blank">
+					<h2>What the interns have wrought, 2022 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-25">2022-08-25</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/research-internships-tnc/ target="_blank">
+					<h2>Research internships in our Tools and Compilers group</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-04">2022-03-04</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/project-pairing/ target="_blank">
+					<h2>How Jane Street Pairs Interns to Projects and Teams During the Software Engineering Internship</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-14">2022-01-14</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/magic-trace/ target="_blank">
+					<h2>Magic-trace: Diagnosing tricky performance issues easily with Intel Processor Trace</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-11">2022-01-11</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/hiring-a-developer-educator/ target="_blank">
+					<h2>Hiring a Developer Educator</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-21">2021-10-21</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/goodbye-Core_kernel/ target="_blank">
+					<h2>Goodbye Core_kernel</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-26">2021-08-26</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/what-the-interns-have-wrought-2021/ target="_blank">
+					<h2>What the interns have wrought, 2021 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-09">2021-08-09</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/looking-for-a-developer-experience-engineer-index/ target="_blank">
+					<h2>Looking for a developer experience engineer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-06-15">2021-06-15</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/growing-the-hardcaml-toolset-index/ target="_blank">
+					<h2>Growing the Hardcaml toolset</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-01">2020-12-01</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/announcing-our-market-prediction-kaggle-competition-index/ target="_blank">
+					<h2>Announcing Our Market Prediction Kaggle Competition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-24">2020-11-24</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/finding-memory-leaks-with-memtrace/ target="_blank">
+					<h2>Finding memory leaks with Memtrace</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-06">2020-10-06</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/memory-allocator-showdown/ target="_blank">
+					<h2>Memory allocator showdown</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-15">2020-09-15</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/announcing-signals-and-threads-index/ target="_blank">
+					<h2>Announcing Signals and Threads, a new podcast from Jane Street</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-08-31">2020-08-31</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/what-the-interns-have-wrought-2020/ target="_blank">
+					<h2>What the interns have wrought, 2020 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-08-17">2020-08-17</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/jane-street-interview-process-2020/ target="_blank">
+					<h2>The Jane Street Interview Process — 2020 Edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-24">2020-07-24</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/really-low-latency-multipliers-and-cryptographic-puzzles/ target="_blank">
+					<h2>Really low latency multipliers and cryptographic puzzles</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-22">2020-06-22</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/using-ascii-waveforms-to-test-hardware-designs/ target="_blank">
+					<h2>Using ASCII waveforms to test hardware designs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-01">2020-06-01</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/chrome-extensions-finding-the-missing-proof/ target="_blank">
+					<h2>Chrome extensions: Finding the missing proof</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-17">2020-04-17</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/watch-all-of-jane-streets-tech-talks/ target="_blank">
+					<h2>Watch all of Jane Street&#39;s tech talks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-20">2020-02-20</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/troubleshooting-systemd-with-systemtap/ target="_blank">
+					<h2>Troubleshooting systemd with SystemTap</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-03">2020-02-03</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/using-python-and-ocaml-in-the-same-jupyter-notebook/ target="_blank">
+					<h2>Using Python and OCaml in the same Jupyter notebook</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-16">2019-12-16</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/deep-learning-the-hardest-go-problem-in-the-world/ target="_blank">
+					<h2>Deep-Learning the Hardest Go Problem in the World</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-06">2019-12-06</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/commas-in-big-numbers-everywhere/ target="_blank">
+					<h2>Commas in big numbers everywhere: An OpenType adventure</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-14">2019-10-14</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/what-the-interns-have-wrought-2019/ target="_blank">
+					<h2>What the interns have wrought, 2019 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-08-30">2019-08-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/using-ocaml-to-drive-a-raspberry-pi-robot-car/ target="_blank">
+					<h2>Using OCaml to drive a Raspberry Pi robot car</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-08-19">2019-08-19</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/applied-PL-research/ target="_blank">
+					<h2>Do applied programming languages research at Jane Street!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-08-16">2019-08-16</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/a-look-at-ocaml-4.08/ target="_blank">
+					<h2>A look at OCaml 4.08</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-07-12">2019-07-12</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/of-pythons-and-camels/ target="_blank">
+					<h2>Of Pythons and Camels</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-07-09">2019-07-09</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/thoughts-from-aaai-19/ target="_blank">
+					<h2>Thoughts from AAAI 2019</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-05-13">2019-05-13</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/learning-ml-depth-first/ target="_blank">
+					<h2>Learning ML Depth-First</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-04-17">2019-04-17</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/hackathon-keyboards/ target="_blank">
+					<h2>Machining the ultimate hackathon prize</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-02-28">2019-02-28</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/accelerating-self-play-learning-in-go/ target="_blank">
+					<h2>Accelerating Self-Play Learning in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-02-28">2019-02-28</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/l2-regularization-and-batch-norm/ target="_blank">
+					<h2>L2 Regularization and Batch Norm</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-01-29">2019-01-29</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/a-tutorial-for-building-web-applications-with-incrdom/ target="_blank">
+					<h2>A tutorial for building web applications with Incr_dom</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-01-15">2019-01-15</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/how-to-shuffle-a-big-dataset/ target="_blank">
+					<h2>How to shuffle a big dataset</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-09-26">2018-09-26</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/deep-learning-experiments-in-ocaml/ target="_blank">
+					<h2>Deep learning experiments in OCaml</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-09-20">2018-09-20</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/what-the-interns-have-wrought-2018/ target="_blank">
+					<h2>What the interns have wrought, 2018 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-08-06">2018-08-06</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/plans-for-ocaml-408/ target="_blank">
+					<h2>Plans for OCaml 4.08</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-06-29">2018-06-29</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/repeatable-exploratory-programming/ target="_blank">
+					<h2>Repeatable exploratory programming</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-04-22">2018-04-22</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/ocaml-all-the-way-down/ target="_blank">
+					<h2>OCaml all the way down</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-04-04">2018-04-04</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/putting-the-i-back-in-ide-towards-a-github-explorer/ target="_blank">
+					<h2>Putting the I back in IDE: Towards a Github Explorer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-03-27">2018-03-27</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/learn-ocaml-nyc/ target="_blank">
+					<h2>Learn OCaml in NYC</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-02-16">2018-02-16</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/proofs-and-refutations-using-z3/ target="_blank">
+					<h2>Proofs (and Refutations) using Z3</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-02-15">2018-02-15</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/work-on-the-ocaml-compiler-at-jane-street/ target="_blank">
+					<h2>Work on the OCaml compiler at Jane Street!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-12-20">2017-12-20</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/does-batch-size-matter/ target="_blank">
+					<h2>Does batch size matter?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-10-31">2017-10-31</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/jane-street-tech-talk-how-jane-street-does-code-review/ target="_blank">
+					<h2>How Jane Street Does Code Review (Jane Street Tech Talk)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-10-29">2017-10-29</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/jane-street-tech-talk-verifying-network-data-planes/ target="_blank">
+					<h2>Jane Street Tech Talk, Verifying Network Data Planes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-09-26">2017-09-26</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/real-world-machine-learning-part-1/ target="_blank">
+					<h2>Real world machine learning (part 1)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-08-28">2017-08-28</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/how-to-design-a-tree-diffing-algorithm/ target="_blank">
+					<h2>How to design a tree diffing algorithm</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-08-25">2017-08-25</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/ironing-out-your-development-style/ target="_blank">
+					<h2>Ironing out your development style</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-08-24">2017-08-24</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/hiring-an-fpga-engineer/ target="_blank">
+					<h2>Hiring an FPGA engineer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-08-16">2017-08-16</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/what-the-interns-have-wrought-2017/ target="_blank">
+					<h2>What the interns have wrought, 2017 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-08-14">2017-08-14</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/when-bash-scripts-bite/ target="_blank">
+					<h2>When Bash Scripts Bite</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-05-11">2017-05-11</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/looking-for-a-technical-writer/ target="_blank">
+					<h2>Looking for a technical writer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-05-01">2017-05-01</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://blog.janestreet.com" target="_blank">Jane Street Blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="THCU8X-S6EZx4sKtZrPrxAkkke8AX6eEj1rkZhH5450f7f3agIbwB13GPLlEanBq0kxuQmJdcQnZYQ4WpnfmKafpmDcpl6SFtg58q9A-4bDqTw1OpT-GyvUhqIL9TgaaZg8ec2eCv7d7sqypE0jI-tY2RisyxaqCoqZ0j8gEiPg69wjl9w482yYDeXLL-EBM5EQx6rR1Pk3aBWNhYZwJazxb5FdvniRU3oPVjSlYAxiMtHRtFj7u5rQdFVtInZ5jkBFHLE5G1aQQp9i9ZGLW5BdcFRshnfgFZ55pMHPBdbNEtAy0sy_OqLP-TMfRiTEvaxmMujm_uEyMGrQKTGy1eQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

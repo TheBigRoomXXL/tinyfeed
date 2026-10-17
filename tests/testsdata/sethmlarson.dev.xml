@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">Seth Larson</title>
+  <id>https://sethmlarson.dev/feed</id>
+  <updated>2026-10-13T00:00:00Z</updated>
+  <link href="https://sethmlarson.dev/" />
+  <link href="https://sethmlarson.dev/feed" rel="self" />
+  <author>
+    <name>Seth Larson</name>
+    <uri>https://sethmlarson.dev</uri>
+    <email>sethmichaellarson@gmail.com</email>
+  </author>
+  <icon>https://github.com/sethmlarson.png</icon>
+  <logo>https://github.com/sethmlarson.png</logo>
+  <generator>Werkzeug</generator>
+  <entry xml:base="https://sethmlarson.dev/feed">
+    <title type="text">Gaming’s all-digital future doesn’t include “Sonic the Hedgehog 3” and “Pikmin 2”</title>
+    <id>https://sethmlarson.dev/gaming-all-digital-future-and-creative-constraint?utm_campaign=rss</id>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <published>2026-10-13T00:00:00Z</published>
+    <link href="https://sethmlarson.dev/gaming-all-digital-future-and-creative-constraint?utm_campaign=rss" />
+    <author>
+      <name>Seth Larson</name>
+    </author>
+    <content type="html">&lt;p&gt;Sony announced that all games from 2028 and onwards
+would be digital-only. It seems likely that Xbox will follow and that Nintendo will continue
+making “physical” releases for first-party games during
+the Switch 2 generation.&lt;/p&gt;
+
+&lt;p&gt;In the all-digital gaming future, every game platform
+will be subject to the same problems and constraints as media streaming services
+like Netflix and Spotify.
+We can see hints of how this will affect future games and creative freedom in the medium
+by looking at re-releases of older games, in particular: Sonic the Hedgehog 3 and Pikmin 2.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;The core problem is that digital games are licenses, which forces
+an ongoing relationship between you and the owner of the media.
+And because there’s an ongoing relationship with you, any
+ongoing licensing relationships that the media owner has
+&lt;em&gt;also affect you and your games&lt;/em&gt;. If a license for any media that
+is part of the game expires or is affected, then the developer
+must take action to remediate the “issue” in the game.&lt;/p&gt;
+
+&lt;p&gt;This is already commonplace for games that feature music,
+such as Rock Band or Guitar Hero, but maybe players find this
+more “expected” because these games are essentially
+a music streaming service in themselves.
+But what about games that aren’t like this on the surface?&lt;/p&gt;
+
+&lt;p&gt;
+&lt;center&gt;
+&lt;img style=&quot;border: 2px black solid; max-width: 100%&quot; src=&quot;https://storage.googleapis.com/sethmlarson-dev-static-assets/digital-only-future/IMG_6576_small.jpeg&quot;/&gt;
+&lt;br&gt;
+&lt;em&gt;&lt;small&gt;Sonic the Hedgehog 3 for Genesis (1994), GameCube (2002), and Switch (2022)&lt;/small&gt;&lt;/em&gt;
+&lt;/center&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Sonic_the_Hedgehog_3&quot;&gt;Sonic the Hedgehog 3&lt;/a&gt; was originally published in 1994, and
+beyond the game being great to play, the soundtrack is
+really something special. I have fond memories of dancing
+to the &lt;a href=&quot;https://www.youtube.com/watch?v=G8bNZboAPfc&quot;&gt;end credits music&lt;/a&gt; on my parents’ bed with my brother as a kid after beating the game.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, this track and many others in the game
+would not survive our all-digital future. &lt;a href=&quot;https://en.wikipedia.org/wiki/Sonic_the_Hedgehog_3#Michael_Jackson's_involvement&quot;&gt;Michael Jackson’s
+alleged uncredited involvement with Sonic 3&lt;/a&gt;
+has meant that all re-releases of Sonic 3 since 2009
+have not included the entire original soundtrack. If this
+game were released only digitally today, it can be assumed that
+these tracks would be pulled from the game, just as
+is done for Rock Band and Guitar Hero when licensing terms
+expire or there are legal issues.&lt;/p&gt;
+
+&lt;p&gt;
+&lt;center&gt;
+&lt;img style=&quot;border: 2px black solid; max-width: 100%&quot; src=&quot;https://storage.googleapis.com/sethmlarson-dev-static-assets/digital-only-future/IMG_6575_small.jpeg&quot;/&gt;
+&lt;br&gt;
+&lt;em&gt;&lt;small&gt;Pikmin 2 for GameCube (JP, NA, PAL, 2004) and Switch (2023)&lt;/small&gt;&lt;/em&gt;
+&lt;/center&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Pikmin_2&quot;&gt;Pikmin 2&lt;/a&gt; was published in 2004,
+and the main objective is collecting “treasure” from an alien planet in the form
+of food, toys, and, most surprisingly, &lt;a href=&quot;https://sethmlarson.dev/pikmin-2-international-treasure-hoard&quot;&gt;items featuring real-life brands&lt;/a&gt;
+like Duracell, &lt;nobr&gt;Dr. Pepper&lt;/nobr&gt;, &lt;nobr&gt;Yoo-Hoo&lt;/nobr&gt;, and Snapple. This artistic
+decision and the work to license and include these brands were a substantial part of the surprise and delight
+while playing the game.&lt;/p&gt;
+
+&lt;p&gt;However, you can see that these licensing terms
+eventually run out, too: in all re-releases of Pikmin 2 from 2023 onwards,
+the real-life brands are &lt;a href=&quot;https://www.pikminwiki.com/Pikmin_2_(Nintendo_Switch)#List_of_treasures_with_different_appearances&quot;&gt;replaced with generic fictional brands&lt;/a&gt;.
+It’s not clear to me whether licensing agreements with
+so many brands would be undertaken in the future if work would
+have to be done to create fictional models and textures anyway
+once the license terms expire.&lt;/p&gt;
+
+&lt;p&gt;If it wasn’t clear from this post, I’m not excited for an all-digital
+future of games. An all-digital future for games means the medium will be further constrained
+creatively, in addition to the negative impacts on ownership and preservation.
+Read-only physical media does more for gaming
+than being something to collect and own: developers can make
+choices that they won’t have to walk back in 20 years,
+and players can continue to enjoy games &lt;em&gt;as the developers
+intended&lt;/em&gt; long after licensing terms expire.&lt;/p&gt;
+&lt;br&gt;&lt;hr&gt;&lt;p&gt;Thanks for reading ♥ I would love to hear your thoughts! Contact me via &lt;a href='https://mastodon.social/@sethmlarson'&gt;Mastodon&lt;/a&gt;, &lt;a href='https://bsky.app/profile/sethmlarson.dev'&gt;Bluesky&lt;/a&gt;, or &lt;a href='mailto:sethmichaellarson@gmail.com'&gt;email&lt;/a&gt;. Browse the &lt;a href='https://sethmlarson.dev/'&gt;blog archive&lt;/a&gt;. Check out my &lt;a href='https://sethmlarson.dev/blogroll'&gt;blogroll&lt;/a&gt;.&lt;/p&gt;&lt;hr&gt;&lt;br&gt;</content>
+  </entry>
+  <entry xml:base="https://sethmlarson.dev/feed">
+    <title type="text">Blogging for the Python Language Summit</title>
+    <id>https://sethmlarson.dev/python-language-summit-blogging?utm_campaign=rss</id>
+    <updated>2026-09-30T00:00:00Z</updated>
+    <published>2026-09-30T00:00:00Z</published>
+    <link href="https://sethmlarson.dev/python-language-summit-blogging?utm_campaign=rss" />
+    <author>
+      <name>Seth Larson</name>
+    </author>
+    <content type="html">&lt;p&gt;&lt;em&gt;Hey, did you miss me?&lt;/em&gt; I've only published two blog posts
+in the past two months because I was busy &lt;a href=&quot;https://blog.python.org/2026/09/language-summit-2026&quot;&gt;writing 10+ blog
+posts&lt;/a&gt; detailing the &lt;a href=&quot;https://blog.python.org/2026/09/language-summit-2026&quot;&gt;Python Language Summit in 2026&lt;/a&gt;.
+If you are interested in the Python programming
+languages' technical direction (&lt;em&gt;or you just really miss my writing&lt;/em&gt;)
+&lt;a href=&quot;https://blog.python.org/2026/09/language-summit-2026&quot;&gt;go over to the Python Insider and read those write-ups&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;I've been the blogger for the Python Language Summit for the past
+three years (&lt;a href=&quot;https://pyfound.blogspot.com/2024/06/python-language-summit-2024.html&quot;&gt;2024&lt;/a&gt;, &lt;a href=&quot;https://pyfound.blogspot.com/2025/06/python-language-summit-2025.html&quot;&gt;2025&lt;/a&gt;, &lt;a href=&quot;https://blog.python.org/2026/09/language-summit-2026&quot;&gt;2026&lt;/a&gt;).
+Before me, &lt;a href=&quot;https://github.com/alexwaygood&quot;&gt;Alex Waygood&lt;/a&gt; was the blogger (&lt;a href=&quot;https://pyfound.blogspot.com/2022/05/the-2022-python-language-summit_01678898482.html&quot;&gt;2022&lt;/a&gt;, &lt;a href=&quot;https://pyfound.blogspot.com/2023/05/the-python-language-summit-2023_29.html&quot;&gt;2023&lt;/a&gt;),
+and he gave me guidance on what to expect from the Python Language Summit.
+Below is a mix of Alex's and my own guidance on what to expect as
+the Python Language Summit blogger.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2&gt;What do you need to know as blogger?&lt;/h2&gt;
+
+&lt;p&gt;It is useful to have some knowledge about the Python development
+process, ongoing concerns for the project, governance, and
+some history about &quot;how we got to this moment&quot; to be
+able to write about the Python Language Summit. You can
+prepare in-depth by looking at the topics that will be
+spoken about and reading the past few years of Python
+Language Summit blog posts, are there returning faces or
+themes? What have those people been up to in the meantime?&lt;/p&gt;
+
+&lt;p&gt;What topics do you know less about: research those ahead
+of time so once the jargon starts flying (because it will)
+that you're able to keep up. For example, I don't know
+much about Python's type annotations, but without fail
+there is a talk about this topic each year. I usually
+do the most research about this topic in particular
+to prepare.&lt;/p&gt;
+
+&lt;h2&gt;Travel&lt;/h2&gt;
+
+&lt;p&gt;You'll need to actually attend physically to cover the event.
+Figure out which conference the summit is colocated with (either
+PyCon US or EuroPython). If possible, I recommend if you are traveling
+into a drastically different timezone to arrive a few days early
+to give your body time to adjust. Taking technical notes during active
+discussions while you are &lt;em&gt;extremely jet-lagged is not fun&lt;/em&gt; (ask me how I know).&lt;/p&gt;
+
+&lt;p&gt;The event itself is long (9:00AM to 5:30PM with breaks for coffee and lunch)
+and exclusively intense technical discussion.
+Come well-rested and drink plenty of water and caffeinated beverages.&lt;/p&gt;
+
+&lt;h2&gt;People&lt;/h2&gt;
+
+&lt;p&gt;The Python Language Summit is an in-person event and
+primarily compromised of attendees that are Python core team members
+or maintainers of alternate Python implementations or distributions.
+The past three years have seen between 45-50 attendees in the event.&lt;/p&gt;
+
+&lt;p&gt;Prior to 2024, I had never attended the Python
+Language Summit and only knew a few dozen of the hundreds of members
+from Python core team.
+&lt;strong&gt;Being able to put faces and voices to names is a challenge.&lt;/strong&gt; Request the
+full list of attendees from the summit chairs before you attend, try to
+learn everyone on the list that you don't recognize beforehand.&lt;/p&gt;
+
+&lt;p&gt;On the day of the event, watch as people filter into the event before
+(and sometimes, during). Make a point to meet everyone and get names,
+talk for a bit, and make an association between their face, voice, and
+name. I like to draw out a &quot;layout of the room&quot;, too, with reminders of
+people that I've just met and where they are sitting.&lt;/p&gt;
+
+&lt;p&gt;Usually the summit chairs ask for a round of introductions from everyone
+before starting the event, you can request that they do this to be sure.&lt;/p&gt;
+
+&lt;p&gt;It also helps to sit next to a summit chair, I've had to ask Hugo van Kemenade
+&quot;who is speaking right now&quot; a few times when it's difficult to know who
+has the microphone actively.&lt;/p&gt;
+
+&lt;h2&gt;Recording and note-taking&lt;/h2&gt;
+
+&lt;p&gt;The event is not video-recorded or audio-recorded (by default),
+so you won't be able to rely on anything that the event itself provides.
+Instead, you'll have to make a record of the event yourself and use that to
+recollect everything that happened and was said throughout the day.&lt;/p&gt;
+
+&lt;p&gt;I personally use &quot;Voice Memos&quot; from my phone to record the audio of the room
+and delete the recordings after they are no longer needed. The audio quality
+is so bad usually that you can't use automatic transcription software,
+instead you'll need to transcribe what everyone says by hand from the
+recording.&lt;/p&gt;
+
+&lt;p&gt;I also take extensive notes throughout the event. The important aspects
+to capture in your written notes is everything that wouldn't come across
+in a voice recording, like how does the energy of the room and conversations
+feel. Are people making faces, discussing amongst themselves, laughing and
+smiling? Note down all those moments, they give the write-ups life beyond
+a textual representation of what was said.&lt;/p&gt;
+
+&lt;p&gt;You'll also want to talk
+to people about the actual talks, ask them what a given topic has
+them thinking about, you can do this after the talks are over, too! You'll sometimes
+get a key insight or unearth a storyline or angle that you never would
+have known about from the talk itself: and then can clue-in the readers!&lt;/p&gt;
+
+&lt;p&gt;The attendees will tend to take some light notes in HackMD, but
+you should not rely on these notes for your purposes, they are not enough
+to be able to recreate the story and all the Q&amp;amp;A.&lt;/p&gt;
+
+&lt;p&gt;You should rely on the summit chairs and other attendees to take
+photos. There will be an album shared with everyone after
+the photos have be collected which you can pull from.&lt;/p&gt;
+
+&lt;h2&gt;Slides&lt;/h2&gt;
+
+&lt;p&gt;Ask the summit chairs to remind speakers to get slides. Follow-up with
+speakers a few days after the conference is over if you don't
+get them sent to you (and don't stop asking until you get them!)
+These slides are really useful for providing images in your write-ups.
+Especially code examples, which can be difficult to write down in
+real-time.&lt;/p&gt;
+
+&lt;h2&gt;Writing&lt;/h2&gt;
+
+&lt;p&gt;Alright, the language summit is over and now comes the hard part.
+&lt;em&gt;Actually writing the blog posts!&lt;/em&gt; There are 10 talks and ~5 lightning
+talks. My rule of thumb is ~1000 words for each of the full-length
+talks and maybe ~300-500 words for each of the lightning talks. So you're
+looking at ~12,000 words total across the whole event.&lt;/p&gt;
+
+&lt;p&gt;I highly recommend getting as big a jump on the writing as soon
+as you can. Whether that's in the evenings of
+the conference itself or on the train/flight home. Use the
+energy you get from attending a community conference to carry
+you through! This was where I went wrong this year: I didn't
+prioritize finishing the writing as soon as I returned home,
+and that meant the blogs were two months after the event 
+instead of only one month. Learn from me: finish your
+writing right away!&lt;/p&gt;
+
+&lt;h2&gt;Publishing&lt;/h2&gt;
+
+&lt;p&gt;After you're done with the drafts and are happy with the results,
+hand them over to the Language Summit chairs for proofreading.
+I recommend being specific about what kind of review you want
+at this stage: focus on fact-checking and finding typos, grammar,
+etc. After this review is complete, stage the blog posts on
+the Python Insider blog along with images. In 2026, I also published a landing
+page on the PSF blog.&lt;/p&gt;
+&lt;br&gt;&lt;hr&gt;&lt;p&gt;Thanks for reading ♥ I would love to hear your thoughts! Contact me via &lt;a href='https://mastodon.social/@sethmlarson'&gt;Mastodon&lt;/a&gt;, &lt;a href='https://bsky.app/profile/sethmlarson.dev'&gt;Bluesky&lt;/a&gt;, or &lt;a href='mailto:sethmichaellarson@gmail.com'&gt;email&lt;/a&gt;. Browse the &lt;a href='https://sethmlarson.dev/'&gt;blog archive&lt;/a&gt;. Check out my &lt;a href='https://sethmlarson.dev/blogroll'&gt;blogroll&lt;/a&gt;.&lt;/p&gt;&lt;hr&gt;&lt;br&gt;</content>
+  </entry>
+  <entry xml:base="https://sethmlarson.dev/feed">
+    <title type="text">Buying GameCube games from other regions</title>
+    <id>https://sethmlarson.dev/buying-gamecube-games-from-another-region?utm_campaign=rss</id>
+    <updated>2026-09-01T00:00:00Z</updated>
+    <published>2026-09-01T00:00:00Z</published>
+    <link href="https://sethmlarson.dev/buying-gamecube-games-from-another-region?utm_campaign=rss" />
+    <author>
+      <name>Seth Larson</name>
+    </author>
+    <content type="html">&lt;p&gt;This blog post was inspired by discovering that &lt;a href=&quot;https://en.wikipedia.org/wiki/Pok%C3%A9mon_Ruby_and_Sapphire#Pok%C3%A9mon_Box:_Ruby_and_Sapphire&quot;&gt;Pokémon Box: Ruby &amp;amp; Sapphire&lt;/a&gt;,
+a legendarily rare and expensive GameCube game in the United States (&lt;a href=&quot;https://www.pricecharting.com/game/gamecube/pokemon-box&quot;&gt;&amp;gt;$2,500 USD&lt;/a&gt;),
+could be purchased &lt;a href=&quot;https://www.pricecharting.com/game/jp-gamecube/pokemon-box&quot;&gt;complete-in-box (CIB) in Japan for $50 USD&lt;/a&gt;.
+That's a savings of $2450, or ~98% of the US price.
+This is a somewhat extreme example: in the US market
+Pokémon Box was only sold online
+and at a single store: the Pokémon Center in New York City.&lt;/p&gt;
+
+&lt;p&gt;This big price difference between regions got me thinking:
+what other games are cheaper in other regions and by how much?
+&lt;!-- more --&gt;
+Please note that the below data was taken from &lt;a href=&quot;https://pricecharting.com&quot;&gt;Pricecharting&lt;/a&gt; on
+August 30th, 2026. Shipping costs aren't included in the price, shipping from
+Japan to the US is typically $15-$20 USD on eBay, but many games are already
+imported to the US.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;&lt;th colspan='2'&gt;Game&lt;/th&gt;&lt;th&gt;Diff.&lt;/th&gt;&lt;th&gt;Price (US)&lt;/th&gt;&lt;th&gt;Price (PAL)&lt;/th&gt;&lt;th&gt;Price (JP)&lt;/th&gt;&lt;/thead&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/pokemon-box'&gt;Pokémon Box&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$2348&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/pokemon-box'&gt;$2400&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/pokemon-box'&gt;$204&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/pokemon-box'&gt;$52&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$1553&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/pokemon-box'&gt;$1574&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/pokemon-box'&gt;$137&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/pokemon-box'&gt;$21&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/cubivore'&gt;Cubivore&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$612&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/cubivore'&gt;$640&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: center;background-color: #e9e9e9'&gt;—&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/cubivore'&gt;$28&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$318&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/cubivore'&gt;$341&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: center;background-color: #e9e9e9'&gt;—&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/cubivore'&gt;$23&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/gotcha-force'&gt;Gotcha Force&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$405&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/gotcha-force'&gt;$474&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/gotcha-force'&gt;$137&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/gotcha-force'&gt;$69&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$204&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/gotcha-force'&gt;$249&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/gotcha-force'&gt;$121&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/gotcha-force'&gt;$45&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/resident-evil-code-veronica-x'&gt;Resident Evil: Code Veronica X&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$239&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/resident-evil-code-veronica-x'&gt;$299&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/resident-evil-code-veronica-x'&gt;$80&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/biohazard-code-veronica-x'&gt;$60&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$151&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/resident-evil-code-veronica-x'&gt;$213&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/resident-evil-code-veronica-x'&gt;$62&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: center;background-color: #e9e9e9'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/biohazard-code-veronica-x'&gt;—&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/chibi-robo'&gt;Chibi Robo&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$189&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/chibi-robo'&gt;$210&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/chibi-robo'&gt;$223&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/chibi-robo'&gt;$34&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$136&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/chibi-robo'&gt;$144&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/chibi-robo'&gt;$161&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/chibi-robo'&gt;$25&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/pokemon-xd-gale-of-darkness'&gt;Pokémon XD: Gale of Darkness&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$170&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/pokemon-xd-gale-of-darkness'&gt;$209&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/pokemon-xd-gale-of-darkness'&gt;$232&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/pokemon-xd-gale-of-darkness'&gt;$62&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$129&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/pokemon-xd-gale-of-darkness'&gt;$150&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/pokemon-xd-gale-of-darkness'&gt;$183&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/pokemon-xd-gale-of-darkness'&gt;$54&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/fire-emblem-path-of-radiance'&gt;Fire Emblem: Path of Radiance&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$166&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/fire-emblem-path-of-radiance'&gt;$214&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/fire-emblem-path-of-radiance'&gt;$187&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/fire-emblem-path-of-radiance'&gt;$48&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$101&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/fire-emblem-path-of-radiance'&gt;$145&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/fire-emblem-path-of-radiance'&gt;$145&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/fire-emblem-path-of-radiance'&gt;$44&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/resident-evil-2'&gt;Resident Evil 2&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$90&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/resident-evil-2'&gt;$161&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/resident-evil-2'&gt;$78&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/biohazard-2'&gt;$71&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$77&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/resident-evil-2'&gt;$106&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/resident-evil-2'&gt;$29&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/biohazard-2'&gt;$44&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/pokemon-colosseum'&gt;Pokémon Colosseum&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$98&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/pokemon-colosseum'&gt;$142&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/pokemon-colosseum'&gt;$64&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/pokemon-colosseum'&gt;$44&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$83&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/pokemon-colosseum'&gt;$109&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/pokemon-colosseum'&gt;$49&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/pokemon-colosseum'&gt;$26&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/zelda-twilight-princess'&gt;Legend of Zelda: Twilight Princess&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$108&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/zelda-twilight-princess'&gt;$196&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/zelda-twilight-princess'&gt;$115&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/zelda-twilight-princess'&gt;$88&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$66&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/zelda-twilight-princess'&gt;$146&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/zelda-twilight-princess'&gt;$107&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/zelda-twilight-princess'&gt;$80&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/resident-evil-3-nemesis'&gt;Resident Evil 3: Nemesis&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$97&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/resident-evil-3-nemesis'&gt;$156&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/resident-evil-3-nemesis'&gt;$59&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/biohazard-3-last-escape'&gt;$74&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$52&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/resident-evil-3-nemesis'&gt;$99&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/resident-evil-3-nemesis'&gt;$47&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/biohazard-3-last-escape'&gt;$69&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/zelda-four-swords-adventures'&gt;Legend of Zelda: Four Swords Adventures&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$92&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/zelda-four-swords-adventures'&gt;$77&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/zelda-four-swords-adventures'&gt;$130&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/zelda-four-swords'&gt;$38&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$58&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/zelda-four-swords-adventures'&gt;$56&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/zelda-four-swords-adventures'&gt;$79&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/zelda-four-swords'&gt;$21&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/eternal-darkness'&gt;Eternal Darkness&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$82&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/eternal-darkness'&gt;$114&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/eternal-darkness'&gt;$32&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/eternal-darkness'&gt;$34&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$60&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/eternal-darkness'&gt;$85&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/eternal-darkness'&gt;$25&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/eternal-darkness'&gt;$33&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/billy-hatcher-and-the-giant-egg'&gt;Billy Hatcher and the Giant Egg&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$66&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/billy-hatcher-and-the-giant-egg'&gt;$89&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/billy-hatcher-and-the-giant-egg'&gt;$23&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/billy-hatcher-and-the-giant-egg'&gt;$34&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$55&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/billy-hatcher-and-the-giant-egg'&gt;$65&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/billy-hatcher-and-the-giant-egg'&gt;$10&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/billy-hatcher-and-the-giant-egg'&gt;$34&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td rowspan='2'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/wario-world'&gt;Wario World&lt;/a&gt;&lt;/td&gt;&lt;td&gt;CIB&lt;/td&gt;&lt;td style='text-align: right'&gt;-$55&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/wario-world'&gt;$80&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/wario-world'&gt;$60&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/wario-world'&gt;$25&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Loose&lt;/td&gt;&lt;td style='text-align: right'&gt;-$44&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/gamecube/wario-world'&gt;$62&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right'&gt;&lt;a href='https://www.pricecharting.com/game/pal-gamecube/wario-world'&gt;$45&lt;/a&gt;&lt;/td&gt;&lt;td style='text-align: right;background-color: rgb(130, 252, 128)'&gt;&lt;a href='https://www.pricecharting.com/game/jp-gamecube/wario-world'&gt;$18&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Even more excitingly, &lt;a href=&quot;https://projectpokemon.org/home/files/file/4950-pokemon-box-ruby-sapphire-universal-version/&quot;&gt;there is a mod patch for Pokémon Box&lt;/a&gt; enabling the
+Japanese version to communicate and trade Pokémon between
+&lt;a href=&quot;https://bulbapedia.bulbagarden.net/wiki/Software_region&quot;&gt;US, JP, and PAL Game Boy Advance games&lt;/a&gt;. This means if you wanted
+to use Pokémon Box functionality you could buy a Japanese copy for $50,
+patch the software, and use the software as if it were from any region.&lt;/p&gt;
+
+&lt;p&gt;This fact carries beyond GameCube games, as you'd imagine.
+Legend of Zelda: Minish Cap is &lt;a href=&quot;https://www.pricecharting.com/game/gameboy-advance/zelda-minish-cap&quot;&gt;$90 for a loose US copy&lt;/a&gt;
+and &lt;a href=&quot;https://www.pricecharting.com/game/jp-gameboy-advance/zelda-minish-cap&quot;&gt;only $40 for a Japanese copy&lt;/a&gt;.
+Surprisingly it's not always the case that the US release is
+cheaper than the Japanese release. For example, the &lt;a href=&quot;https://en.wikipedia.org/wiki/Sonic_Gems_Collection&quot;&gt;Sonic Gems Collection&lt;/a&gt;
+for GameCube costs &lt;a href=&quot;https://www.pricecharting.com/game/gamecube/sonic-gems-collection&quot;&gt;$55 CIB for a US release&lt;/a&gt;
+compared to &lt;a href=&quot;https://www.pricecharting.com/game/jp-gamecube/sonic-gems-collection&quot;&gt;$180 CIB for JP&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I suspect this is because the soundtrack for Sonic CD is different for
+each region, JP Sonic Gems Collection carrying the far-superior
+and sought after JP Sonic CD soundtrack. The US Sonic CD soundtrack
+was included in the US and PAL Sonic Gems Collection releases.
+The Japanese Sonic CD soundtrack was &lt;a href=&quot;https://steamcommunity.com/sharedfiles/filedetails/?id=2825322428&quot;&gt;released for the first time
+outside Japan in Sonic Origins&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Why shouldn't you buy other regions' games?&lt;/h2&gt;
+
+&lt;p&gt;The primary reason is if you don't speak the language. Many PAL
+GameCube titles include English as one of the many supported languages,
+but this can't be said for NTSC-J. Most Japanese titles are exclusively
+in Japanese, and I don't speak the language. For some games this is fine,
+not knowing Japanese won't hamper games that aren't text-heavy, but
+RPGs or story-based adventures will impact the fun-factor.
+There are some modifications you can apply to translate the Japanese
+text back into English.&lt;/p&gt;
+
+&lt;p&gt;Many consoles are region-locked, and thus require
+either purchasing a matching region console, modifying a console to support all regions,
+or dumping ROMs and using emulators (usually with a dedicated device or console modification).
+So you can't use any region's software without at least some extra work
+or hardware. The Nintendo GameCube has three main regions: NTSC-J (Japan), NTSC-M (Americas),
+and PAL (and maybe NTSC-K (Korea)? I cannot tell if this is actually its own region).&lt;/p&gt;
+
+&lt;p&gt;I've gone the way of modifying my GameCube hardware with a solderless
+mod-chip called the &lt;a href=&quot;https://docs.flippydrive.com/&quot;&gt;FlippyDrive&lt;/a&gt;, but other &lt;a href=&quot;https://github.com/makeo/PicoLoader&quot;&gt;open source options
+for a similar device are now available&lt;/a&gt;.
+This modification allows running any regions games on any region hardware.&lt;/p&gt;
+
+&lt;p&gt;If you are using unmodified hardware you may run into issues with
+frame rate if you're mixing software and hardware from an NTSC region (US, JP, KR)
+and the PAL region. I am not super knowledgeable in this area,
+look around for solutions to this issue before buying.&lt;/p&gt;
+&lt;br&gt;&lt;hr&gt;&lt;p&gt;Thanks for reading ♥ I would love to hear your thoughts! Contact me via &lt;a href='https://mastodon.social/@sethmlarson'&gt;Mastodon&lt;/a&gt;, &lt;a href='https://bsky.app/profile/sethmlarson.dev'&gt;Bluesky&lt;/a&gt;, or &lt;a href='mailto:sethmichaellarson@gmail.com'&gt;email&lt;/a&gt;. Browse the &lt;a href='https://sethmlarson.dev/'&gt;blog archive&lt;/a&gt;. Check out my &lt;a href='https://sethmlarson.dev/blogroll'&gt;blogroll&lt;/a&gt;.&lt;/p&gt;&lt;hr&gt;&lt;br&gt;</content>
+  </entry>
+  <entry xml:base="https://sethmlarson.dev/feed">
+    <title type="text">When str.lower() is a security vulnerability in Python</title>
+    <id>https://sethmlarson.dev/when-str-lower-is-a-security-vulnerability?utm_campaign=rss</id>
+    <updated>2026-08-18T00:00:00Z</updated>
+    <published>2026-08-18T00:00:00Z</published>
+    <link href="https://sethmlarson.dev/when-str-lower-is-a-security-vulnerability?utm_campaign=rss" />
+    <author>
+      <name>Seth Larson</name>
+    </author>
+    <content type="html">&lt;p&gt;Some internet standards only support ASCII characters, but the world uses
+much more than the Latin alphabet. Thus, a mapping from Unicode to
+ASCII for use in domain names is required.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Nameprep&quot;&gt;NamePrep&lt;/a&gt; was part of that solution,
+defined in &lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc3491&quot;&gt;RFC 3491&lt;/a&gt; as a profile of StringPrep,
+and is crucially a component of Internationalizing Domain Names in Applications
+(IDNA), also known as “IDNA 2003”. The StringPrep algorithm is defined in
+&lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc3454&quot;&gt;RFC 3454&lt;/a&gt;. IDNA 2003
+has been obsoleted by IDNA 2008 defined in &lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc5890&quot;&gt;RFC
+ 5890&lt;/a&gt;,
+&lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc5891&quot;&gt;5891&lt;/a&gt;,
+&lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc5892&quot;&gt;5892&lt;/a&gt;, and 
+&lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc5893&quot;&gt;5893&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Python supports IDNA 2003 through the &lt;code&gt;idna&lt;/code&gt; codec (&lt;code&gt;str.encode('idna')&lt;/code&gt;) and
+IDNA 2008 is supported by the &lt;a href=&quot;https://pypi.org/project/idna/&quot;&gt;&lt;code&gt;idna&lt;/code&gt; package on the Python package Index&lt;/a&gt;. 
+Python's implementation of StringPrep is implemented in the &lt;a href=&quot;https://docs.python.org/3/library/stringprep.html&quot;&gt;&lt;code&gt;stringprep&lt;/code&gt; module&lt;/a&gt;
+in the standard library. In general, you should be using the &lt;code&gt;idna&lt;/code&gt; package (IDNA 2008)
+and not &lt;code&gt;.encode(&quot;idna&quot;)&lt;/code&gt; (IDNA 2003), but sometimes you
+do need the older behavior.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;StringPrep defines the “case folding” step (case folding is approximately “how to lowercase/uppercase a codepoint”) in &lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc3454#section-3.2&quot;&gt;Section 3.2&lt;/a&gt;, enabling case-insensitive
+comparisons of strings, by mapping all characters through mapping &lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc3454#appendix-B.2&quot;&gt;tables B.2&lt;/a&gt; and &lt;a href=&quot;https://datatracker.ietf.org/doc/html/rfc3454#appendix-B.3&quot;&gt;B.3&lt;/a&gt;.
+B.2 is effectively &lt;code&gt;str.lower()&lt;/code&gt;, lowercasing all characters according to
+Unicode rules and B.3 contains the exceptions. The Python code implementing
+this (and assuming B.3 table is captured correctly) is the following code below:&lt;/p&gt;
+
+&lt;div class=&quot;codehilite&quot;&gt;
+&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;map_table_b3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b3_exceptions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lower&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And that might seem fine... and the title probably gave it away already.
+The &lt;code&gt;str.lower()&lt;/code&gt; call in this function is a vulnerability!&lt;/p&gt;
+
+&lt;p&gt;Why? Because &lt;code&gt;str&lt;/code&gt; uses whatever Unicode data that the particular Python
+interpreter is shipped with, you can figure out what Unicode version your
+Python interpreter uses by accessing &lt;code&gt;unicodedata.unidata_version&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;codehilite&quot;&gt;
+&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;unicodedata&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unicodedata&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unidata_version&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;&amp;#39;17.0.0&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There's also a database of Unicode 3.2.0 data available on every version
+of Python (&lt;a href=&quot;https://docs.python.org/3/library/unicodedata.html#unicodedata.ucd_3_2_0&quot;&gt;&lt;code&gt;unicodedata.ucd_3_2_0&lt;/code&gt;&lt;/a&gt;) specifically for the StringPrep and IDNA algorithms:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ grep -I &quot;ucd_3_2_0&quot; -R Lib/
+Lib/stringprep.py:from unicodedata import ucd_3_2_0 as unicodedata
+Lib/encodings/idna.py:from unicodedata import ucd_3_2_0 as unicodedata
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is important! StringPrep depends on this specific version of Unicode
+to operate consistently, the B.2 and B.3 tables in RFC 3454 are essentially
+Unicode 3.2.0 case-folding rules encoded into
+a table. So we need to use Unicode 3.2.0 case-folding rules, not newer
+Unicode case-folding rules. This is why calling &lt;code&gt;str.lower()&lt;/code&gt; represents
+a difference in the implementation and the specification,
+and therefore a vulnerability:&lt;/p&gt;
+
+&lt;div class=&quot;codehilite&quot;&gt;
+&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# RFC 3454 compliant value (&amp;#39;Ꭰ&amp;#39; is U+13A0)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;ᎠᎠ&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;idna&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;&amp;#39;xn--58da&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Value if using Unicode 17.0.0 case-folding&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;ᎠᎠ&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;idna&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;&amp;#39;xn--kz9aa&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The fix was to create new exceptions so that &lt;code&gt;str.lower()&lt;/code&gt; would behave
+as if it was using Unicode 3.2.0 for only particular function. So, we
+go through &lt;a href=&quot;https://github.com/python/cpython/pull/155293/changes#diff-83ae79799190e9f5924d155d940386cb7adce6470c053997791ed79e9370bf20R206-R215&quot;&gt;each Unicode codepoint&lt;/a&gt; and record when the behavior of
+&lt;code&gt;str.lower()&lt;/code&gt; is different when comparing the Unicode version shipped with Python and Unicode 3.2.0.
+And that's all, now IDNA 2003 is consistent with the specification.&lt;/p&gt;
+
+&lt;p&gt;Thanks to &lt;a href=&quot;https://github.com/TheShiftedBit&quot;&gt;Bitshift&lt;/a&gt; for reporting the vulnerability, &lt;a href=&quot;https://github.com/StanFromIreland&quot;&gt;Stan Ulbrych&lt;/a&gt; for co-developing
+the remediation, and &lt;a href=&quot;https://github.com/malemburg&quot;&gt;Marc-Andre Lemburg&lt;/a&gt; and &lt;a href=&quot;https://github.com/encukou&quot;&gt;Petr Viktorin&lt;/a&gt; for reviewing the
+remediation. See &lt;a href=&quot;https://www.cve.org/CVERecord?id=CVE-2026-17084&quot;&gt;CVE-2026-17084&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;My work as the Security Developer-in-Residence at the &lt;a href=&quot;https://www.python.org/psf-landing/&quot;&gt;Python Software Foundation&lt;/a&gt; is sponsored
+  by &lt;a href=&quot;https://alpha-omega.dev/&quot;&gt;Alpha-Omega&lt;/a&gt;. Thanks to Alpha-Omega for supporting
+  security in the Python ecosystem.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;&lt;hr&gt;&lt;p&gt;Thanks for reading ♥ I would love to hear your thoughts! Contact me via &lt;a href='https://mastodon.social/@sethmlarson'&gt;Mastodon&lt;/a&gt;, &lt;a href='https://bsky.app/profile/sethmlarson.dev'&gt;Bluesky&lt;/a&gt;, or &lt;a href='mailto:sethmichaellarson@gmail.com'&gt;email&lt;/a&gt;. Browse the &lt;a href='https://sethmlarson.dev/'&gt;blog archive&lt;/a&gt;. Check out my &lt;a href='https://sethmlarson.dev/blogroll'&gt;blogroll&lt;/a&gt;.&lt;/p&gt;&lt;hr&gt;&lt;br&gt;</content>
+  </entry>
+  <entry xml:base="https://sethmlarson.dev/feed">
+    <title type="text">Let’s Play “htmx 4: the game”</title>
+    <id>https://sethmlarson.dev/htmx-4-the-game?utm_campaign=rss</id>
+    <updated>2026-08-01T00:00:00Z</updated>
+    <published>2026-08-01T00:00:00Z</published>
+    <link href="https://sethmlarson.dev/htmx-4-the-game?utm_campaign=rss" />
+    <author>
+      <name>Seth Larson</name>
+    </author>
+    <content type="html">&lt;p&gt;Moments ago I just finished playing “&lt;a href=&quot;https://four.htmx.org/&quot;&gt;htmx 4: the game&lt;/a&gt;”, the first
+JavaScript library &lt;a href=&quot;https://swag.htmx.org/products/htmx-4-the-game&quot;&gt;published exclusively for Game Boy and Game Boy Color&lt;/a&gt;.
+I've recorded my play session and published the video to YouTube:&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;
+&lt;center&gt;
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; style=&quot;border: 2px black solid; max-width: 100%;&quot; src=&quot;https://www.youtube.com/embed/I688pAIVSK4?si=CWTFxji8OPUad8sN&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; referrerpolicy=&quot;strict-origin-when-cross-origin&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/center&gt;
+&lt;/p&gt;
+
+&lt;p&gt;When I first saw this announcement it was pure blog bait for me. Game Boy,
+open source software, reverse-engineering, oh my. I purchased the cartridge
+within moments of seeing the announcement.&lt;/p&gt;
+
+&lt;p&gt;The Game Boy cartridge arrived earlier today inside a custom cardboard box
+and plastic case which I appreciate! The box was tight to open without ripping
+the cardboard, I managed with the help of some tweezers. The game is on a
+Game Boy cartridge with a label. The cartridge itself reads “Game” instead of “Game Boy”
+to avoid running afoul of Nintendo trademarks and licensing.&lt;/p&gt;
+
+&lt;p&gt;
+&lt;center&gt;
+&lt;img style=&quot;max-width: 100%; border: 2px black solid;&quot; src=&quot;https://storage.googleapis.com/sethmlarson-dev-static-assets/htmx-4/IMG_5939_small.jpeg&quot;&gt;
+&lt;/center&gt;
+&lt;/p&gt;
+
+&lt;p&gt;I was able to dump the ROM using my &lt;a href=&quot;https://sethmlarson.dev/backup-game-boy-roms-and-saves-on-ubuntu&quot;&gt;Epilogue GB Operator&lt;/a&gt;
+where I initially had some difficulty, but figured out I had to
+upgrade my device firmware.
+I switched over to my &lt;a href=&quot;https://en.wikipedia.org/wiki/Game_Boy_Player&quot;&gt;Game Boy Player&lt;/a&gt; to capture footage
+of game play with my HDMI-modded GameCube.&lt;/p&gt;
+
+&lt;p&gt;The game is &lt;strong&gt;tough&lt;/strong&gt; (especially The Slop Factory, yeesh)
+and took me over an hour to complete,
+and I didn't even find all 4 HTMX letters in each stage...
+hinting that there is &lt;em&gt;more to be discovered!&lt;/em&gt; There
+was pervasive lag while playing which the game’s story
+blames on... React. &lt;em&gt;A likely story!&lt;/em&gt; ;)&lt;/p&gt;
+
+&lt;p&gt;Going in I wasn't sure how they were going to distribute the
+final source code... Would there be a QR code to the source code
+(which would have been a disappointment) or would
+the htmx team actually &lt;a href=&quot;https://en.wikipedia.org/wiki/Type-in_program&quot;&gt;make you type it in yourself
+like a BASIC program from a magazine&lt;/a&gt;? 
+I was so happy to see that the htmx team &lt;a href=&quot;https://youtu.be/I688pAIVSK4?si=kxSuQHs8hVwq3XFU&amp;t=3297&quot;&gt;went all the
+way&lt;/a&gt;, it means I'm even more excited to dig into this ROM!&lt;/p&gt;
+
+&lt;p&gt;As a software distribution mechanism... including
+ordering the game, waiting for delivery, beating
+the game, and then typing in the source code by
+hand from the Game Boy screen... Let's say it's
+slightly less user-friendly than &lt;code&gt;npm install&lt;/code&gt; :)
+But that's the fun of a project like this.&lt;/p&gt;
+&lt;br&gt;&lt;hr&gt;&lt;p&gt;Thanks for reading ♥ I would love to hear your thoughts! Contact me via &lt;a href='https://mastodon.social/@sethmlarson'&gt;Mastodon&lt;/a&gt;, &lt;a href='https://bsky.app/profile/sethmlarson.dev'&gt;Bluesky&lt;/a&gt;, or &lt;a href='mailto:sethmichaellarson@gmail.com'&gt;email&lt;/a&gt;. Browse the &lt;a href='https://sethmlarson.dev/'&gt;blog archive&lt;/a&gt;. Check out my &lt;a href='https://sethmlarson.dev/blogroll'&gt;blogroll&lt;/a&gt;.&lt;/p&gt;&lt;hr&gt;&lt;br&gt;</content>
+  </entry>
+</feed>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-SLfA3a-BmKNS1gA6pL6pGf7PwQfvd56GNT4pHlOC_AuaC6UiLC3oSG3HhQrUNJe1TvyvUlK_PHftHXhSErgKbIaS34VSU5tK8n1yj-YpMib2JV0QWZFOB6OHIbsciUcsj50ggiZ3uXmU5J46fznv2gyZ_FJorLYW544ddoUX_CiZK2IJnYCgbZ5_uIQr_Zmbi-oXt7XPUKvQuWgDvJhozpfllPAHLuQP3JO4OpnnMpwXbmgQOTa2uzBPa21XtNIzQXqDdo9wndfvKQiwQLYOJNj0wlTF2svlSHcONj80H3BT0c4PwURuLTQxMv5s6rG0leNC7JSUIbRe3A1R6U1mjw==' ;
+		script-src 'nonce-SLfA3a-BmKNS1gA6pL6pGf7PwQfvd56GNT4pHlOC_AuaC6UiLC3oSG3HhQrUNJe1TvyvUlK_PHftHXhSErgKbIaS34VSU5tK8n1yj-YpMib2JV0QWZFOB6OHIbsciUcsj50ggiZ3uXmU5J46fznv2gyZ_FJorLYW544ddoUX_CiZK2IJnYCgbZ5_uIQr_Zmbi-oXt7XPUKvQuWgDvJhozpfllPAHLuQP3JO4OpnnMpwXbmgQOTa2uzBPa21XtNIzQXqDdo9wndfvKQiwQLYOJNj0wlTF2svlSHcONj80H3BT0c4PwURuLTQxMv5s6rG0leNC7JSUIbRe3A1R6U1mjw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="SLfA3a-BmKNS1gA6pL6pGf7PwQfvd56GNT4pHlOC_AuaC6UiLC3oSG3HhQrUNJe1TvyvUlK_PHftHXhSErgKbIaS34VSU5tK8n1yj-YpMib2JV0QWZFOB6OHIbsciUcsj50ggiZ3uXmU5J46fznv2gyZ_FJorLYW544ddoUX_CiZK2IJnYCgbZ5_uIQr_Zmbi-oXt7XPUKvQuWgDvJhozpfllPAHLuQP3JO4OpnnMpwXbmgQOTa2uzBPa21XtNIzQXqDdo9wndfvKQiwQLYOJNj0wlTF2svlSHcONj80H3BT0c4PwURuLTQxMv5s6rG0leNC7JSUIbRe3A1R6U1mjw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-all-this-noise-about-jev target="_blank">
+					<h2>What’s all this noise about Jev?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/rss-doesnt-have-to-be-boring target="_blank">
+					<h2>RSS doesn’t have to be boring</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-08">2026-09-08</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-jsfiddle-for-python target="_blank">
+					<h2>What’s up Python? JSFiddle for Python, f-objects, and new built-ins...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-02">2026-09-02</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/moving-out-of-substack-and-linkedin target="_blank">
+					<h2>Moving out of Substack and Linkedin</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-25">2026-08-25</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-__json__-__export__ target="_blank">
+					<h2>What’s up Python? __json__, __export__ and Astral stuff</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-06">2026-08-06</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-wheels-in-the-browser target="_blank">
+					<h2>What’s up Python? Wheels in the browser, astral still moves fast, and my new favorite @</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-01">2026-07-01</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/scripting-good-practices-in-python target="_blank">
+					<h2>Scripting good practices in Python</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-21">2026-06-21</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-pip-supports-locking target="_blank">
+					<h2>What’s up Python? Pip supports locking, .pth files deprecated</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-08">2026-06-08</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-frame-pointers-sentinel target="_blank">
+					<h2>What’s up Python? Frame pointers, sentinel values, venv discovery, more rust in Python...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-28">2026-04-28</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-new-record-type-new target="_blank">
+					<h2>What’s up Python? New record type, new JIT perfs, new Python rest lib...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-31">2026-03-31</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/openai-bought-astral-will-i-keep target="_blank">
+					<h2>OpenAI bought Astral, will I keep using uv?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-23">2026-03-23</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-d-strings-sse-in target="_blank">
+					<h2>What’s up Python? d-strings, SSE in Pydantic and... a new Python?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-10">2026-03-10</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/exedev-a-new-hosting-solution-for target="_blank">
+					<h2>exe.dev: a new hosting solution for your prototypes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-17">2026-02-17</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-astrals-new-service target="_blank">
+					<h2>What&#39;s up Python? Astral&#39;s new service, pandas 3 and a new ORM... </h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-05">2026-02-05</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-astrals-new-type target="_blank">
+					<h2>What’s up Python? Astral&#39;s new type checker, McGugan&#39;s new tool and Django new CSRF protection</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-30">2025-12-30</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/mprocs-start-all-your-projects-commands target="_blank">
+					<h2>mprocs: start all your project&#39;s commands at once</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-22">2025-12-22</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/justified target="_blank">
+					<h2>Justified</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-14">2025-12-14</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-up-python-rust-in-cpython-immutable target="_blank">
+					<h2>What’s up Python ? Rust in CPython, immutable dicts, unpacking in comprehensions...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-08">2025-12-08</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/pydantic-can-do-what target="_blank">
+					<h2>Pydantic can do what?!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-22">2025-11-22</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/80-characters-in-this-economy target="_blank">
+					<h2>80 characters? In this economy?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-17">2025-11-17</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.bitecode.dev" target="_blank">Bite code!</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="SLfA3a-BmKNS1gA6pL6pGf7PwQfvd56GNT4pHlOC_AuaC6UiLC3oSG3HhQrUNJe1TvyvUlK_PHftHXhSErgKbIaS34VSU5tK8n1yj-YpMib2JV0QWZFOB6OHIbsciUcsj50ggiZ3uXmU5J46fznv2gyZ_FJorLYW544ddoUX_CiZK2IJnYCgbZ5_uIQr_Zmbi-oXt7XPUKvQuWgDvJhozpfllPAHLuQP3JO4OpnnMpwXbmgQOTa2uzBPa21XtNIzQXqDdo9wndfvKQiwQLYOJNj0wlTF2svlSHcONj80H3BT0c4PwURuLTQxMv5s6rG0leNC7JSUIbRe3A1R6U1mjw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

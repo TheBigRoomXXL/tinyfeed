@@ -1,0 +1,306 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://paravoce.bearblog.dev</id>
+  <title>ParaVocê Dev Blog</title>
+  <updated>2026-10-17T08:22:48.371731+00:00</updated>
+  <author>
+    <name>paravoce</name>
+  </author>
+  <link href="https://paravoce.bearblog.dev/" rel="alternate"/>
+  <link href="https://paravoce.bearblog.dev/feed/" rel="self"/>
+  <generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator>
+  <subtitle>Hi, I'm Evan. I built Thankful to automate customer service for millions of people, which Gladly acquired in 2023.&#13;
+&#13;
+Since then I started ParaVocê in the of...</subtitle>
+  <entry>
+    <id>https://paravoce.bearblog.dev/how-do-you-provision-a-linux-vm/</id>
+    <title>How do you provision a Linux VM?</title>
+    <updated>2024-10-30T02:05:09.213934+00:00</updated>
+    <author>
+      <name>paravoce</name>
+      <email>hidden</email>
+    </author>
+    <content type="html">&lt;p&gt;There's many ways to provision a Linux VM. I'm going to show you my approach, which as usual, is aimed at keeping it as simple as possible.&lt;sup class="footnote-ref" id="fnref-1"&gt;&lt;a href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;I use Ansible to provision servers. It isn't perfect (it's a huge tool, it's slow, and it uses YAML), but it's the most reliable approach I've found for this task.&lt;/p&gt;
+&lt;p&gt;The nice advantage to Ansible over running a shell script is all the steps ("tasks" in Ansible parlance) are designed with idempotence in mind. That is you can run the tasks again and again, and it won't change the outcome. This helps you reliably set up consistent servers.&lt;/p&gt;
+&lt;p&gt;This is really useful when:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;There's an error partway through its execution and we need to re-run provisioning.&lt;/li&gt;
+&lt;li&gt;You make some changes to the script and want to apply just those changes to your server (even years later).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;First we'll need Ansible installed on our server. Enter our trusty friend the shell script, which we'll execute on the remote server:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/usr/bin/env bash&lt;/span&gt;
+&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-ex
+
+&lt;span class="c1"&gt;# Update and upgrade the system&lt;/span&gt;
+sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;update&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;upgrade&lt;span class="w"&gt; &lt;/span&gt;-y
+
+&lt;span class="c1"&gt;# Install required packages&lt;/span&gt;
+sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;-y&lt;span class="w"&gt; &lt;/span&gt;pipx
+
+&lt;span class="c1"&gt;# Install Ansible&lt;/span&gt;
+pipx&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;ansible
+
+&lt;span class="c1"&gt;# Add Ansible to PATH if not already there&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;&lt;span class="s2"&gt;:&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;!&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*&lt;span class="s2"&gt;&amp;quot;:&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.local/bin:&amp;quot;&lt;/span&gt;*&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;then&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;export PATH=&amp;quot;$HOME/.local/bin:$PATH&amp;quot;&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&amp;gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;~/.bashrc
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Initial setup complete. Please update the inventory.ini file with your server&amp;#39;s IP address.&amp;quot;&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Then run the Ansible playbook with: ansible-playbook -i inventory.ini playbook.yaml&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And because I'm forgetful, I have a little addition to my &lt;code&gt;Makefile&lt;/code&gt;, so I can remember how to run it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;provision:
+	rsync -chazP ansible/provision.sh root@server1:
+	ssh root@server1 &amp;#39;./provision.sh&amp;#39;
+.PHONY: provision
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Ansible uses "playbooks," which you can think of as a series of tasks defined in YAML. Let's take a look at how I provision the server by installing updates and configuring SSH:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Provision Debian 12&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;all&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;become&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;new_user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;lookup(&amp;#39;file&amp;#39;,&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;#39;user.txt&amp;#39;)&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Create non-root user&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;new_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;sudo&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;shell&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/bin/bash&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Set authorized keys taken from url&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;authorized_key&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;new_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;present&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;key&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;https://meta.sr.ht/~{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;new_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}.keys&amp;quot;&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Allow sudo without password for new user&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;lineinfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/sudoers&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;present&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;regexp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;^{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;new_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ALL=&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;line&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;new_user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ALL=(ALL)&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;NOPASSWD:&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;ALL&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;validate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;visudo&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;-cf&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;%s&amp;quot;&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Ensure public key authentication is enabled&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;lineinfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/ssh/sshd_config&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;regexp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;^#?PubkeyAuthentication&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;line&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;PubkeyAuthentication&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;yes&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;notify&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Restart SSH&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Disable password-based SSH authentication&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;lineinfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/ssh/sshd_config&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;regexp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;^#?PasswordAuthentication&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;line&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;PasswordAuthentication&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;no&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;notify&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Restart SSH&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;handlers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Restart SSH&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ssh&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;restarted&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You see &lt;code&gt;lookup('file', 'user.txt')&lt;/code&gt; above? That's having Ansible look at my own PC (not the server) for a file named &lt;code&gt;files/user.txt&lt;/code&gt; and using that content throughout the rest of the script.&lt;/p&gt;
+&lt;p&gt;Also notice how it's pulling the authorized keys directly from Sourcehut! You could just as easily do the same from Github with &lt;code&gt;https://github.com/{{ new_user }}.keys&lt;/code&gt;, or include them as a file lookup like we did for the user.&lt;/p&gt;
+&lt;p&gt;I &lt;em&gt;could&lt;/em&gt; do all of this in a shell script, but making it idempotent is error prone. I am far too careless of a developer to write perfect shell scripts that account for edge-cases. Ansible gives me a better default behavior for provisioning.&lt;/p&gt;
+&lt;p&gt;As another example playbook, here's how I run an app with its own daemon user and systemd service file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nn"&gt;---&lt;/span&gt;
+&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Provision app&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;all&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;become&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;_app&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;_app&amp;quot;&lt;/span&gt;
+
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Create app group&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;group&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;system&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;present&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Create app user&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;system&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;group&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;create_home&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;home&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/home/{{&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;user&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;}}&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;shell&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/usr/sbin/nologin&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Create systemd service file&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;copy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;[Unit]&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;Description=app Server&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;After=network.target&lt;/span&gt;
+
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;[Service]&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;Type=simple&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;User=_app&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;ExecStart=/home/_app/app&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;WorkingDirectory=/home/_app&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;Restart=always&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;RestartSec=5&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;Environment=ENV=production&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;Environment=ENV_FILE=production.ini&lt;/span&gt;
+
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;[Install]&lt;/span&gt;
+&lt;span class="w"&gt;          &lt;/span&gt;&lt;span class="no"&gt;WantedBy=multi-user.target&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;dest&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/systemd/system/app.service&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;mode&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;0644&amp;quot;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;owner&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;root&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;group&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;root&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Reload systemd&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;systemd&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;daemon_reload&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Enable and start app service&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;systemd&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;app&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;enabled&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;yes&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;started&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In order for Ansible to talk to our server, we need an inventory. A simple &lt;code&gt;inventory.ini&lt;/code&gt; file might look like this (you'd replace the IP with your own):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[debian]
+100.0.0.1 ansible_user=root
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Notice that you can group them under headings. In the playbook above, I used &lt;code&gt;hosts: all&lt;/code&gt;, but you could use &lt;code&gt;hosts: debian&lt;/code&gt; to target this particular IP. The group names are arbitrary, so you can name them whatever makes sense in your project.&lt;/p&gt;
+&lt;p&gt;To run this we'd call:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ansible-playbook ansible/provision_app.yaml -i ansible/inventory.ini
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;We could stop here, but it's often useful to have several playbooks, each performing one task. For instance, I have the following in a simple project:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ ls ansible/playbooks
+provision.yaml # download updates, configure ssh
+postgres.yaml  # set up postgres
+caddy.yaml     # set up a reverse proxy
+app.yaml       # set up a daemon user and enable the service
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If we want to run all of these scripts at once instead of individually, we can create &lt;code&gt;playbook.yaml&lt;/code&gt; and instruct it to import the others:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;- import_playbook: provision.yaml
+- import_playbook: postgres.yaml
+- import_playbook: caddy.yaml
+- import_playbook: app.yaml
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And run it just as before:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ansible-playbook ansible/playbook.yaml -i ansible/inventory.ini
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That's a quick intro to Ansible. Like Git, Ansible is a huge tool, but I found the "2% of its capabilities" workflow that works for me, and that 2% might be enough for you, too.&lt;/p&gt;
+&lt;p&gt;In my next post, I'll be describing my journey from horizontal to vertical scaling and why I made the leap. &lt;strong&gt;Subscribe on RSS or &lt;a href='/subscribe/'&gt;email&lt;/a&gt; to follow along.&lt;/strong&gt;&lt;/p&gt;
+&lt;section class="footnotes"&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;&lt;p&gt;For this article I'm assuming Debian. Nix is another great way to reliably create VMs.&lt;a href="#fnref-1" class="footnote"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://paravoce.bearblog.dev/how-do-you-provision-a-linux-vm/"/>
+    <category term="devops"/>
+    <category term="sysadmin"/>
+    <published>2024-10-30T01:22:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://paravoce.bearblog.dev/how-do-you-deploy-in-10-seconds/</id>
+    <title>How do you deploy in 10 seconds?</title>
+    <updated>2024-10-20T15:10:06.281667+00:00</updated>
+    <author>
+      <name>paravoce</name>
+      <email>hidden</email>
+    </author>
+    <content type="html">&lt;p&gt;This post describes my lessons learned after 10 years running production environments in sizes ranging from "just getting started" to a "Series F" company with 4-9 SLAs.&lt;/p&gt;
+&lt;p&gt;Like any good developer, I'm &lt;a href='https://thethreevirtues.com/'&gt;impatient&lt;/a&gt; and expect tasks to be fast, &lt;em&gt;especially&lt;/em&gt; if I need to do them often, like deploying. Nothing is worse than hitting "deploy" and having a 10-15 minute delay before I can validate my changes. It's a pain felt by the whole team, multiple times, every day. It breaks their flow. And engineers are expensive, so this lost time and concentration costs a lot of money too.&lt;/p&gt;
+&lt;p&gt;Let's start with the typical setup for my company, analyze what takes the most time, and see how we can strip these layers away to make something that's faster and simpler.&lt;/p&gt;
+&lt;p&gt;CI/CD has been a Best Practice™ for a long time now, but it's &lt;strong&gt;slow.&lt;/strong&gt; Even with special concern for caching, it's just much slower than running &lt;code&gt;go build&lt;/code&gt; locally, and it's a lot more complex.&lt;sup class="footnote-ref" id="fnref-1"&gt;&lt;a href="#fn-1"&gt;1&lt;/a&gt;&lt;/sup&gt; For a big application at my company, compiling locally takes ~10 seconds, whereas building the binary in Github workers takes several minutes.&lt;/p&gt;
+&lt;p&gt;Gradual rollouts are slow too, taking 5-10 minutes as k8s rolls out updates to pods across the fleet. This is an especially important practice when your deploys take so long, since reverting any change will be just as painful. You need to be sure it's going to work the first time.&lt;/p&gt;
+&lt;p&gt;But if you could deploy in 10 seconds, do you &lt;em&gt;need&lt;/em&gt; to gradually increase traffic for every change, or could you just redeploy?&lt;sup class="footnote-ref" id="fnref-2"&gt;&lt;a href="#fn-2"&gt;2&lt;/a&gt;&lt;/sup&gt; I would just redeploy. The YOLO of devops.&lt;/p&gt;
+&lt;p&gt;I know what I want. Let me deploy quickly and undo changes quickly. So how do we do it?&lt;/p&gt;
+&lt;p&gt;Let's go back in time and use the basics: bash, rsync, and a service manager. At a high level, my typical deploy script looks like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;#!/usr/bin/env bash
+set -ex
+
+TMP_DIR=/tmp/app
+
+rm -r &amp;quot;$TMP_DIR&amp;quot;
+mkdir &amp;quot;$TMP_DIR&amp;quot;
+
+go build -o &amp;quot;${TMP_DIR}/app&amp;quot;
+cp app.service env.ini &amp;quot;${TMP_DIR}/&amp;quot;
+
+rsync -chazP &amp;quot;$TMP_DIR&amp;quot; server1:
+
+ssh server1 &amp;#39;
+    sudo systemctl stop app &amp;amp;&amp;amp; \
+    sudo cp -R app/* /home/_app/ &amp;amp;&amp;amp;
+    sudo mv app /home/_app/app &amp;amp;&amp;amp; \
+    sudo chown -R _app:_app /home/_app/* &amp;amp;&amp;amp; \
+    sudo chmod 400 /home/_app/env.ini &amp;amp;&amp;amp; 
+    sudo systemctl start app&amp;#39;
+
+rm -r &amp;quot;$TMP_DIR&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This example script&lt;sup class="footnote-ref" id="fnref-3"&gt;&lt;a href="#fn-3"&gt;3&lt;/a&gt;&lt;/sup&gt; builds our binary, moves it to our dedicated daemon's home folder, adjusts permissions and ownership, and restarts the service.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;"But wait!",&lt;/em&gt; I hear you say. "You're only deploying to one server. This means we have no redundancy, and restarting the service results in a brief outage." We certainly have no redundancy in this scenario -- I'll write an entire post espousing the benefits of vertical scaling over horizontal and why redundancy isn't all it's cracked up to be until massive scale. It's too much to fit into this post. But to your second point, restarting a service doesn't mean you need to have an outage -- simply a delay! Your reverse proxy should keep the request open until the server comes back online. In Caddy, you do this via &lt;a href='https://caddyserver.com/docs/json/apps/http/servers/routes/handle/reverse_proxy/load_balancing/#try_duration'&gt;try_duration&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So it really is that simple: a small bash script, building locally, rsync'ing the changes, and restarting the service. It's just the bare essentials of a deployment. That's how I deploy in 10 seconds.&lt;/p&gt;
+&lt;p&gt;In my next two posts, I'll:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Show you how I provision a Debian server using Ansible&lt;/li&gt;
+&lt;li&gt;Compare trade-offs of horizontal and vertical scaling&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Subscribe on RSS or &lt;a href='/subscribe/'&gt;email&lt;/a&gt; to follow along.&lt;/strong&gt;&lt;/p&gt;
+&lt;section class="footnotes"&gt;
+&lt;ol&gt;
+&lt;li id="fn-1"&gt;&lt;p&gt;Every developer knows how to compile locally. Only a few at my company understand Docker's layer caching + mounts and Github Actions' yaml-based workflow configuration in any detail. So when something doesn't work compiling locally, it's also a lot easier for a typical developer to figure out why.&lt;a href="#fnref-1" class="footnote"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id="fn-2"&gt;&lt;p&gt;Nothing is stopping you from A/B testing your code in the application layer with a simple &lt;code&gt;rand.IntN()&lt;/code&gt;. If you're deploying something risky with lots of traffic, you probably should. But implementing gradual rollouts in CI/CD forces engineers to wait several minutes on every deploy, every time, even for trivial and low-risk changes.&lt;a href="#fnref-2" class="footnote"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id="fn-3"&gt;&lt;p&gt;A real script would be decrypting secrets and checking &lt;code&gt;git status --porcelain&lt;/code&gt; to ensure that all the changes are committed, but this gives you a good overview of the approach. Future posts will describe how to reliably provision a server.&lt;a href="#fnref-3" class="footnote"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</content>
+    <link href="https://paravoce.bearblog.dev/how-do-you-deploy-in-10-seconds/"/>
+    <category term="devops"/>
+    <published>2024-10-20T14:45:00+00:00</published>
+  </entry>
+  <entry>
+    <id>https://paravoce.bearblog.dev/youre-overcomplicating-production/</id>
+    <title>You're overcomplicating production</title>
+    <updated>2024-10-18T14:27:25.142773+00:00</updated>
+    <author>
+      <name>paravoce</name>
+      <email>hidden</email>
+    </author>
+    <content type="html">&lt;p&gt;You're going to have outages in production. They're inevitable. The question is how to best minimize outages, both their frequency and duration.&lt;/p&gt;
+&lt;p&gt;Common wisdom advocates for using managed k8s and databases, containerized services, horizontal scaling for redundancy, building images in CI/CD, and defining your infrastructure as code. This is Best Practice™, and no one was ever fired for doing that. In fact it's quite good for your resumé.&lt;/p&gt;
+&lt;p&gt;I will argue that such common wisdom is wrong. These tools are complex, and complex infrastructure is a wildly net-negative distraction to your business and inherently risky.&lt;/p&gt;
+&lt;p&gt;Over the past 10 years I've run services in production with millions of customers, exceeding 4-9's uptime. During that time I experimented with a wide variety of architectures, starting with self-managed servers on a fleet of OpenBSD VMs, then writing a custom orchestrator deploying services with OCI containers, and finally adopting GKE-managed k8s.&lt;/p&gt;
+&lt;p&gt;Over time I increased the complexity of the system, looking to how the industry solved real problems I was facing, such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If my server goes down, how can I have redundancy?&lt;/li&gt;
+&lt;li&gt;If my VMs get deleted, how can I recover quickly?&lt;/li&gt;
+&lt;li&gt;If I need to hire more people, how can I get them up-to-speed?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;But like Goldilocks looking for soup, nothing was quite right.&lt;/p&gt;
+&lt;p&gt;Deploys take 15 minutes on Github workers. When something goes wrong, it kicks off a murder-mystery figuring out the problem, needing root cause analysis and post-mortems. It takes an entire team to manage the system, requiring complex network diagrams and human processes to keep everything up-to-date.&lt;/p&gt;
+&lt;p&gt;When I started up a new project for the first time in 10 years, I realized just how simple it all could have been. Even with millions of customers and 40 employees, we could have easily run on a single VM using Go and SQLite. We could have 10x'd with that same strategy.&lt;/p&gt;
+&lt;p&gt;There's a whole industry pushing complexity. That's why GCP/AWS/Microsoft/Hashicorp and every VC company under the sun sponsor so many events -- they need to convince you that you need what they sell. They market it like any other product. Once it takes hold in the industry as Best Practice™, it self-perpetuates, with developers advocating for the latest hype without fully understanding the trade-offs, until it's years later and you're stuck managing MongoDB.&lt;/p&gt;
+&lt;p&gt;Fuck that. I'm swimming against the current. Build the simplest systems possible.&lt;/p&gt;
+&lt;p&gt;Simple systems are faster to iterate, easier to debug, and just as secure and reliable if not more so.&lt;/p&gt;
+&lt;p&gt;As I write future blog posts, I'll be covering this in more detail:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Picking a VM provider&lt;/li&gt;
+&lt;li&gt;Managing a Linux server&lt;/li&gt;
+&lt;li&gt;Scripts to make deploys easy&lt;/li&gt;
+&lt;li&gt;How to minimize outages&lt;/li&gt;
+&lt;li&gt;How to secure everything&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Subscribe on RSS to follow along.&lt;/p&gt;
+</content>
+    <link href="https://paravoce.bearblog.dev/youre-overcomplicating-production/"/>
+    <category term="devops"/>
+    <category term="sysadmin"/>
+    <published>2024-10-18T14:15:00+00:00</published>
+  </entry>
+</feed>

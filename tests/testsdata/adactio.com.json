@@ -1,0 +1,208 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Adactio: Journal",
+    "description": "The online journal of Jeremy Keith, an author and web developer living and working in Brighton, England.",
+    "icon": "https://adactio.com/images/photo-600.jpg",
+    "favicon": "https://adactio.com/favicon-96x96.png",
+    "home_page_url": "https://adactio.com/journal/",
+    "feed_url": "https://adactio.com/journal/feed.json",
+    "author": {
+        "name": "Jeremy Keith"
+    },
+    "items": [
+        {
+            "id": "22805",
+            "url": "https://adactio.com/journal/22805",
+            "title": "Ranking proposals for Interop 2027",
+            "summary": "My top five, in order of priority.",
+            "date_published": "2026-10-16 17:58:53",
+            "tags": [
+                "interop2027",
+                "browsers",
+                "standards",
+                "proposals",
+                "features",
+                "frontend",
+                "development",
+                "html",
+                "css",
+                "javascript",
+                "interoperability",
+                "ranking",
+                "sharing",
+                "priorities"
+            ],
+            "content_html": "<p>The Firefox team are <a href=\"https://interop-rank.fxdx.dev/\">asking us to weigh in</a> on proposals for Interop 2027—what features should browsers be concentrating on implementing or improving.</p><p><a href=\"https://interop-rank.fxdx.dev/share/adactio-vkf3j6kb64fc/\">Here are my top five</a>:</p><ol><li><a href=\"https://github.com/web-platform-tests/interop/issues/1430\">Web app installation via <code>&lt;install&gt;</code> and <code>navigator.install()</code></a>. Prompts the user to install a progressive web app.</li><li><a href=\"https://github.com/web-platform-tests/interop/issues/1335\">Speculation Rules API</a>. Hints to the browser to proactively download pages in the background so they appear instantly when the user navigates to them.</li><li><a href=\"https://github.com/web-platform-tests/interop/issues/1344\">CSS <code>var()</code> in size container queries</a>. Such as <code>@container (width &gt;= var(--min-width))</code>.</li><li><a href=\"https://github.com/web-platform-tests/interop/issues/1350\">CSS <code>flex-wrap: balance</code></a>. Distributes items in a multi-line flex container so each line has about the same number of items.</li><li><a href=\"https://github.com/web-platform-tests/interop/issues/1358\">Interest invokers</a>. The <code>interestfor</code> attribute triggers actions on a target element when the user shows interest, such as via hover, focus, or long-press.</li></ol><p>Those are very much in order of priority. Imagine them following <a href=\"https://en.wikipedia.org/wiki/Pareto_distribution\">a Pareto distribution</a>; the top 20% (in other words, the first one) is 80% of my priority.</p><p>But other people have other priorities: <a href=\"https://www.alwaystwisted.com/articles/and-thats-my-rank-2027-edition\">Stu</a>, <a href=\"https://meyerweb.com/eric/thoughts/2026/10/14/my-interop-2027-rankings/\">Eric</a>, <a href=\"https://ohhelloana.blog/my-interop-2027/\">Ana</a>, <a href=\"https://tylersticka.com/journal/interop-2027-rank/\">Tyler</a>, <a href=\"https://pawelgrzybek.com/my-interop-2027-picks/\">Paweł</a>, <a href=\"https://vale.rocks/micros/20261011-0700\">Declan</a>, <a href=\"https://www.sarasoueidan.com/blog/interop-2027-rankings/\">Sara</a>, and <a href=\"https://cydstumpel.nl/my-picks-for-interop-2027/\">Cyd</a>, for example.</p><p>There’s a lot of love for styleable <code>select</code> in there—can’t argue with that.</p><p>Get in there and <a href=\"https://interop-rank.fxdx.dev/\">rank your priorities</a>. Then share them.</p>"
+        }
+,        {
+            "id": "22802",
+            "url": "https://adactio.com/journal/22802",
+            "title": "The Tusks Of Extinction by Ray Nayler",
+            "summary": "A tightly constructed atmospheric novella set in the future but rooted in the issues of today.",
+            "date_published": "2026-10-16 14:42:18",
+            "tags": [
+                "book",
+                "review",
+                "sci-fi",
+                "sciencefiction",
+                "novella",
+                "mammoths",
+                "de-extinction",
+                "humanity"
+            ],
+            "content_html": "<p>Hot on the heels of <a href=\"https://adactio.com/journal/22801\">reading and enjoying <cite>The Mountain In The Sea</cite></a>, I picked up Ray Nayler’s next work, this tightly constructed novella.</p><p>Once again it deals with inter-species communication. This time it’s de-extincted mammoths. Once again, it’s set in the relatively near future. Many of the same gadgets reappear in this book. It may well be set in the same world.</p><p>There’s a tangible atmosphere to this story. But despite it’s high-tech premise, it’s not escapist. The narrative is driven by the all-too-real issues of ivory poaching and big-game hunting.</p><p>And this is where I start to get a nagging feeling about Ray Nayler’s work. At times it seems to relish in describing the worst that humanity is capable of. It starts to veer into misanthropy. If you yourself are misanthropic, it will just come across as realism. But it feels a bit too easy, a bit too cheap.</p><p>I remember this happening with Paolo Bacigalupi’s books. I enjoyed <cite>The Wind-up Girl</cite>, but <a href=\"https://adactio.com/journal/20740\">by the time I read <cite>The Water Knife</cite></a>, his misanthropy (and misogyny) had become self-parody:</p><blockquote>  <p>Instead of asking what the future might actually be like, it instead asks “what’s the absolute worst that could happen?” Frankly, it’s a cop-out.</p>  <p>The book takes a similar tack with its characters. It assumes everyone’s terrible and will do terrible things. It’s lazy.</p>  <p>So you’ve got an unrelenting series of people behaving terribly in a horrific setting. It gets boring.</p></blockquote><p><cite>The Tusks Of Extinction</cite> isn’t that. It manages to maintain a balance. But I hope that the next Ray Nayler book I read won’t tip over into wallowing in the worst of our species.</p><p>I’ll find out soon enough. I’ve already got <cite>Palaces Of The Crow</cite> on loan from the library.</p><p><a href=\"https://uk.bookshop.org/a/980/9781250855527\"><img src=\"https://images-eu.bookshop.org/images/9781250855527.jpg\" width=\"326\" height=\"500\" loading=\"lazy\" alt=\"Buy this book\"></a></p>"
+        }
+,        {
+            "id": "22801",
+            "url": "https://adactio.com/journal/22801",
+            "title": "The Mountain In The Sea by Ray Nayler",
+            "summary": "A first-contact story that mashes up philosophy and cyperpunk in a satisfying briny bath.",
+            "date_published": "2026-10-15 20:23:52",
+            "tags": [
+                "book",
+                "review",
+                "sci-fi",
+                "sciencefiction",
+                "cyberpunk",
+                "philosophy",
+                "firstcontact",
+                "linguistics",
+                "communication",
+                "language",
+                "consciousness",
+                "octopus"
+            ],
+            "content_html": "<p><a href=\"https://adactio.com/journal/16272\">Back in 2019</a>, I read the book <a href=\"https://adactio.com/notes/15383\"><cite>Other Minds: The Octopus, the Sea, and the Deep Origins of Consciousness</cite> by Peter Godfrey-Smith</a> and said:</p><blockquote>  <p>I really enjoyed this evolutionary tale. It’s equal parts biology and philosophy. I will never look at cephalopods quite the same way again.</p></blockquote><p>Reading Ray Nayler’s <cite>The Mountain In The Sea</cite> reminded so much of that book that I couldn’t resist flipping ahead to the acknowledgements at the back. Sure enough, <cite>Other Minds</cite> gets a big shout-out.</p><p>But that’s only part of the make-up of <cite>The Mountain In The Sea</cite>. There’s just as much William Gibson as Peter Godfrey-Smith.</p><p>I don’t just mean that the book is an unexpectedly rip-roaring cyberpunk thriller—which it is—but that it’s also got that Gibsonian narrative structure; three disconnected protagonists in three separate stories that you just know are going to connect before the book is done.</p><p>The great accomplishment of this book is how well it balances the two genres of philosophy and cyberpunk. There’s plenty of musings on the nature of consciousness, be it human, octopus, or artificial intelligence. But there’s also plenty of high-tech hacking shenanigans.</p><p>Above all, it’s an excellent example of one of my favourite subgenres of science fiction: <a href=\"https://en.wikipedia.org/wiki/First_contact_(science_fiction)\">first contact</a>. It’s as linguistically satisfying as Ted Chiang’s <cite>Story Of Your Life</cite>, the pinnacle of the first-contact subgenre. The fact that there are no extra-terrestrial species just adds to its realism.</p><p><a href=\"https://uk.bookshop.org/a/980/9781399600484\"><img src=\"https://images-eu.bookshop.org/images/9781399600484.jpg\" width=\"326\" height=\"500\" loading=\"lazy\" alt=\"Buy this book\"></a></p>"
+        }
+,        {
+            "id": "22798",
+            "url": "https://adactio.com/journal/22798",
+            "title": "Zero",
+            "summary": "A modest proposal.",
+            "date_published": "2026-10-14 00:55:50",
+            "tags": [
+                "government",
+                "services",
+                "zero-rate",
+                "mobile",
+                "data",
+                "charges"
+            ],
+            "content_html": "<p>The term “no-brainer” refers to a suggestion that is so compelling that it would be foolish to even consider not doing it.</p><p>I came across a no-brainer recently, thanks to Matt Hobbs:</p><blockquote>  <p>Make all UK Government websites free to access without mobile data charges.</p></blockquote><p>When I was done slapping my forehead at how obvious this proposal is, <a href=\"https://petition.parliament.uk/petitions/781594\">I signed the petition</a>. If you’re a UK resident, you should do the same. And then spread the word.</p><p>This is the kind of proposal that I imagine any politician would be happy to support, regardless of party affiliation, so don’t be shy about contacting your local MP.</p><p>I guess in theory this could be opposed on the grounds that it technically violates net neutrality, but I would hope that the obvious societal benefits would outweigh that objection.</p><p>Like I said, a no-brainer.</p>"
+        }
+,        {
+            "id": "22790",
+            "url": "https://adactio.com/journal/22790",
+            "title": "Lake Of Souls by Ann Leckie",
+            "summary": "A short story collection in three parts.",
+            "date_published": "2026-10-06 15:31:23",
+            "tags": [
+                "book",
+                "review",
+                "sci-fi",
+                "sciencefiction",
+                "short",
+                "stories"
+            ],
+            "content_html": "<p>In some ways, the short story is the ideal format for science fiction. If science fiction is all about ideas, a short story is a way to take an idea and play it out without any obligation to build a bigger world around it.</p><p>But short stories can work the other way too. If you have a bigger world that’s been established in full-length novels, a short story can be just the right format for exploring another corner of that world.</p><p>In <cite>Lake Of Souls: The Collected Short Fiction</cite> by Ann Leckie, you get both.</p><p>The stories are split into three categories. The first has standalone stories. The second has stories from the universe established in the <a href=\"https://en.wikipedia.org/wiki/Ancillary_Justice\">Imperial Radch</a> series. The third has stories from the world of <a href=\"https://en.wikipedia.org/wiki/The_Raven_Tower\"><cite>The Raven Tower</cite></a>.</p><p>In my opinion, the standalone stories are really good. The Imperial Radch stories are also great. But the stories from world of <cite>The Raven Tower</cite> are best of all. Something about the fable-like premise of that world makes it ideal for short stories that are like twisted little fairy tales.</p><p>At this point I think I’ve read everything that Ann Leckie has published so I feel safe in saying you can’t go wrong if you pick up any of her books. There’s something deeply humanist about her writing.</p><p><a href=\"https://uk.bookshop.org/a/980/9780356523460\"><img src=\"https://images-eu.bookshop.org/images/9780356523460.jpg\" width=\"326\" height=\"500\" loading=\"lazy\" alt=\"Buy this book\"></a></p>"
+        }
+,        {
+            "id": "22781",
+            "url": "https://adactio.com/journal/22781",
+            "title": "Twenty five years of writing on adactio.com",
+            "summary": "Happy birthday to my little corner of the web.",
+            "date_published": "2026-09-30 13:06:10",
+            "tags": [
+                "anniversary",
+                "writing",
+                "sharing",
+                "blogging",
+                "indieweb",
+                "personal",
+                "publishing",
+                "longevity",
+                "digital",
+                "preservation"
+            ],
+            "content_html": "<p>On this day, twenty five years ago, I wrote <a href=\"https://adactio.com/journal/1\">my first journal entry</a> on this website.</p><p>Twenty five years! A quarter of a century! That’s a significant portion of the lifetime of the World Wide Web itself.</p><p>Actually, this site did exist before September 30th, 2001 but it was very different. You can still look at <a href=\"https://adactio.com/version1/index.shtml\">the very first version of adactio.com</a> if you want to wallow in the glory days of framesets and DHTML. But it was twenty five years ago that I started publishing my thoughts here, making adactio.com my online home.</p><p>The funny thing is, I distinctly remember when I started writing that I was getting into this whole blogging thing really late. So many others had been doing it for a while at that point. Now there aren’t many of them left.</p><p>It’s not just <a href=\"https://adactio.com/journal\">the journal</a> though. At some point I added <a href=\"https://adactio.com/links\">the links section</a>. Later still, I added <a href=\"https://adactio.com/notes\">notes</a>. Between those three sections, I usually end up posting something on this website at least once a day.</p><p>But I don’t put any pressure on myself. That might be the secret to the longevity of the site. I don’t worry about running out of things to write about. If I go for a while without writing anything, that’s okay. But that rarely happens. There’s almost always something I want to share. Like I said <a href=\"https://adactio.com/journal/1\">in that first ever post</a>:</p><blockquote>  <p>I’ll try and post fairly regularly but I don’t want to make any promises I can’t keep.</p></blockquote><p>I also wrote:</p><blockquote>  <p>Being a web developer, there’s bound to be lots of geeky, techy stuff but I also want a place where I can rant and rave about life in general.</p></blockquote><p>I think the tech stuff has decreased over the past few years. I’m more likely to write about music or books. I expect that trend will continue.</p><p>I certainly have no plans to stop. It feels good to have my own little homestead on the web where I can do whatever I want.</p><p>After twenty five years, it feels good to occasionally <a href=\"https://adactio.com/archive/\">peruse the archive</a> and revisit the past.</p><p>Here’s to the next twenty five.</p>"
+        }
+,        {
+            "id": "22778",
+            "url": "https://adactio.com/journal/22778",
+            "title": "Think local",
+            "summary": "Warning: this post is about large language models. Avoid.",
+            "date_published": "2026-09-25 15:49:20",
+            "tags": [
+                "ai",
+                "machinelearning",
+                "language",
+                "models",
+                "generative",
+                "tools",
+                "software",
+                "development",
+                "local",
+                "open",
+                "hyperscale",
+                "agency",
+                "creativity"
+            ],
+            "content_html": "<p>If you’re anything like me, you’re sick of hearing about so-called “AI”. We are not a fringe. The majority consensus amongst actual regular people is that this is being forced down our throats and stuffed into our eyes and ears.</p><p>That’s why it pains me that I’m about to add more fecal matter onto the ever-growing pile of shit by writing yet another hot take related to large language models.</p><p>If you stop reading now, I don’t blame you. In fact, I applaud you.</p><p>Anyway…</p><p>The last time <a href=\"https://adactio.com/journal/22529\">I made the mistake of writing about large language models</a>, I set out my stall thusly:</p><blockquote>  <p>Software is almost certainly the killer app for large language models.</p>    <p>I think the artists, writers, and musicians will be okay, or at least as okay as they ever were. It turns out that humans like things made by other humans.</p>    <p>And y’know what? If I had to choose which endeavour I’d rather see automated away—programming or art—it’s no competition.</p></blockquote><p>I stand by that. But it doesn’t mean that software development gets a free pass to use exploitative extractive tools with a clear conscience.</p><p>You can use these tools in a thoughtless way or you can use them thoughtfully. I really like <a href=\"https://www.robinsloan.com/lab/ask-for-what-you-want/\">Robin Sloan’s approach</a>:</p><blockquote>  <p>The consensus vision seems to involve AI working for you day-to-day, a constant ambient presence, sparkles in everything; even cautious Apple has succumbed. I’m not interested in that.</p>    <p>My alternative: get your wish, then stuff the genie back into the lamp.</p></blockquote><p>He’s got a set of rules:</p><blockquote>  <ol>  <li>You must actually and consistently use anything you build for two months before posting about it.</li>  <li>Ideally, never post about it. (I know I am breaking this rule, but my purpose is pedagogical, and anyway, I’ve got more apps I didn’t tell you about.)</li>  <li>Don’t let the AI agent name the app. You pick the name.</li>  <li>Don’t distribute the app, not even for free. Don’t post the code on GitHub. This is not software for glory; it is software for you.</li>  </ol></blockquote><p>For most of my career, I’ve wanted web development to become something that anyone could do. I really like the World Wide Web and I think it would be great if more people had their own websites. But I totally get that most people have no interest in learning HTML.</p><p>One of my biggest fears for the web was that it would become the domain of professionals only; a gatekeeping priesthood who get to make stuff while everyone else goes without.</p><p>The efficacy of large language models for coding would seem to lessen that possibility. Especially if you apply Robin’s approach.</p><p><a href=\"https://thesession.org/\">The Session</a> has <a href=\"https://thesession.org/api\">an API</a>. There are also <a href=\"https://github.com/adactio/TheSession-data\">weekly data dumps</a> of everything on the site. The idea is that other people can use these to build other useful tools for themselves.</p><p>Lately, there’s been a big uptick of <a href=\"https://thesession.org/api#example-apps\">these kinds of tools</a>, mostly made by someone with the help of large language models. Often they have no previous experience of making software.</p><p>This is good. But I get uneasy when I see people selling these tools to other people. Call me old-fashioned but I feel that if you’re going to ask people to pay for a thing, you should understand that thing. I think that’s why Robin’s list of suggestions resonates with me.</p><p>But…</p><p>To build software with large language models today, you pretty much have to pay some money to the absolute worst sort of people, the ones pedalling tokens to their “hyperscale” products. You can’t avoid being complicit because there isn’t really an alternative.</p><p>I think that might change.</p><p>I’m not going to make predictions. That’s a mug’s game. But I might attempt a gentle unspooling of one potential future…</p><p>First off, there’s a crash coming. That’s pretty much inevitable at this point. The only question is how much collatoral damage it’s going to do to the world.</p><p>Right now, tokens are subsidised. The hyperscalers lose money when people use their products. It’s possible that we are now living through a golden age of making software relatively cheaply with large language models. That will change when the hyperscalers start charging for the true cost of tokens.</p><p>Not for everyone though. I believe that enterprise software companies will happily pay the true price for tokens. It’ll be like <a href=\"https://en.wikipedia.org/wiki/Google_Glass\">Google Glass</a>; that was an absolute disaster for the consumer market but went on to have a productive second life in factories.</p><p>You know when you’re in an airport and you see advertisements that are not for you, but for faceless corporations? You know the ones. They’re all “cloud” this and “sap” that. Now they’re all about “AI”. It’s not for us. It’s for them.</p><p>Does this spell the end of making <a href=\"https://www.robinsloan.com/notes/home-cooked-app/\">home-cooked apps</a> with large language models?</p><p>I don’t think so.</p><p>The hyperscalers might become unaffordable to most people, but keep an eye on open models. And keep your other eye on local models.</p><p>Right now, open local models aren’t as good as the large language models that require data centres of computation and energy. But they aren’t massively far behind. And if the recent history of large language models has taught us anything, it’s that “good enough” is fine.</p><p>Take Google Search. They decided to fuck it up by forcing generated summaries into your eyeballs above the actual search results. These summaries aren’t 100% accurate. Let’s be generous and say they’re accurate more than 90% of the time. According to Google, that’s good enough.</p><p>So, sure, local open models may never reach the levels of data-centre-powered large language models. But they don’t need to. They just need to be good enough.</p><p>I’m really looking forward to that.</p><p>My issue with large language models has never been the actual technology, which is genuinely fascinating. My issue is with the power dynamics, of being robbed of agency, of the over-inflated hype and criti-hype being used to convince us of an inevitable future where a small group of very rich men are masters over our lives.</p><p>I’d love to see the technology decoupled from the current depressing narrative. I’d love to see a thousand homemade software flowers bloom from open local language models.</p>"
+        }
+,        {
+            "id": "22774",
+            "url": "https://adactio.com/journal/22774",
+            "title": "The summer of ’26",
+            "summary": "Greece, Italy, Spain, and lots of Ireland.",
+            "date_published": "2026-09-24 13:32:40",
+            "tags": [
+                "summer",
+                "travel",
+                "spain",
+                "italy",
+                "greece",
+                "ireland",
+                "irish",
+                "music",
+                "sunshine"
+            ],
+            "content_html": "<p>It was the autumnal equinox a few days ago. For a moment our planet was balanced perfectly, with everyone experience twelve hours of daylight and twelve hours of darkness. Here in the northern hemisphere, the days will get shorter and the nights will get longer until the winter solstice.</p><p>Summer is officially over.</p><p>I saw it out with my <a href=\"https://adactio.com/journal/22166\">now-annual trip to Spain</a> for the <a href=\"https://www.irishfleadh.com/\">Cáceres Irish Fleadh</a>. It was, as always, great fun. Nothing beats playing loads of tunes into the early hours while sitting outdoors in a beautiful old town.</p><p>I visited some lovely places this summer. <a href=\"https://adactio.com/journal/22643\">A trip to Greece</a>. <a href=\"https://adactio.com/journal/22738\">A trip to Italy</a>. Even my <a href=\"https://adactio.com/journal/22632\">trip to Cork</a> was blessed with bright sunshine.</p><p>But I think the highlight was <a href=\"https://adactio.com/journal/22709\">the three weeks I spent in the north of Ireland</a>. It helped that being there meant I escaped the worst of the heatwave here in England.</p><p>All in all, it was a thoroughly enjoyable summer filled with travel, music, good food, and sunshine. Now it’s time to hunker down at home.</p>"
+        }
+,        {
+            "id": "22761",
+            "url": "https://adactio.com/journal/22761",
+            "title": "What We Can Know by Ian McEwan",
+            "summary": "An unusual structure with surprising tonal shifts but an enjoyable read all the same.",
+            "date_published": "2026-09-15 15:31:21",
+            "tags": [
+                "book",
+                "review",
+                "sci-fi",
+                "sciencefiction",
+                "climate",
+                "future",
+                "digital",
+                "preservation"
+            ],
+            "content_html": "<p>This is Ian McEwan’s second foray into science fiction after his alternative history novel, <cite>Machines Like Me</cite>. I enjoyed that book but it was far too eager to show off its worldbuilding—at one point a character practically looks at the camera like Tim in The Office.</p><p>There’s a bit of that in <cite>What We Can Know</cite> with its expository passages explaining what’s been happening in the 21st and 22nd centuries, but it mostly works.</p><p>As with all McEwan’s work, it’s extremely English. He just has to have some clashing of the classes in there.</p><p>The book has an unusual structure, switching between the present day and a climate-ravaged future one hundred years from now. A future scholar is obsessed with a poem from our time period that was never published. At times the book feels like a whodunnit, complete with all the suspects assembled together in a country house.</p><p>If the structure is unusual, the tonal swings are really something. We go from high-brow pondering of the utility of art in the face of catastrophe to downright schlocky soap-opera shenanigans. My eyebrows may have gotten whiplash.</p><p>But I guess it all worked somehow because I found myself turning the pages, eager to reach the final revelations.</p><p>Still, there was one thing that really bothered me. In order for the plot to work, our future scholar needs to have access to emails, chats, and other digital artificats from today. We get an explanation of how the cryptography has been cracked by quantum computers, but it’s simply taken as given that the files themselves would be available, having survived in “The Cloud”.</p><p>I can’t really blame Ian McEwan here; here’s just repeating the oft-retold advice that you should be careful what you put online because it’ll be there forever. But that warning simply isn’t true. The Cloud dissolves very, very quickly. Just ask the folks at <a href=\"https://archive.org/\">the Internet Archive</a>.</p><p>But if your credulity can stretch to accept the naïvely optimistic depiction of <a href=\"https://adactio.com/tags/digital,preservation\">digital preservation</a> in <cite>What We Can Know</cite>, it’s an enjoyable romp.</p><p><a href=\"https://uk.bookshop.org/a/980/9781529959208\"><img src=\"https://images-eu.bookshop.org/images/9781529959208.jpg\" width=\"326\" height=\"500\" loading=\"lazy\" alt=\"Buy this book\"></a></p>"
+        }
+,        {
+            "id": "22759",
+            "url": "https://adactio.com/journal/22759",
+            "title": "Movie mashups",
+            "summary": "Firestarter For Ten Things I Hate About You Only Live Twice Upon A Time After Time Bandits.",
+            "date_published": "2026-09-15 08:19:22",
+            "tags": [
+                "clearleft",
+                "quiz",
+                "movies",
+                "game",
+                "fun",
+                "titles",
+                "mashups",
+                "films"
+            ],
+            "content_html": "<p>I’ve mentioned <a href=\"https://adactio.com/journal/18830\">the ritual that concludes the week at Clearleft</a>:</p><blockquote>  <p>At the end of every Thursday afternoon at <a href=\"https://clearleft.com/\">Clearleft</a>, we wrap up the working week with an all-hands (video) meeting. Yes, I know that the week finishes on Friday, but Fridays have been declared the no-meetings day at Clearleft: a chance to concentrate on heads-down work without interruption. Besides, <a href=\"https://adactio.com/journal/18620\">some of us don’t work on Fridays</a>. So Thursday really is the new Friday.</p></blockquote><p>That gathering usually finishes with a little quiz (like the <a href=\"https://adactio.com/journal/18830#fontsorfood\">“fonts or food?”</a> quiz) . I was in charge of putting the quiz together last week. I came up with a movie mashup:</p><ul><li>Take two film titles.</li><li>The end of one title is the beginning of the other title.</li><li>Create one single title from both.</li></ul><p>For each combined title, I smushed together the synopses from the Internet Movie Database.</p><p>For example, if you got this synposis:</p><blockquote>  <p>Six unemployed steel workers form a male striptease act and King Arthur and his knights embark on a quest encountering many, very silly obstacles.</p></blockquote><p>The answer would be:</p><p><cite>The Full Monty Python And The Holy Grail</cite></p><p>Got it?</p><p>Let’s see how you fare with these ten movie mashups I presented to the Clearleft crew (tap to reveal each answer)…</p><p><details><summary>A group of unlikely heroes band together on a mission to steal the plans to the Death Star and a rebellious convict is sent to a psychiatric hospital where he encourages his docile companions to take more control of their lives and defy the tyrannical head nurse.</summary><cite>Rogue One Flew Over The Cuckoo’s Nest</cite></details></p><p><details><summary>Prince Simba and his father are targeted by his bitter uncle, who wants to ascend the throne himself and Rupert is an aspiring stand-up comedian who is willing to go the extra mile in his attempt to appear in the late night show hosted by his idol.</summary><cite>The Lion King Of Comedy</cite></details></p><p><details><summary>Five friends travel to a cabin in the woods, where they unknowingly release flesh-possessing demons and a maverick teacher at a prestigious New England boys’ boarding school uses poetry to embolden his pupils to new heights of self-expression.</summary><cite>The Evil Dead Poet’s Society</cite></details></p><p><details><summary>A doctor in 1968 Prague struggles with monogamy and a puppeteer discovers a portal that leads literally into the head of  a movie star.</summary><cite>The Unbearable Lightness Of Being John Malkovich</cite></details></p><p><details><summary>A hard-drinking country music star falls in love with a singer whose career quickly takes off, and Ron Kovic, paralyzed in the Vietnam war, becomes a political activist after feeling betrayed by the country for which he fought.</summary><cite>A Star Is Born On The Fourth Of July</cite></details></p><p><details><summary>Two sloppy actors spend a weekend holiday at an uncle&#8217;s country cottage and a group of friends are terrorised by a mysterious killer who knows about a gruesome incident from their past.</summary><cite>Withnail And I Know What You Did Last Summer</cite></details></p><p><details><summary>On an tropical island, love blooms between a young nurse and a secretive Frenchman and as a war between humankind and monstrous sea creatures wages on, a former pilot and a trainee are paired up to save the world from the apocalypse.</summary><cite>South Pacific Rim</cite></details></p><p><details><summary>A man gets a chance to meet up with his dream girl from high school, and a magical nanny employs music and adventure to help two neglected children become closer to their father.</summary><cite>There’s Something About Mary Poppins</cite></details></p><p><details><summary>The husband of a missing woman becomes the main suspect in her disappearance and a young peasant maid working in the house of painter Johannes Vermeer becomes his talented assistant and the model for one of his most famous works.</summary><cite>Gone Girl With A Pearl Earring</cite></details></p><p><details><summary>An up-and-coming gangster is tested by the insurgence of an unknown threat and a group of teenage camp counselors attempt to re-open an abandoned summer camp with a tragic past, but they are stalked by a mysterious, relentless killer.</summary><cite>The Long Good Friday The Thirteenth</cite></details></p><p>How’d you do?</p><p>I had fun putting this little quiz together but some potential movie mashups were left on the cutting-room floor. If there were a director’s cut of this quiz, maybe these would’ve stayed in the picture:</p><ul><li><cite>Mad Max: Fury Road To Perdition</cite></li><li><cite>Remains Of The Day Of The Dead</cite></li><li><cite>For Your Eyes Only God Forgives</cite></li><li><cite>The Land Before Time Bandits</cite></li><li><cite>The Taking Of Pelham One Two Three Billboards Outside Ebbing, Missouri</cite></li><li><cite>City Of Lost Children Of A Lesser God</cite></li><li><cite>Run, Lola, Run Silent, Run Deep</cite></li><li><cite>Carlito’s Way Of The Dragon</cite></li><li><cite>The Man Who Would Be King Kong</cite></li><li><cite>Man Of Steel Magnolias</cite></li><li><cite>The Big Short Circuit</cite></li><li><cite>A Matter Of Life And Death In Venice</cite></li><li><cite>The Hills Have Eyes Wide Shut</cite></li><li><cite>The Spy Who Loved Me And Earl And The Dying Girl</cite></li></ul>"
+        }
+    ]
+}

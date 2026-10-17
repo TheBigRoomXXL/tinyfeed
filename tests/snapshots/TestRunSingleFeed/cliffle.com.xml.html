@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-wukRFZq149n6TLPJIFT_h-yTy4NvVVze28e9papXJQu_jei4oOC-LnFQFAjYEJBeioGWOb6seJ0ufiWbL7QTU_nlVMhNf8ewcX9gIzYlU73xlM_FedzTfulLHyoxROLXh6gPW4_1OF7W3pWSnfOSjFi9jSSmlhFMlEsv4fMpK8pxWSMz88NDalyYsOToNoFcBXxwojZ0p8AvRv6RNiGmBqWq__FTq2nXQgm3hKp-_9aPE7yzZ5AaG3o-02FSzD3cNM-CGF8vkR18rzKyS7X7C1v1dPSko7aLu1xpohrq5JC3wBZghkcrjPt9K1EhsBeii-ue4FpicGVFqhc3fOU6BA==' ;
+		script-src 'nonce-wukRFZq149n6TLPJIFT_h-yTy4NvVVze28e9papXJQu_jei4oOC-LnFQFAjYEJBeioGWOb6seJ0ufiWbL7QTU_nlVMhNf8ewcX9gIzYlU73xlM_FedzTfulLHyoxROLXh6gPW4_1OF7W3pWSnfOSjFi9jSSmlhFMlEsv4fMpK8pxWSMz88NDalyYsOToNoFcBXxwojZ0p8AvRv6RNiGmBqWq__FTq2nXQgm3hKp-_9aPE7yzZ5AaG3o-02FSzD3cNM-CGF8vkR18rzKyS7X7C1v1dPSko7aLu1xpohrq5JC3wBZghkcrjPt9K1EhsBeii-ue4FpicGVFqhc3fOU6BA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="wukRFZq149n6TLPJIFT_h-yTy4NvVVze28e9papXJQu_jei4oOC-LnFQFAjYEJBeioGWOb6seJ0ufiWbL7QTU_nlVMhNf8ewcX9gIzYlU73xlM_FedzTfulLHyoxROLXh6gPW4_1OF7W3pWSnfOSjFi9jSSmlhFMlEsv4fMpK8pxWSMz88NDalyYsOToNoFcBXxwojZ0p8AvRv6RNiGmBqWq__FTq2nXQgm3hKp-_9aPE7yzZ5AaG3o-02FSzD3cNM-CGF8vkR18rzKyS7X7C1v1dPSko7aLu1xpohrq5JC3wBZghkcrjPt9K1EhsBeii-ue4FpicGVFqhc3fOU6BA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://cliffle.com/blog/exhubris-super/ target="_blank">
+					<h2>Crash recovery in 256 bytes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-14">2024-12-14</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/exhubris/ target="_blank">
+					<h2>Revisiting Hubris appconfigs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-25">2024-11-25</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/from-hubris-to-bits/ target="_blank">
+					<h2>From Hubris To Bits</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-18">2024-11-18</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/recode/ target="_blank">
+					<h2>Putting custom firmware on the WASD CODE v2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-31">2024-10-31</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/lilos-1-0/ target="_blank">
+					<h2>lilos v1.0 released</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-23">2024-04-23</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/hubris-reply-fault/ target="_blank">
+					<h2>The server chose violence</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-08">2024-04-08</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/who-killed-the-network-switch/ target="_blank">
+					<h2>Who killed the network switch?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-24">2024-03-24</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/keypad-go/ target="_blank">
+					<h2>I made a thing to help you make a thing out of a keypad</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-27">2024-02-27</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/making-website-faster/ target="_blank">
+					<h2>Making my website faster</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-13">2024-01-13</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/turning-off-http/ target="_blank">
+					<h2>Planning to redirect traffic to HTTPS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-08">2024-01-08</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/stm32-wfi-bug/ target="_blank">
+					<h2>An STM32 WFI bug</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-17">2023-07-17</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/lilos-cancel-safety/ target="_blank">
+					<h2>Mutex without lock, Queue without push: cancel safety in lilos</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-10">2023-07-10</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/async-decl-coords/ target="_blank">
+					<h2>Getting file/line in await traces</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-05">2023-07-05</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/composed-concurrency-in-drivers/ target="_blank">
+					<h2>Composing concurrency in drivers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-04">2023-07-04</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/async-inversion/ target="_blank">
+					<h2>How to think about `async`/`await` in Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-30">2023-06-30</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/lildb/ target="_blank">
+					<h2>Writing a basic `async` debugger</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-30">2023-06-30</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/not-thread-safe/ target="_blank">
+					<h2>Safely writing code that isn&#39;t thread-safe</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-22">2022-11-22</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/rust-mutexes/ target="_blank">
+					<h2>Why Rust mutexes look like they do</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-31">2022-03-31</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/rss-back-on/ target="_blank">
+					<h2>RSS Feed Back On</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-07">2021-12-07</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/on-hubris-and-humility/ target="_blank">
+					<h2>On Hubris And Humility</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-06">2021-12-06</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/food/sweet-potatoes/ target="_blank">
+					<h2>Vanilla sweet potatoes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-27">2021-10-27</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/food/oatmeal-lace-cookies/ target="_blank">
+					<h2>Oatmeal Lace Cookies</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-20">2021-03-20</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/food/sorghum-gingersnaps/ target="_blank">
+					<h2>Sorghum gingersnaps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-09">2021-03-09</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/food/boosted-cinnamon-rolls/ target="_blank">
+					<h2>Boosted cinnamon rolls</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-07">2021-03-07</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/food/citrus-cream-cheese-frosting/ target="_blank">
+					<h2>Citrus cream cheese frosting</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-07">2021-03-07</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/food/collard-greens/ target="_blank">
+					<h2>Tangy collard greens</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-07">2021-03-07</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/food/granola/ target="_blank">
+					<h2>Basic granola</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-07">2021-03-07</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/food/saag-whatever/ target="_blank">
+					<h2>Saag Whatever</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-07">2021-03-07</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/rust-first-mover/ target="_blank">
+					<h2>The First-Mover Allocator Pattern</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-07">2020-09-07</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/accessibility-updates/ target="_blank">
+					<h2>Accessibility Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-01-24">2020-01-24</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/p/dangerust/6/ target="_blank">
+					<h2>Let The Compiler Do The Work</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-01-05">2020-01-05</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/p/dangerust/5/ target="_blank">
+					<h2>Making Safe Things From Unsafe Parts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-14">2019-12-14</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/p/dangerust/4/ target="_blank">
+					<h2>A More Perfect Union</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-11">2019-12-11</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/p/dangerust/3/ target="_blank">
+					<h2>Measure What You Optimize</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-09">2019-12-09</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/p/dangerust/0/ target="_blank">
+					<h2>Why Learn Rust the Dangerous Way?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-02">2019-12-02</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/p/dangerust/2/ target="_blank">
+					<h2>References Available Upon Request</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-02">2019-12-02</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/p/dangerust/1/ target="_blank">
+					<h2>You Can&#39;t Write C in Just Any Ol&#39; Language</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-11-24">2019-11-24</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/bare-metal-wasm/ target="_blank">
+					<h2>Making really tiny WebAssembly graphics demos</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-06-07">2019-06-07</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/rust-typestate/ target="_blank">
+					<h2>The Typestate Pattern in Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-06-05">2019-06-05</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/m4vga-in-rust/ target="_blank">
+					<h2>Rewriting m4vgalib in Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-02-23">2019-02-23</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/prefer-rust/ target="_blank">
+					<h2>Prefer Rust to C/C&#43;&#43; for new code.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-02-07">2019-02-07</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/racing-the-beam/ target="_blank">
+					<h2>Racing the Beam</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-06-16">2015-06-16</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/glitch-in-the-matrix/ target="_blank">
+					<h2>A Glitch in the Matrix</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-06-10">2015-06-10</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/pushing-pixels/ target="_blank">
+					<h2>Pushing Pixels</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-06-06">2015-06-06</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/introducing-glitch/ target="_blank">
+					<h2>Introducing Glitch</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-06-05">2015-06-05</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/hakyll/ target="_blank">
+					<h2>Switching this site from Jekyll to Hakyll</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-05-09">2015-05-09</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/loon/ target="_blank">
+					<h2>Project Loon</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-06-18">2013-06-18</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/publicfile-patches/ target="_blank">
+					<h2>My Recommended Publicfile Patches</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-01-26">2013-01-26</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/data-on-attacks/ target="_blank">
+					<h2>Attacks on my Server: The Data</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-01-20">2013-01-20</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/data-on-attacks/ssh-usernames/ target="_blank">
+					<h2>SSH Usernames Used in Attacks On My Server</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-01-20">2013-01-20</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/ultimate-guide-to-3d-printing/ target="_blank">
+					<h2>Ultimate Guide to 3D Printing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-01-20">2013-01-20</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/swddude/ target="_blank">
+					<h2>Introducing swddude</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-03-23">2012-03-23</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/pub/safe-self-modification/ target="_blank">
+					<h2>Language-Independent Sandboxing of Just-In-Time Compilation and Self-Modifying Code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-03-14">2012-03-14</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/ace-monster-toys/ target="_blank">
+					<h2>Being a Social Hacker</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-03-13">2011-03-13</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/making-thingiverse-faster/ target="_blank">
+					<h2>Making Thingiverse Faster</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-02-24">2011-02-24</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/fixing-cupcake-hbp-bolts/ target="_blank">
+					<h2>Fixing the Heated Build Platform&#39;s Bolts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-02-21">2011-02-21</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/luhn/ target="_blank">
+					<h2>Implementing the Luhn Algorithm</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-02-17">2011-02-17</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/using-pla/ target="_blank">
+					<h2>Using PLA with the MakerBot Plastruder MK5</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-02-17">2011-02-17</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/blog/hello-blag/ target="_blank">
+					<h2>Hello Blag!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-02-15">2011-02-15</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/pub/native-client-paper/ target="_blank">
+					<h2>Adapting Software Fault Isolation to Contemporary CPU Architectures</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-08-11">2010-08-11</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/esoterica/beatnik/ target="_blank">
+					<h2>Beatnik</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2001-05-19">2001-05-19</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/esoterica/4dl/ target="_blank">
+					<h2>4DL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2001-05-16">2001-05-16</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://cliffle.com/esoterica/hq9plus/ target="_blank">
+					<h2>HQ9&#43;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2001-05-11">2001-05-11</time>
+					|
+					<a href="https://cliffle.com" target="_blank">cliffle.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://cliffle.com" target="_blank">Cliffle</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="wukRFZq149n6TLPJIFT_h-yTy4NvVVze28e9papXJQu_jei4oOC-LnFQFAjYEJBeioGWOb6seJ0ufiWbL7QTU_nlVMhNf8ewcX9gIzYlU73xlM_FedzTfulLHyoxROLXh6gPW4_1OF7W3pWSnfOSjFi9jSSmlhFMlEsv4fMpK8pxWSMz88NDalyYsOToNoFcBXxwojZ0p8AvRv6RNiGmBqWq__FTq2nXQgm3hKp-_9aPE7yzZ5AaG3o-02FSzD3cNM-CGF8vkR18rzKyS7X7C1v1dPSko7aLu1xpohrq5JC3wBZghkcrjPt9K1EhsBeii-ue4FpicGVFqhc3fOU6BA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

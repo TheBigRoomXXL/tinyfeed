@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-Ld_8VVPMpPNmA9aedpVWSuuGJTpN0ViBIU_SxPB4BHgeF2VjDsB3SvPrGNnfKmsiqwLlQPz3Zl5qp-31bSuDJJE7TEap1XJXvJ4LpgjOqUivgORmB0eblO61rOcRi0iJ3SWRvs0I6jlwKd_EMrx5kK7FEdJj-XgxdJt4RvWNsw-1QgKprWVLJFXyeJMqkYtdPC-YAxk_idkJtAfvNV91sj57vCfWwj3XE__DO0f6Jgbubm0NaTZzTGjlWeV_gHbe6Qrs2STQK_HteLlfNywoqMVPXyJGd8pJcrejmiVZs-ObPc_FZj4iFK5tWHVv9Igla9KeRrW5Ez3sg5J5rhvk0g==' ;
+		script-src 'nonce-Ld_8VVPMpPNmA9aedpVWSuuGJTpN0ViBIU_SxPB4BHgeF2VjDsB3SvPrGNnfKmsiqwLlQPz3Zl5qp-31bSuDJJE7TEap1XJXvJ4LpgjOqUivgORmB0eblO61rOcRi0iJ3SWRvs0I6jlwKd_EMrx5kK7FEdJj-XgxdJt4RvWNsw-1QgKprWVLJFXyeJMqkYtdPC-YAxk_idkJtAfvNV91sj57vCfWwj3XE__DO0f6Jgbubm0NaTZzTGjlWeV_gHbe6Qrs2STQK_HteLlfNywoqMVPXyJGd8pJcrejmiVZs-ObPc_FZj4iFK5tWHVv9Igla9KeRrW5Ez3sg5J5rhvk0g==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="Ld_8VVPMpPNmA9aedpVWSuuGJTpN0ViBIU_SxPB4BHgeF2VjDsB3SvPrGNnfKmsiqwLlQPz3Zl5qp-31bSuDJJE7TEap1XJXvJ4LpgjOqUivgORmB0eblO61rOcRi0iJ3SWRvs0I6jlwKd_EMrx5kK7FEdJj-XgxdJt4RvWNsw-1QgKprWVLJFXyeJMqkYtdPC-YAxk_idkJtAfvNV91sj57vCfWwj3XE__DO0f6Jgbubm0NaTZzTGjlWeV_gHbe6Qrs2STQK_HteLlfNywoqMVPXyJGd8pJcrejmiVZs-ObPc_FZj4iFK5tWHVv9Igla9KeRrW5Ez3sg5J5rhvk0g==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/casey-muratori-the-big-oops target="_blank">
+					<h2>Casey Muratori on his &#34;The Big OOPs&#34; Talk</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-19">2026-09-19</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/fast-frp target="_blank">
+					<h2>Fast Functional Reactive Programming with Datastar Creator Delaney Gillilan</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-27">2026-07-27</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/tigerbeetles-spectacular-jepsen-report-with-joran-greef target="_blank">
+					<h2>TigerBeetle&#39;s Spectacular Jepsen Report - with Joran Greef</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-19">2026-06-19</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/ai-software-quality-with-shawn-wang-aka-swyx target="_blank">
+					<h2> AI &amp; Software Quality with Shawn Wang (aka swyx) </h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-09">2026-05-09</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/htmx-creator-carson-gross-on-comp-scis-evolution target="_blank">
+					<h2>HTMX Creator Carson Gross on Comp Sci&#39;s Evolution</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-01">2026-04-01</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/how-mitchell-hashimoto-builds-ghostty target="_blank">
+					<h2>How Mitchell Hashimoto Builds Ghostty</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-17">2026-02-17</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/gleams-design-and-compiler-with-creator-louis-pilfold target="_blank">
+					<h2>Gleam&#39;s Design and Compiler - with creator Louis Pilfold</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-10">2026-01-10</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/metaprogramming-your-ide-in-lean-4-with-harry-goldstein target="_blank">
+					<h2>Metaprogramming Your IDE in Lean 4 with Harry Goldstein</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-21">2025-12-21</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/jonathan-blow-on-programming-language-design target="_blank">
+					<h2>Jonathan Blow on Programming Language Design</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-15">2025-11-15</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/zig-creator-andrew-kelley target="_blank">
+					<h2>Zig Creator Andrew Kelley</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-09">2025-10-09</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/securing-evolving-software-with-noah-hall target="_blank">
+					<h2>Securing Evolving Software with Noah Hall</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-20">2025-09-20</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/andreas-kling-on-ladybird-browser-serenityos-and-powerliftin target="_blank">
+					<h2>Andreas Kling on Ladybird Browser, SerenityOS, and Powerlifting</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-01">2025-09-01</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/gpu-programming-chris-lattner target="_blank">
+					<h2>GPU Programming and Language Design with Chris Lattner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-25">2025-07-25</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/broken-ai-discourse-with-steve-klabnik target="_blank">
+					<h2>Broken AI Discourse with Steve Klabnik</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-04">2025-07-04</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/language-design-deep-dive-with-elixir-creator-jose-valim target="_blank">
+					<h2>Language Design Deep Dive with Elixir Creator José Valim</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-01">2025-06-01</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/from-scala-to-roc-with-monica-mcguigan target="_blank">
+					<h2>From Scala to Roc with Monica McGuigan</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-27">2025-01-27</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/testing-in-production-with-mike-bryzek target="_blank">
+					<h2>Testing in Production with Mike Bryzek</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-05">2025-01-05</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/building-video-editing-software-with-andrew-lisowski target="_blank">
+					<h2>Building Video Editing Software with Andrew Lisowski</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-16">2024-12-16</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/the-eyg-language-with-peter-saxton target="_blank">
+					<h2>The EYG Language with Peter Saxton</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-17">2024-11-17</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/ai-in-programming-education-with-will-sentance target="_blank">
+					<h2>AI in Programming Education with Will Sentance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-16">2024-10-16</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/software-for-elite-athletes-with-kyle-boddy target="_blank">
+					<h2>Software for Elite Athletes with Kyle Boddy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-26">2024-09-26</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/mojo-with-chris-lattner target="_blank">
+					<h2>Mojo with Chris Lattner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-30">2024-08-30</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/tooling-aware-language-design-with-eli-dowling target="_blank">
+					<h2>Tooling-Aware Language Design with Eli Dowling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-21">2024-08-21</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/the-crowdstrike-incident-with-kelly-shortridge target="_blank">
+					<h2>The CrowdStrike Incident with Kelly Shortridge</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-11">2024-08-11</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/distributed-functions-with-jonathan-magen target="_blank">
+					<h2>Distributed Functions with Jonathan Magen</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-18">2024-07-18</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/undo-redo-and-persistent-state-with-tom-ballinger target="_blank">
+					<h2>Undo-Redo and Persistent State with Tom Ballinger</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-12">2024-07-12</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/smalltalks-past-present-and-future-with-juan-vuletich target="_blank">
+					<h2>Smalltalk&#39;s Past, Present, and Future with Juan Vuletich</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-24">2024-06-24</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/from-game-dev-to-web-dev target="_blank">
+					<h2>From Game Dev to Web Dev</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-16">2024-06-16</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/fuzz-testing-with-brendan-hansknecht target="_blank">
+					<h2>Fuzz Testing with Brendan Hansknecht</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-04">2024-06-04</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/a-haskeller-tries-smalltalk-with-ian-jeffries target="_blank">
+					<h2>A Haskeller Tries Smalltalk with Ian Jeffries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-25">2024-05-25</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33383 target="_blank">
+					<h2>Comparing F#, Elm, and Haskell with Michael Newton</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-13">2024-05-13</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33384 target="_blank">
+					<h2>Native UIs without Electron - with Nathan Sobo</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-04">2024-05-04</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33385 target="_blank">
+					<h2>Compiling Smart Contracts with Lucas Rosa</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-21">2024-04-21</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33386 target="_blank">
+					<h2>Gleam 1.0 with Louis Pilfold</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-02">2024-04-02</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33387 target="_blank">
+					<h2>Compilers and Overly Complex Web Development with Thorsten Ball</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-17">2024-03-17</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33388 target="_blank">
+					<h2>Incremental Compilation with Alex Kladov</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-03">2024-03-03</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33389 target="_blank">
+					<h2>Programming and Industrial Design with Greg Wilson</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-14">2024-02-14</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/pure-functional-programming-in-c-with-ryan-fleury target="_blank">
+					<h2>Pure Functional Programming in C with Ryan Fleury</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-07">2024-02-07</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3338a target="_blank">
+					<h2>Lambda Set Defunctionalization with Ayaz Hafiz</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-25">2024-01-25</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3338b target="_blank">
+					<h2>Implementing Databases with Glauber Costa</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-23">2024-01-23</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3338c target="_blank">
+					<h2>The Return of Hypermedia with Carson Gross</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-15">2024-01-15</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3338d target="_blank">
+					<h2>Go and Functional Programming with Lane Wagner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-06">2024-01-06</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3338e target="_blank">
+					<h2>The Roc Programming Language with Richard Feldman</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-29">2023-12-29</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3338f target="_blank">
+					<h2>Making JITted Code Faster with Chris Nuernberger</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-10">2023-12-10</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33390 target="_blank">
+					<h2>Things Web Devs Can Learn from Game Devs with Casey Muratori</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-01">2023-12-01</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33391 target="_blank">
+					<h2>How Programming has Changed with Conor Hoekstra</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-26">2023-11-26</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33392 target="_blank">
+					<h2>Escaping Software Disenchantment with Nikita Prokopov</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-18">2023-11-18</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33393 target="_blank">
+					<h2>WebAssembly in Practice with Brian Carroll</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-06">2023-11-06</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33394 target="_blank">
+					<h2>Disassembling Languages with Matt Godbolt</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-22">2023-10-22</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33395 target="_blank">
+					<h2>Designing Compilers for Speed with Troels Henriksen</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-13">2023-10-13</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33396 target="_blank">
+					<h2>Gradual vs Static Typing with José Valim</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-21">2023-09-21</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33397 target="_blank">
+					<h2>The SemVer Rabbit Hole with Predrag Gruevski</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-12">2023-09-12</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33398 target="_blank">
+					<h2>Type System Complexity with Chris Krycho</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-07">2023-09-07</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b33399 target="_blank">
+					<h2>Making Parsing I/O Bound with Daniel Lemire</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-17">2023-08-17</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3339a target="_blank">
+					<h2>Niche Domain Knowledge with Ashley Williams</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-08">2023-08-08</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3339b target="_blank">
+					<h2>Building a Terminal in Zig and Swift with Mitchell Hashimoto</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-19">2023-07-19</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3339c target="_blank">
+					<h2>React Hooks Design Review</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-11">2023-07-11</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3339d target="_blank">
+					<h2>Thinking in Array Languages with Alex Shroyer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-05">2023-07-05</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3339e target="_blank">
+					<h2>My Contribution to the Left-Pad Incident with Simon Lydell</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-27">2023-06-27</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b3339f target="_blank">
+					<h2>Comparing Haskell to R with Will Kurt</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-20">2023-06-20</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a0 target="_blank">
+					<h2>Defunctionalization in a Functional Language with Ayaz Hafiz</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-24">2023-05-24</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a1 target="_blank">
+					<h2>Linking &amp; Binary Hot Code Loading with Jakub Konka</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-14">2023-05-14</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a2 target="_blank">
+					<h2>From Bootcamp to Teaching Masters&#39; Comp Sci</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-04">2023-05-04</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a3 target="_blank">
+					<h2>Syntax and the Future of Programming with Josh Warner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-27">2023-04-27</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a4 target="_blank">
+					<h2>Growing Programming Communities with Ryan Haskell-Glatz</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-21">2023-04-21</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a5 target="_blank">
+					<h2>AI Tools Today</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-12">2023-04-12</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a6 target="_blank">
+					<h2>From Erlang to Management to C&#43;&#43;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-04">2023-04-04</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a7 target="_blank">
+					<h2>Conditional Cardinality with Joël Quenneville</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-28">2023-03-28</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a8 target="_blank">
+					<h2>Speeding up Rust&#39;s Compiler</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-15">2023-03-15</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333a9 target="_blank">
+					<h2>Evolutionary vs Revolutionary Languages with James Ward</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-28">2023-02-28</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333aa target="_blank">
+					<h2>The Rust &#43; Elm Stack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-20">2023-02-20</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333ab target="_blank">
+					<h2>The Monolith-Microservices Spectrum</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-13">2023-02-13</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333ac target="_blank">
+					<h2>Swift and Unicode API Design with Rob Napier</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-06">2023-02-06</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333ad target="_blank">
+					<h2>Haskell and Clojure in Production with Eric Normand</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-30">2023-01-30</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333ae target="_blank">
+					<h2>F# in Production with Scott Wlaschin</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-16">2023-01-16</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333af target="_blank">
+					<h2>Scratch-Building an Operating System with Steve Klabnik</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-16">2023-01-16</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b0 target="_blank">
+					<h2>Scaling Slack&#39;s Infrastructure</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-09">2023-01-09</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b1 target="_blank">
+					<h2>Bootstrapping a Compiler via WASM with Loris Cro</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-26">2022-12-26</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b2 target="_blank">
+					<h2>Technical Empathy with Andrea Goulet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-12">2022-12-12</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b3 target="_blank">
+					<h2>Embracing the Chaos with Jean Yang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-05">2022-12-05</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b4 target="_blank">
+					<h2>Are Functions Data? with Yehonathan Sharvit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-28">2022-11-28</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b5 target="_blank">
+					<h2>Derw with Noah Hall</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-21">2022-11-21</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b6 target="_blank">
+					<h2>Software Rituals with David Nolen</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-14">2022-11-14</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b7 target="_blank">
+					<h2>Accessibility in Practice with the Accessibilibats</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-09">2022-11-09</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b8 target="_blank">
+					<h2>Static Types in Elixir with José Valim</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-31">2022-10-31</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333b9 target="_blank">
+					<h2>Building a Database with Joran Greef</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-17">2022-10-17</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333ba target="_blank">
+					<h2>Back to Basics in Production with Marc Grabanski</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-10">2022-10-10</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333bb target="_blank">
+					<h2>Type System Mythbusting with Alexis King</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-03">2022-10-03</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333bc target="_blank">
+					<h2>Building Chrome Dev Tools with Jack Franklin</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-26">2022-09-26</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333bd target="_blank">
+					<h2>The Compile-to-JS Smörgåsbord with Murphy Randle</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-19">2022-09-19</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333be target="_blank">
+					<h2>Lamdera with Mario Rogic</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-12">2022-09-12</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333bf target="_blank">
+					<h2>Python and OO with Reuven Lerner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-05">2022-09-05</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c0 target="_blank">
+					<h2>Hiring Functional Programmers with Kris Jenkins</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-29">2022-08-29</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c1 target="_blank">
+					<h2>Makepad with Rik Arends</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-22">2022-08-22</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c2 target="_blank">
+					<h2>Vim and Nix with Jasper Woudenberg</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-15">2022-08-15</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c3 target="_blank">
+					<h2>Teaching Haskell with Christoph Hermann</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-11">2022-08-11</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c4 target="_blank">
+					<h2>Literal Google Scale</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-08">2022-08-08</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c5 target="_blank">
+					<h2>Real-World Performance Optimization with Folkert de Vries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-28">2022-07-28</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c6 target="_blank">
+					<h2>&#34;Team Monolith&#34; with Jonathan Magen</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-19">2022-07-19</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c7 target="_blank">
+					<h2>Open-Source Careers with Loris Cro</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-13">2022-07-13</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c8 target="_blank">
+					<h2>Functional Programming in Rust with Luke Westby</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-30">2022-06-30</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333c9 target="_blank">
+					<h2>Jared Forsyth - From Web Development to Microcontrollers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-23">2022-06-23</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333ca target="_blank">
+					<h2>Non-mainstream Programming with Gabriella Gonzalez</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-16">2022-06-16</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333cb target="_blank">
+					<h2>Gleam with Louis Pilfold</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-10">2022-06-10</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333cc target="_blank">
+					<h2>Functional and Object-Oriented Programming with Lindsay Wardell</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-06">2022-06-06</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333cd target="_blank">
+					<h2>Dark with Paul Biggar</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-27">2022-05-27</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333ce target="_blank">
+					<h2>Software Design with Dillon Kearns</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-23">2022-05-23</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333cf target="_blank">
+					<h2>Indie Game Dev</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-11">2022-05-11</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde448c77cc0013b333d0 target="_blank">
+					<h2>Change Management</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-03">2022-05-03</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333d1 target="_blank">
+					<h2>The Unison Programming Language with Rúnar Bjarnason</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-22">2022-04-22</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333d2 target="_blank">
+					<h2>Static Analysis with elm-review author Jeroen Engels</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-15">2022-04-15</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333d3 target="_blank">
+					<h2>Crystal with Johannes Müller and creator Ary Borenszweig</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-08">2022-04-08</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333d4 target="_blank">
+					<h2>Clickbait with Hillel Wayne</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-01">2022-04-01</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333d5 target="_blank">
+					<h2>Crossing the Chasm</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-25">2022-03-25</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333d6 target="_blank">
+					<h2>Open-Source with Zig creator Andrew Kelley</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-15">2022-03-15</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333d7 target="_blank">
+					<h2>Database Apocalypse</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-02">2022-03-02</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333d8 target="_blank">
+					<h2>Data Storytelling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-25">2022-02-25</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333d9 target="_blank">
+					<h2>Deployments</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-08">2022-02-08</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333da target="_blank">
+					<h2>Interactive Style Guides</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-02">2022-02-02</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333db target="_blank">
+					<h2>Teaching Functional Programming</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-24">2022-01-24</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/664fde458c77cc0013b333dc target="_blank">
+					<h2>Observability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-29">2021-12-29</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://feeds.acast.com/public/shows/software-unscripted" target="_blank">Software Unscripted</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="Ld_8VVPMpPNmA9aedpVWSuuGJTpN0ViBIU_SxPB4BHgeF2VjDsB3SvPrGNnfKmsiqwLlQPz3Zl5qp-31bSuDJJE7TEap1XJXvJ4LpgjOqUivgORmB0eblO61rOcRi0iJ3SWRvs0I6jlwKd_EMrx5kK7FEdJj-XgxdJt4RvWNsw-1QgKprWVLJFXyeJMqkYtdPC-YAxk_idkJtAfvNV91sj57vCfWwj3XE__DO0f6Jgbubm0NaTZzTGjlWeV_gHbe6Qrs2STQK_HteLlfNywoqMVPXyJGd8pJcrejmiVZs-ObPc_FZj4iFK5tWHVv9Igla9KeRrW5Ez3sg5J5rhvk0g==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

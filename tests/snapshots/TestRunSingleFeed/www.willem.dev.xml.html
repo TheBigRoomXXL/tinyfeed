@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-50nvubmVLkXUF8ThZPonTS22pqBi9YMsxrl_2M1fOjJpCJMXLC8Ffwy_H8fwYdEleJbpmV7eVX0AqraZCrwNkD1L9QdU32Syr1aUqxAMrtwLZCWVOPsFFb9h7Qs99Rcy3IQQVXScSQIyeH9J4sVehoEqdubSWt1qz7YW8qUDbOfjidQ2QbbB67-IOrMsH4bRJN5UQNljNFPI1qCIcHhZItDGPIBwMwS_fh3lvr0QN4H0wrhYmThiZpykMC2J6q_rtrEFLSuFfRKm8c03kqwO9PDCfP3vaOCCN61SeCrbu7_rgcakAe2XJ0gVb_qcdfnC8rCbuL1CUOdThmFJ92x1Uw==' ;
+		script-src 'nonce-50nvubmVLkXUF8ThZPonTS22pqBi9YMsxrl_2M1fOjJpCJMXLC8Ffwy_H8fwYdEleJbpmV7eVX0AqraZCrwNkD1L9QdU32Syr1aUqxAMrtwLZCWVOPsFFb9h7Qs99Rcy3IQQVXScSQIyeH9J4sVehoEqdubSWt1qz7YW8qUDbOfjidQ2QbbB67-IOrMsH4bRJN5UQNljNFPI1qCIcHhZItDGPIBwMwS_fh3lvr0QN4H0wrhYmThiZpykMC2J6q_rtrEFLSuFfRKm8c03kqwO9PDCfP3vaOCCN61SeCrbu7_rgcakAe2XJ0gVb_qcdfnC8rCbuL1CUOdThmFJ92x1Uw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="50nvubmVLkXUF8ThZPonTS22pqBi9YMsxrl_2M1fOjJpCJMXLC8Ffwy_H8fwYdEleJbpmV7eVX0AqraZCrwNkD1L9QdU32Syr1aUqxAMrtwLZCWVOPsFFb9h7Qs99Rcy3IQQVXScSQIyeH9J4sVehoEqdubSWt1qz7YW8qUDbOfjidQ2QbbB67-IOrMsH4bRJN5UQNljNFPI1qCIcHhZItDGPIBwMwS_fh3lvr0QN4H0wrhYmThiZpykMC2J6q_rtrEFLSuFfRKm8c03kqwO9PDCfP3vaOCCN61SeCrbu7_rgcakAe2XJ0gVb_qcdfnC8rCbuL1CUOdThmFJ92x1Uw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/prove-what-code-your-system-is-running/ target="_blank">
+					<h2>How to use Confidential Computing to prove what code is on your server</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-18">2026-06-18</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/compliance-as-a-runtime-problem/ target="_blank">
+					<h2>Compliance as a runtime problem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-03">2026-06-03</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/openpcc-short-intro/ target="_blank">
+					<h2>Dear HTTP service, how can I trust you not to break my heart?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-12">2026-03-12</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/benchmarks-performance-testing/ target="_blank">
+					<h2>Writing Benchmarks: Performance testing in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-24">2024-10-24</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/testing-http-handlers-using-httptest/ target="_blank">
+					<h2>Avoid inaccurate tests: Use httptest when testing HTTP handlers in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-03">2024-10-03</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/sets-in-golang/ target="_blank">
+					<h2>Sets in Go/Golang – Using Maps and Recommended Packages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-19">2024-09-19</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/string-interpolation/ target="_blank">
+					<h2>No string interpolation in Go/Golang. Use these alternatives</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-03">2024-07-03</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/may-househunt-update/ target="_blank">
+					<h2>Devlog I: The foundations of a Go/Golang web application</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-02">2024-05-02</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/prevent-sensitive-data-from-leaking/ target="_blank">
+					<h2>Prevent sensitive data from leaking in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-28">2024-03-28</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/maps-of-functions/ target="_blank">
+					<h2>Maps of functions in Go (Golang)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-21">2024-03-21</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/example-web-application-project/ target="_blank">
+					<h2>Documented Example Project: Go/Golang Web Application</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-13">2024-03-13</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/generic-http-handlers/ target="_blank">
+					<h2>Composable HTTP Handlers using generics in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-27">2024-02-27</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/url-path-parameters-in-routes/ target="_blank">
+					<h2>URL path parameters and variables in Go (Golang) 1.22 and later</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-15">2024-02-15</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/change-time-format-json/ target="_blank">
+					<h2>Change JSON Time and Date format in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-25">2024-01-25</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/how-to-compare-time-date/ target="_blank">
+					<h2>How to Compare Time or Date in Go/Golang with example code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-18">2024-01-18</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/time-now-monotonic-clock/ target="_blank">
+					<h2>Get the Current Time: The Monotonic Clock in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-11">2024-01-11</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/time-location-explained/ target="_blank">
+					<h2>Time and Location Explained in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-21">2023-12-21</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/how-to-parse-time-date/ target="_blank">
+					<h2>How to Parse a Time or Date using time.Parse in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-23">2023-11-23</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/anonymous-structs/ target="_blank">
+					<h2>Anonymous structs in Go (Golang): What, How and When</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-16">2023-11-16</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/how-to-add-values-to-context/ target="_blank">
+					<h2>Type safe way to add a value to a Go/Golang context</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-12">2023-11-12</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/what-values-store-in-context/ target="_blank">
+					<h2>Should you store *that value* in a Go/Golang context?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-12">2023-11-12</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/large-structs-in-table-tests/ target="_blank">
+					<h2>Dealing with large structs in (table) tests in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-07">2023-09-07</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/build-your-own-slice-make-literal-reslice/ target="_blank">
+					<h2>Make, Literals and Re-slicing - Go/Golang slice fundamentals</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-30">2023-08-30</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/slice-of-pointers-structs/ target="_blank">
+					<h2>Should you use a slice of pointers to structs in Go/Golang?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-20">2023-08-20</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/should-you-use-pointers-to-slices/ target="_blank">
+					<h2>Should you use pointers to slices in Go/Golang?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-03">2023-08-03</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/build-your-own-slice-append-copy/ target="_blank">
+					<h2>Append and Copy - Go/Golang slice fundamentals</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-18">2023-07-18</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/build-your-own-slice-start-here/ target="_blank">
+					<h2>Arrays and slices - Go/Golang slice fundamentals</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-26">2023-06-26</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/context-todo-or-background/ target="_blank">
+					<h2>Choosing between context.Background() and context.TODO() in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-14">2023-04-14</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/context-cancellation-explained/ target="_blank">
+					<h2>Context cancellation: Don&#39;t waste resources on aborted requests in Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-23">2023-03-23</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.willem.dev/articles/http-handler-func/ target="_blank">
+					<h2>Confused by http.HandlerFunc? This post makes it click - Learn Go/Golang</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-02">2023-03-02</time>
+					|
+					<a href="https://willem.dev" target="_blank">willem.dev</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.willem.dev/articles/" target="_blank">Boost Your Go/Golang Skills, One Article at a Time.</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="50nvubmVLkXUF8ThZPonTS22pqBi9YMsxrl_2M1fOjJpCJMXLC8Ffwy_H8fwYdEleJbpmV7eVX0AqraZCrwNkD1L9QdU32Syr1aUqxAMrtwLZCWVOPsFFb9h7Qs99Rcy3IQQVXScSQIyeH9J4sVehoEqdubSWt1qz7YW8qUDbOfjidQ2QbbB67-IOrMsH4bRJN5UQNljNFPI1qCIcHhZItDGPIBwMwS_fh3lvr0QN4H0wrhYmThiZpykMC2J6q_rtrEFLSuFfRKm8c03kqwO9PDCfP3vaOCCN61SeCrbu7_rgcakAe2XJ0gVb_qcdfnC8rCbuL1CUOdThmFJ92x1Uw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

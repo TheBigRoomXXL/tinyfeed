@@ -1,0 +1,1537 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:media="http://search.yahoo.com/mrss/"
+	>
+
+<channel>
+	<title>Dan Slimmon</title>
+	<atom:link href="https://blog.danslimmon.com/feed/" rel="self" type="application/rss+xml" />
+	<link>https://blog.danslimmon.com</link>
+	<description>Scientific incident response</description>
+	<lastBuildDate>Wed, 11 Feb 2026 19:43:41 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>
+	hourly	</sy:updatePeriod>
+	<sy:updateFrequency>
+	1	</sy:updateFrequency>
+	<generator>http://wordpress.com/</generator>
+
+<image>
+	<url>https://blog.danslimmon.com/wp-content/uploads/2024/03/cropped-d2e_pip_transparent.png?w=32</url>
+	<title>Dan Slimmon</title>
+	<link>https://blog.danslimmon.com</link>
+	<width>32</width>
+	<height>32</height>
+</image> 
+<site xmlns="com-wordpress:feed-additions:1">38620006</site><cloud domain='blog.danslimmon.com' port='80' path='/?rsscloud=notify' registerProcedure='' protocol='http-post' />
+<source:cloud xmlns:source='https://source.scripting.com/'>https://blog.danslimmon.com/?rsscloud=notify</source:cloud>
+<atom:link rel="search" type="application/opensearchdescription+xml" href="https://blog.danslimmon.com/osd.xml" title="Dan Slimmon" />
+	<atom:link rel='hub' href='https://blog.danslimmon.com/?pushpress=hub'/>
+	<item>
+		<title>Lecture: Queueing theory on a cocktail napkin</title>
+		<link>https://blog.danslimmon.com/2025/06/25/lecture-queueing-theory-on-a-cocktail-napkin/</link>
+					<comments>https://blog.danslimmon.com/2025/06/25/lecture-queueing-theory-on-a-cocktail-napkin/#respond</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Wed, 25 Jun 2025 15:33:20 +0000</pubDate>
+				<category><![CDATA[Monitoring]]></category>
+		<category><![CDATA[Problem-Solving]]></category>
+		<category><![CDATA[Statistics and probability]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[metrics]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[sre]]></category>
+		<category><![CDATA[statistics]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3131</guid>
+
+					<description><![CDATA[Queues are everywhere, and they follow mathematical rules. Learn a few of those rules! It'll go a long way to making you a stronger SRE.]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">I couldn&#8217;t be prouder of &#8220;Queueing Theory on a Cocktail Napkin,&#8221; this lecture I gave at <a href="https://www.linkedin.com/feed/#">Antithesis</a> in DC on June 10.</p>
+
+
+
+<p class="wp-block-paragraph">When I started to apply just a little queueing theory, it absolutely revolutionized my practice. If you&#8217;re responsible for the health of a software service, watch this talk.</p>
+
+
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe class="youtube-player" width="640" height="360" src="https://www.youtube.com/embed/tcfyDJgLOVc?version=3&#038;rel=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;fs=1&#038;hl=en&#038;autohide=2&#038;wmode=transparent" allowfullscreen="true" style="border:0;" sandbox="allow-scripts allow-same-origin allow-popups allow-presentation allow-popups-to-escape-sandbox"></iframe>
+</div></figure>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2025/06/25/lecture-queueing-theory-on-a-cocktail-napkin/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3131</post-id>
+		<media:thumbnail url="https://blog.danslimmon.com/wp-content/uploads/2025/06/screenshot-2025-06-25-at-11.31.17-am.png" />
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/06/screenshot-2025-06-25-at-11.31.17-am.png" medium="image">
+			<media:title type="html">Screenshot 2025-06-25 at 11.31.17 AM</media:title>
+		</media:content>
+
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>did u ever read so hard u accidentally wrote?</title>
+		<link>https://blog.danslimmon.com/2025/03/14/did-u-ever-read-so-hard-u-accidentally-wrote/</link>
+					<comments>https://blog.danslimmon.com/2025/03/14/did-u-ever-read-so-hard-u-accidentally-wrote/#respond</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Fri, 14 Mar 2025 13:51:55 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[postgresql]]></category>
+		<category><![CDATA[rdbm]]></category>
+		<category><![CDATA[sre]]></category>
+		<category><![CDATA[troubleshooting]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3115</guid>
+
+					<description><![CDATA[Owning a production Postgres database is never boring. The other day, I&#8217;m looking for trouble (as I am wont to do), and I notice this weird curve in the production database metrics: So we&#8217;ve got these spikes in WALWrite: the number of processes waiting to write to the write-ahead log (or &#8220;WAL&#8221;). The write-ahead log &#8230; <p><a href="https://blog.danslimmon.com/2025/03/14/did-u-ever-read-so-hard-u-accidentally-wrote/" class="more-link">Continue reading <span class="screen-reader-text">did u ever read so hard u accidentally&#160;wrote?</span></a></p>]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Owning a production Postgres database is never boring.</p>
+
+
+
+<p class="wp-block-paragraph">The other day, I&#8217;m looking for trouble (as I am <a href="https://blog.danslimmon.com/2021/12/15/managing-entropy-in-complex-systems-the-maxwells-demon-approach/">wont to do</a>), and I notice this weird curve in the production database metrics:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png"><img width="1024" height="296" data-attachment-id="3120" data-permalink="https://blog.danslimmon.com/2025/03/14/did-u-ever-read-so-hard-u-accidentally-wrote/graph_0/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png" data-orig-size="1600,463" data-comments-opened="1" data-image-title="graph_0" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png?w=1024" alt="" class="wp-image-3120" srcset="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png?w=1440 1440w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png 1600w" sizes="(max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">So we&#8217;ve got these spikes in WALWrite: the number of processes waiting to write to the <a href="https://www.postgresql.org/docs/current/wal-intro.html">write-ahead log</a> (or &#8220;WAL&#8221;). The write-ahead log is written serially, so sometimes there&#8217;s contention for the mutex that lets you write to it. A <a href="https://blog.danslimmon.com/2016/08/26/the-most-important-thing-to-understand-about-queues/">queue</a> forms.</p>
+
+
+
+<p class="wp-block-paragraph">But why does WALWrite spike <em>periodically</em>, every 6 minutes? Is this some cron job run amok? (<code>*/6 * * * *</code>? But then they&#8217;d only be 4 minutes apart at the hour boundaries…) Does a customer do some API request that updates a ton of records? Do I need to worry about this getting worse?</p>
+
+
+
+<p class="wp-block-paragraph">So I zoom out to see when the WALWrite spikes started:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png"><img width="1024" height="298" data-attachment-id="3121" data-permalink="https://blog.danslimmon.com/2025/03/14/did-u-ever-read-so-hard-u-accidentally-wrote/graph_1/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png" data-orig-size="1600,467" data-comments-opened="1" data-image-title="graph_1" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png?w=1024" alt="" class="wp-image-3121" srcset="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png?w=1440 1440w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png 1600w" sizes="(max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">It started about 3 hours ago. Okay: what else started about 3 hours ago?</p>
+
+
+
+<p class="wp-block-paragraph">I scroll around looking at the database graphs. After about 15 minutes of highly scientific squinting and head-tilting, I&#8217;ve got two more graphs on my screen. The first is &#8220;Max transaction duration.&#8221; That is: the age of the oldest open transaction.</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png"><img loading="lazy" width="1024" height="257" data-attachment-id="3122" data-permalink="https://blog.danslimmon.com/2025/03/14/did-u-ever-read-so-hard-u-accidentally-wrote/graph_2/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png" data-orig-size="1600,403" data-comments-opened="1" data-image-title="graph_2" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png?w=1024" alt="" class="wp-image-3122" srcset="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png?w=1440 1440w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png 1600w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">This is definitely related. It shares that 6-minute period, and the sawtooth pattern also started 3 hours ago. Great.</p>
+
+
+
+<p class="wp-block-paragraph">After a bit of digging and a brief Slack conversation, I know the reason for this sawtooth pattern. There&#8217;s an ongoing backfill into BigQuery via <a href="https://cloud.google.com/datastream/docs/overview">Datastream</a>. As far as I can tell, what a Datastream backfill does, is it starts a transaction and then uses a <a href="https://www.postgresql.org/docs/current/plpgsql-cursors.html">cursor</a> to page through the rows of the table. Something like:</p>
+
+
+<div class="wp-block-syntaxhighlighter-code "><pre class="brush: sql; title: ; notranslate">
+BEGIN;
+DECLARE curs CURSOR FOR SELECT * FROM table OFFSET ?;
+OPEN curs;
+FETCH FORWARD ? FROM curs INTO ?;
+FETCH FORWARD ? FROM curs INTO ?;
+/* ~6 minutes later */
+ROLLBACK;
+</pre></div>
+
+
+<p class="wp-block-paragraph">After about 6 minutes the transaction closes and a new transaction begins, with a new offset. Repeat until table is backfilled.</p>
+
+
+
+<p class="wp-block-paragraph">The other new graph is &#8220;pages dirtied&#8221; by a particular query:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png"><img loading="lazy" width="640" height="168" data-attachment-id="3123" data-permalink="https://blog.danslimmon.com/2025/03/14/did-u-ever-read-so-hard-u-accidentally-wrote/graph_3/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png" data-orig-size="1600,420" data-comments-opened="1" data-image-title="graph_3" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png?w=640" alt="" class="wp-image-3123" srcset="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png?w=640 640w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png?w=1280 1280w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png?w=1024 1024w" sizes="auto, (max-width: 640px) 100vw, 640px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">Now I don&#8217;t know what &#8220;pages dirtied&#8221; means. I look up &#8220;dirty page&#8221; on Urban Dictionary, but <a href="https://www.urbandictionary.com/define.php?term=dirty%20page">it&#8217;s a miss</a>. So I resort to Googling around for a while. I eventually land on <a href="https://www.cybertec-postgresql.com/en/postgresql-what-is-a-checkpoint/">this Cybertec blog post</a> (there&#8217;s always a Cybertec post. God bless &#8217;em), which demystifies shared buffers for me.</p>
+
+
+
+<p class="wp-block-paragraph">When Postgres needs to write to a page, it:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Writes the change to the WAL</li>
+
+
+
+<li>Writes the change to a buffer, marking the buffer as dirty in the process</li>
+</ol>
+
+
+
+<p class="wp-block-paragraph">Then a process called the background writer comes along at some point later and writes the dirty buffer to disk. Great! So that&#8217;s what &#8220;pages dirtied&#8221; means.</p>
+
+
+
+<p class="wp-block-paragraph">Except – and this is wild – the particular query whose &#8220;pages dirtied&#8221; rate is shown in the graph above is, <code>SELECT * FROM foo WHERE id = ?</code>. Yes you read that right: <em>SELECT</em>. Now I&#8217;m no SQL expert, but I thought <code>SELECT</code> (absent a <code>FOR</code> clause) was a read-only operation. Right? So what&#8217;s this about <em>writing</em>?</p>
+
+
+
+<p class="wp-block-paragraph">In fact, come to think of it, the sawtooth workload from before – the Datastream backfill – was <em>also</em> a read-only workload. So, good news and bad news. The good news is I&#8217;ve identified 2 workloads that correlate closely to the WALWrite spikes I&#8217;m trying to explain. The bad news is: they&#8217;re both read-only workloads.</p>
+
+
+
+<p class="wp-block-paragraph">At this point I need a walk, so I put on my hat and coat and I stomp through slush to the coffee shop. I feel flummoxed, and I try to think about literally anything else – Cyberpunk 2077… the <a href="https://podcasts.apple.com/us/podcast/revolutions/id703889772">French Revolution</a>… what I&#8217;m gonna make for dinner. Anything but Postgres.</p>
+
+
+
+<p class="wp-block-paragraph">So, a few minutes minutes later, I&#8217;m waiting in line at a coffee shop, reading Postgres StackOverflow posts on my phone. And I find <a href="https://stackoverflow.com/questions/59716940/postgres-how-can-a-select-count-cause-dirty-blocks">this one</a>. Cybertec again! These guys are everywhere. What I learn from this post is revelatory: <code>SELECT</code> queries in Postgres are not read-only. True, a <code>SELECT</code> can&#8217;t modify rows. But it can sure as hell modify tuples!</p>
+
+
+
+<p class="wp-block-paragraph">A tuple is basically a <em>version</em> of a row. When you <code>UPDATE</code> (or <code>DELETE</code>) a row, Postgres doesn&#8217;t just update the data in place. It creates a new tuple with the new data and adds that tuple to the heap. It also adds entries to any relevant indexes.</p>
+
+
+
+<p class="wp-block-paragraph">There is no &#8220;row&#8221; in the heap. There are only <strong>tuples</strong>. A <code>SELECT</code> query doesn&#8217;t just &#8220;fetch&#8221; a row. It fetches some number of tuples, determines which tuple is visible to the present transaction, and uses that tuple&#8217;s data to <em>construct</em> a row.</p>
+
+
+
+<p class="wp-block-paragraph">In order to make that visibility determination, Postgres needs to know, for each tuple fetched, whether the transaction that wrote that tuple has ended. It can determine this by referring to the commit log (<code>pg_clog</code>), but that involves disk reads, so it&#8217;s not very fast. Wouldn&#8217;t it be great if somehow we could cache the result of that <code>pg_clog</code> lookup so that subsequent queries can skip it?</p>
+
+
+
+<p class="wp-block-paragraph">Enter <a href="https://wiki.postgresql.org/wiki/Hint_Bits"><strong>hint bits</strong></a>. When a <code>SELECT</code> checks <code>pg_clog</code> and determines that the transaction that wrote a tuple is closed, it sets a bit on that tuple. A &#8220;hint bit.&#8221; This way, subsequent <code>SELECT</code>s that fetch the same tuple won&#8217;t have to consult <code>pg_clog</code>.</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg"><img loading="lazy" width="1024" height="362" data-attachment-id="3124" data-permalink="https://blog.danslimmon.com/2025/03/14/did-u-ever-read-so-hard-u-accidentally-wrote/hint_bits_diag/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg" data-orig-size="1600,566" data-comments-opened="1" data-image-title="hint_bits_diag" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg?w=1024" alt="" class="wp-image-3124" srcset="https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg?w=1440 1440w, https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg 1600w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">So it&#8217;s an optimization. But, if you&#8217;ve been paying attention, you now see why <code>SELECT</code>s in Postgres aren&#8217;t read-only: <em>Setting a hint bit is a write. It dirties the page.</em></p>
+
+
+
+<p class="wp-block-paragraph">Aha! I&#8217;m starting to get a hypothesis here:</p>
+
+
+
+<ol class="wp-block-list">
+<li>Datastream starts a transaction in order to <code>SELECT * FROM foo</code></li>
+
+
+
+<li>While the Datastream transaction is open, many <code>foo</code> rows are <code>SELECT</code>ed and <code>UPDATE</code>d by other, concurrent transactions.</li>
+
+
+
+<li>Therefore, while the Datastream transaction is open, many of the concurrent <code>SELECT</code>s on <code>foo</code> must fetch multiple tuples per row. Whenever they do, they encounter tuples written by the Datastream transaction</li>
+
+
+
+<li>Datastream ends its transaction.</li>
+
+
+
+<li>All subsequent <code>SELECT</code>s that encounter tuples written by the Datastream transaction will now update the hint bits for those tuples after seeing in <code>pg_clog</code> that the transaction is closed.</li>
+</ol>
+
+
+
+<p class="wp-block-paragraph">But it doesn&#8217;t quite hang together yet. I still see two major cracks in this hypothesis:</p>
+
+
+
+<p class="wp-block-paragraph">    <strong>(a)</strong> In (3): why has the Datastream transaction created tuples? That&#8217;s weird, right?</p>
+
+
+
+<p class="wp-block-paragraph">    <strong>(b)</strong> And in (5): why does updating the hint bits cause contention for WAL writes? (by default, <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html#GUC-WAL-LOG-HINTS">hint bit updates do <em>not</em> trigger a WAL write</a>.)</p>
+
+
+
+<p class="wp-block-paragraph">Let&#8217;s do (b) first. That&#8217;s easier.</p>
+
+
+
+<p class="wp-block-paragraph">When recovering from a crash, Postgres starts from a checkpoint: a WAL entry representing an instant at which all data is up to date on disk. Then it replays all subsequent WAL changes against the data pages on disk. In order for this to work, the pages on disk must be internally consistent.</p>
+
+
+
+<p class="wp-block-paragraph">How could a page become internally <em>inconsistent</em>, you say? <a href="https://pgpedia.info/t/torn-page.html">Torn writes</a>. That&#8217;s when part of the page is written to disk, but before the next <code>write()</code> call can finish writing the page to disk, the system crashes. If a page on disk is &#8220;torn,&#8221; crash recovery can&#8217;t proceed. That&#8217;s why Postgres has a setting called <a href="https://wiki.postgresql.org/wiki/Full_page_writes">full_page_writes</a>, which is on by default. With <code>full_page_writes</code> on, the first time a page is dirtied after a checkpoint, that page is written in its entirety to the WAL.</p>
+
+
+
+<p class="wp-block-paragraph">This explains why updating hint bits caused a run on the WAL. In fact, when I raise the interval between checkpoints, the WALWrite spikes disappear.</p>
+
+
+
+<p class="wp-block-paragraph">Hooray!</p>
+
+
+
+<p class="wp-block-paragraph">But what about (a)? Why would the Datastream backfill create tuples? If it doesn&#8217;t create tuples, this whole hypothesis becomes untenable.</p>
+
+
+
+<p class="wp-block-paragraph">Well, sorry to disappoint you, but I don&#8217;t know why – or even whether – the Datastream backfill creates tuples. Perhaps it doesn&#8217;t, and my hypothesis is wrong. If you have an alternative hypothesis, please comment!</p>
+
+
+
+<p class="wp-block-paragraph">Ops is like this a lot of the time. Once you get a working fix, you move on to whatever&#8217;s the next biggest source of anxiety. Sometimes you never get a fully satisfying &#8220;why.&#8221; But you can still love the chase.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2025/03/14/did-u-ever-read-so-hard-u-accidentally-wrote/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3115</post-id>
+		<media:thumbnail url="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png" />
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png" medium="image">
+			<media:title type="html">graph_0</media:title>
+		</media:content>
+
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_0.png?w=1024" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_1.png?w=1024" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_2.png?w=1024" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/03/graph_3.png?w=640" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/03/hint_bits_diag.jpg?w=1024" medium="image" />
+	</item>
+		<item>
+		<title>Is ops a bullshit job?</title>
+		<link>https://blog.danslimmon.com/2025/02/11/is-ops-a-bullshit-job/</link>
+					<comments>https://blog.danslimmon.com/2025/02/11/is-ops-a-bullshit-job/#respond</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Tue, 11 Feb 2025 18:42:17 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[sre]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3107</guid>
+
+					<description><![CDATA[I recently had the pleasure of reading anthropologist David Graeber&#8217;s 2018 book, Bullshit Jobs: A Theory. Graeber defines a bullshit job as, a form of paid employment that is so completely pointless, unnecessary, or pernicious that even the employee cannot justify its existence even though, as part of the conditions of employment, the employee feels &#8230; <p><a href="https://blog.danslimmon.com/2025/02/11/is-ops-a-bullshit-job/" class="more-link">Continue reading <span class="screen-reader-text">Is ops a bullshit&#160;job?</span></a></p>]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">I recently had the pleasure of reading anthropologist David Graeber&#8217;s 2018 book, <em>Bullshit Jobs: A Theory</em>. Graeber defines a <strong>bullshit job</strong> as,</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">a form of paid employment that is so completely pointless, unnecessary, or pernicious that even the employee cannot justify its existence even though, as part of the conditions of employment, the employee feels obliged to pretend that this is not the case.</p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph"><em>Bullshit Jobs</em> is dotted with harrowing testimonials from all over the corporate sphere. It opens on Kurt, who is employed by a subcontractor of a subcontractor of a subcontractor for the German military. Whenever a soldier needs to move offices, Kurt&#8217;s job is to &#8220;take [a] rental car, drive [100-500 km] to the barracks, let dispatch know that [he] arrived, fill out a form, unhook the computer, load the computer into a box, seal the box, have a guy from the logistics firm carry the box to the next room, … [unseal] the box, fill out another form, hook up the computer, call dispatch to tell them how long [he] took, get a couple of signatures, take [the] rental car back home, send dispatch a letter with all of the paperwork and then get paid.&#8221;</p>
+
+
+
+<p class="wp-block-paragraph">Then there&#8217;s Gerte, a receptionist for a publishing company, whose main responsibilities are answering the phone the 1 time a day it rang, keeping the candy dish full of mints, and winding the grandfather clock in the conference room once a week. There&#8217;s Tom, who earns £100,000 a year using postproduction trickery to whiten the teeth and highlight the hair of models in television advertisements. From homeowners association managers to call center agents to full-time photocopiers of records in the VA, the subjects of this book all report the same grave and inescapable feeling that their work is completely pointless.</p>
+
+
+
+<p class="wp-block-paragraph">Graeber sees the proliferation of bullshit jobs as a moral tragedy. Why do we insist on employing people to do unnecessary work? Work for work&#8217;s sake is wanton domination.</p>
+
+
+
+<p class="wp-block-paragraph">I found it easy to identify with many of the people interviewed in <em>Bullshit Jobs</em>. I&#8217;ve certainly had jobs that were permeated by bullshit. However, I&#8217;ve never worked an entirely bullshit job.</p>
+
+
+
+<p class="wp-block-paragraph">Or so I thought! Until I came to this interview with Pablo, a software developer:</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">Pablo: Basically, we have two kinds of jobs. One kind involves working on core technologies, solving hard and challenging problems, etc. The other one is taking a bunch of core technologies and applying some duct tape to make them work together. The former is generally seen as useful. The latter is often seen as less useful or even useless, but, in any case, much less gratifying than the first kind. The feeling is probably based on the observation that if core technologies were done properly, there would be little or no need for duct tape.</p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">Wait a minute! That&#8217;s <em>my</em> job! Can it be? Is ops a bullshit job?</p>
+
+
+
+<h3 class="wp-block-heading">The duct taper</h3>
+
+
+
+<p class="wp-block-paragraph">By &#8220;ops,&#8221; I designate a whole family of jobs that share the &#8220;taking a bunch of core technologies and… mak[ing] them work together&#8221; responsibility described by Pablo. These jobs have titles like System Administrator, Web Operations Engineer, Infrastructure Engineer, Performance Engineer, Site Reliability Engineer, Platform Engineer, and DevOps Engineer. Although these jobs vary in focus, they all carry this operational responsibility, which Graeber takes as evidence that these are <strong>duct taper</strong> jobs.</p>
+
+
+
+<p class="wp-block-paragraph">A &#8220;duct taper&#8221; is a role that only exists to solve a problem that ought not to exist in the first place. Graeber cites many examples:</p>
+
+
+
+<ul class="wp-block-list">
+<li>&#8220;I worked as a programmer for a travel company. Some poor person&#8217;s job was to receive updated plane timetables via email several times a week and copy them by hand into Excel.&#8221;</li>
+
+
+
+<li>&#8220;My job was to transfer information about the state&#8217;s oil wells into a different set of notebooks than they were currently in.&#8221;</li>
+
+
+
+<li>&#8220;My day consisted of photocopying veterans&#8217; health records for seven and a half hours a day. Workers were told time and again that it was too costly to buy the machines for digitizing.&#8221;</li>
+
+
+
+<li>&#8220;I was given one responsibility: watching an in-box that received emails in a certain form from employees in the company asking for tech help, and copy and paste it into a different form.&#8221;</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">These are all very clear cases. But if ops is one of these duct taper jobs, then what&#8217;s the corresponding &#8220;problem that ought not to exist in the first place?&#8221; According to Pablo, it&#8217;s the fact that open source technologies are &#8220;unfinished,&#8221; &#8220;lacking quality,&#8221; and have &#8220;a lot of rough edges.&#8221; If, instead, companies were working with finished, high-quality components, then there would be no need for the duct tapers. So the theory goes.</p>
+
+
+
+<p class="wp-block-paragraph">On what grounds can we object to this characterization? Certainly not on the grounds that open source software <em>doesn&#8217;t</em> have rough edges. It most certainly does. One could perhaps take issue with the idea that if the core technologies underlying our software stacks were built with paid labor rather than unpaid labor, they&#8217;d be more &#8220;finished.&#8221; But I won&#8217;t.</p>
+
+
+
+<p class="wp-block-paragraph">Instead, I want to take aim at a misconception that I think Pablo shares with many, many people in the software industry. Namely, the idea that <em>if a software system is built correctly, it will work</em>. Or, equivalently: if a software system doesn&#8217;t work, then it wasn&#8217;t built correctly.</p>
+
+
+
+<h3 class="wp-block-heading">Why ops is necessary</h3>
+
+
+
+<p class="wp-block-paragraph">If you work in ops, you no doubt recognize this attitude. It&#8217;s been described in countless aspects, from the venerable old &#8220;throwing releases over the wall&#8221; metaphor to the shiny new <em>Platform Engineering</em> book (Fournier &amp; Nowland, 2024):</p>
+
+
+
+<blockquote class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow">
+<p class="wp-block-paragraph">Operational discipline, by which we mean a focus on carrying out operational practices on a routine basis, is an area that it&#8217;s easy for those with an application software development background to overlook (or worse, roll their eyes at). Some folks think the only reason people have to focus so hard on operational practices is that they didn&#8217;t build their APIs right in the first place.</p>
+
+
+
+<p class="wp-block-paragraph">… [I]t is difficult to operate a system whose major functionality predominantly comes from someone else&#8217;s code – be it an OSS or vendor system, or some other in-house system. This adds a level of complexity in that unknown operational problems (the &#8220;unknown unknowns&#8221;) are a constant threat, and the only way to manage that threat is with a discipline that seeks to understand and address all anomalies early, before they cause acute pain.</p>
+</blockquote>
+
+
+
+<p class="wp-block-paragraph">As soon as software leaves the realm of pure abstraction and enters into the service of real-world needs, it ceases to be &#8220;just software.&#8221; It becomes part of a complex system: one that includes third party platforms, multi-tenant networks, customers, adversaries, laws, and macroeconomic phenomena. The question of whether the software is built correctly may be the overriding consideration in the mind of a software developer, but it&#8217;s only a small matter compared to the myriad sociotechnical forces that determine a production system&#8217;s behavior.</p>
+
+
+
+<p class="wp-block-paragraph">Ops, in all its forms, seeks to address the challenges brought on by software&#8217;s transition from pure abstraction to engine of value. While software developers like Pablo see these challenges as incidental and indicative of shortcomings in the core technologies, they are in fact <em>fundamental and irreducible</em>. They&#8217;re a consequence of the ever-present gulf between the <a href="https://pages.cs.wisc.edu/~remzi/Naur.pdf">developer&#8217;s theory</a> and the messy complexity of the world.</p>
+
+
+
+<p class="wp-block-paragraph">Operations entails constant negotiation between these two spheres: the abstract sphere of software, and the much larger, more complex sociotechnical sphere. This negotiation takes many forms:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Reorganizing the connections between subsystems</li>
+
+
+
+<li>Probing the system for unexpected failure modes</li>
+
+
+
+<li>Building telemetry to monitor the system&#8217;s behavior</li>
+
+
+
+<li>Identifying anomalies and interpreting them</li>
+
+
+
+<li>Recovering from system failures</li>
+
+
+
+<li>Learning from system failures in order to improve reliability</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">Much of this activity looks, to an outside observer, like fixing mistakes in the design of the infrastructure. But that&#8217;s only because, when discrepancies between software assumptions and real-world behavior inevitably accumulate, they tend to accumulate along boundaries with the outside world. Which is where ops happens.</p>
+
+
+
+<h3 class="wp-block-heading">Bullshit can take many forms</h3>
+
+
+
+<p class="wp-block-paragraph">Now, do I claim that ops jobs are <em>never</em> bullshit jobs? Of course not. There are many ways for an ops job to be partly or entirely bullshit:</p>
+
+
+
+<ul class="wp-block-list">
+<li>You can be bad at the job, so that your work produces no value.</li>
+
+
+
+<li>You can be lazy, and survive by camouflaging your low output against the natural ineffectiveness of a large hierarchical organization.</li>
+
+
+
+<li>You can be effective at the job, but work for a company that produces no value.</li>
+
+
+
+<li>You can work on a product that doesn&#8217;t have enough traffic to cause significant operational problems.</li>
+
+
+
+<li>You can get roped into a compliance role.</li>
+
+
+
+<li>Your work can be so constrained by bureaucratic box-ticking that it loses meaning.</li>
+
+
+
+<li>You can just feel, in your soul, for reasons you can&#8217;t articulate, that your job is bullshit.</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">But most of these circumstances can apply just as easily to software dev jobs.</p>
+
+
+
+<p class="wp-block-paragraph">Only you can decide whether and to what extent you have a bullshit job. To do this, you must critically evaluate your work, the context of your work, and your feelings about your work. It&#8217;s a worthwhile exercise, regardless of where it leads.</p>
+
+
+
+<p class="wp-block-paragraph">Maybe your job is bullshit, maybe not. Just don&#8217;t take Pablo&#8217;s word for it.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2025/02/11/is-ops-a-bullshit-job/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3107</post-id>
+		<media:thumbnail url="https://blog.danslimmon.com/wp-content/uploads/2025/02/bullshit_jobs_cover.png" />
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/02/bullshit_jobs_cover.png" medium="image">
+			<media:title type="html">bullshit_jobs_cover</media:title>
+		</media:content>
+
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Incident SEV scales are a waste of time</title>
+		<link>https://blog.danslimmon.com/2025/01/29/incident-sev-scales-are-a-waste-of-time/</link>
+					<comments>https://blog.danslimmon.com/2025/01/29/incident-sev-scales-are-a-waste-of-time/#comments</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Wed, 29 Jan 2025 17:56:30 +0000</pubDate>
+				<category><![CDATA[incident-response]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[sre]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3073</guid>
+
+					<description><![CDATA[Ask an engineering leader about their incident response protocol and they&#8217;ll tell you about their severity scale. &#8220;The first thing we do is we assign a severity to the incident,&#8221; they&#8217;ll say, &#8220;so the right people will get notified.&#8221; And this is sensible. In order to figure out whom to get involved, decision makers need &#8230; <p><a href="https://blog.danslimmon.com/2025/01/29/incident-sev-scales-are-a-waste-of-time/" class="more-link">Continue reading <span class="screen-reader-text">Incident SEV scales are a waste of&#160;time</span></a></p>]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Ask an engineering leader about their incident response protocol and they&#8217;ll tell you about their <strong>severity scale</strong>. &#8220;The first thing we do is we assign a severity to the incident,&#8221; they&#8217;ll say, &#8220;so the right people will get notified.&#8221;</p>
+
+
+
+<p class="wp-block-paragraph">And this is sensible. In order to figure out whom to get involved, decision makers need to know how bad the problem is. If the problem is trivial, a small response will do, and most people can get on with their day. If it&#8217;s severe, it&#8217;s all hands on deck.</p>
+
+
+
+<p class="wp-block-paragraph">Severity correlates (or at least, it&#8217;s easy to imagine it correlating) to financial impact. This makes a SEV scale appealing to management: it takes production incidents, which are so complex as to defy tidy categorization on any dimension, and helps make them <a href="https://blog.danslimmon.com/2023/03/24/post-mortems-content-over-structure/">legible</a>.</p>
+
+
+
+<p class="wp-block-paragraph">A typical SEV scale looks like this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>SEV-3: Impact limited to internal systems.</li>
+
+
+
+<li>SEV-2:&nbsp;Non-customer-facing problem in production.</li>
+
+
+
+<li>SEV-1: Service degradation with limited impact in production.</li>
+
+
+
+<li>SEV-0: Widespread production outage. All hands on deck!</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">But when you&#8217;re organizing an incident response, is severity really what matters?</p>
+
+
+
+<h2 class="wp-block-heading">The Finger of God</h2>
+
+
+
+<p class="wp-block-paragraph">SEV scales are rather like the <a href="https://en.wikipedia.org/wiki/Fujita_scale">Fujita Scale</a>, which you may recall from the American film masterpiece <em>Twister</em> (1996). The Fujita Scale was invented in 1971 by Ted Fujita (seen here with Whoosh, a miniature tornado he rescued from tornado poachers and raised as his own).</p>
+
+
+
+<figure class="wp-block-image size-large is-resized"><a href="https://blog.danslimmon.com/wp-content/uploads/2025/01/image.png"><img loading="lazy" width="852" height="576" data-attachment-id="3078" data-permalink="https://blog.danslimmon.com/2025/01/29/incident-sev-scales-are-a-waste-of-time/image-12/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2025/01/image.png" data-orig-size="852,576" data-comments-opened="1" data-image-title="image" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2025/01/image.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2025/01/image.png?w=852" alt="" class="wp-image-3078" style="width:471px;height:auto" srcset="https://blog.danslimmon.com/wp-content/uploads/2025/01/image.png 852w, https://blog.danslimmon.com/wp-content/uploads/2025/01/image.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2025/01/image.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2025/01/image.png?w=768 768w" sizes="auto, (max-width: 852px) 100vw, 852px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">The Fujita scale classifies tornados according to the amount of damage they cause to human-built structures and vegetation:</p>
+
+
+
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody><tr><td><strong>F0</strong></td><td>Light damage</td><td>Broken windows; minor roof damage; tree branches broken off.</td></tr><tr><td><strong>F1</strong></td><td>Moderate damage</td><td>Cars pushed off road; major roof damage; significant damage to mobile homes</td></tr><tr><td><strong>F2</strong></td><td>Significant damage</td><td>Roof loss; collapse of exterior walls; vehicles lifted off ground; large numbers of trees uprooted</td></tr><tr><td><strong>F3</strong></td><td>Severe damage</td><td>A few parts of buildings left standing; train cars overturned; total loss of vegetation</td></tr><tr><td><strong>F4</strong></td><td>Devastating damage</td><td>Homes reduced to debris; trains lifted off ground and turned into projectiles</td></tr><tr><td><strong>F5</strong></td><td>Incredible damage</td><td>Well-anchored homes lifted into the air and obliterated; steel-reinforced structures leveled; &#8220;Incredible phenomena can and will occur&#8221;</td></tr></tbody></table></figure>
+
+
+
+<p class="wp-block-paragraph">Or, more colorfully,</p>
+
+
+
+<p class="wp-block-paragraph"><strong>BILL</strong>: It&#8217;s the Fujita scale. It measures a tornado&#8217;s intensity by how much it eats.<br><strong>MELISSA</strong>: Eats?<br><strong>BILL</strong>: Destroys.<br><strong>LAURENCE</strong>: That one we encountered back there was a strong F2, possibly an F3.<br><strong>BELTZER</strong>: Maybe we&#8217;ll see some 4&#8217;s.<br><strong>HAYNES</strong>: That would be sweet!<br><strong>BILL</strong>: 4 is good. 4 will relocate your house very efficiently.<br><strong>MELISSA</strong>: Is there an F5?<br>(Silence.)<br><strong>MELISSA</strong>: What would that be like?<br><strong>JASON</strong>: The Finger of God.</p>
+
+
+
+<p class="wp-block-paragraph">Fujita scores are not assigned at the moment a tornado is born, nor at the moment it is observed, nor yet the moment it&#8217;s reported to the National Weather Service. They&#8217;re assigned only after the damage has been assessed. During this assessment, many tools may be brought to bear, including weather radar data, media reports, witness testimony, and expert elicitation. It can take quite a while. It may even be inconclusive: the <a href="https://www.spc.noaa.gov/faq/tornado/ef-ttu.pdf">Enhanced Fujita scale</a> has a special &#8220;unknown&#8221; score for tornados, which is used for storms that happen to cross an area devoid of buildings or vegetation to &#8220;eat.&#8221; No matter how immensely powerful a tornado may be, if it causes no surveyable damage, its score is unknown.</p>
+
+
+
+<h2 class="wp-block-heading">Is severity even the point?</h2>
+
+
+
+<p class="wp-block-paragraph">In many cases, when we&#8217;re just beginning to respond to a software incident, we don&#8217;t yet know how bad a problem we&#8217;re dealing with. We can try to use the evidence at hand to hazard a guess, but the evidence at hand is likely to be scant, ambiguous, and divorced from context. (I&#8217;m by no means the first to notice these issues with SEV scales – see Fred Hebert&#8217;s <em><a href="https://www.honeycomb.io/blog/against-incident-severities-favor-incident-types">Against Incident Severities and in Favor of Incident Types</a></em> for an excellent take.)</p>
+
+
+
+<p class="wp-block-paragraph">Maybe all we have is a handful of support tickets. A handful of support tickets could imply a small hiccup, or it could point to the start of a major issue. We don&#8217;t know yet.</p>
+
+
+
+<p class="wp-block-paragraph">Or the evidence might be a single alert about a spike in error rate. Are the errors all for a single customer? What&#8217;s the user&#8217;s experience? What&#8217;s a <em>normal</em> error rate?</p>
+
+
+
+<p class="wp-block-paragraph">This uncertainty makes it quite hard to assign an accurate incident severity&nbsp;– at least, without doing additional, time-consuming research. Ultimately, though, what incident response calls for is not a judgement of severity. It&#8217;s a judgement of <em>complexity</em>.</p>
+
+
+
+<p class="wp-block-paragraph">The Incident Command System, employed by disaster response agencies such as FEMA and the DHS, provides an illustration of complexity-based scoring. It defines a range of <a href="https://www.fema.gov/sites/default/files/documents/nims-incident-complexity-guide.pdf">incident types</a>:</p>
+
+
+
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody><tr><td><strong>Incident type</strong></td><td><strong>Complexity</strong></td><td><strong>Examples</strong></td></tr><tr><td>Type 5</td><td>Up to 6 personnel; no written action plan required</td><td>Vehicle fire; injured person; traffic stop</td></tr><tr><td>Type 4</td><td>&#8220;Task Force&#8221; or &#8220;Strike team&#8221; required; multiple kinds of resources required</td><td>Hazmat spill on a roadway; large commercial fire</td></tr><tr><td>Type 3</td><td>Command staff positions filled; incident typically extends into multiple shifts; may require an incident base</td><td>Tornado damage to small section of city; detonation of a large explosive device; water main break</td></tr><tr><td>Type 2</td><td>Resources may need to remain on scene several weeks; multiple facilities required; complex aviation operations may be involved</td><td>Railroad car hazmat leak requiring multi-day evacuation; wildfire in a populated area; river flooding affecting an entire town</td></tr><tr><td>Type 1</td><td>Numerous facilities and resource types required; coordination between federal assets and NGO responders; 1000 or more responders</td><td>Pandemic; Category 4 hurricane; large wind-driven wildfire threatening an entire city</td></tr></tbody></table></figure>
+
+
+
+<p class="wp-block-paragraph">Complexity-based classification has a key advantage over that based on impact. Namely: by the time you&#8217;ve thought enough to know how complex a response you need, you already have the beginning of a plan. In other words, whereas the impact-based Fujita system is suited to <em>analysis</em>, the complexity-based ICS types are suited to <em>action</em>.</p>
+
+
+
+<h2 class="wp-block-heading">A complexity scale for software incidents</h2>
+
+
+
+<p class="wp-block-paragraph">Impact-based systems, like SEV scores, do little to support responders at incident time. A complexity-based system is far better. Here&#8217;s an example of a complexity-based system for software incidents:</p>
+
+
+
+<figure class="wp-block-table"><table class="has-fixed-layout"><tbody><tr><td></td><td>Complexity</td><td>Example</td></tr><tr><td><strong>C-1</strong></td><td>A handful of engineers from a single team. No handoffs.</td><td>Disk space is filling up on a log server</td></tr><tr><td><strong>C-2</strong></td><td>Coordination between teams and/or across shifts. Customer support may be involved.</td><td>Out-of-control database queries causing a performance degradation for some customers</td></tr><tr><td><strong>C-3</strong></td><td>Coordination among 3 or more teams. Customer-facing status posts may be called for. Deploys may be paused.</td><td>Outage of account-administrative functions. Severe delay in outgoing notifications.</td></tr><tr><td><strong>C-4</strong></td><td>Sustained, intense coordination cutting across all engineering team boundaries. Third-party relationships activated. Executives may be involved.</td><td>Website down due to unexplained network timeouts. Cloud provider region failure.</td></tr></tbody></table></figure>
+
+
+
+<p class="wp-block-paragraph">If you&#8217;re in control of your company&#8217;s incident response policy, consider whether a severity scale is going to be helpful to responders in the moment. You might come to the conclusion that you don&#8217;t need any scale at all! But if you do need to classify ongoing incidents, would you rather use a system that asks &#8220;How bad is it?,&#8221; or one that asks &#8220;What&#8217;s our plan?&#8221;</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2025/01/29/incident-sev-scales-are-a-waste-of-time/feed/</wfw:commentRss>
+			<slash:comments>4</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3073</post-id>
+		<media:thumbnail url="https://blog.danslimmon.com/wp-content/uploads/2025/01/tornado_banner.png" />
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/01/tornado_banner.png" medium="image">
+			<media:title type="html">tornado_banner</media:title>
+		</media:content>
+
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2025/01/image.png?w=852" medium="image" />
+	</item>
+		<item>
+		<title>The queueing shell game</title>
+		<link>https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/</link>
+					<comments>https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/#respond</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Wed, 21 Aug 2024 13:52:29 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[sre]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3061</guid>
+
+					<description><![CDATA[Queues are not just architectural widgets that you can insert into your architecture wherever they're needed. Queues are spontaneously occurring phenomena, just like a waterfall or a thunderstorm.]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">When queues break down, <a href="https://blog.danslimmon.com/2016/08/26/the-most-important-thing-to-understand-about-queues/">they break down spectacularly</a>. Buffer overruns! Out-of-memory crashes! Exponential latency spikes! It&#8217;s real ugly. And what&#8217;s worse, making the queue bigger never makes the problems go away. It always manages to fill up again.</p>
+
+
+
+<p class="wp-block-paragraph">If 4 of your last 5 incidents were caused by problems with a queue, then it&#8217;s natural to want to remove that queue from your architecture. But you can&#8217;t. Queues are not just architectural widgets that you can insert into your architecture wherever they&#8217;re needed. <strong>Queues are spontaneously occurring phenomena</strong>, just like a waterfall or a thunderstorm.</p>
+
+
+
+<p class="wp-block-paragraph">A queue will form whenever there are more entities trying to access a resource than the resource can satisfy concurrently. Queues take many different forms:</p>
+
+
+
+<ul class="wp-block-list">
+<li>People waiting in line to buy tickets to a play</li>
+
+
+
+<li>Airplanes sitting at their gates for permission to taxi to the runway</li>
+
+
+
+<li>The national waiting list for heart transplants</li>
+
+
+
+<li>Jira tickets in a development team&#8217;s backlog</li>
+
+
+
+<li>I/O operations waiting for write access to a hard disk</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">Though they are embodied in different ways, these are all queues. A queue is simply what emerges when more people want to use a thing than can simultaneously do so.</p>
+
+
+
+<p class="wp-block-paragraph">Let me illustrate this point by seeing what happens when we try to eliminate queueing from a simple web application.</p>
+
+
+
+<h1 class="wp-block-heading">The queueing shell game</h1>
+
+
+
+<p class="wp-block-paragraph">Let&#8217;s say your system has 10 servers behind a load balancer, and each server has enough resources to handle 10 concurrent requests. It follows that your overall system can handle 100 concurrent requests.</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png"><img loading="lazy" width="1024" height="731" data-attachment-id="3064" data-permalink="https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/crap0-2/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png" data-orig-size="1456,1040" data-comments-opened="1" data-image-title="crap0" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png?w=1024" alt="" class="wp-image-3064" srcset="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png?w=1440 1440w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png 1456w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">Now let&#8217;s say you have 170 requests in flight. 100 of those requests are actively being processed. What happens to the other 70?</p>
+
+
+
+<p class="wp-block-paragraph">Well, the most straightforward, job-interview-systems-design answer would be: they wait in a queue, which is implemented in the application logic.</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png"><img loading="lazy" width="1024" height="512" data-attachment-id="3065" data-permalink="https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/crap1/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png" data-orig-size="1062,532" data-comments-opened="1" data-image-title="crap1" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png?w=1024" alt="" class="wp-image-3065" srcset="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png 1062w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">This is great because it lets you show off your knowledge of how to implement a queue. But it&#8217;s not super realistic. Most of the time, we don&#8217;t make our applications worry about where the connections are coming from: the application just worries about serving the requests it gets. If your application simply accept()s new connections and starts working on them, then you don&#8217;t need to build a queue into it.</p>
+
+
+
+<p class="wp-block-paragraph">But that doesn&#8217;t mean there <em>isn&#8217;t a queue</em>! Instead of forming inside the application, a queue will form in the SYN backlog of the underlying network stack:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png"><img loading="lazy" width="1024" height="602" data-attachment-id="3066" data-permalink="https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/crap2/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png" data-orig-size="1070,630" data-comments-opened="1" data-image-title="crap2" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png?w=1024" alt="" class="wp-image-3066" srcset="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png 1070w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">Of course, it can be advantageous instead to run your application through web server software that handles queueing for you. Then your 70 waiting requests will be queued up inside the web server:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png"><img loading="lazy" width="1024" height="391" data-attachment-id="3067" data-permalink="https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/crap3/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png" data-orig-size="1370,524" data-comments-opened="1" data-image-title="crap3" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png?w=1024" alt="" class="wp-image-3067" srcset="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png 1370w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">But what if your web server doesn&#8217;t have any queueing built in? <em>Then</em> is there no queue? Of course not. There must be a queue, because the conditions for queue formation are still met. The queue may again take the form of a SYN backlog (but this time on the web server&#8217;s socket instead of the application&#8217;s socket). Or, it might get bumped back out to the load balancer (in which case, you&#8217;ll need a much bigger queue).</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap4.png"><img loading="lazy" width="1008" height="514" data-attachment-id="3068" data-permalink="https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/crap4/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap4.png" data-orig-size="1008,514" data-comments-opened="1" data-image-title="crap4" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap4.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap4.png?w=1008" alt="" class="wp-image-3068" srcset="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap4.png 1008w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap4.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap4.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap4.png?w=768 768w" sizes="auto, (max-width: 1008px) 100vw, 1008px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">If you really do not want a queue, then you can tell your load balancer not to queue requests, and instead to just send 503 errors whenever all backends are busy. Then there&#8217;s no queue.</p>
+
+
+
+<p class="wp-block-paragraph"><em>OR IS THERE??</em> Because, presumably, the requests you&#8217;re getting are coming from clients out there on the Internet that want the resource. Many of those clients, unless they&#8217;re lazy, will re-request the resource. So in effect, you&#8217;ve only moved the queue again:</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap5.png"><img loading="lazy" width="944" height="406" data-attachment-id="3069" data-permalink="https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/crap5/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap5.png" data-orig-size="944,406" data-comments-opened="1" data-image-title="crap5" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap5.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap5.png?w=944" alt="" class="wp-image-3069" srcset="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap5.png 944w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap5.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap5.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap5.png?w=768 768w" sizes="auto, (max-width: 944px) 100vw, 944px" /></a></figure>
+
+
+
+<p class="wp-block-paragraph">Now, if you control the client logic, you&#8217;re in luck. You can explicitly tell clients <em>not</em> to retry. Finally, you&#8217;ve eliminated the queue.</p>
+
+
+
+<p class="wp-block-paragraph">LOL, just kidding. Because the human, your customer, still wants the resource. So what will they do? They will keep trying until they either get their data or get bored. Again, by trying to eliminate the queue, you&#8217;ve just moved it – this time, into your customers&#8217; minds.</p>
+
+
+
+<figure class="wp-block-image size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png"><img loading="lazy" width="1024" height="428" data-attachment-id="3070" data-permalink="https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/crap6/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png" data-orig-size="1038,434" data-comments-opened="1" data-image-title="crap6" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png?w=1024" alt="" class="wp-image-3070" srcset="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png 1038w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+
+
+
+<h1 class="wp-block-heading">Requests represent intentions</h1>
+
+
+
+<p class="wp-block-paragraph">If you have more requests to answer than you have space for, you will have a queue. The only way to eliminate the queue would be to eliminate the extra requests. But a request doesn&#8217;t start the moment you get a connection to your load balancer – it starts the moment your customer decides to load a resource.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2024/08/21/the-queueing-shell-game/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3061</post-id>
+		<media:thumbnail url="https://blog.danslimmon.com/wp-content/uploads/2024/08/screenshot-2024-08-21-at-9.47.48-am.png" />
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/08/screenshot-2024-08-21-at-9.47.48-am.png" medium="image">
+			<media:title type="html">Screenshot 2024-08-21 at 9.47.48 AM</media:title>
+		</media:content>
+
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap0.png?w=1024" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap1.png?w=1024" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap2.png?w=1024" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap3.png?w=1024" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap4.png?w=1008" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap5.png?w=944" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/08/crap6.png?w=1024" medium="image" />
+	</item>
+		<item>
+		<title>Podcast: Small Batches with Adam Hawkins</title>
+		<link>https://blog.danslimmon.com/2024/08/20/podcast-small-batches-with-adam-hawkins/</link>
+					<comments>https://blog.danslimmon.com/2024/08/20/podcast-small-batches-with-adam-hawkins/#respond</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Tue, 20 Aug 2024 14:26:13 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[differential diagnosis]]></category>
+		<category><![CDATA[medical reasoning]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[sre]]></category>
+		<category><![CDATA[troubleshooting]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3055</guid>
+
+					<description><![CDATA[I was recently delighted to be interviewed by Adam Hawkins on his podcast Small Batches. We discussed a huge variety of topics. Here is the full episode, and on that page you&#8217;ll find meticulously timestamped links to specific topics. Check out the rest of Adam&#8217;s podcast, it&#8217;s phenomenal!]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">I was recently delighted to be interviewed by Adam Hawkins on his podcast <em><a href="https://smallbatches.fm/">Small Batches</a></em>. We discussed a huge variety of topics. <a href="https://share.transistor.fm/s/c8fbb991">Here is the full episode</a>, and on that page you&#8217;ll find meticulously timestamped links to specific topics. Check out the rest of Adam&#8217;s podcast, it&#8217;s phenomenal!</p>
+
+
+
+<figure class="wp-block-embed is-type-wp-embed is-provider-transistor wp-block-embed-transistor"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" class="wp-embedded-content" sandbox="allow-scripts" security="restricted" title="Incidents &amp; Operations with Dan Slimmon" width="100%" height="180" frameborder="no" scrolling="no" src="https://share.transistor.fm/e/c8fbb991#?secret=7L5G6blXff" data-secret="7L5G6blXff"></iframe>
+</div></figure>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2024/08/20/podcast-small-batches-with-adam-hawkins/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3055</post-id>
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Putting a meaningful dent in your error backlog</title>
+		<link>https://blog.danslimmon.com/2024/08/15/putting-a-meaningful-dent-in-your-error-backlog/</link>
+					<comments>https://blog.danslimmon.com/2024/08/15/putting-a-meaningful-dent-in-your-error-backlog/#respond</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Thu, 15 Aug 2024 14:09:10 +0000</pubDate>
+				<category><![CDATA[Descriptive engineering]]></category>
+		<category><![CDATA[Workflow]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[sre]]></category>
+		<category><![CDATA[troubleshooting]]></category>
+		<category><![CDATA[workflow]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3051</guid>
+
+					<description><![CDATA[We often don't realize how noisy the errors have gotten until things are already well out of hand. After all, we've got shit to do. Deadlines to hit. By the time we decide to get serious about error management, a huge, impenetrable, meaningless backlog of errors has already accumulated. I call this stuff "slag."]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">&#8220;Let&#8217;s track our production errors,&#8221; they said. &#8220;We&#8217;ll harvest insights,&#8221; they said. And 3 years later, all we have to show for it is an error tracking dashboard so bloated with junk that it makes us sick to look at.</p>
+
+
+
+<p class="wp-block-paragraph">When error tracking is working, engineers engage with it regularly, scrutinizing every new error thrown. This regular engagement is what transmutes raw error data into meaning. If engagement ceases (or never gets started) then, like bull thistle in a sad old garden, noise dominates.</p>
+
+
+
+<p class="wp-block-paragraph">Of course we often don&#8217;t realize how noisy the errors have gotten until things are already well out of hand. After all, we&#8217;ve got shit to do. Deadlines to hit. By the time we decide to get serious about error management, a huge, impenetrable, meaningless backlog of errors has already accumulated. I call this stuff <strong>slag</strong>.</p>
+
+
+
+<p class="wp-block-paragraph">Slag is viscous. Try to dig yourself out of the heap by brute force, one error at a time, starting with the most common, and you won&#8217;t get very far. After you investigate the top 10 errors and find out that 9 of them are complete non-issues that aren&#8217;t worth fixing, the wind will drain from your sails. Investigating errors takes a lot of time, and there are still 340 to go! Wait, I just refreshed the page and there&#8217;s 348 now.</p>
+
+
+
+<p class="wp-block-paragraph">Slag engenders hopelessness, and hopelessness drives teams to declare bankruptcy on error tracking.</p>
+
+
+
+<p class="wp-block-paragraph">The reason slag engenders hopelessness is because you&#8217;d have to dig through essentially <em>all</em> the slag in order to get <em>any</em> value. But by <strong>excluding behaviors</strong>, you can create <em>incremental</em> value as you burn down the error list. This changes the tradeoff, making error remediation work into something that&#8217;s immediately and obviously worth doing.</p>
+
+
+
+<h2 class="wp-block-heading">The magic of excluded behaviors</h2>
+
+
+
+<p class="wp-block-paragraph">Suppose you have a list of errors that your system throws in production. Sorting this list by frequency-of-error and eyeballing it, you see that it contains about:</p>
+
+
+
+<ul class="wp-block-list">
+<li>40 kinds of network timeouts</li>
+
+
+
+<li>30 different JSON parse errors</li>
+
+
+
+<li>20 Nil pointer exceptions, spread across the codebase</li>
+
+
+
+<li>12 Postgres deadlocks</li>
+
+
+
+<li>… many more errors that are harder to lump into categories.</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">I would look at this list and say, &#8220;Well, deadlocks are never expected or desired, and they&#8217;re often contributing factors in larger problems… so let&#8217;s <strong>exclude</strong> deadlocks.&#8221; (Someone else, with different constraints and knowledge, might justifiably pick a different behavior to exclude.) Anyway, we pick a behavior, then we exclude it.</p>
+
+
+
+<p class="wp-block-paragraph">Here&#8217;s how you exclude a behavior:</p>
+
+
+
+<ul class="wp-block-list">
+<li>List all the individual errors in the class to be excluded.</li>
+
+
+
+<li>Burn down that list by fixing each underlying bug.</li>
+
+
+
+<li>Create a (non-paging) monitor to catch regressions.</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">When you exclude a behavior, you get <em>immediate</em> incremental value. Where before there was a system that would sometimes deadlock in production, now there&#8217;s a system that is <em>known never to</em> deadlock in production.</p>
+
+
+
+<p class="wp-block-paragraph">This guarantee is immensely valuable. By eliminating deadlocks from the system, you block off a whole range of ways that surprising failure modes could creep into your system. This yields a direct increase in reliability.</p>
+
+
+
+<p class="wp-block-paragraph">Excluding a behavior also makes your system easier to troubleshoot! Suppose you&#8217;re hunting down a bug that manifests as sudden server process crashes in production. You might wonder if an out-of-memory condition could be to blame for this behavior. And so you might spend half a day scrolling through logs, trying to correlate OOM events with your crashes. Whereas, if you&#8217;ve <em>excluded</em> out-of-memory errors, then you can hop right over that whole entire rabbit hole. Haven&#8217;t been notified about any OOMs? Then there haven&#8217;t been any OOMs.</p>
+
+
+
+<p class="wp-block-paragraph">Here are some classes of behavior that you might choose to exclude:</p>
+
+
+
+<ul class="wp-block-list">
+<li>deadlocks</li>
+
+
+
+<li>out-of-memory crashes</li>
+
+
+
+<li>network timeouts between load balancer and web server</li>
+
+
+
+<li>503 errors</li>
+
+
+
+<li>Nil-pointer exceptions</li>
+
+
+
+<li>database transactions longer than 30 seconds</li>
+
+
+
+<li>Go panics</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">It shouldn&#8217;t be hard to think of more.</p>
+
+
+
+<p class="wp-block-paragraph"><strong>Do you really have to eliminate every member of an excluded class? Can&#8217;t you make exceptions?</strong></p>
+
+
+
+<p class="wp-block-paragraph">Sure you can make exceptions. Just make sure you document the reasoning for any exception you make.</p>
+
+
+
+<p class="wp-block-paragraph">Because another great thing you get out of excluded behaviors is a list of known <em>vulnerabilities to failure</em>. This list is worth its weight in gold as a tool for knowledge transfer activities, such as onboarding, planning, and architecture design.</p>
+
+
+
+<p class="wp-block-paragraph">After a while, you get kind of addicted to excluding behaviors. Each new exclusion makes your production system that much more boring.</p>
+
+
+
+<p class="wp-block-paragraph">And boring is how we like &#8217;em.</p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2024/08/15/putting-a-meaningful-dent-in-your-error-backlog/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3051</post-id>
+		<media:thumbnail url="https://blog.danslimmon.com/wp-content/uploads/2024/08/slag-heap.jpg" />
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/08/slag-heap.jpg" medium="image">
+			<media:title type="html">slag heap</media:title>
+		</media:content>
+
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>No Observability Without Theory: The Talk</title>
+		<link>https://blog.danslimmon.com/2024/07/03/no-observability-without-theory-the-talk/</link>
+					<comments>https://blog.danslimmon.com/2024/07/03/no-observability-without-theory-the-talk/#respond</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Wed, 03 Jul 2024 14:08:06 +0000</pubDate>
+				<category><![CDATA[Problem-Solving]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[differential diagnosis]]></category>
+		<category><![CDATA[medical reasoning]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[sre]]></category>
+		<category><![CDATA[troubleshooting]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3043</guid>
+
+					<description><![CDATA[Last month, I had the unadulterated pleasure of presenting &#8220;No Observability Without Theory&#8221; at Monitorama 2024. If you&#8217;ve never been to Monitorama, I can&#8217;t recommend it enough. I think it&#8217;s the best tech conference, period. This talk was adapted from an old blog post of mine, but it was a blast turning it into a &#8230; <p><a href="https://blog.danslimmon.com/2024/07/03/no-observability-without-theory-the-talk/" class="more-link">Continue reading <span class="screen-reader-text">No Observability Without Theory: The&#160;Talk</span></a></p>]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">Last month, I had the unadulterated pleasure of presenting &#8220;No Observability Without Theory&#8221; at Monitorama 2024. If you&#8217;ve never been to <a href="https://monitorama.com/">Monitorama</a>, I can&#8217;t recommend it enough. I think it&#8217;s the best tech conference, period.</p>
+
+
+
+<p class="wp-block-paragraph">This talk was adapted from an <a href="https://blog.danslimmon.com/2019/05/03/no-observability-without-theory/">old blog post of mine</a>, but it was a blast turning it into a talk. I got to make up a bunch of nonsense medical jargon, which is one of my favorite things to do. <a href="https://docs.google.com/presentation/d/1bQvMJBA0X0wloOCP3kepKN5EA8RCIsm7oLpMHijVL6M/edit?usp=sharing">Here are my slides</a>, and the video is below. Enjoy!</p>
+
+
+
+<figure class="wp-block-embed is-type-rich is-provider-embed-handler wp-block-embed-embed-handler wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" class="youtube-player" width="640" height="360" src="https://www.youtube.com/embed/aJkynVk1k6M?si=_ajf5lAUFZbpDSRT&#038;version=3&#038;rel=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;fs=1&#038;hl=en&#038;autohide=2&#038;wmode=transparent" allowfullscreen="true" style="border:0;" sandbox="allow-scripts allow-same-origin allow-popups allow-presentation allow-popups-to-escape-sandbox"></iframe>
+</div></figure>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2024/07/03/no-observability-without-theory-the-talk/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3043</post-id>
+		<media:thumbnail url="https://blog.danslimmon.com/wp-content/uploads/2024/07/screenshot-2024-07-03-at-10.06.45-am.png" />
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/07/screenshot-2024-07-03-at-10.06.45-am.png" medium="image">
+			<media:title type="html">Screenshot 2024-07-03 at 10.06.45 AM</media:title>
+		</media:content>
+
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Leading incidents when you&#8217;re junior</title>
+		<link>https://blog.danslimmon.com/2024/06/27/leading-incidents-when-youre-junior/</link>
+					<comments>https://blog.danslimmon.com/2024/06/27/leading-incidents-when-youre-junior/#respond</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Thu, 27 Jun 2024 14:57:13 +0000</pubDate>
+				<category><![CDATA[incident-response]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[incident management]]></category>
+		<category><![CDATA[incident response]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[software engineering]]></category>
+		<category><![CDATA[sre]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3035</guid>
+
+					<description><![CDATA[If you&#8217;re a junior engineer at a software company, you might be required to be on call for the systems your team owns. Which means you&#8217;ll eventually be called upon to lead an incident response. And since incidents don&#8217;t care what your org chart looks like, fate may place you in charge of your seniors; &#8230; <p><a href="https://blog.danslimmon.com/2024/06/27/leading-incidents-when-youre-junior/" class="more-link">Continue reading <span class="screen-reader-text">Leading incidents when you&#8217;re&#160;junior</span></a></p>]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">If you&#8217;re a junior engineer at a software company, you might be required to be on call for the systems your team owns. Which means you&#8217;ll eventually be called upon to lead an incident response. And since <a href="https://www.linkedin.com/posts/preed_incidents-dont-care-what-your-org-chart-activity-7208972042316967936-CrHz/">incidents don&#8217;t care what your org chart looks like</a>, fate may place you in charge of your seniors; even your boss!</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large"><a href="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png"><img loading="lazy" width="1024" height="651" data-attachment-id="3041" data-permalink="https://blog.danslimmon.com/2024/06/27/leading-incidents-when-youre-junior/screenshot-2024-06-27-at-11-00-10-am/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png" data-orig-size="1091,694" data-comments-opened="1" data-image-title="Screenshot 2024-06-27 at 11.00.10 AM" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png?w=1024" alt="" class="wp-image-3041" srcset="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png?w=1024 1024w, https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png?w=768 768w, https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png 1091w" sizes="auto, (max-width: 1024px) 100vw, 1024px" /></a></figure>
+</div>
+
+
+<p class="wp-block-paragraph">That&#8217;s a lot of pressure, and they certainly didn&#8217;t teach you how to do it in school. You&#8217;re still just learning the ropes, and now they expect you to be in charge? During an outage? And tell more senior engineers what to do? It seems wrong and unfair.</p>
+
+
+
+<p class="wp-block-paragraph">But let your inexperience be an advantage!</p>
+
+
+
+<h3 class="wp-block-heading">Incident lead is not a technical role</h3>
+
+
+
+<p class="wp-block-paragraph">The incident lead is the person accountable for keeping the response effort moving swiftly forward. That involves a wide variety of activities, of which <em>fixing the problem</em> only represents a subset.</p>
+
+
+<div class="wp-block-image">
+<figure class="aligncenter size-large is-resized"><a href="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-10.59.43-am.png"><img loading="lazy" width="790" height="753" data-attachment-id="3040" data-permalink="https://blog.danslimmon.com/2024/06/27/leading-incidents-when-youre-junior/screenshot-2024-06-27-at-10-59-43-am/" data-orig-file="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-10.59.43-am.png" data-orig-size="790,753" data-comments-opened="1" data-image-title="Screenshot 2024-06-27 at 10.59.43 AM" data-image-description="" data-image-caption="" data-large-file="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-10.59.43-am.png?w=640" src="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-10.59.43-am.png?w=790" alt="" class="wp-image-3040" style="width:587px;height:auto" srcset="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-10.59.43-am.png 790w, https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-10.59.43-am.png?w=150 150w, https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-10.59.43-am.png?w=300 300w, https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-10.59.43-am.png?w=768 768w" sizes="auto, (max-width: 790px) 100vw, 790px" /></a></figure>
+</div>
+
+
+<p class="wp-block-paragraph">Just like the leader of any team, the incident lead&#8217;s main job is to keep all the participants on the same page – in other words, to maintain <a href="https://blog.danslimmon.com/2024/06/14/fight-knowledge-decay-with-a-rich-incident-summary/">common ground</a>. It&#8217;s common ground that allows a group of individuals to work together as more than just individuals. And you don&#8217;t need to be deeply versed in the tech to do that. You just need to ask questions.</p>
+
+
+
+<p class="wp-block-paragraph">Aim to understand the problem <em>just enough</em> to make pretty good decisions. Your decisions don&#8217;t have to be perfectly optimal. If the primary SME says something like,</p>
+
+
+
+<p class="wp-block-paragraph"><em>It looks like maybe the Chargeover service is borked</em>.</p>
+
+
+
+<p class="wp-block-paragraph">and you don&#8217;t know what the Chargeover service is or why it might be borked: <strong>speak up</strong>! The Primary SME is already deep in the problem space, so they often won&#8217;t think to explain what they mean. And chances are you&#8217;re not the only one on the call who needs an explanation. As incident lead, it&#8217;s up to you to get clarity – not just for yourself, but for the whole group.</p>
+
+
+
+<p class="wp-block-paragraph">As someone who&#8217;s new to the tech stack, you&#8217;re perfectly placed to ask fundamental questions. So ask. For example, you could ask:</p>
+
+
+
+<ul class="wp-block-list">
+<li>What makes you say the Chargeover service is borked? Did you see a graph or logs or something?</li>
+
+
+
+<li>I&#8217;m not familiar with the Chargeover service – what does it do?</li>
+
+
+
+<li>Do you have a hypothesis yet about why it&#8217;s borked?</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">You won&#8217;t need to ask a bunch of questions right in a row. Usually one or two is sufficient to jolt an SME out of &#8220;fixing mode&#8221; and into &#8220;<a href="https://blog.danslimmon.com/2024/04/05/explaining-the-fire/">explaining mode</a>.&#8221; Then you can draw out enough information to build your own sufficient understanding, and in the process, the whole call will get an improved, shared understanding by listening to your conversation. It will develop common ground.</p>
+
+
+
+<p class="wp-block-paragraph">How do you know when your understanding is sufficient? That&#8217;s a job for <a href="https://www.aha.org/center/project-firstline/teamstepps-video-toolkit/closed-loop-communication">closed-loop communication</a>. As soon as you think you can, repeat back in your own words the following:</p>
+
+
+
+<ol class="wp-block-list">
+<li>The symptoms</li>
+
+
+
+<li>The main hypothesis that the SME is entertaining to explain the symptoms</li>
+
+
+
+<li>Any other hypotheses in play</li>
+
+
+
+<li>What action(s) the SME is planning to take</li>
+</ol>
+
+
+
+<p class="wp-block-paragraph">If you say these things and the SME says, &#8220;Yup, that&#8217;s right,&#8221; then congratulations! You&#8217;ve successfully established common ground among incident responders. You&#8217;ve done a better, more valuable job than the vast majority of incident leads (even ones who are very experienced engineers). Because you asked fundamental questions and listened.</p>
+
+
+
+<p class="wp-block-paragraph"><em>If you&#8217;re looking to raise your incident response game, my 3-part course <a href="https://d2e.engineering/leading-incidents">Leading Incidents</a> is just what you need.</em></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2024/06/27/leading-incidents-when-youre-junior/feed/</wfw:commentRss>
+			<slash:comments>0</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3035</post-id>
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-11.00.10-am.png?w=1024" medium="image" />
+
+		<media:content url="https://blog.danslimmon.com/wp-content/uploads/2024/06/screenshot-2024-06-27-at-10.59.43-am.png?w=790" medium="image" />
+	</item>
+		<item>
+		<title>Fight understanding decay with a rich Incident Summary</title>
+		<link>https://blog.danslimmon.com/2024/06/14/fight-knowledge-decay-with-a-rich-incident-summary/</link>
+					<comments>https://blog.danslimmon.com/2024/06/14/fight-knowledge-decay-with-a-rich-incident-summary/#comments</comments>
+		
+		<dc:creator><![CDATA[Dan Slimmon]]></dc:creator>
+		<pubDate>Fri, 14 Jun 2024 15:09:06 +0000</pubDate>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[devops]]></category>
+		<category><![CDATA[incidentresponse]]></category>
+		<category><![CDATA[incidents]]></category>
+		<category><![CDATA[inicdentmanagement]]></category>
+		<category><![CDATA[ops]]></category>
+		<category><![CDATA[sre]]></category>
+		<category><![CDATA[troubleshooting]]></category>
+		<guid isPermaLink="false">http://blog.danslimmon.com/?p=3030</guid>
+
+					<description><![CDATA[It only takes a few off-the-rails incidents in your software career to realize the importance of writing things down. That&#8217;s why so many companies&#8217; incident response protocols define a scribe role. The scribe&#8217;s job, generally, is to take notes on everything that happens. In other words, the scribe produces an artifact of the response effort. &#8230; <p><a href="https://blog.danslimmon.com/2024/06/14/fight-knowledge-decay-with-a-rich-incident-summary/" class="more-link">Continue reading <span class="screen-reader-text">Fight understanding decay with a rich Incident&#160;Summary</span></a></p>]]></description>
+										<content:encoded><![CDATA[
+<p class="wp-block-paragraph">It only takes a few off-the-rails incidents in your software career to realize the importance of <em>writing things down</em>. That&#8217;s why so many companies&#8217; incident response protocols define a <strong>scribe</strong> role. The scribe&#8217;s job, generally, is to take notes on everything that happens. In other words, the scribe produces an <strong>artifact</strong> of the response effort.</p>
+
+
+
+<p class="wp-block-paragraph">Scribe is a pretty simple – and therefore often dull – job. Usually, you just listen along and take a series of timestamped notes, like this:</p>
+
+
+
+<ul class="wp-block-list">
+<li>14:56 Incident call convened. Jamie is Incident Commander</li>
+
+
+
+<li>14:59 Dan is assigned as scribe</li>
+
+
+
+<li>15:00 Jamie posts to status page</li>
+
+
+
+<li>15:01 Jamie gets paged about a second service, possibly related</li>
+
+
+
+<li>15:06 Taylor joins call, Taylor assigned as Primary Investigator</li>
+
+
+
+<li>15:07 Jamie gives status update: two web servers seems to have dropped out of the cluster due to failing health checks; the health checks are failing with error connection timed out to redis-main.lan:6379</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">This is better than nothing. When new responders join the effort, they can read this timeline to get up to speed. And later, when it&#8217;s time to do a post-mortem, these notes can become (the first draft of) the timeline that gets reviewed.</p>
+
+
+
+<p class="wp-block-paragraph">But I teach scribes to create a very different kind of artifact: one that raises up the scribe from essentially a technical stenographer to an active and vital participant in the problem-solving effort.</p>
+
+
+
+<h2 class="wp-block-heading">The decay of understanding</h2>
+
+
+
+<p class="wp-block-paragraph">As I&#8217;ve noted before <a href="https://blog.danslimmon.com/2024/04/05/explaining-the-fire/">on this very blog</a>, if you want to fix a problem in a software system, you first have to build an understanding of the problem. Generally, the problems that can be solved <em>without</em> building understanding have already been eliminated.</p>
+
+
+
+<p class="wp-block-paragraph">Sometimes understanding seems to emerge spontaneously from the facts, like when someone deploys a change and the site goes down. But usually, incident responders have to work together to construct understanding over the course of the response effort. Often this process represents the bulk of the response team&#8217;s labor, and consequently, the bulk of the incident&#8217;s duration. What&#8217;s worse: the whole time you&#8217;re trying to build understanding, you have to fight against <strong>understanding decay</strong>.</p>
+
+
+
+<p class="wp-block-paragraph">As you respond to an incident, your understanding of the situation decays. Because:</p>
+
+
+
+<ul class="wp-block-list">
+<li>You forget things you learned earlier.</li>
+
+
+
+<li>The situation changes out from under you.</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">And furthermore, you&#8217;re not just trying to build your <em>own</em> understanding. You&#8217;re working as part of a team of responders who need to build a <strong><a href="https://www.routledge.com/Joint-Cognitive-Systems-Patterns-in-Cognitive-Systems-Engineering/Woods-Hollnagel/p/book/9780367864156?source=shoppingads&amp;locale=en-USD&amp;gad_source=1&amp;gclid=CjwKCAjw1K-zBhBIEiwAWeCOF46Rc8WO7pkggBVD4i328-Jzqh9Eq6N0XU4NO1H6ZvP2RE8fVh4YAhoCoWgQAvD_BwE">joint understanding</a></strong> in order to collaborate. Joint understanding suffers from the same sources of decay as individual understanding, along with many more sources:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Any two responders will get exposed to different facets of the problem. You&#8217;ll look at a different set of graphs, latch onto different error messages, and zoom in on different parts of a trace.</li>
+
+
+
+<li>Two responders may assign different weights to the same piece of evidence. If you&#8217;re familiar with subsystem S, and you see evidence that subsystem S is malfunctioning, this will impact your mental model of the situation more heavily than it will impact that of your teammate, who is more familiar with a different part of the stack.</li>
+
+
+
+<li>People continuously join and leave the response team. When a participant leaves, she takes her part of the joint understanding with her. When one joins, he needs to spend time &#8220;spinning up context&#8221; on the effort – and even then, he can at best obtain only an approximation of the understanding shared by the people already on the call.</li>
+
+
+
+<li>Miscommunication is common, so even if two responders try to synchronize their understanding, their joint understanding will often end up with significant gaps.</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">A group&#8217;s ability to solve problems depends on joint understanding, and joint understanding decays over time. And in a high-pressure, dynamic situation (like an incident), it can decay <em>fast</em>. Unless a group works continuously to preserve and repair its joint understanding, this decay leads predictably to frustration, confusion, and mistakes. The center cannot hold.</p>
+
+
+
+<h2 class="wp-block-heading">There was an attempt (to preserve and repair joint understanding)</h2>
+
+
+
+<p class="wp-block-paragraph">This need to preserve and repair joint understanding is the main reason that incident response demands a scribe. The scribe keeps a written artifact, which responders can refer to when they need to remember things they&#8217;ve forgotten, or resolve a disagreement about the facts of the case. This artifact also reduces the understanding decay that results from responders leaving the call, since those who newly join can get up to speed by reading it.</p>
+
+
+
+<p class="wp-block-paragraph">The usual kind of scribe artifact, a timeline of notes, is thus a method of maintaining and repairing understanding. And yet, as a tool for that purpose, consider its defects. The understanding encoded by the timeline is stored in &#8220;diff&#8221; format. Those who wish to come up to speed with the ongoing effort must, starting with their background knowledge, construct their understanding inductively.</p>
+
+
+
+<p class="wp-block-paragraph">This diff-format characteristic introduces 2 problems.</p>
+
+
+
+<p class="wp-block-paragraph">Problem 1: the amount of time that it takes to read through the timeline grows linearly with the timeline&#8217;s length. Eager new responders are encouraged to spin up on context by reading the timeline (or reading the chat backscroll, which is just another kind of timeline). But as an investigation goes on, the timeline gets longer and longer, making it more and more cumbersome to maintain joint understanding.</p>
+
+
+
+<figure class="wp-block-image"><img src="https://lh7-us.googleusercontent.com/docsz/AD_4nXcBm6xU0M27F2sTBlHpazKV7-vHCn1xLgWgKFnQe29Ewu0abzyr0V5TnJiBEVuYHY1vwKoihFKOPGy-qr9G213Nt1TNkZ3DHoYKuQ1E7o-vS38YdFbc7qLQBSgzRy4NE39qxB5Eqa0d3IcE4dsQIk5VFiM?key=nqwdZwytF52m1WN2WzvPeg" alt="" /></figure>
+
+
+
+<p class="wp-block-paragraph">Problem 2 is even more serious. Because any two responders start with different background understandings, they will have a tendency to interpret the same facts differently, potentially ending up at quite different understandings. This is the <a href="https://www.researchgate.net/publication/227992178_Common_Ground_and_Coordination_in_Joint_Activity">Fundamental Common Ground Breakdown</a> (link to KFBW paper), and it becomes more and more pernicious as the timeline gets longer.</p>
+
+
+
+<figure class="wp-block-image"><img src="https://lh7-us.googleusercontent.com/docsz/AD_4nXcznwF1hlSYMdimIZMfc6pRC1l417MtrvR8v3vddY3ef2rQctkLyFqExN4nL4BlqrfLct7uH2kR3pYA1sbaLtmcYZ9JMq-TmkJhp1s91BbAJ_7_ZcquVI7FUtmgsVu62wymFQ008eRYQpRqcOn9OrffQSwB?key=nqwdZwytF52m1WN2WzvPeg" alt="" /></figure>
+
+
+
+<p class="wp-block-paragraph">Taken together, these two deficiencies mean the incident investigations that run the longest will also be the hardest to onboard new responders onto.</p>
+
+
+
+<h2 class="wp-block-heading">The Incident Summary</h2>
+
+
+
+<p class="wp-block-paragraph">When it&#8217;s up to me, I ask the scribe to focus instead on composing an <strong>incident summary</strong>. This is a series of bullet points that lives at the top of the document. For example:</p>
+
+
+
+<ul class="wp-block-list">
+<li>Since 09:04, users are experiencing increased page-load times. Several have filed support tickets.</li>
+
+
+
+<li>At 09:04 there was a sharp increase in median web request latency, from ~40ms to ~90ms</li>
+
+
+
+<li>From about 08:42 we observed a linearly increasing number of row locks in the database</li>
+
+
+
+<li>We think the row locks are causing the high web request latencies</li>
+
+
+
+<li>Anita is taking a closer look at the row locks to see where they&#8217;re coming from</li>
+
+
+
+<li>It&#8217;s also possible that the web requests are getting slowed down for some other reason, and since they&#8217;re slow, they&#8217;re holding locks for longer. So Sigmund is investigating the request traces</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">or:</p>
+
+
+
+<ul class="wp-block-list">
+<li>The hourly key-value backup job has failed 3 consecutive times (No customer-facing impact)</li>
+
+
+
+<li>Starting with the run that kicked off at 18:31, the hourly backup job for the key-value store has been failing to run to completion</li>
+
+
+
+<li>The job exits suddenly in the middle of copying files to cold storage. It produces no error message before crashing</li>
+
+
+
+<li>Our best guess is that the job is running out of memory</li>
+
+
+
+<li>Bradley is checking the server logs for OOMkill messages</li>
+
+
+
+<li>The cause could also be something like a network timeout (but we think that would be logged, so maybe not)</li>
+</ul>
+
+
+
+<p class="wp-block-paragraph">The Incident Summary should go in its own section at the very top of the scribe document. It should be composed of 5–8 bullet points for a total of 50–150 words. It should cover (roughly in this order):</p>
+
+
+
+<ol class="wp-block-list">
+<li>The impact of the problem (especially with regard to customer experience)</li>
+
+
+
+<li>The most important symptoms that have been observed</li>
+
+
+
+<li>Our leading hypothesis to explain the symptoms</li>
+
+
+
+<li>What actions are being taken and by whom</li>
+
+
+
+<li>At least one alternative hypothesis that hasn&#8217;t been ruled out.</li>
+</ol>
+
+
+
+<h3 class="wp-block-heading">Why this is so much better</h3>
+
+
+
+<p class="wp-block-paragraph">As a tool for maintaining and repairing joint understanding, the Incident Summary has many advantages over the traditional timeline format.</p>
+
+
+
+<p class="wp-block-paragraph">Instead of the current understanding being encoded in &#8220;diff&#8221; format, it is available to the reader in one quick bite. This eliminates the problem of linearly-increasing context spin-up time. It also serves to place bounds on how different any two responders&#8217; individual understandings can be – since both must coincide with the Summary.</p>
+
+
+
+<figure class="wp-block-image"><img src="https://lh7-us.googleusercontent.com/docsz/AD_4nXeqtvbUEUJMh1ZAPhe5SrtnSo4352SxrqilhzzyEnT6QMBmYLqDvcDK21lm2hx0BJbwwWGA296OdunnhpzTmAjv2cmJaUPOwjcmruajuucXzQ9Tuv9MXW3pOfrHesSiZGLC8vuvHuujgEayx8l7E6hdlJXA?key=nqwdZwytF52m1WN2WzvPeg" alt="" /></figure>
+
+
+
+<p class="wp-block-paragraph">Finally – and most importantly, if you ask me – it forces the response team to discuss their hypotheses and the limits of their certainty. This results in better plans, which means shorter incidents.</p>
+
+
+
+<h2 class="wp-block-heading">Does this mean incident timelines are deprecated?</h2>
+
+
+
+<p class="wp-block-paragraph">I don&#8217;t think so. There are still many notes worth taking that won&#8217;t end up in the Incident Summary, and it can make perfect sense to keep those notes in a timeline format.</p>
+
+
+
+<p class="wp-block-paragraph">However, I do think that the scribe&#8217;s primary focus should be keeping the Incident Summary accurate and succinct. If that focus detracts from the completeness of the timeline-formatted notes further down in the document, so be it. In the presence of time pressure and a shifting knowledge base, the Summary matters more.</p>
+
+
+
+<p class="wp-block-paragraph"><em>You can get </em><a href="https://d2e.engineering/leading-incidents">Leading Incidents</a><em>, my 3-part course on incident response, for 30% off (<s>$125</s> 87.50) by <a href="https://d2e.engineering/signup">joining the D2E mailing list</a> now!</em></p>
+
+
+
+<p class="wp-block-paragraph"></p>
+]]></content:encoded>
+					
+					<wfw:commentRss>https://blog.danslimmon.com/2024/06/14/fight-knowledge-decay-with-a-rich-incident-summary/feed/</wfw:commentRss>
+			<slash:comments>1</slash:comments>
+		
+		
+		<post-id xmlns="com-wordpress:feed-additions:1">3030</post-id>
+		<media:content url="https://0.gravatar.com/avatar/9e1aedd800c4580300eef746b1c7db9829b95ed4500fd086cbb79b757cfce136?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">danslimmon</media:title>
+		</media:content>
+
+		<media:content url="https://lh7-us.googleusercontent.com/docsz/AD_4nXcBm6xU0M27F2sTBlHpazKV7-vHCn1xLgWgKFnQe29Ewu0abzyr0V5TnJiBEVuYHY1vwKoihFKOPGy-qr9G213Nt1TNkZ3DHoYKuQ1E7o-vS38YdFbc7qLQBSgzRy4NE39qxB5Eqa0d3IcE4dsQIk5VFiM?key=nqwdZwytF52m1WN2WzvPeg" medium="image" />
+
+		<media:content url="https://lh7-us.googleusercontent.com/docsz/AD_4nXcznwF1hlSYMdimIZMfc6pRC1l417MtrvR8v3vddY3ef2rQctkLyFqExN4nL4BlqrfLct7uH2kR3pYA1sbaLtmcYZ9JMq-TmkJhp1s91BbAJ_7_ZcquVI7FUtmgsVu62wymFQ008eRYQpRqcOn9OrffQSwB?key=nqwdZwytF52m1WN2WzvPeg" medium="image" />
+
+		<media:content url="https://lh7-us.googleusercontent.com/docsz/AD_4nXeqtvbUEUJMh1ZAPhe5SrtnSo4352SxrqilhzzyEnT6QMBmYLqDvcDK21lm2hx0BJbwwWGA296OdunnhpzTmAjv2cmJaUPOwjcmruajuucXzQ9Tuv9MXW3pOfrHesSiZGLC8vuvHuujgEayx8l7E6hdlJXA?key=nqwdZwytF52m1WN2WzvPeg" medium="image" />
+	</item>
+	</channel>
+</rss>

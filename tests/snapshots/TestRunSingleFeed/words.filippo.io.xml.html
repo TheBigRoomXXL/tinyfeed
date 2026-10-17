@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-QHRDRamGv37UTHWbJ7OkZF7X7KHnmLn-AHcFROUxgeHT_I2thdvaaW0cADUvefSE7C8TOG1XWOqvQrT7mIfroIy4Quq0IdC2lqBBXyxF6sETkHmbV89sbjDHfGJ7ZnKDTO3PK73DqzkHKl8UURVpWArGlOfryyJ9Pc7ESzSST2wS5R0vh7wWYH_h0U1bCGvQ87hhmPfb7cwYCOVTFNJlzm4a2qYSzF8Cln650Zi80SRVjQw3f1-3EYYRmCB1HYllQGbheOEInZjc3-4lMsKjcsGhnhgIdH5-hree8fcNMzX7u3hM8wxdVdC7VOXNPPjeZXRUQ_wxE2bxoLNFpBkM2w==' ;
+		script-src 'nonce-QHRDRamGv37UTHWbJ7OkZF7X7KHnmLn-AHcFROUxgeHT_I2thdvaaW0cADUvefSE7C8TOG1XWOqvQrT7mIfroIy4Quq0IdC2lqBBXyxF6sETkHmbV89sbjDHfGJ7ZnKDTO3PK73DqzkHKl8UURVpWArGlOfryyJ9Pc7ESzSST2wS5R0vh7wWYH_h0U1bCGvQ87hhmPfb7cwYCOVTFNJlzm4a2qYSzF8Cln650Zi80SRVjQw3f1-3EYYRmCB1HYllQGbheOEInZjc3-4lMsKjcsGhnhgIdH5-hree8fcNMzX7u3hM8wxdVdC7VOXNPPjeZXRUQ_wxE2bxoLNFpBkM2w==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="QHRDRamGv37UTHWbJ7OkZF7X7KHnmLn-AHcFROUxgeHT_I2thdvaaW0cADUvefSE7C8TOG1XWOqvQrT7mIfroIy4Quq0IdC2lqBBXyxF6sETkHmbV89sbjDHfGJ7ZnKDTO3PK73DqzkHKl8UURVpWArGlOfryyJ9Pc7ESzSST2wS5R0vh7wWYH_h0U1bCGvQ87hhmPfb7cwYCOVTFNJlzm4a2qYSzF8Cln650Zi80SRVjQw3f1-3EYYRmCB1HYllQGbheOEInZjc3-4lMsKjcsGhnhgIdH5-hree8fcNMzX7u3hM8wxdVdC7VOXNPPjeZXRUQ_wxE2bxoLNFpBkM2w==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://words.filippo.io/seeds-solved/ target="_blank">
+					<h2>The NIST Elliptic Curves Seeds Bounty Has Been Claimed</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/right-answers/ target="_blank">
+					<h2>(Post-Quantum) Cryptographic Right Answers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/mldsa-py/ target="_blank">
+					<h2>Production ML-DSA Verification in 350 Lines of Python</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-26">2026-07-26</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/passkey-record/ target="_blank">
+					<h2>Opaque, Interoperable Passkey Records (and a Go API)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-20">2026-07-20</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/vuln-reports/ target="_blank">
+					<h2>Vulnerability Reports Are Not Special Anymore</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-23">2026-06-23</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/128-bits/ target="_blank">
+					<h2>Quantum Computers Are Not a Threat to 128-bit Symmetric Keys</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-20">2026-04-20</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/crqc-timeline/ target="_blank">
+					<h2>A Cryptography Engineer’s Perspective on Quantum Computing Timelines</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-06">2026-04-06</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/dependabot/ target="_blank">
+					<h2>Turn Dependabot Off</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-20">2026-02-20</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/go-source/ target="_blank">
+					<h2>Inspecting the Source of Go Modules</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-12">2026-02-12</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/gosum/ target="_blank">
+					<h2>go.sum Is Not a Lockfile</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-05">2026-01-05</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://words.filippo.io/" target="_blank">Filippo Valsorda</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="QHRDRamGv37UTHWbJ7OkZF7X7KHnmLn-AHcFROUxgeHT_I2thdvaaW0cADUvefSE7C8TOG1XWOqvQrT7mIfroIy4Quq0IdC2lqBBXyxF6sETkHmbV89sbjDHfGJ7ZnKDTO3PK73DqzkHKl8UURVpWArGlOfryyJ9Pc7ESzSST2wS5R0vh7wWYH_h0U1bCGvQ87hhmPfb7cwYCOVTFNJlzm4a2qYSzF8Cln650Zi80SRVjQw3f1-3EYYRmCB1HYllQGbheOEInZjc3-4lMsKjcsGhnhgIdH5-hree8fcNMzX7u3hM8wxdVdC7VOXNPPjeZXRUQ_wxE2bxoLNFpBkM2w==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

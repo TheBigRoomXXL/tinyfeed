@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-EN0sL4gmSRoWsgA0Y7bqg2KmVgrFPaBGeNnS0pr-D8PgpX_Hb3mrtYBl6lcHdtchtYKdCaMAx3EDQ5eX8ppj9RKWI279G0S123bRR9c6XJXbq9e3Rn_4ybpob5ha7OJGgechyehgsjqXJlosrLMYbAeR28YnGiSrBAKHjdWSO-5oRK01EPs5l5ZnKcFRNcCE_c1YeKNJ3RTIyhLU5V2gsZVah8saq3yyCQLxoyF3irOQNuKObIuthHTh9gwYWUfYWmnfBxuejQg2uZaxQQ6JawFv_A9nvjfPIlYlyMV0KgGD1utGtLw6etVZbh3vXU6mJ2A6wu9puD5v-x8d3swbeg==' ;
+		script-src 'nonce-EN0sL4gmSRoWsgA0Y7bqg2KmVgrFPaBGeNnS0pr-D8PgpX_Hb3mrtYBl6lcHdtchtYKdCaMAx3EDQ5eX8ppj9RKWI279G0S123bRR9c6XJXbq9e3Rn_4ybpob5ha7OJGgechyehgsjqXJlosrLMYbAeR28YnGiSrBAKHjdWSO-5oRK01EPs5l5ZnKcFRNcCE_c1YeKNJ3RTIyhLU5V2gsZVah8saq3yyCQLxoyF3irOQNuKObIuthHTh9gwYWUfYWmnfBxuejQg2uZaxQQ6JawFv_A9nvjfPIlYlyMV0KgGD1utGtLw6etVZbh3vXU6mJ2A6wu9puD5v-x8d3swbeg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="EN0sL4gmSRoWsgA0Y7bqg2KmVgrFPaBGeNnS0pr-D8PgpX_Hb3mrtYBl6lcHdtchtYKdCaMAx3EDQ5eX8ppj9RKWI279G0S123bRR9c6XJXbq9e3Rn_4ybpob5ha7OJGgechyehgsjqXJlosrLMYbAeR28YnGiSrBAKHjdWSO-5oRK01EPs5l5ZnKcFRNcCE_c1YeKNJ3RTIyhLU5V2gsZVah8saq3yyCQLxoyF3irOQNuKObIuthHTh9gwYWUfYWmnfBxuejQg2uZaxQQ6JawFv_A9nvjfPIlYlyMV0KgGD1utGtLw6etVZbh3vXU6mJ2A6wu9puD5v-x8d3swbeg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://btao.org/posts/2026-08-17-i-dont-enjoy-the-internet/ target="_blank">
+					<h2>I don&#39;t enjoy the Internet any more</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-17">2026-08-17</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2026-05-09-the-forge-we-deserve/ target="_blank">
+					<h2>The forge we deserve</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-09">2026-05-09</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2026-03-22-parrots/ target="_blank">
+					<h2>Announcing: Parrot.garden</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-22">2026-03-22</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2026-03-18-one-more-prompt/ target="_blank">
+					<h2>Just one more prompt</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-18">2026-03-18</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2026-03-13-notes-rss/ target="_blank">
+					<h2>New Notes RSS feed</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-13">2026-03-13</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2026-03-11-normie-loop/ target="_blank">
+					<h2>The Normie Loop</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-11">2026-03-11</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2026-02-28-everything-changes-nothing-changes/ target="_blank">
+					<h2>Everything changes, and nothing changes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-28">2026-02-28</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2026-02-25-rss-o-matic/ target="_blank">
+					<h2>Introducing RSS-O-Matic</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-25">2026-02-25</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2026-01-16-on-burnout/ target="_blank">
+					<h2>On Burnout</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-16">2026-01-16</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2025-11-23-how-to-get-hired-at-a-startup/ target="_blank">
+					<h2>How to get hired at a startup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-23">2025-11-23</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2025-10-23-outrage-machine/ target="_blank">
+					<h2>The AI Outrage Machine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-23">2025-10-23</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2025-10-13-chestertons-fence/ target="_blank">
+					<h2>Chesterton&#39;s Fence is no more</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-13">2025-10-13</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2025-03-15-productivity/ target="_blank">
+					<h2>The best productivity system that&#39;s ever existed</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-13">2025-03-13</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2023-07-02-row-and-columnar/ target="_blank">
+					<h2>Column- and row-oriented databases</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-02">2023-07-02</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2023-07-01-bloom-filters/ target="_blank">
+					<h2>Bloom filters</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-01">2023-07-01</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2023-01-19-filtering-django-get-queryset/ target="_blank">
+					<h2>Don&#39;t filter in Django&#39;s qet_queryset</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-19">2023-01-19</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2022-01-08-the-right-tool-for-the-job/ target="_blank">
+					<h2>&#34;The right tool for the job&#34;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-09">2022-01-09</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2021-09-09-npm-install-is-curl-bash/ target="_blank">
+					<h2>npm install is curl | bash</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-09">2021-09-09</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2020-10-02-npm-trust/ target="_blank">
+					<h2>A web of trust for npm</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-02">2020-10-02</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2020-08-12-routing-attacks-tor/ target="_blank">
+					<h2>Literature review: Routing attacks on Tor</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-08-12">2020-08-12</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2020-06-07-against-telegram/ target="_blank">
+					<h2>Reasons not to use Telegram</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-06">2020-06-06</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2020-06-01-feel-good-security/ target="_blank">
+					<h2>Feel-good security in ProtonMail</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-01">2020-06-01</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2020-05-28-sometimes-on-security/ target="_blank">
+					<h2>On mixing plaintext and encrypted messages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-28">2020-05-28</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2020-04-20-elasticsearch-podman/ target="_blank">
+					<h2>Running ElasticSearch in podman on Fedora 32</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-20">2020-04-20</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2019-12-31-reading/ target="_blank">
+					<h2>Books I enjoyed in 2019</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-31">2019-12-31</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2019-08-22-fediverse-space-nlnet/ target="_blank">
+					<h2>fediverse.space awarded NGI Zero grant</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-08-22">2019-08-22</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://btao.org/posts/2016-08-31-kierkegaard-capitalism/ target="_blank">
+					<h2>Self and Lack Thereof: On Kierkegaard and Capitalism</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-08-31">2016-08-31</time>
+					|
+					<a href="https://btao.org" target="_blank">btao.org</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://btao.org/" target="_blank">Tao Bojlén</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="EN0sL4gmSRoWsgA0Y7bqg2KmVgrFPaBGeNnS0pr-D8PgpX_Hb3mrtYBl6lcHdtchtYKdCaMAx3EDQ5eX8ppj9RKWI279G0S123bRR9c6XJXbq9e3Rn_4ybpob5ha7OJGgechyehgsjqXJlosrLMYbAeR28YnGiSrBAKHjdWSO-5oRK01EPs5l5ZnKcFRNcCE_c1YeKNJ3RTIyhLU5V2gsZVah8saq3yyCQLxoyF3irOQNuKObIuthHTh9gwYWUfYWmnfBxuejQg2uZaxQQ6JawFv_A9nvjfPIlYlyMV0KgGD1utGtLw6etVZbh3vXU6mJ2A6wu9puD5v-x8d3swbeg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

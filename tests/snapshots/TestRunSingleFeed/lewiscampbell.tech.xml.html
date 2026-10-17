@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-OeeV1fmhrnK_6t9JnEvaVaQBCioFZNWzplrKecMcWY8xXScSK6gETR0X2JvZ8n53oHz_2sakXdZgNgOuCXNP0BCejiw61wuesLc_CL6kAR9Bn0aeCRkq0BzGcVGvcuLY-g08tTz1uxK8Dd08bf2Tl4IsVLBRQvIXutWhnM4mOhkK0yV3AcJ0QlUYzK6TpKusruSo5J0hDTiw0ERYJ6IrYSqIUwLTnken7becrNOARJZB0ueG1uRURbBBSJBDsLLG-zAW_Gj0bkw2YXv3TEVPSNykfhIISfU4nbJOuzBE1UjZvN4gXDnmucMFDwQYSiuMrwaXjQMfl80WAebQZqc-Gw==' ;
+		script-src 'nonce-OeeV1fmhrnK_6t9JnEvaVaQBCioFZNWzplrKecMcWY8xXScSK6gETR0X2JvZ8n53oHz_2sakXdZgNgOuCXNP0BCejiw61wuesLc_CL6kAR9Bn0aeCRkq0BzGcVGvcuLY-g08tTz1uxK8Dd08bf2Tl4IsVLBRQvIXutWhnM4mOhkK0yV3AcJ0QlUYzK6TpKusruSo5J0hDTiw0ERYJ6IrYSqIUwLTnken7becrNOARJZB0ueG1uRURbBBSJBDsLLG-zAW_Gj0bkw2YXv3TEVPSNykfhIISfU4nbJOuzBE1UjZvN4gXDnmucMFDwQYSiuMrwaXjQMfl80WAebQZqc-Gw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="OeeV1fmhrnK_6t9JnEvaVaQBCioFZNWzplrKecMcWY8xXScSK6gETR0X2JvZ8n53oHz_2sakXdZgNgOuCXNP0BCejiw61wuesLc_CL6kAR9Bn0aeCRkq0BzGcVGvcuLY-g08tTz1uxK8Dd08bf2Tl4IsVLBRQvIXutWhnM4mOhkK0yV3AcJ0QlUYzK6TpKusruSo5J0hDTiw0ERYJ6IrYSqIUwLTnken7becrNOARJZB0ueG1uRURbBBSJBDsLLG-zAW_Gj0bkw2YXv3TEVPSNykfhIISfU4nbJOuzBE1UjZvN4gXDnmucMFDwQYSiuMrwaXjQMfl80WAebQZqc-Gw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/261011 target="_blank">
+					<h2>Waterfall Reconsidered</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260723 target="_blank">
+					<h2>AIgnostic</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-22">2026-07-22</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260713 target="_blank">
+					<h2>A Guide to Agile for English Speakers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-12">2026-07-12</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260712 target="_blank">
+					<h2>Short Reflection on being Offline for 24 hours</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-11">2026-07-11</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260709 target="_blank">
+					<h2>Why I think Rust is Object Oriented</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-08">2026-07-08</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260622 target="_blank">
+					<h2>Reject Agility, Embrace Specification</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-21">2026-06-21</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260609 target="_blank">
+					<h2>The Decline of Search Engines is an Opportunity</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-08">2026-06-08</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260607 target="_blank">
+					<h2>The User Doesn&#39;t Care - But you should</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-06">2026-06-06</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260414 target="_blank">
+					<h2>Saying Goodbye to Agile</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-13">2026-04-13</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260224 target="_blank">
+					<h2>Reading English from 1000 AD</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-23">2026-02-23</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260204 target="_blank">
+					<h2>Rust is Just a Tool</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-03">2026-02-03</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/260114 target="_blank">
+					<h2>The Insecure Evangelism of LLM Maximalists</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-13">2026-01-13</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/250908 target="_blank">
+					<h2>Strong Eventual Consistency - The Big Idea behind CRDTs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-07">2025-09-07</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/250817 target="_blank">
+					<h2>Basic Type System Terminology</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-16">2025-08-16</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/250805 target="_blank">
+					<h2>Getting Started with Randomised Testing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-04">2025-08-04</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/250718 target="_blank">
+					<h2>NIH Is Far Cheaper Than The Wrong Dependency</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-17">2025-07-17</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/250604 target="_blank">
+					<h2>Advanced Testing and Determinism</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-03">2025-06-03</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/250430 target="_blank">
+					<h2>The Business Case for Vanilla JS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-29">2025-04-29</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/250202 target="_blank">
+					<h2>Safety in Programming Languages is a Means to an End</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-01">2025-02-01</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/250117 target="_blank">
+					<h2>How I think about Zig and Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-16">2025-01-16</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/250104 target="_blank">
+					<h2>Do Files want to be Actors?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-03">2025-01-03</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/240624 target="_blank">
+					<h2>Shared Data Services or Sending Messages?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-23">2024-06-23</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/240324 target="_blank">
+					<h2>A Taxonomy of Supply Chain Data Capture</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-23">2024-03-23</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/231115 target="_blank">
+					<h2>Does Supply Chain Know what a Blockchain is?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-14">2023-11-14</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/231112 target="_blank">
+					<h2>Wisdom from Computing&#39;s Past</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-11">2023-11-11</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/221001 target="_blank">
+					<h2>Software Maintenance for Business Owners</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-30">2022-09-30</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/220509 target="_blank">
+					<h2>95% Programming</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-08">2022-05-08</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/220205 target="_blank">
+					<h2>A Sheep Ate My Internet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-04">2022-02-04</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://lewiscampbell.tech/" target="_blank">Lewis Campbell&#39;s Blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="OeeV1fmhrnK_6t9JnEvaVaQBCioFZNWzplrKecMcWY8xXScSK6gETR0X2JvZ8n53oHz_2sakXdZgNgOuCXNP0BCejiw61wuesLc_CL6kAR9Bn0aeCRkq0BzGcVGvcuLY-g08tTz1uxK8Dd08bf2Tl4IsVLBRQvIXutWhnM4mOhkK0yV3AcJ0QlUYzK6TpKusruSo5J0hDTiw0ERYJ6IrYSqIUwLTnken7becrNOARJZB0ueG1uRURbBBSJBDsLLG-zAW_Gj0bkw2YXv3TEVPSNykfhIISfU4nbJOuzBE1UjZvN4gXDnmucMFDwQYSiuMrwaXjQMfl80WAebQZqc-Gw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

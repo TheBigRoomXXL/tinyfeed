@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:webfeeds="http://webfeeds.org/rss/1.0" xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>hytradboi</title>
+    <description>Public posts from @hytradboi@mastodon.social</description>
+    <link>https://mastodon.social/@hytradboi</link>
+    <image>
+      <url>https://files.mastodon.social/accounts/avatars/113/178/264/149/620/551/original/9daf9b2bff6da18c.webp</url>
+      <title>hytradboi</title>
+      <link>https://mastodon.social/@hytradboi</link>
+    </image>
+    <lastBuildDate>Tue, 04 Mar 2025 06:23:10 +0000</lastBuildDate>
+    <webfeeds:icon>https://files.mastodon.social/accounts/avatars/113/178/264/149/620/551/original/9daf9b2bff6da18c.webp</webfeeds:icon>
+    <generator>Mastodon v4.8.0-alpha.3+pr-41085-a68fedb</generator>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114102723564645085</guid>
+      <link>https://mastodon.social/@hytradboi/114102723564645085</link>
+      <pubDate>Tue, 04 Mar 2025 06:23:10 +0000</pubDate>
+      <description>&lt;p&gt;I wrote a post-mortem. Significantly less mortem compared to 2022 though.&lt;/p&gt;&lt;p&gt;&lt;a href="https://www.scattered-thoughts.net/writing/hytradboi-2025-postmortem/" target="_blank" rel="nofollow noopener" translate="no"&gt;&lt;span class="invisible"&gt;https://www.&lt;/span&gt;&lt;span class="ellipsis"&gt;scattered-thoughts.net/writing&lt;/span&gt;&lt;span class="invisible"&gt;/hytradboi-2025-postmortem/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114085714252370629</guid>
+      <link>https://mastodon.social/@hytradboi/114085714252370629</link>
+      <pubDate>Sat, 01 Mar 2025 06:17:28 +0000</pubDate>
+      <description>&lt;p&gt;All the videos are up at &lt;a href="https://www.hytradboi.com/2025#program" target="_blank" rel="nofollow noopener" translate="no"&gt;&lt;span class="invisible"&gt;https://www.&lt;/span&gt;&lt;span class=""&gt;hytradboi.com/2025#program&lt;/span&gt;&lt;span class="invisible"&gt;&lt;/span&gt;&lt;/a&gt; now.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114082435391652190</guid>
+      <link>https://mastodon.social/@hytradboi/114082435391652190</link>
+      <pubDate>Fri, 28 Feb 2025 16:23:37 +0000</pubDate>
+      <description>&lt;p&gt;We&amp;#39;re starting in 30 minutes. I hope you all remembered to bring your databases.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114077709420889845</guid>
+      <link>https://mastodon.social/@hytradboi/114077709420889845</link>
+      <pubDate>Thu, 27 Feb 2025 20:21:44 +0000</pubDate>
+      <description>&lt;p&gt;Talk 28: &amp;quot;Good thing we&amp;#39;re not writing a database&amp;quot; by Peter van Hardenberg (&lt;span class="h-card" translate="no"&gt;&lt;a href="https://merveilles.town/@pvh" class="u-url mention"&gt;@&lt;span&gt;pvh&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;)&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/077/700/488/465/612/original/b232a93b3ba08fa8.png" type="image/png" fileSize="179540" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <media:description type="plain">"Never write a database. Even if you want to, even if you think you should. Resist. Never write a database. Unless you have to write a database. But you don't."</media:description>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114077579088527318</guid>
+      <link>https://mastodon.social/@hytradboi/114077579088527318</link>
+      <pubDate>Thu, 27 Feb 2025 19:48:36 +0000</pubDate>
+      <description>&lt;p&gt;Talk 27: &amp;quot;Let&amp;#39;s run a million benchmarks&amp;quot; by Yao Yue (&lt;span class="h-card" translate="no"&gt;&lt;a href="https://macaw.social/@thinkingfish" class="u-url mention"&gt;@&lt;span&gt;thinkingfish&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;)&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/077/571/358/563/714/original/714bad860df2d83f.png" type="image/png" fileSize="539515" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114077007196904067</guid>
+      <link>https://mastodon.social/@hytradboi/114077007196904067</link>
+      <pubDate>Thu, 27 Feb 2025 17:23:09 +0000</pubDate>
+      <description>&lt;p&gt;The final program:&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/077/004/845/817/032/original/4d7a18efcf73167b.png" type="image/png" fileSize="176931" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <media:description type="plain">0900-1000: Compilers
+
+    Database query compilation: our journey
+    Thomas Neumann &amp; Viktor Leis
+    A YJIT interview
+    Maxime Chevalier-Boisvert
+    A quick ramp-up on ramping up quickly
+    Iain Ireland
+    Can we democratize JIT compilers?
+    Haoran Xu
+    Safe and productive performance with user-schedulable languages
+    Jonathan Ragan-Kelley
+
+1000-1100: Understanding programs
+
+    How debuggers work
+    Sy Brand
+    Debugging compiler-optimized code: how it works and doesn't
+    Stephen Kell
+    Side-Eye: ask your programs anything
+    Andrei Matei
+    Let’s run a million benchmarks
+    Yao Yue
+    Rocket science of simulation testing!
+    Alex / matklad
+
+1100-1200: Wild ideas
+
+    Back to modularity
+    Daniel Jackson
+    DB usability: as if
+    Jonathan Edwards
+    Twizzler and far out memory sharing: precise abstractions
+    Daniel Bittman
+    Programming without pointers
+    Andrew Kelley
+    Throwing it all away - how extreme rewriting changed the way I build databases
+    Tyler Neely
+
+1200-1230: Programmers are people
+
+    A case for feminism in programming language design
+    Felienne Hermans
+    Malloy, mic drop, peace!
+    Michael Toy
+
+1230-1300: Lightning talk buffet
+
+    Learning about the odd bits of SQL by reading the PostgreSQL docs
+    Chris Zetter
+    Hacking Observable notebooks from within
+    Tom Larkworthy
+    Zero copy data structures
+    Evan Chan...</media:description>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114077003933415545</guid>
+      <link>https://mastodon.social/@hytradboi/114077003933415545</link>
+      <pubDate>Thu, 27 Feb 2025 17:22:19 +0000</pubDate>
+      <description>&lt;p&gt;HYTRADBOI is tomorrow! Feb 28 0900 PDT. The chat will run for days, so it&amp;#39;s worth joining even if you can&amp;#39;t make the early hours.&lt;/p&gt;&lt;p&gt;Bring all your friends too! Re-toot, share on your favorite forum, put flyers under your neighbours doors etc.&lt;/p&gt;&lt;p&gt;See you tomorrow!&lt;/p&gt;&lt;p&gt;&lt;a href="https://www.hytradboi.com/2025/#tickets" target="_blank" rel="nofollow noopener" translate="no"&gt;&lt;span class="invisible"&gt;https://www.&lt;/span&gt;&lt;span class=""&gt;hytradboi.com/2025/#tickets&lt;/span&gt;&lt;span class="invisible"&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114074439202777353</guid>
+      <link>https://mastodon.social/@hytradboi/114074439202777353</link>
+      <pubDate>Thu, 27 Feb 2025 06:30:05 +0000</pubDate>
+      <description>&lt;p&gt;Talk 26: &amp;quot;Enough with all the Raft&amp;quot; by Alex Miller (&lt;span class="h-card" translate="no"&gt;&lt;a href="https://fosstodon.org/@AlexMillerDB" class="u-url mention"&gt;@&lt;span&gt;AlexMillerDB&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;)&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/074/424/922/215/651/original/9bda80bbf61328b9.png" type="image/png" fileSize="363660" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <media:description type="plain">A table examining different consensus protocols across many categories, showing that Raft is never the best option in any one category.</media:description>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114068589792680019</guid>
+      <link>https://mastodon.social/@hytradboi/114068589792680019</link>
+      <pubDate>Wed, 26 Feb 2025 05:42:30 +0000</pubDate>
+      <description>&lt;p&gt;Talk 25: &amp;quot;A quick ramp-up on ramping up quickly&amp;quot; by Iain Ireland (&lt;span class="h-card" translate="no"&gt;&lt;a href="https://mstdn.ca/@iainireland" class="u-url mention"&gt;@&lt;span&gt;iainireland&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;)&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/068/578/894/598/080/original/74e66aea836cb76b.png" type="image/png" fileSize="304735" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <media:description type="plain">A diagram of the baseline interpreter. The core is a loop over a switch on opcode. The branch for each opcode is generated by the compiler, and the dispatch logic is duplicated into the end of each branch.</media:description>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114068510497537763</guid>
+      <link>https://mastodon.social/@hytradboi/114068510497537763</link>
+      <pubDate>Wed, 26 Feb 2025 05:22:20 +0000</pubDate>
+      <description>&lt;p&gt;Talk 24: &amp;quot;Serverless primitives for the shared log architecture&amp;quot; by Stephen Balogh&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/068/495/055/587/740/original/ebef83e8e78be0eb.png" type="image/png" fileSize="408282" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <media:description type="plain">Building a KV-store with S2
+● Multi-primary, horizontally scalable, distributed KV-store
+● All writes regionally durable
+● Linearizable reads from all replicas
+https://github.com/s2-streamstore/s2-kv-demo</media:description>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114068183521443861</guid>
+      <link>https://mastodon.social/@hytradboi/114068183521443861</link>
+      <pubDate>Wed, 26 Feb 2025 03:59:11 +0000</pubDate>
+      <description>&lt;p&gt;Talk 23: &amp;quot;PRQL: a modern, pipelined SQL replacement&amp;quot; by Tobias Brandt (&lt;span class="h-card" translate="no"&gt;&lt;a href="https://fosstodon.org/@snth" class="u-url mention"&gt;@&lt;span&gt;snth&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;)&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/068/167/860/421/928/original/9974b6fa3c2b534a.png" type="image/png" fileSize="742842" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <media:description type="plain">A large PRQL query.</media:description>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114065977777446890</guid>
+      <link>https://mastodon.social/@hytradboi/114065977777446890</link>
+      <pubDate>Tue, 25 Feb 2025 18:38:14 +0000</pubDate>
+      <description>&lt;p&gt;Talk #22: &amp;quot;Safe and productive performance with user-schedulable languages&amp;quot; by Jonathan Ragan-Kelley&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/065/968/518/063/369/original/fb4bd07e92657c77.png" type="image/png" fileSize="156637" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <media:description type="plain">User-schedulable languages decouple what to compute from how to compute it (exposed for programmer control).</media:description>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114062829844375249</guid>
+      <link>https://mastodon.social/@hytradboi/114062829844375249</link>
+      <pubDate>Tue, 25 Feb 2025 05:17:40 +0000</pubDate>
+      <description>&lt;p&gt;Other kinds of talks.&lt;/p&gt;&lt;p&gt;&lt;a href="https://www.scattered-thoughts.net/writing/other-kinds-of-talks/" target="_blank" rel="nofollow noopener" translate="no"&gt;&lt;span class="invisible"&gt;https://www.&lt;/span&gt;&lt;span class="ellipsis"&gt;scattered-thoughts.net/writing&lt;/span&gt;&lt;span class="invisible"&gt;/other-kinds-of-talks/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Someone start CheckIfItActuallyWorksCon. I&amp;#39;ll help.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114040640036287171</guid>
+      <link>https://mastodon.social/@hytradboi/114040640036287171</link>
+      <pubDate>Fri, 21 Feb 2025 07:14:30 +0000</pubDate>
+      <description>&lt;p&gt;It&amp;#39;s starting to look a lot like ~Christmas~ HYTRADBOI!&lt;/p&gt;&lt;p&gt;Just one week to go.&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/040/639/242/486/841/original/55ac95ddf54a4a6d.png" type="image/png" fileSize="335613" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+      </media:content>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/040/639/259/415/988/original/5e8eacf1bee18614.png" type="image/png" fileSize="269287" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114032467828997391</guid>
+      <link>https://mastodon.social/@hytradboi/114032467828997391</link>
+      <pubDate>Wed, 19 Feb 2025 20:36:12 +0000</pubDate>
+      <description>&lt;p&gt;Talk #21: &amp;quot;Database ideas in Convex&amp;quot; by Thomas Ballinger&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/032/464/554/560/826/original/a9d309e5714b9daa.png" type="image/png" fileSize="1388345" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <media:description type="plain">Thomas scribbles furiously on a whiteboard.</media:description>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114015426739698804</guid>
+      <link>https://mastodon.social/@hytradboi/114015426739698804</link>
+      <pubDate>Sun, 16 Feb 2025 20:22:26 +0000</pubDate>
+      <description>&lt;p&gt;Lightning talk #9: &amp;quot;Why S3&amp;#39;s conditional writes made people excited&amp;quot; by Miikka Koskinen (&lt;span class="h-card" translate="no"&gt;&lt;a href="https://mastodon.social/@Miikka" class="u-url mention"&gt;@&lt;span&gt;Miikka&lt;/span&gt;&lt;/a&gt;&lt;/span&gt;)&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/015/423/390/419/916/original/9690f86174c1efe9.png" type="image/png" fileSize="371491" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114010889637828044</guid>
+      <link>https://mastodon.social/@hytradboi/114010889637828044</link>
+      <pubDate>Sun, 16 Feb 2025 01:08:35 +0000</pubDate>
+      <description>&lt;p&gt;Just a couple of days left to submit your lightning talks! &lt;a href="https://www.hytradboi.com/2025#lightning-talk-buffet" target="_blank" rel="nofollow noopener" translate="no"&gt;&lt;span class="invisible"&gt;https://www.&lt;/span&gt;&lt;span class="ellipsis"&gt;hytradboi.com/2025#lightning-t&lt;/span&gt;&lt;span class="invisible"&gt;alk-buffet&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114010868742540185</guid>
+      <link>https://mastodon.social/@hytradboi/114010868742540185</link>
+      <pubDate>Sun, 16 Feb 2025 01:03:16 +0000</pubDate>
+      <description>&lt;p&gt;Lightning talk #8: &amp;quot;Shapeshifter: using LLMs inside a database for schema flexibility&amp;quot; by David Nachman&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/010/864/295/403/883/original/4e08c43f144a11c3.png" type="image/png" fileSize="265335" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114010824057659145</guid>
+      <link>https://mastodon.social/@hytradboi/114010824057659145</link>
+      <pubDate>Sun, 16 Feb 2025 00:51:55 +0000</pubDate>
+      <description>&lt;p&gt;Lightning talk #7: &amp;quot;Language agnostic simulation testing on a budget&amp;quot; by Stevan A&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/010/822/635/181/367/original/c8d20b4f305828e5.png" type="image/png" fileSize="601381" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+      </media:content>
+    </item>
+    <item>
+      <guid isPermaLink="true">https://mastodon.social/@hytradboi/114010795855113480</guid>
+      <link>https://mastodon.social/@hytradboi/114010795855113480</link>
+      <pubDate>Sun, 16 Feb 2025 00:44:44 +0000</pubDate>
+      <description>&lt;p&gt;Lightning talk #6: &amp;quot;Rubbing a database on a language server&amp;quot; by Philip Zeyliger&lt;/p&gt;</description>
+      <media:content url="https://files.mastodon.social/media_attachments/files/114/010/791/485/120/494/original/0561cfe79d40cd9a.png" type="image/png" fileSize="270837" medium="image">
+        <media:rating scheme="urn:simple">nonadult</media:rating>
+        <media:description type="plain">A demo showing the query "select symbol_name, count(*) from symbols group by 1 order by 2 desc" running over the data exported by a typescript language server.</media:description>
+      </media:content>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-e6b7547A2gvX0XtiYyxXkeNNpFz16ZukL2aPfXifSYs6VRSnGGMKFmRRc2me2M41Yh9dJWIDOXq21-srdyLD9uQ0WOu90Y_UExDmE7ioUqjOqIFR4RMMdMwi4xyu__8gMqMlI2mD9oSJ_5LvoXw9_qqgwvNPg51h1MVmgEMW2wnqBBHnXBXDKbHdp7-lrRQMwiCkJyOc-eU8zgsCqsEu9ChHkIBNR7f4oLBQWjGCL5FpPicK_k4bNhKcaa-0DJNNlSihG7DVd5BnW84AsOEqvsvO19sO8J0Cq3GXpoDpqY3XYVJpEjbgb8UBS7ZcCZ8PjNKOOfurAaxNPzPmtNxz3A==' ;
+		script-src 'nonce-e6b7547A2gvX0XtiYyxXkeNNpFz16ZukL2aPfXifSYs6VRSnGGMKFmRRc2me2M41Yh9dJWIDOXq21-srdyLD9uQ0WOu90Y_UExDmE7ioUqjOqIFR4RMMdMwi4xyu__8gMqMlI2mD9oSJ_5LvoXw9_qqgwvNPg51h1MVmgEMW2wnqBBHnXBXDKbHdp7-lrRQMwiCkJyOc-eU8zgsCqsEu9ChHkIBNR7f4oLBQWjGCL5FpPicK_k4bNhKcaa-0DJNNlSihG7DVd5BnW84AsOEqvsvO19sO8J0Cq3GXpoDpqY3XYVJpEjbgb8UBS7ZcCZ8PjNKOOfurAaxNPzPmtNxz3A==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="e6b7547A2gvX0XtiYyxXkeNNpFz16ZukL2aPfXifSYs6VRSnGGMKFmRRc2me2M41Yh9dJWIDOXq21-srdyLD9uQ0WOu90Y_UExDmE7ioUqjOqIFR4RMMdMwi4xyu__8gMqMlI2mD9oSJ_5LvoXw9_qqgwvNPg51h1MVmgEMW2wnqBBHnXBXDKbHdp7-lrRQMwiCkJyOc-eU8zgsCqsEu9ChHkIBNR7f4oLBQWjGCL5FpPicK_k4bNhKcaa-0DJNNlSihG7DVd5BnW84AsOEqvsvO19sO8J0Cq3GXpoDpqY3XYVJpEjbgb8UBS7ZcCZ8PjNKOOfurAaxNPzPmtNxz3A==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/what-tla-can-and-cant-check/ target="_blank">
+					<h2>What TLA&#43; can and can&#39;t check</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/the-llms-yearn-for-the-spines/ target="_blank">
+					<h2>The LLMs yearn for the spines</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/new-post-a-crash-course-in-predicate-logic/ target="_blank">
+					<h2>New Post: A Crash Course in Predicate Logic</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-01">2026-09-01</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/vim-wants-you-to-control-vscode-wants-you-to/ target="_blank">
+					<h2>Vim wants you to control, VSCode wants you to consume</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-18">2026-08-18</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/logic-for-programmers-is-done/ target="_blank">
+					<h2>Logic for Programmers is Done</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-29">2026-07-29</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/im-still-alive/ target="_blank">
+					<h2>I&#39;m still alive</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-14">2026-07-14</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/logic-for-programmers-v015-livecoding/ target="_blank">
+					<h2>Logic for Programmers v0.15, Livecoding</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-17">2026-06-17</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/nontrailing-separators-do-not-spark-joy/ target="_blank">
+					<h2>Nontrailing separators do not spark joy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-10">2026-06-10</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/logic-for-programmers-extra-credits/ target="_blank">
+					<h2>Logic for Programmers extra credits</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-02">2026-06-02</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/knowing-about-things-is-cheaper-than-knowing/ target="_blank">
+					<h2>Knowing about things is cheaper than knowing things</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-28">2026-05-28</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/assumptions-weaken-properties/ target="_blank">
+					<h2>Assumptions weaken properties</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-20">2026-05-20</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/points-are-a-weird-and-inconsistent-unit-of/ target="_blank">
+					<h2>Points are a weird and inconsistent unit of measure</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-13">2026-05-13</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/new-logic-for-programmers-and-the-future-of-this/ target="_blank">
+					<h2>New Logic for Programmers (and the future of this newsletter)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-06">2026-05-06</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/illegal-vs-unwanted-states/ target="_blank">
+					<h2>Illegal vs Unwanted States</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-28">2026-04-28</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/people-get-confused-when-language-implementations/ target="_blank">
+					<h2>People get confused when language implementations break language guarantees</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-21">2026-04-21</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/a-sufficiently-comprehensive-spec-is-not/ target="_blank">
+					<h2>A sufficiently comprehensive spec is not (necessarily) code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-15">2026-04-15</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/april-cools-post-new-york-vs-chicago-pizza/ target="_blank">
+					<h2>April Cools Post: New York vs Chicago Pizza</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-01">2026-04-01</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/choose-boring-technology-and-innovative-practices/ target="_blank">
+					<h2>Choose Boring Technology and Innovative Practices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-24">2026-03-24</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/llms-are-bad-at-vibing-specifications/ target="_blank">
+					<h2>LLMs are bad at vibing specifications</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-10">2026-03-10</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/free-books/ target="_blank">
+					<h2>Free Books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-03">2026-03-03</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/new-blog-post-some-silly-z3-scripts-i-wrote/ target="_blank">
+					<h2>New Blog Post: Some Silly Z3 Scripts I Wrote</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-23">2026-02-23</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/stream-of-consciousness-driven-development/ target="_blank">
+					<h2>Stream of Consciousness Driven Development</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-18">2026-02-18</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/proving-whats-possible/ target="_blank">
+					<h2>Proving What&#39;s Possible</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-11">2026-02-11</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/logic-for-programmers-new-release-and-next-steps/ target="_blank">
+					<h2>Logic for Programmers New Release and Next Steps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-04">2026-02-04</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/refinement-without-specification/ target="_blank">
+					<h2>Refinement without Specification</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-20">2026-01-20</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/my-gripes-with-prolog/ target="_blank">
+					<h2>My Gripes with Prolog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-14">2026-01-14</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/the-liskov-substitution-principle-does-more-than/ target="_blank">
+					<h2>The Liskov Substitution Principle does more than you think</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-06">2026-01-06</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/some-fun-software-facts/ target="_blank">
+					<h2>Some Fun Software Facts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-10">2025-12-10</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/one-more-week-to-the-logic-for-programmers-food/ target="_blank">
+					<h2>One more week to the Logic for Programmers Food Drive</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-24">2025-11-24</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/get-logic-for-programmers-50-off-support-chicago/ target="_blank">
+					<h2>Get Logic for Programmers 50% off &amp; Support Chicago Foodbanks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-10">2025-11-10</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://buttondown.com/hillelwayne" target="_blank">Computer Things</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="e6b7547A2gvX0XtiYyxXkeNNpFz16ZukL2aPfXifSYs6VRSnGGMKFmRRc2me2M41Yh9dJWIDOXq21-srdyLD9uQ0WOu90Y_UExDmE7ioUqjOqIFR4RMMdMwi4xyu__8gMqMlI2mD9oSJ_5LvoXw9_qqgwvNPg51h1MVmgEMW2wnqBBHnXBXDKbHdp7-lrRQMwiCkJyOc-eU8zgsCqsEu9ChHkIBNR7f4oLBQWjGCL5FpPicK_k4bNhKcaa-0DJNNlSihG7DVd5BnW84AsOEqvsvO19sO8J0Cq3GXpoDpqY3XYVJpEjbgb8UBS7ZcCZ8PjNKOOfurAaxNPzPmtNxz3A==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-_SmpsA7dyIR1rcpxvuCQ3RzjaCuYiNBoxdiGqC99cSlB1AZDxrYwTLEg2-YMB5eujtyd1NN2wLq9nAs4J2_DgsyscvgNYXCqBTrl8IbKUikUsFLODIL4g3Miu8R_qaTtIO4uSXmGKIal35wRWFfv_avRjvs6xq_QEgkEbkakCU2jfvUcq9ImOGHnllXhZXAsGKElP4CQTFwY4frID1Op2lbS6qqUdDaETaAE2cCMnh6YGp1kO9KZ7sc0759odukEtviTBZMxlzs1WqzqmsPIBfVfAJsToe8sTgJP-_M-4LWB2mK6vVnVhD3HvvWuzE_N2XrnuenmT6cTq4ibg4CwSA==' ;
+		script-src 'nonce-_SmpsA7dyIR1rcpxvuCQ3RzjaCuYiNBoxdiGqC99cSlB1AZDxrYwTLEg2-YMB5eujtyd1NN2wLq9nAs4J2_DgsyscvgNYXCqBTrl8IbKUikUsFLODIL4g3Miu8R_qaTtIO4uSXmGKIal35wRWFfv_avRjvs6xq_QEgkEbkakCU2jfvUcq9ImOGHnllXhZXAsGKElP4CQTFwY4frID1Op2lbS6qqUdDaETaAE2cCMnh6YGp1kO9KZ7sc0759odukEtviTBZMxlzs1WqzqmsPIBfVfAJsToe8sTgJP-_M-4LWB2mK6vVnVhD3HvvWuzE_N2XrnuenmT6cTq4ibg4CwSA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="_SmpsA7dyIR1rcpxvuCQ3RzjaCuYiNBoxdiGqC99cSlB1AZDxrYwTLEg2-YMB5eujtyd1NN2wLq9nAs4J2_DgsyscvgNYXCqBTrl8IbKUikUsFLODIL4g3Miu8R_qaTtIO4uSXmGKIal35wRWFfv_avRjvs6xq_QEgkEbkakCU2jfvUcq9ImOGHnllXhZXAsGKElP4CQTFwY4frID1Op2lbS6qqUdDaETaAE2cCMnh6YGp1kO9KZ7sc0759odukEtviTBZMxlzs1WqzqmsPIBfVfAJsToe8sTgJP-_M-4LWB2mK6vVnVhD3HvvWuzE_N2XrnuenmT6cTq4ibg4CwSA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://doughellmann.com/releases/imapautofiler-2-0-0/ target="_blank">
+					<h2>imapautofiler 2.0.0 - modernization and type safety</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-29">2024-12-29</time>
+					|
+					<a href="https://doughellmann.com" target="_blank">doughellmann.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://doughellmann.com/releases/virtualenvwrapper-6-1-1/ target="_blank">
+					<h2>virtualenvwrapper 6.1.1</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-13">2024-10-13</time>
+					|
+					<a href="https://doughellmann.com" target="_blank">doughellmann.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://doughellmann.com/releases/sphinxcontrib-sqltable-2-1-1/ target="_blank">
+					<h2>sphinxcontrib-sqltable 2.1.1 - db cursor fix</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-14">2024-05-14</time>
+					|
+					<a href="https://doughellmann.com" target="_blank">doughellmann.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://doughellmann.com/releases/sphinxcontrib-sqltable-2-1-0/ target="_blank">
+					<h2>sphinxcontrib-sqltable 2.1.0 - SQLAlchemy 2.0 support</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-05">2024-05-05</time>
+					|
+					<a href="https://doughellmann.com" target="_blank">doughellmann.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://doughellmann.com/releases/virtualenvwrapper-6-1-0/ target="_blank">
+					<h2>virtualenvwrapper 6.1.0 - hook scripts in project directories</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-29">2024-01-29</time>
+					|
+					<a href="https://doughellmann.com" target="_blank">doughellmann.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://doughellmann.com/" target="_blank">Doug Hellmann</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="_SmpsA7dyIR1rcpxvuCQ3RzjaCuYiNBoxdiGqC99cSlB1AZDxrYwTLEg2-YMB5eujtyd1NN2wLq9nAs4J2_DgsyscvgNYXCqBTrl8IbKUikUsFLODIL4g3Miu8R_qaTtIO4uSXmGKIal35wRWFfv_avRjvs6xq_QEgkEbkakCU2jfvUcq9ImOGHnllXhZXAsGKElP4CQTFwY4frID1Op2lbS6qqUdDaETaAE2cCMnh6YGp1kO9KZ7sc0759odukEtviTBZMxlzs1WqzqmsPIBfVfAJsToe8sTgJP-_M-4LWB2mK6vVnVhD3HvvWuzE_N2XrnuenmT6cTq4ibg4CwSA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

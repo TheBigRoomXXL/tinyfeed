@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-tuMfwKdfQTsmkM18JDhNBRenxqZl2rL7KmmVgNoF5ST4xM6uO9wcou2OyUejT7Ud7ikInrBY9Z4yeWcRTFQYAf64vUKMePrO3spb2EmGOtTdVZDQS9o0ZdsZTHRzWRQ4LqAMHw0RTU4q0p9q_3JF2SeA7Pc5_ILg95Ukqwf4GY3DS4mSJOzQ_vrMkEeNnDqKqAt5cNELk8ocC6hikqw7rhhKRxQpyz5Fl7cjANYEQf6G00Ps8AGQ6e69IxImY5qiIwxUoRuq0wB6LyBsy9J8GJsbUD214ZJ2AmQNkZlDEWg4QVQSTGaUMKkHyH7fkSChMYvXdLYEihAp0UvZLI2CFw==' ;
+		script-src 'nonce-tuMfwKdfQTsmkM18JDhNBRenxqZl2rL7KmmVgNoF5ST4xM6uO9wcou2OyUejT7Ud7ikInrBY9Z4yeWcRTFQYAf64vUKMePrO3spb2EmGOtTdVZDQS9o0ZdsZTHRzWRQ4LqAMHw0RTU4q0p9q_3JF2SeA7Pc5_ILg95Ukqwf4GY3DS4mSJOzQ_vrMkEeNnDqKqAt5cNELk8ocC6hikqw7rhhKRxQpyz5Fl7cjANYEQf6G00Ps8AGQ6e69IxImY5qiIwxUoRuq0wB6LyBsy9J8GJsbUD214ZJ2AmQNkZlDEWg4QVQSTGaUMKkHyH7fkSChMYvXdLYEihAp0UvZLI2CFw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="tuMfwKdfQTsmkM18JDhNBRenxqZl2rL7KmmVgNoF5ST4xM6uO9wcou2OyUejT7Ud7ikInrBY9Z4yeWcRTFQYAf64vUKMePrO3spb2EmGOtTdVZDQS9o0ZdsZTHRzWRQ4LqAMHw0RTU4q0p9q_3JF2SeA7Pc5_ILg95Ukqwf4GY3DS4mSJOzQ_vrMkEeNnDqKqAt5cNELk8ocC6hikqw7rhhKRxQpyz5Fl7cjANYEQf6G00Ps8AGQ6e69IxImY5qiIwxUoRuq0wB6LyBsy9J8GJsbUD214ZJ2AmQNkZlDEWg4QVQSTGaUMKkHyH7fkSChMYvXdLYEihAp0UvZLI2CFw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/time-traveling-agents/ target="_blank">
+					<h2>Your agent can now ship reliable distributed systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-15">2026-10-15</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/datadog/ target="_blank">
+					<h2>Testing Datadog&#39;s Next-Generation Event Platform Intake with Antithesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/mutation-testing/ target="_blank">
+					<h2>Why we taught agents to break distributed safety properties</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/retrologging/ target="_blank">
+					<h2>Free log storage with a time machine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/ways-research-teams-fail/ target="_blank">
+					<h2>Ways research teams fail</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-18">2026-08-18</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/wal-reset-bug/ target="_blank">
+					<h2>Breaking the WAL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-12">2026-08-12</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/finding-bugs-in-raft-implementations/ target="_blank">
+					<h2>Finding bugs in Raft implementations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-27">2026-07-27</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/bug-bash-europe-2026/ target="_blank">
+					<h2>Bug Bash is coming to Europe!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-21">2026-07-21</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/tetris-quest/ target="_blank">
+					<h2>My quest to see all of Tetris</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-02">2026-07-02</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/causality_analysis/ target="_blank">
+					<h2>When did the bug start?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-11">2026-05-11</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/tigris_report/ target="_blank">
+					<h2>Antithesis report: Tigris Data</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-21">2026-04-21</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/skiptrees/ target="_blank">
+					<h2>What are skiplists good for?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-16">2026-04-16</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/keeping-cloud-afloat/ target="_blank">
+					<h2>Keeping the cloud afloat with deterministic simulation testing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-09">2026-04-09</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/agent_skills/ target="_blank">
+					<h2>Antithesis skills for agents</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-25">2026-03-25</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/hegel/ target="_blank">
+					<h2>Hypothesis, Antithesis, synthesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-24">2026-03-24</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/declarative_testing/ target="_blank">
+					<h2>A declarative restoration</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-18">2026-03-18</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/carcinization/ target="_blank">
+					<h2>A fighting retreat</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-06">2026-03-06</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/rust_formal_methods/ target="_blank">
+					<h2>Formal methods for the unsafe side of the Force</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-26">2026-02-26</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/readyset/ target="_blank">
+					<h2>Catching a caching bug at Readyset</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-19">2026-02-19</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/rust_cpp/ target="_blank">
+					<h2>How we interfaced single-threaded C&#43;&#43; with multi-threaded Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-29">2026-01-29</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/series_a/ target="_blank">
+					<h2>When your customer leads your Series A</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-03">2025-12-03</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/kubernetes_launch/ target="_blank">
+					<h2>Antithesis launches Kubernetes support</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-05">2025-11-05</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/alchemical_intelligence/ target="_blank">
+					<h2>They don&#39;t even have eyes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-31">2025-10-31</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/oss_pledge_2025/ target="_blank">
+					<h2>Antithesis and the open source community</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-16">2025-10-16</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/findability/ target="_blank">
+					<h2>Did you get lucky or unlucky?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-15">2025-10-15</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/compiler_bug/ target="_blank">
+					<h2>Obscure feature &#43; obscure feature &#43; obscure feature = bug</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-19">2025-09-19</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/metroid/ target="_blank">
+					<h2>Optimizing our way through Metroid</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-22">2025-08-22</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/ai_testing/ target="_blank">
+					<h2>What does AI testing done right look like?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-23">2025-07-23</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/logs_explorer/ target="_blank">
+					<h2>Pre-observability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-02">2025-07-02</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/fix_the_new_things_first/ target="_blank">
+					<h2>Fix the new things first!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-22">2025-05-22</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/findings/ target="_blank">
+					<h2>Finding a way to make on-call better</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-22">2025-05-22</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/semi_formal_proofs/ target="_blank">
+					<h2>The pragmatic magic of semi-formal methods</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-12">2025-05-12</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/formance/ target="_blank">
+					<h2>How Antithesis lets Clément Salaün of Formance sleep soundly at night</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-01">2025-05-01</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/antithesis_for_founders/ target="_blank">
+					<h2>Antithesis for founders</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-30">2025-04-30</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/pingthings/ target="_blank">
+					<h2>No power, no programs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-02">2025-04-02</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/testing_pangolin/ target="_blank">
+					<h2>Our own ~~worst~~ best customer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-27">2025-03-27</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/synadia/ target="_blank">
+					<h2>Hunting for one-in-a-million bugs in NATS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-18">2025-03-18</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/gradius/ target="_blank">
+					<h2>Depth is all you need: how Antithesis crushes Gradius</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-21">2025-02-21</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/lessons_from_launch/ target="_blank">
+					<h2>How to make your own luck</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-13">2025-02-13</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/psn_outage/ target="_blank">
+					<h2>How much did Sony’s recent PlayStation Network outage cost?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-10">2025-02-10</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2025/mysten_interview/ target="_blank">
+					<h2>An interview with Mark Logan, Tech Lead for Sui Core</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-16">2025-01-16</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/test_composer/ target="_blank">
+					<h2>Rolling for our new initiative: Test Composer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-20">2024-11-20</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/notebook_interfaces/ target="_blank">
+					<h2>Introducing our reactive Notebook: the paradigm devs deserve.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-13">2024-11-13</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/autonomous_testing/ target="_blank">
+					<h2>Your computer can test better than you (and that&#39;s a good thing)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-05">2024-11-05</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/castlevania/ target="_blank">
+					<h2>Crushing Castlevania with Antithesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-20">2024-09-20</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/oss_pledge/ target="_blank">
+					<h2>We gave $186,000 to the open source community</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-16">2024-09-16</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/multiverse_debugging/ target="_blank">
+					<h2>Debugging in the Multiverse</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-10">2024-09-10</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/reliability_series_part_1/ target="_blank">
+					<h2>Software reliability, part 1: What is property-based testing?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-20">2024-08-20</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/unknown_unknowns/ target="_blank">
+					<h2>In the labyrinth of unknown unknowns</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-20">2024-08-20</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/testing_pyramid/ target="_blank">
+					<h2>The Testing Pyramid is upside-down</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-06">2024-08-06</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/madness/ target="_blank">
+					<h2>At the Mountains of Madness</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-10">2024-07-10</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/preventing_bugs/ target="_blank">
+					<h2>An ounce of prevention is worth a pound of cure</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-18">2024-06-18</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/zelda/ target="_blank">
+					<h2>Solving Zelda with the Antithesis SDK</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-03">2024-06-03</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/worst_bug/ target="_blank">
+					<h2>The worst bug we faced at Antithesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-21">2024-05-21</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/first_bug/ target="_blank">
+					<h2>From zero to first bug</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-09">2024-05-09</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/mongo_bug/ target="_blank">
+					<h2>Working with Antithesis at MongoDB</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-22">2024-04-22</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/sdtalk/ target="_blank">
+					<h2>How Antithesis finds bugs (with help from the Super Mario Bros.)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-17">2024-04-17</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/ag8bi/ target="_blank">
+					<h2>Antithesis announces Artificial General 8-bit Intelligence (AG8I)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-01">2024-04-01</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/deterministic_hypervisor/ target="_blank">
+					<h2>So you think you want to write a deterministic hypervisor?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-20">2024-03-20</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/osgp2024/ target="_blank">
+					<h2>Announcing the Antithesis Open Source Giveaway Program</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-28">2024-02-28</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/ethereum_merge/ target="_blank">
+					<h2>Testing the Ethereum merge</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-13">2024-02-13</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/mongodb_productivity/ target="_blank">
+					<h2>Accelerating developers at MongoDB</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-13">2024-02-13</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/is_something_bugging_you/ target="_blank">
+					<h2>Is something bugging you?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-13">2024-02-13</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://antithesis.com/" target="_blank">Antithesis blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="tuMfwKdfQTsmkM18JDhNBRenxqZl2rL7KmmVgNoF5ST4xM6uO9wcou2OyUejT7Ud7ikInrBY9Z4yeWcRTFQYAf64vUKMePrO3spb2EmGOtTdVZDQS9o0ZdsZTHRzWRQ4LqAMHw0RTU4q0p9q_3JF2SeA7Pc5_ILg95Ukqwf4GY3DS4mSJOzQ_vrMkEeNnDqKqAt5cNELk8ocC6hikqw7rhhKRxQpyz5Fl7cjANYEQf6G00Ps8AGQ6e69IxImY5qiIwxUoRuq0wB6LyBsy9J8GJsbUD214ZJ2AmQNkZlDEWg4QVQSTGaUMKkHyH7fkSChMYvXdLYEihAp0UvZLI2CFw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

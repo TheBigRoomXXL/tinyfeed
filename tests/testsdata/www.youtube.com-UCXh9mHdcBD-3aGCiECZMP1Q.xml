@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+ <link rel="self" href="http://www.youtube.com/feeds/videos.xml?channel_id=UCXh9mHdcBD-3aGCiECZMP1Q"/>
+ <id>yt:channel:Xh9mHdcBD-3aGCiECZMP1Q</id>
+ <yt:channelId>Xh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+ <title>Not An Engineer</title>
+ <link rel="alternate" href="https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q"/>
+ <author>
+  <name>Not An Engineer</name>
+  <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+ </author>
+ <published>2023-07-09T11:39:41+00:00</published>
+ <entry>
+  <id>yt:video:5rh_DswKRqM</id>
+  <yt:videoId>5rh_DswKRqM</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>Photo-ablative Micromachining (and Other Contagious Diseases)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=5rh_DswKRqM"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2026-10-09T11:16:26+00:00</published>
+  <updated>2026-10-11T04:44:05+00:00</updated>
+  <media:group>
+   <media:title>Photo-ablative Micromachining (and Other Contagious Diseases)</media:title>
+   <media:content url="https://www.youtube.com/v/5rh_DswKRqM?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/5rh_DswKRqM/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Try Onshape Professional, free for up to six months: https://onshape.pro/NotanEngineer
+
+The origins of GAS, or &quot;gear acquisition syndrome&quot;, aren't yet fully understood. Some say the tax man has played a pretty big role in it's proliferation, while others posit inter-workshop interaction is to blame. 
+
+I don't have all the answers, but I do have a fibre laser. (For business use, of course.)
+
+
+When he's not geeking out over capstan tooling, Corin manufactures a bunch of really cool stuff right here in Australia:
+
+Niroc Tools: https://www.niroc.com.au
+Radius Master Belt Grinders: https://lp.radiusmaster.com.au
+Instagram: @niroc_tools
+
+---
+
+My stuff:
+
+Merch: https://notanengineer.shop
+Patreon: https://www.patreon.com/cw/NotAnEngineer
+Instagram: https://www.instagram.com/noengineerhere</media:description>
+   <media:community>
+    <media:starRating count="13890" average="5.00" min="1" max="5"/>
+    <media:statistics views="410487"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:BMCxCuTc1MA</id>
+  <yt:videoId>BMCxCuTc1MA</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>What if angles were metric?</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=BMCxCuTc1MA"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2026-08-14T19:00:01+00:00</published>
+  <updated>2026-10-03T12:31:17+00:00</updated>
+  <media:group>
+   <media:title>What if angles were metric?</media:title>
+   <media:content url="https://www.youtube.com/v/BMCxCuTc1MA?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/BMCxCuTc1MA/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Need custom machined parts? Go to https://pcbway.com/g/RE6Nqt and use code PCBWay-NotAnEngineer10 for $10 off orders over $30.
+
+Try Onshape Professional, free for up to six months: https://onshape.pro/NotanEngineer
+
+Isn’t it kinda strange that there’s a thousand grams in a kilogram, a thousand millimetres in a metre, but 360 degrees in a circle? I thought so too.
+
+
+Watch Marius unbox it here: https://youtu.be/a-LCOP9Wxt4
+
+See James’ build video here: https://www.youtube.com/watch?v=g4hQ4XcZXJU
+
+And make sure you check out the full Toolroom Takeover 2026 playlist: https://youtube.com/playlist?list=PLX3aHl-pXyv8&amp;si=umSUY3ri-SvcYH_a
+
+
+Carbide Prick Punch and Scribe Sets: https://notan.engineer
+
+
+Patreon: https://www.patreon.com/cw/NotAnEngineer
+Instagram: https://www.instagram.com/noengineerhere
+
+
+Special thanks: 
+
+@Ididathing  for the water jet cutting
+@Erik-not-Eric  for another succulent TT meal
+@corinkayaker  for the Bronze (among other things)
+@StefanGotteswinter  for the tip on rubberised CA glue: https://www.youtube.com/watch?v=qAVLrt2LEIs
+
+
+Radius Master Belt Grinder: https://lp.radiusmaster.com.au/
+Grinding Belts: https://artisansupplies.com.au/
+
+Project CAD https://cad.onshape.com/documents/fa18e8cca7f03783e2387036/w/b25cb30a0f0c269ee1fd908a/e/a9e80ac1bf9cfeced4415413?renderMode=0&amp;uiState=6a7ecc9bc4053201d0d0b95d
+
+
+[affiliate]
+
+🎵 Copyrighted music licensed from Lickd. Join here for an exclusive free trial: https://referrals.lickd.co/l/NOTANENGIN00/ 
+
+Bulletproof by La Roux, https://t.lickd.co/l/8Rzav1Xwqj5
+Tin Man by America, https://t.lickd.co/l/ALKVjO5VKg1
+Downtown by Petula Clark, https://t.lickd.co/l/RgQXy2enBK3
+
+[/affiliate]
+
+Some links in this description are affiliate links. They're labelled accordingly, and if you buy something through one, I may receive a small kickback at no additional cost to you.
+
+Created using intellectual property belonging to Jagex Limited under the terms of Jagex's Fan Content Policy. This content is not endorsed by or affiliated with Jagex.
+
+#toolroomtakeover2026</media:description>
+   <media:community>
+    <media:starRating count="44760" average="5.00" min="1" max="5"/>
+    <media:statistics views="1500797"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:reDaHg4QAH0</id>
+  <yt:videoId>reDaHg4QAH0</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>This clever mechanism can double its length</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=reDaHg4QAH0"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2026-05-28T09:13:08+00:00</published>
+  <updated>2026-10-04T11:50:44+00:00</updated>
+  <media:group>
+   <media:title>This clever mechanism can double its length</media:title>
+   <media:content url="https://www.youtube.com/v/reDaHg4QAH0?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/reDaHg4QAH0/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Skip the sheet metal work - go to https://pcbway.com/g/RE6Nqt and use code PCBWay-NotAnEngineer10, for $10 off (first 200 orders over $30)
+
+Try Onshape Professional, free for up to six months: https://onshape.pro/NotanEngineer
+
+Should've bought a Rollin saw.
+
+Carbide Punch and Scribe set: https://notan.engineer
+
+- 3D Scanner: https://crealityofficialstore.sjv.io/AgPRQx (affiliate)
+
+- Radius Master Belt Grinder: https://lp.radiusmaster.com.au/
+
+- Grinding belts: https://artisansupplies.com.au
+
+- Merch: https://notanengineer.shop
+- Patreon: https://www.patreon.com/NotAnEngineer
+- Instagram: https://www.instagram.com/noengineerhere/</media:description>
+   <media:community>
+    <media:starRating count="22293" average="5.00" min="1" max="5"/>
+    <media:statistics views="548229"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:CDiRZrl7ntM</id>
+  <yt:videoId>CDiRZrl7ntM</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>I built a better bandsaw</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=CDiRZrl7ntM"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2026-03-20T11:48:54+00:00</published>
+  <updated>2026-10-01T00:39:06+00:00</updated>
+  <media:group>
+   <media:title>I built a better bandsaw</media:title>
+   <media:content url="https://www.youtube.com/v/CDiRZrl7ntM?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/CDiRZrl7ntM/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Keep your projects on track with @Odoo, your first application is free for life: https://www.odoo.com/r/LBYd
+
+Try Onshape Professional, free for up to 6 months: https://onshape.pro/NotanEngineer
+
+I love bandsaws, but mine could be better.
+
+Thanks to @InheritanceMachining and @ThePostApocalypticInventor for their cameo contributions;
+
+And @StefanGotteswinter for the absolute brainworm of putting a linear axis on a bandsaw.
+
+- 3D Scanner: https://crealityofficialstore.sjv.io/AgPRQx (affiliate)
+
+- Radius Master Belt Grinder: https://lp.radiusmaster.com.au/
+
+- Grinding belts: https://artisansupplies.com.au
+
+- Carbide Hand Tools (limited stock): https://notan.engineer
+
+- Merch: https://notanengineer.shop
+- Patreon: https://www.patreon.com/NotAnEngineer
+- Instagram: https://www.instagram.com/noengineerhere/</media:description>
+   <media:community>
+    <media:starRating count="25595" average="5.00" min="1" max="5"/>
+    <media:statistics views="610636"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:8UlASBVusb8</id>
+  <yt:videoId>8UlASBVusb8</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>Can I make a precision component from scrap metal?</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=8UlASBVusb8"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2025-12-04T12:40:14+00:00</published>
+  <updated>2026-10-03T14:00:32+00:00</updated>
+  <media:group>
+   <media:title>Can I make a precision component from scrap metal?</media:title>
+   <media:content url="https://www.youtube.com/v/8UlASBVusb8?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/8UlASBVusb8/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Engineers get Onshape Professional free for up to 6 months: https://onshape.pro/NotanEngineer
+
+From an economic perspective, it's probably not worth melting down your chips, but there's definitely something to be said for the design possibilities it opens up.
+
+Patreon: https://www.patreon.com/NotAnEngineer
+Instagram: https://www.instagram.com/noengineerhere/
+
+The following are affiliate links - using them for your next purchase helps support the channel!
+
+Bambu Lab: https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=</media:description>
+   <media:community>
+    <media:starRating count="23244" average="5.00" min="1" max="5"/>
+    <media:statistics views="618749"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:ExNgwQxWs44</id>
+  <yt:videoId>ExNgwQxWs44</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>Are gears that bend, better?</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=ExNgwQxWs44"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2025-10-30T12:00:35+00:00</published>
+  <updated>2026-10-09T22:45:45+00:00</updated>
+  <media:group>
+   <media:title>Are gears that bend, better?</media:title>
+   <media:content url="https://www.youtube.com/v/ExNgwQxWs44?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/ExNgwQxWs44/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Engineers get Onshape Professional free for up to 6 months: https://onshape.pro/NotanEngineer
+
+PCBWay has all your CNC machining needs covered: https://pcbway.com/g/RE6Nqt [affiliate]
+
+At long last, the fourth axis of my dreams has become a reality. Or has it?
+
+Watch @InheritanceMachining  build the puzzle here: https://youtu.be/9CBT4Rp0lK0
+
+Get 10% off Merch using this link: https://notanengineer.shop/promo/PRETENDGINEER
+(Or use code 'PRETENDGINEER' at checkout)
+
+Patreon: https://www.patreon.com/NotAnEngineer
+Instagram: https://www.instagram.com/noengineerhere/
+
+The following are affiliate links - using them for your next purchase helps support the channel!
+
+Bambu Lab: https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=
+
+TQSNGWIOKWHZT90L
+NE4JPSEZVIOI5KIW
+NTCFMBFF4D0FLMAP
+7MUACOA2F2CROU59</media:description>
+   <media:community>
+    <media:starRating count="28719" average="5.00" min="1" max="5"/>
+    <media:statistics views="855591"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:khRzQz0PnZ0</id>
+  <yt:videoId>khRzQz0PnZ0</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>I made a mechanical counter, but it's a little bit different.</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=khRzQz0PnZ0"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2025-08-15T19:00:45+00:00</published>
+  <updated>2026-10-01T16:00:57+00:00</updated>
+  <media:group>
+   <media:title>I made a mechanical counter, but it's a little bit different.</media:title>
+   <media:content url="https://www.youtube.com/v/khRzQz0PnZ0?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/khRzQz0PnZ0/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Send pareto's principle packing with PCBWay's comprehensive range of cnc machining services: https://pcbway.com/g/RE6Nqt [affiliate]
+
+Engineers get Onshape Professional free for up to 6 months: http://onshape.pro/NotanEngineer
+
+What a rush. Building the most ridiculous video title generator you've ever seen (and I know you've seen a few!) for the biggest blacksmith on YouTube, @AlecSteele, as my contribution to #ToolroomTakeover2025.
+
+Watch @InheritanceMachining's build here: https://youtu.be/9CBT4Rp0lK0 (If you spoil the solution in the comments I will find you.)
+
+And see @AlecSteele's full unboxing over here: https://youtu.be/WH8rD7gCjv0?si=Es2fhy3Nuwrbc4CL
+
+TT25 playlist here: https://youtube.com/playlist?list=PL2ISTNaXIkzC2s9OMVn2EnkT_c3g7JU9-&amp;si=_KKtbJK1iXwLVIRV
+
+We've got merch! https://notanengineer.shop
+Patreon: https://www.patreon.com/NotAnEngineer
+Instagram: https://www.instagram.com/noengineerhere/
+
+Huge thanks to everyone else involved, (but especially @Erik-not-Eric who somehow managed to organise the whole thing), go and subscribe to all of them; 
+
+@urituchmanpigeon 
+@Blondihacks 
+​@nbrworks 
+@joneseymakes 
+@chronovaengineering 
+@Clough42 
+
+You won't regret it.
+
+The following are affiliate links - using them for your next purchase helps support the channel!
+
+Bambu Lab: https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=
+
+
+
+8NN2FRP6SKD68BM8</media:description>
+   <media:community>
+    <media:starRating count="51548" average="5.00" min="1" max="5"/>
+    <media:statistics views="1067869"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:PIBVM0Pyxyk</id>
+  <yt:videoId>PIBVM0Pyxyk</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>Precision machine control is harder than it looks (it looks hard)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=PIBVM0Pyxyk"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2025-05-29T11:58:40+00:00</published>
+  <updated>2026-10-04T00:47:04+00:00</updated>
+  <media:group>
+   <media:title>Precision machine control is harder than it looks (it looks hard)</media:title>
+   <media:content url="https://www.youtube.com/v/PIBVM0Pyxyk?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/PIBVM0Pyxyk/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Want to fix the feng shui in your home office, but blew all your cash on industrial control electronics? No worries - go to https://displate.com/@engineer, and use code 'ENGINEER' for 27% off 1, 32% off 2, or 37% off 3 or more Displates! (including Textra). 
+
+Today's episode of &quot;I don't know when to quit&quot; follows the assembly and integration of an all-new motion control cabinet for the milling machine, paving the way for more &quot;what the heck am I doing with my life&quot; in the form of 6 axes of step and direction control, closed loop encoder feedback, and virtually limitless pneumatically actuated gags. 
+
+Thanks to the big man and his hoist @Ididathing 
+
+We've got merch! https://notanengineer.shop
+
+Consider supporting the channel on Patreon: https://www.patreon.com/c/NotAnEngineer
+
+Thanks to Simon and Macgyver Models for the use of the pan-brake, among countless other things. If you find yourself needing the services of a prop maker, check them out here: https://macgyvermodels.com.au/
+
+The following are affiliate links - using them for your next purchase helps support the channel!
+
+Bambu Lab: https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=</media:description>
+   <media:community>
+    <media:starRating count="28856" average="5.00" min="1" max="5"/>
+    <media:statistics views="606370"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:FfsGUQjTAZs</id>
+  <yt:videoId>FfsGUQjTAZs</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>The answer is DRAWERS! (I don’t care what the question is)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=FfsGUQjTAZs"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2025-03-06T11:33:11+00:00</published>
+  <updated>2026-10-03T07:16:24+00:00</updated>
+  <media:group>
+   <media:title>The answer is DRAWERS! (I don’t care what the question is)</media:title>
+   <media:content url="https://www.youtube.com/v/FfsGUQjTAZs?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/FfsGUQjTAZs/hqdefault.jpg" width="480" height="360"/>
+   <media:description>This one's a bit of a stretch, but it had to be done. Drawers.
+
+We've got merch! https://notanengineer.shop
+
+Consider supporting the channel on Patreon: https://www.patreon.com/c/NotAnEngineer
+
+The following are affiliate links - using them for your next purchase helps support the channel!
+
+Bambu Lab: https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=</media:description>
+   <media:community>
+    <media:starRating count="14875" average="5.00" min="1" max="5"/>
+    <media:statistics views="352715"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:CdrQqRY8wuc</id>
+  <yt:videoId>CdrQqRY8wuc</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>Building precision machines is simple, until it isn't.</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=CdrQqRY8wuc"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2024-12-21T14:10:01+00:00</published>
+  <updated>2026-10-01T14:33:09+00:00</updated>
+  <media:group>
+   <media:title>Building precision machines is simple, until it isn't.</media:title>
+   <media:content url="https://www.youtube.com/v/CdrQqRY8wuc?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/CdrQqRY8wuc/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Go to https://pcbway.com/g/RE6Nqt [aff] for all your CNC machining needs, and make the hard parts simple.
+
+A long overdue upgrade to the homemade CNC milling machine, among other things.
+
+We've got merch! https://notanengineer.shop
+
+Support the channel on patreon: https://www.patreon.com/NotAnEngineer
+
+Or by using my Bambu Lab affiliate link: 
+https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=
+
+Thanks to Stefan for the bandsaw inspo, Marcus for the tutelage on load paths, and Mitch, for drying the rocks.
+
+YH2WK2QFAW7OEH1F
+CLTTJLQWDKJ2IGPE</media:description>
+   <media:community>
+    <media:starRating count="43232" average="5.00" min="1" max="5"/>
+    <media:statistics views="1352543"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:z1fYeBZptUc</id>
+  <yt:videoId>z1fYeBZptUc</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>How I gave my lathe a &quot;nut&quot; button, and why I'll never look back</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=z1fYeBZptUc"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2024-09-26T13:01:06+00:00</published>
+  <updated>2026-10-05T15:17:50+00:00</updated>
+  <media:group>
+   <media:title>How I gave my lathe a &quot;nut&quot; button, and why I'll never look back</media:title>
+   <media:content url="https://www.youtube.com/v/z1fYeBZptUc?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/z1fYeBZptUc/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Threading to a shoulder has never been easier with the nut button. Single-handedly reducing the number of code browns by an order of magnitude. 
+
+We've got merch! https://notanengineer.shop
+
+Get all the latest, while supporting the channel, over at https://www.patreon.com/NotAnEngineer
+
+@jackfromscratch  has done an incredible amount of work beyond what you've seen in this video of the &quot;Video Production Deadline&quot; branch, so go subscribe to him for updates, and check out the source code at https://github.com/NoEngineerHere/TeensyELS.
+
+&quot;Video production deadline branch&quot; source code: https://github.com/NoEngineerHere/TeensyELS-Video-Prod.-Deadline
+
+(Bambu Lab Store Affiliate) Get your filament here to help justify these cursed side quests: https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=</media:description>
+   <media:community>
+    <media:starRating count="24645" average="5.00" min="1" max="5"/>
+    <media:statistics views="473267"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:iSDNKmk5B20</id>
+  <yt:videoId>iSDNKmk5B20</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>Putting an end to the WORST kind of gears.</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=iSDNKmk5B20"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2024-09-12T13:00:58+00:00</published>
+  <updated>2026-10-04T02:45:39+00:00</updated>
+  <media:group>
+   <media:title>Putting an end to the WORST kind of gears.</media:title>
+   <media:content url="https://www.youtube.com/v/iSDNKmk5B20?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/iSDNKmk5B20/hqdefault.jpg" width="480" height="360"/>
+   <media:description>I hate change gears, let's do something about it.
+
+We've got merch! https://notanengineer.shop
+
+I haven't released the code for this project yet - stay tuned for the next video, or keep an eye on things over at https://www.patreon.com/NotAnEngineer
+
+If you need an electronic leadscrew NOW, make sure you go check out @Clough42.
+
+Use this link for all your Bambu lab purchases (It costs you nothing, and helps support the channel!): https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=
+
+Encoder validation logic source: https://cdn.sparkfun.com/datasheets/Robotics/How%20to%20use%20a%20quadrature%20encoder.pdf
+
+A very insightful thread (Thanks AlanB!): 
+https://www.hobby-machinist.com/threads/an-electronic-lead-screw-controller-using-a-teensy-4-1.99609/page-5#post-947980</media:description>
+   <media:community>
+    <media:starRating count="21526" average="5.00" min="1" max="5"/>
+    <media:statistics views="516881"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:io4S9amExNM</id>
+  <yt:videoId>io4S9amExNM</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>I made a parallel axis tripteron</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=io4S9amExNM"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2024-06-20T13:20:02+00:00</published>
+  <updated>2026-10-03T18:27:08+00:00</updated>
+  <media:group>
+   <media:title>I made a parallel axis tripteron</media:title>
+   <media:content url="https://www.youtube.com/v/io4S9amExNM?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/io4S9amExNM/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Go to https://pcbway.com/g/RE6Nqt [aff] for all your parallel axis tripteron component machining needs.
+
+It's shiny, and it moves on it's own, but what is it even good for?
+
+We've got merch! https://notanengineer.shop
+
+Thanks to Dan Rudman (https://www.youtube.com/@Rudmin) for allowing the use of his footage, and for sparking me on this adventure.
+
+Dan's video: https://www.youtube.com/watch?v=6EtXycVGJg4
+
+Get the CAD and code for free over on my Patreon (I'll warn you now, it's janky as heck): 
+
+https://www.patreon.com/posts/tripteron-files-106552546?utm_medium=clipboard_copy&amp;utm_source=copyLink&amp;utm_campaign=postshare_creator&amp;utm_content=join_link
+
+
+Bambu Lab Affiliate Link: 
+
+https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=
+
+I receive a percentage of sales via the link above. Thanks!</media:description>
+   <media:community>
+    <media:starRating count="51577" average="5.00" min="1" max="5"/>
+    <media:statistics views="1275604"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:YFJJkZm796I</id>
+  <yt:videoId>YFJJkZm796I</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>I made a precision gearbox - with NO GEARS.</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=YFJJkZm796I"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2024-04-04T11:32:48+00:00</published>
+  <updated>2026-10-05T10:42:38+00:00</updated>
+  <media:group>
+   <media:title>I made a precision gearbox - with NO GEARS.</media:title>
+   <media:content url="https://www.youtube.com/v/YFJJkZm796I?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/YFJJkZm796I/hqdefault.jpg" width="480" height="360"/>
+   <media:description>If you want to build your own Cyloidal drive, let https://pcbway.com/g/RE6Nqt [aff] take care of the machining. 
+
+This was one heck of a project, but I made it in the end. A (nearly) zero-backlash 4th axis for my home made milling machine. 
+
+We've got merch! https://notanengineer.shop
+
+If you want to follow the projects a little closer, head over to https://www.patreon.com/NotAnEngineer.
+
+@InheritanceMachining had to build a bigger box of shame because of me, go watch that NOW: https://youtu.be/uQQH8XzlgVU?si=NrNNeq5qd045CpV7
+
+Bambu Lab Store: (affiliate)
+https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=
+
+
+Sources:
+
+@HowToMechatronics  - What is Cycloidal Drive? Designing, 3D Printing and Testing https://www.youtube.com/watch?v=OsS9-FzKN6s
+
+@LeviJanssen  - Has a lot of great videos on cycloidal drives
+
+@jamesbruton  - also has a lot of great videos on cycloidal drives
+
+the best look inside a real cycloidal drive I could find: @arduinoversusevil2025 (AvE) - BOLTR: SUMITOMO CYCLO GEARBOX | Zero Backlash! https://www.youtube.com/watch?v=dYVPU47c9WA&amp;t=577s&amp;pp=ygUPY3ljbG9pZGFsIGRyaXZl
+
+Cycloidal Drive Parametric Equations - https://blogs.solidworks.com/teacher/wp-content/uploads/sites/3/Building-a-Cycloidal-Drive-with-SOLIDWORKS.pdf
+
+Fusion Script I modified: https://capolight.wordpress.com/2018/07/02/how-to-sketch-equation-curves-in-fusion-360/
+
+My modified version for drawing epitrochoids: https://pastebin.com/05iDZssp
+
+@ROBRENZ's large bore laps: https://www.youtube.com/watch?v=AEsaSN4LLU4&amp;t=1190s
+
+Solid toolpost mount inspired by @StefanGotteswinter</media:description>
+   <media:community>
+    <media:starRating count="89685" average="5.00" min="1" max="5"/>
+    <media:statistics views="2790868"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:fWomfEL9Jrw</id>
+  <yt:videoId>fWomfEL9Jrw</yt:videoId>
+  <yt:channelId>UCXh9mHdcBD-3aGCiECZMP1Q</yt:channelId>
+  <title>I just want to make things ROUND (accurately)</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=fWomfEL9Jrw"/>
+  <author>
+   <name>Not An Engineer</name>
+   <uri>https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q</uri>
+  </author>
+  <published>2024-02-15T09:06:21+00:00</published>
+  <updated>2026-09-30T04:23:34+00:00</updated>
+  <media:group>
+   <media:title>I just want to make things ROUND (accurately)</media:title>
+   <media:content url="https://www.youtube.com/v/fWomfEL9Jrw?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/fWomfEL9Jrw/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Go to https://pcbway.com/g/RE6Nqt [aff] for all your custom manufacturing needs; whether you need PCBs, 3D prints, laser cut sheet metal, or CNC machining services, they've got you covered.
+
+We've got merch! https://notanengineer.shop
+
+Patreon: https://www.patreon.com/NotAnEngineer
+
+It's about damn time I got to make some cylinders (accurately) in the home workshop.
+
+Bambu Lab Store (affiliate);
+https://shareasale.com/r.cfm?b=2282157&amp;u=4236696&amp;m=138211&amp;urllink=&amp;afftrack=</media:description>
+   <media:community>
+    <media:starRating count="17999" average="5.00" min="1" max="5"/>
+    <media:statistics views="454344"/>
+   </media:community>
+  </media:group>
+ </entry>
+</feed>

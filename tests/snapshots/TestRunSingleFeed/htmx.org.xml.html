@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-ecOsCkZmdss1KhS_el9OEGxL9olH6_JK8fQzwy3pop7ebiZODG01D8_11VmMW-Yq02F21Kd5wCEFmpG2EfmzZcNtZiljxSufNLB6XGAKV4KmspS0n20SEYTbmksQqaxTwbb9RQZpHyPLh3euCmV6CgfUfLefDaDqiQqGf0yBvfT0fEqlSforHXpupTsj7phjqsdpzuRveBw0HIcJQerUMmNIPRJHvS2KPpJlpIThrmV2p3c-vuyjfOwC9WUMWBT7R1UyOJVrHaxhPNiKkACt3amp54oPFbDEJPOJC3quBvLS6HYdcEoKBFVJhX_X5ma1ZEWGJfRJLi1l2EZPEwK6rw==' ;
+		script-src 'nonce-ecOsCkZmdss1KhS_el9OEGxL9olH6_JK8fQzwy3pop7ebiZODG01D8_11VmMW-Yq02F21Kd5wCEFmpG2EfmzZcNtZiljxSufNLB6XGAKV4KmspS0n20SEYTbmksQqaxTwbb9RQZpHyPLh3euCmV6CgfUfLefDaDqiQqGf0yBvfT0fEqlSforHXpupTsj7phjqsdpzuRveBw0HIcJQerUMmNIPRJHvS2KPpJlpIThrmV2p3c-vuyjfOwC9WUMWBT7R1UyOJVrHaxhPNiKkACt3amp54oPFbDEJPOJC3quBvLS6HYdcEoKBFVJhX_X5ma1ZEWGJfRJLi1l2EZPEwK6rw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="ecOsCkZmdss1KhS_el9OEGxL9olH6_JK8fQzwy3pop7ebiZODG01D8_11VmMW-Yq02F21Kd5wCEFmpG2EfmzZcNtZiljxSufNLB6XGAKV4KmspS0n20SEYTbmksQqaxTwbb9RQZpHyPLh3euCmV6CgfUfLefDaDqiQqGf0yBvfT0fEqlSforHXpupTsj7phjqsdpzuRveBw0HIcJQerUMmNIPRJHvS2KPpJlpIThrmV2p3c-vuyjfOwC9WUMWBT7R1UyOJVrHaxhPNiKkACt3amp54oPFbDEJPOJC3quBvLS6HYdcEoKBFVJhX_X5ma1ZEWGJfRJLi1l2EZPEwK6rw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://htmx.org/essays/markdown-in-src/ target="_blank">
+					<h2>Markdown in /src</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/working-with-ai/ target="_blank">
+					<h2>Working With AI: A Concrete Example</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-29">2026-06-29</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/universities-and-ai/ target="_blank">
+					<h2>The University In The AI Era</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-11">2026-06-11</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/code-is-cheap/ target="_blank">
+					<h2>Code is Cheap(er)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-04">2026-06-04</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/mcp-apps-hypermedia/ target="_blank">
+					<h2>Hypermedia Friendly Model Context Protocol App Architecture</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-18">2026-03-18</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/yes-and/ target="_blank">
+					<h2>Yes, and...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-27">2026-02-27</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/paris-2024-olympics-htmx-network-automation/ target="_blank">
+					<h2>Building Critical Infrastructure with htmx: Network Automation for the Paris 2024 Olympics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-16">2026-01-16</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/the-fetchening/ target="_blank">
+					<h2>The fetch()ening</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-01">2025-11-01</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/interviews/leonard-richardson/ target="_blank">
+					<h2>An interview with Leonard Richardson</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-19">2025-02-19</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/interviews/chris-wanstrath/ target="_blank">
+					<h2>An interview with Chris Wanstrath aka @defunkt, Creator of pjax</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-27">2025-01-27</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/interviews/makinde-adeagbo/ target="_blank">
+					<h2>An interview with Makinde Adeagbo, Creator of Primer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-27">2025-01-27</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/interviews/mike-amundsen/ target="_blank">
+					<h2>An interview with Mike Amundsen, Author of &#39;RESTful Web APIs&#39;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-27">2025-01-27</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/vendoring/ target="_blank">
+					<h2>Vendoring</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-27">2025-01-27</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/alternatives/ target="_blank">
+					<h2>Alternatives to htmx</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-12">2025-01-12</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/a-real-world-wasm-to-htmx-port/ target="_blank">
+					<h2>A Real World wasm to htmx Port</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-10">2025-01-10</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/future/ target="_blank">
+					<h2>The future of htmx</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-01">2025-01-01</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/quirks/ target="_blank">
+					<h2>htmx quirks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-23">2024-12-23</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/lore/ target="_blank">
+					<h2>htmx lore</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-17">2024-12-17</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/prefer-if-statements/ target="_blank">
+					<h2>Prefer If Statements To Polymorphism...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-07">2024-12-07</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/codin-dirty/ target="_blank">
+					<h2>Codin&#39; Dirty</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-24">2024-11-24</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/webcomponents-work-great/ target="_blank">
+					<h2>Web Components Work Great with htmx</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-13">2024-11-13</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/a-real-world-nextjs-to-htmx-port/ target="_blank">
+					<h2>Next.js to htmx — A Real World Example</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-07">2024-11-07</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/why-gumroad-didnt-choose-htmx/ target="_blank">
+					<h2>Why Gumroad Didn&#39;t Choose htmx</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-30">2024-09-30</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/you-cant/ target="_blank">
+					<h2>You Can&#39;t Build Interactive Web Apps Except as Single Page Applications... And Other Myths</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-20">2024-09-20</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2024-06-17-htmx-2-0-0-is-released/ target="_blank">
+					<h2>htmx 2.0.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-17">2024-06-17</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2024-04-22-htmx-2-0-0-beta4-is-released/ target="_blank">
+					<h2>htmx 2.0.0-beta4 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-22">2024-04-22</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2024-03-15-htmx-2-0-0-beta1-is-released/ target="_blank">
+					<h2>htmx 2.0.0-beta1 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-15">2024-03-15</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2024-02-09-htmx-2-0-0-alpha2-is-released/ target="_blank">
+					<h2>htmx 2.0.0-alpha2 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-09">2024-02-09</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/web-security-basics-with-htmx/ target="_blank">
+					<h2>Web Security Basics (with htmx)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-06">2024-02-06</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/htmx-sucks/ target="_blank">
+					<h2>htmx sucks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-01">2024-02-01</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2024-01-26-htmx-2-0-0-alpha1-is-released/ target="_blank">
+					<h2>htmx 2.0.0-alpha1 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-26">2024-01-26</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/mvc/ target="_blank">
+					<h2>Model/View/Controller (MVC)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-16">2024-01-16</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/is-htmx-another-javascript-framework/ target="_blank">
+					<h2>Is htmx Just Another JavaScript Framework?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-10">2024-01-10</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/why-tend-not-to-use-content-negotiation/ target="_blank">
+					<h2>Why I Tend Not To Use Content Negotiation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-18">2023-11-18</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/does-hypermedia-scale/ target="_blank">
+					<h2>Does Hypermedia Scale?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-06">2023-11-06</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2023-11-03-htmx-1-9-7-is-released/ target="_blank">
+					<h2>htmx 1.9.7 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-03">2023-11-03</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2023-09-22-htmx-1-9-6-is-released/ target="_blank">
+					<h2>htmx 1.9.6 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-22">2023-09-22</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/right-click-view-source/ target="_blank">
+					<h2>The #ViewSource Affordance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-21">2023-09-21</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/another-real-world-react-to-htmx-port/ target="_blank">
+					<h2>Another Real World React -&gt; htmx Port</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-20">2023-09-20</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2023-08-25-htmx-1-9-5-is-released/ target="_blank">
+					<h2>htmx 1.9.5 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-25">2023-08-25</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/no-build-step/ target="_blank">
+					<h2>Why htmx Does Not Have a Build Step</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-19">2023-08-19</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2023-07-14-htmx-1-9-3-is-released/ target="_blank">
+					<h2>htmx 1.9.3 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-14">2023-07-14</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/rest-copypasta/ target="_blank">
+					<h2>REST Copypasta</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-26">2023-06-26</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2023-06-06-htmx-github-accelerator/ target="_blank">
+					<h2>htmx is part of the GitHub Accelerator!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-06">2023-06-06</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/hypermedia-on-whatever-youd-like/ target="_blank">
+					<h2>Hypermedia On Whatever you&#39;d Like</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-23">2023-05-23</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/view-transitions/ target="_blank">
+					<h2>View Transitions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-11">2023-04-11</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2023-04-11-htmx-1-9-0-is-released/ target="_blank">
+					<h2>htmx 1.9.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-11">2023-04-11</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/architectural-sympathy/ target="_blank">
+					<h2>Architectural Sympathy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-06">2023-04-06</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2023-03-02-htmx-1-8-6-is-released/ target="_blank">
+					<h2>htmx 1.8.6 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-02">2023-03-02</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/hypermedia-clients/ target="_blank">
+					<h2>Hypermedia Clients</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-28">2023-01-28</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2023-01-17-htmx-1-8-5-is-released/ target="_blank">
+					<h2>htmx 1.8.5 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-17">2023-01-17</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/hypermedia-friendly-scripting/ target="_blank">
+					<h2>Hypermedia-Friendly Scripting</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-17">2022-11-17</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2022-11-04-htmx-1-8-3-is-released/ target="_blank">
+					<h2>htmx 1.8.3 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-04">2022-11-04</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/when-to-use-hypermedia/ target="_blank">
+					<h2>When Should You Use Hypermedia?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-23">2022-10-23</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2022-10-11-htmx-1-8-1-is-released/ target="_blank">
+					<h2>htmx 1.8.1 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-11">2022-10-11</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/a-real-world-react-to-htmx-port/ target="_blank">
+					<h2>A Real World React -&gt; htmx Port</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-29">2022-09-29</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/template-fragments/ target="_blank">
+					<h2>Template Fragments</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-03">2022-08-03</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/how-did-rest-come-to-mean-the-opposite-of-rest/ target="_blank">
+					<h2>How Did REST Come To Mean The Opposite of REST?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-18">2022-07-18</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2022-07-12-htmx-1-8-0-is-released/ target="_blank">
+					<h2>htmx 1.8.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-12">2022-07-12</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/10-tips-for-ssr-hda-apps/ target="_blank">
+					<h2>10 Tips For Building SSR/HDA applications</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-13">2022-06-13</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/interviews/henning-koch/ target="_blank">
+					<h2>An interview with Henning Koch, Creator of Unpoly</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-13">2022-06-13</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/two-approaches-to-decoupling/ target="_blank">
+					<h2>Two Approaches To Decoupling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-01">2022-05-01</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2022-02-22-htmx-1-7-0-is-released/ target="_blank">
+					<h2>htmx 1.7.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-22">2022-02-22</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/hypermedia-driven-applications/ target="_blank">
+					<h2>Hypermedia-Driven Applications</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-06">2022-02-06</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/a-response-to-rich-harris/ target="_blank">
+					<h2>A Response To &#34;Have Single-Page Apps Ruined the Web?&#34;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-24">2021-12-24</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2021-11-22-htmx-1-6-1-is-released/ target="_blank">
+					<h2>htmx 1.6.1 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-22">2021-11-22</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/hateoas/ target="_blank">
+					<h2>HATEOAS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-16">2021-10-16</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2021-10-02-htmx-1-6-0-is-released/ target="_blank">
+					<h2>htmx 1.6.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-02">2021-10-02</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/splitting-your-apis/ target="_blank">
+					<h2>Splitting Your Data &amp; Application APIs: Going Further</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-16">2021-09-16</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/hypermedia-apis-vs-data-apis/ target="_blank">
+					<h2>Hypermedia APIs vs. Data APIs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-17">2021-07-17</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/rest-explained/ target="_blank">
+					<h2>REST - Explained For Beginners</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-13">2021-07-13</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2021-7-12-htmx-1-5-0-is-released/ target="_blank">
+					<h2>htmx 1.5.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-12">2021-07-12</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2021-5-25-htmx-1-4-0-is-released/ target="_blank">
+					<h2>htmx 1.4.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-05-25">2021-05-25</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2021-3-6-htmx-1-3-0-is-released/ target="_blank">
+					<h2>htmx 1.3.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-06">2021-03-06</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2021-2-13-htmx-1-2-0-is-released/ target="_blank">
+					<h2>htmx 1.2.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-13">2021-02-13</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2021-1-6-htmx-1-1-0-is-released/ target="_blank">
+					<h2>htmx 1.1.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-06">2021-01-06</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-11-24-htmx-1-0-0-is-released/ target="_blank">
+					<h2>htmx 1.0.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-24">2020-11-24</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-11-16-htmx-0-4-0-is-released/ target="_blank">
+					<h2>htmx 0.4.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-16">2020-11-16</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/complexity-budget/ target="_blank">
+					<h2>Complexity Budget</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-29">2020-10-29</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/spa-alternative/ target="_blank">
+					<h2>SPA Alternative</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-29">2020-10-29</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-10-27-htmx-0-3-0-is-released/ target="_blank">
+					<h2>htmx 0.3.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-27">2020-10-27</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-9-30-htmx-0-2-0-is-released/ target="_blank">
+					<h2>htmx 0.2.0 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-30">2020-09-30</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-9-18-htmx-0-1-0-is-released/ target="_blank">
+					<h2>htmx 0.1.2 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-18">2020-09-18</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-6-30-htmx-0-0-7-is-released/ target="_blank">
+					<h2>htmx 0.0.7 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-30">2020-06-30</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-7-8-htmx-0-0-8-is-released/ target="_blank">
+					<h2>htmx 0.0.8 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-30">2020-06-30</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-6-20-htmx-0-0-6-is-released/ target="_blank">
+					<h2>htmx 0.0.6 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-20">2020-06-20</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/locality-of-behaviour/ target="_blank">
+					<h2>Locality of Behaviour (LoB)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-29">2020-05-29</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-5-24-htmx-0-0-4-is-released/ target="_blank">
+					<h2>htmx 0.0.4 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-24">2020-05-24</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-5-17-kutty-er-htmx-0-0-3-is-released/ target="_blank">
+					<h2>kutty, er, htmx 0.0.3 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-17">2020-05-17</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/posts/2020-5-15-kutty-0-0-1-is-released/ target="_blank">
+					<h2>kutty 0.0.1 has been released!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-15">2020-05-15</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://htmx.org" target="_blank">&lt;/&gt; htmx - high power tools for html</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="ecOsCkZmdss1KhS_el9OEGxL9olH6_JK8fQzwy3pop7ebiZODG01D8_11VmMW-Yq02F21Kd5wCEFmpG2EfmzZcNtZiljxSufNLB6XGAKV4KmspS0n20SEYTbmksQqaxTwbb9RQZpHyPLh3euCmV6CgfUfLefDaDqiQqGf0yBvfT0fEqlSforHXpupTsj7phjqsdpzuRveBw0HIcJQerUMmNIPRJHvS2KPpJlpIThrmV2p3c-vuyjfOwC9WUMWBT7R1UyOJVrHaxhPNiKkACt3amp54oPFbDEJPOJC3quBvLS6HYdcEoKBFVJhX_X5ma1ZEWGJfRJLi1l2EZPEwK6rw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

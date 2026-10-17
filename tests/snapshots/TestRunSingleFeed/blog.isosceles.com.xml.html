@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-COTsOqMnwvvc4vogFccmiC8NWbK4wlUc2hlNmIBaW9eH7Dowi0x7au2dReLCzFKhl5tnSSeHWJxM6zl9jpBPbOhQd3iuoTf1ndbtQMu1HOAS482D96jKi7pIIrZ03IRRyecNJQtyFAx6iBr6khSsYqwGy6l_i3m3bb2rAHqMPWvAn-th9meoAQ02BKnlgQOc2b3W_EgBzAVAF8PiXWEcMurQTE0kXJ0cdYaj-w7fiu4skkO7_zw2SJz30Ao79MyhHRTMY0LxPH0G3JOtTXy6aScvIwLl75TjfSdJVTEYccHrtUG2M4aYKXkcTPVGgX3C9Xe-oCxKmEODKJ2SW7hGSA==' ;
+		script-src 'nonce-COTsOqMnwvvc4vogFccmiC8NWbK4wlUc2hlNmIBaW9eH7Dowi0x7au2dReLCzFKhl5tnSSeHWJxM6zl9jpBPbOhQd3iuoTf1ndbtQMu1HOAS482D96jKi7pIIrZ03IRRyecNJQtyFAx6iBr6khSsYqwGy6l_i3m3bb2rAHqMPWvAn-th9meoAQ02BKnlgQOc2b3W_EgBzAVAF8PiXWEcMurQTE0kXJ0cdYaj-w7fiu4skkO7_zw2SJz30Ao79MyhHRTMY0LxPH0G3JOtTXy6aScvIwLl75TjfSdJVTEYccHrtUG2M4aYKXkcTPVGgX3C9Xe-oCxKmEODKJ2SW7hGSA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="COTsOqMnwvvc4vogFccmiC8NWbK4wlUc2hlNmIBaW9eH7Dowi0x7au2dReLCzFKhl5tnSSeHWJxM6zl9jpBPbOhQd3iuoTf1ndbtQMu1HOAS482D96jKi7pIIrZ03IRRyecNJQtyFAx6iBr6khSsYqwGy6l_i3m3bb2rAHqMPWvAn-th9meoAQ02BKnlgQOc2b3W_EgBzAVAF8PiXWEcMurQTE0kXJ0cdYaj-w7fiu4skkO7_zw2SJz30Ao79MyhHRTMY0LxPH0G3JOtTXy6aScvIwLl75TjfSdJVTEYccHrtUG2M4aYKXkcTPVGgX3C9Xe-oCxKmEODKJ2SW7hGSA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://blog.isosceles.com/openssh-backdoors/ target="_blank">
+					<h2>OpenSSH Backdoors</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-23">2024-08-23</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.isosceles.com/robots-dream-of-root-shells/ target="_blank">
+					<h2>Robots Dream of Root Shells</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-11">2024-03-11</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.isosceles.com/the-webp-0day/ target="_blank">
+					<h2>The WebP 0day</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-21">2023-09-21</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.isosceles.com/phineas-fisher-hacktivism-and-magic-tricks/ target="_blank">
+					<h2>Phineas Fisher, Hacktivism, and Magic Tricks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-14">2023-09-14</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.isosceles.com/what-is-a-good-linux-kernel-bug/ target="_blank">
+					<h2>What is a &#34;good&#34; Linux Kernel bug?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-30">2023-08-30</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.isosceles.com/exploit-equivalence-classes/ target="_blank">
+					<h2>Exploit Equivalence Classes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-23">2023-08-23</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.isosceles.com/how-to-build-a-corpus-for-fuzzing/ target="_blank">
+					<h2>How to Build a Fuzzing Corpus</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-16">2023-08-16</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.isosceles.com/an-introduction-to-exploit-reliability/ target="_blank">
+					<h2>An Introduction to Exploit Reliability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-02">2023-08-02</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.isosceles.com/the-legacy-of-stagefright/ target="_blank">
+					<h2>The Legacy of Stagefright</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-26">2023-07-26</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.isosceles.com/announcing-isosceles/ target="_blank">
+					<h2>Announcing Isosceles</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-24">2023-07-24</time>
+					|
+					<a href="https://blog.isosceles.com" target="_blank">blog.isosceles.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://blog.isosceles.com/" target="_blank">Isosceles Blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="COTsOqMnwvvc4vogFccmiC8NWbK4wlUc2hlNmIBaW9eH7Dowi0x7au2dReLCzFKhl5tnSSeHWJxM6zl9jpBPbOhQd3iuoTf1ndbtQMu1HOAS482D96jKi7pIIrZ03IRRyecNJQtyFAx6iBr6khSsYqwGy6l_i3m3bb2rAHqMPWvAn-th9meoAQ02BKnlgQOc2b3W_EgBzAVAF8PiXWEcMurQTE0kXJ0cdYaj-w7fiu4skkO7_zw2SJz30Ao79MyhHRTMY0LxPH0G3JOtTXy6aScvIwLl75TjfSdJVTEYccHrtUG2M4aYKXkcTPVGgX3C9Xe-oCxKmEODKJ2SW7hGSA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

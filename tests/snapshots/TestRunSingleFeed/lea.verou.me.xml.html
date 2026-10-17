@@ -1,0 +1,3338 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-XzoarO40sotPbIT52nFuiOfRye_zEyorT8Yf_gfLzao-qyoxvM8TPgi-mI0s6mqSJ8sCJQuD5uipBXp0xUnPDvLo4dHo2RKP4UlAm5q5Yw_fHCZixSsjS0jll5iYeRNqU6Ka70L6jHZWgyIqekSVcOJyqickfdKfWhL-YgcNPmQId9CNGfZ-0guDHIGWt7BbiSMt7Sdv84fYN5fTNmmOFqa7YbkjjTFlu-qt3aWQlWbuxJtU4ApxvwXUMZtDhRWnKtTAK9_7NCy7WxZVyTn3jupPwDr6QTqdikZZCYoggFmQf1cKS24yiS_YrLJ7HGfjzvVh0EViM73d1SwlE6P6eg==' ;
+		script-src 'nonce-XzoarO40sotPbIT52nFuiOfRye_zEyorT8Yf_gfLzao-qyoxvM8TPgi-mI0s6mqSJ8sCJQuD5uipBXp0xUnPDvLo4dHo2RKP4UlAm5q5Yw_fHCZixSsjS0jll5iYeRNqU6Ka70L6jHZWgyIqekSVcOJyqickfdKfWhL-YgcNPmQId9CNGfZ-0guDHIGWt7BbiSMt7Sdv84fYN5fTNmmOFqa7YbkjjTFlu-qt3aWQlWbuxJtU4ApxvwXUMZtDhRWnKtTAK9_7NCy7WxZVyTn3jupPwDr6QTqdikZZCYoggFmQf1cKS24yiS_YrLJ7HGfjzvVh0EViM73d1SwlE6P6eg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="XzoarO40sotPbIT52nFuiOfRye_zEyorT8Yf_gfLzao-qyoxvM8TPgi-mI0s6mqSJ8sCJQuD5uipBXp0xUnPDvLo4dHo2RKP4UlAm5q5Yw_fHCZixSsjS0jll5iYeRNqU6Ka70L6jHZWgyIqekSVcOJyqickfdKfWhL-YgcNPmQId9CNGfZ-0guDHIGWt7BbiSMt7Sdv84fYN5fTNmmOFqa7YbkjjTFlu-qt3aWQlWbuxJtU4ApxvwXUMZtDhRWnKtTAK9_7NCy7WxZVyTn3jupPwDr6QTqdikZZCYoggFmQf1cKS24yiS_YrLJ7HGfjzvVh0EViM73d1SwlE6P6eg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2026/icons/ target="_blank">
+					<h2>The best way to use icons in Web UIs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2026/dark-mode-toggles-2/ target="_blank">
+					<h2>The best dark mode toggle is probably none</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-02">2026-09-02</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2026/dark-mode-toggles/ target="_blank">
+					<h2>Dark mode toggles: two states are enough</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-06">2026-08-06</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2026/polyfills/ target="_blank">
+					<h2>In defense of polyfills</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-13">2026-07-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2026/external-import-maps-today/ target="_blank">
+					<h2>External import maps, today!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-02">2026-03-02</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2026/web-deps/ target="_blank">
+					<h2>Web dependencies are broken. Can we fix them?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-07">2026-01-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2025/user-effort/ target="_blank">
+					<h2>In the economy of user effort, be a bargain</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-29">2025-09-29</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2025/state-of-html/ target="_blank">
+					<h2>State of HTML 2025 now open!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-22">2025-07-22</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2025/design-state-of-html/ target="_blank">
+					<h2>Influence the State of HTML 2025 Survey!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-08">2025-07-08</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2025/hovercar/ target="_blank">
+					<h2>The Hovercar Framework for Deliberate Product Design</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-25">2025-06-25</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2025/bluesky-likes/ target="_blank">
+					<h2>Bluesky Likes Web Components</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-17">2025-06-17</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2025/construction-lines/ target="_blank">
+					<h2>Construction Lines</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-13">2025-06-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2025/style-observer/ target="_blank">
+					<h2>Style-observer: JS to observe CSS property changes, for reals</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-12">2025-02-12</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2024/context-chips/ target="_blank">
+					<h2>Context Chips in Survey Design: “Okay, but how does it _feel_?”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-27">2024-12-27</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2024/wcs-vs-frameworks/ target="_blank">
+					<h2>Web Components are not Framework Components — and That’s Okay</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-01">2024-10-01</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2024/awesome/ target="_blank">
+					<h2>Making the Web more Awesome — for everyone</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-16">2024-09-16</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2024/engage-dont-show/ target="_blank">
+					<h2>Forget “show, don’t tell”. Engage, don’t show!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-03">2024-07-03</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2024/css-conditionals-now/ target="_blank">
+					<h2>Inline conditionals in CSS, now?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-21">2024-06-21</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2024/css-conditionals/ target="_blank">
+					<h2>Inline conditionals in CSS?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-18">2024-06-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2024/contrast-color/ target="_blank">
+					<h2>On automatically generating contrasting text colors with CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-17">2024-05-17</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2023/eigensolutions/ target="_blank">
+					<h2>Eigensolutions: composability as the antidote to overfit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-19">2023-12-19</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2023/minimalist-affordances/ target="_blank">
+					<h2>Minimalist Affordances: Making the right tradeoffs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-02">2023-11-02</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2023/state-of-html-2023/ target="_blank">
+					<h2>State of HTML 2023 now open!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-22">2023-09-22</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2023/numbers-vs-brackets/ target="_blank">
+					<h2>Numbers or Brackets for numeric questions?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-03">2023-08-03</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2023/design-state-of-html/ target="_blank">
+					<h2>Help Design the Inaugural State of HTML Survey!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-26">2023-07-26</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2023/going-lean/ target="_blank">
+					<h2>Going Lean</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-21">2023-07-21</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2023/rethinking-categorization/ target="_blank">
+					<h2>Rethinking Categorization</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-20">2023-07-20</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2023/11ty-indices/ target="_blank">
+					<h2>11ty: Index ALL the things!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-19">2023-07-19</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2023/preserve-disqus/ target="_blank">
+					<h2>Migrating Disqus from WP to 11ty</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-18">2023-07-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2023/04/private-fields-considered-harmful/ target="_blank">
+					<h2>JS private class fields considered harmful</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-28">2023-04-28</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2023/03/contrast-ratio-new-home/ target="_blank">
+					<h2>Contrast Ratio has a new home — and this is great news!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-18">2023-03-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2022/11/tag-2/ target="_blank">
+					<h2>Position Statement for the 2022 W3C TAG Election</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-07">2022-11-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2022/10/state-of-css-2022-now-open/ target="_blank">
+					<h2>State of CSS 2022 now open!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-03">2022-10-03</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2022/08/on-ratings-and-meters/ target="_blank">
+					<h2>On ratings and meters</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-12">2022-08-12</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2022/07/help-design-the-state-of-css-survey-2022/ target="_blank">
+					<h2>Help design the State of CSS Survey 2022!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-28">2022-07-28</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2022/07/button-group/ target="_blank">
+					<h2>What is the best way to mark up an exclusive button group?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-14">2022-07-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2022/07/rety/ target="_blank">
+					<h2>Introducing Rety: live coding, without the stress</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-13">2022-07-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2022/06/releasing-colorjs/ target="_blank">
+					<h2>Releasing Color.js: A library that takes color seriously</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-29">2022-06-29</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2021/11/on-yak-shaving-and-md-block-an-html-element-for-markdown/ target="_blank">
+					<h2>On Yak Shaving and `&lt;md-block&gt;`, a new HTML element for Markdown</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-26">2021-11-26</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2021/10/custom-properties-with-defaults/ target="_blank">
+					<h2>Custom properties with defaults: 3&#43;1 strategies</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-15">2021-10-15</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2021/06/inherit-ancestor-font-size-for-fun-and-profit/ target="_blank">
+					<h2>Inherit ancestor font-size, for fun and profit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-06-24">2021-06-24</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2021/05/is-the-current-tab-active/ target="_blank">
+					<h2>Is the current tab active?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-05-24">2021-05-24</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2021/05/82-of-developers-get-this-3-line-css-quiz-wrong/ target="_blank">
+					<h2>82% of developers get this 3 line CSS quiz wrong</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-05-21">2021-05-21</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2021/03/inverted-lightness-variables/ target="_blank">
+					<h2>Dark mode in 5 minutes, with inverted lightness variables</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-30">2021-03-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2021/02/mass-function-overloading-why-and-how/ target="_blank">
+					<h2>Mass function overloading: why and how?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-10">2021-02-10</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/12/writable-getters/ target="_blank">
+					<h2>Writable getters</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-23">2020-12-23</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/11/tag/ target="_blank">
+					<h2>Position Statement for the 2020 W3C TAG Election</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-30">2020-11-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/11/the-case-for-weak-dependencies-in-js/ target="_blank">
+					<h2>The case for Weak Dependencies in JS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-19">2020-11-19</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/11/simple-pie-charts-with-fallback-today/ target="_blank">
+					<h2>Simple pie charts with fallback, today</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-12">2020-11-12</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/10/the-var-space-hack-to-toggle-multiple-values-with-one-custom-property/ target="_blank">
+					<h2>The -​-var: ; hack to toggle multiple values with one custom property</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-12">2020-10-12</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/09/the-failed-promise-of-web-components/ target="_blank">
+					<h2>The failed promise of Web Components</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-24">2020-09-24</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/09/developer-priorities-throughout-their-career/ target="_blank">
+					<h2>Developer priorities throughout their career</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-16">2020-09-16</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/09/parsel-a-tiny-permissive-css-selector-parser/ target="_blank">
+					<h2>Parsel: A tiny, permissive CSS selector parser</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-07">2020-09-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/07/introspecting-css-via-the-css-om-getting-supported-properties-shorthands-longhands/ target="_blank">
+					<h2>Introspecting CSS via the CSS OM: Get supported properties, shorthands, longhands</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-27">2020-07-27</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/07/import-non-esm-libraries-in-es-modules-with-client-side-vanilla-js/ target="_blank">
+					<h2>Import non-ESM libraries in ES Modules, with client-side vanilla JS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-20">2020-07-20</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/07/releasing-mavoice-a-free-app-to-vote-on-repo-issues/ target="_blank">
+					<h2>Releasing MaVoice: A free app to vote on repo issues</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-11">2020-07-11</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/07/the-cicada-principle-revisited-with-css-variables/ target="_blank">
+					<h2>The Cicada Principle, revisited with CSS variables</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-07">2020-07-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/06/refactoring-optional-chaining-into-a-large-codebase-lessons-learned/ target="_blank">
+					<h2>Refactoring optional chaining into a large codebase: lessons learned</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-18">2020-06-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/06/hybrid-positioning-with-css-variables-and-max/ target="_blank">
+					<h2>Hybrid positioning with CSS variables and max()</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-05">2020-06-05</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/06/new-decade-new-theme/ target="_blank">
+					<h2>New decade, new theme</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-03">2020-06-03</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/05/todays-javascript-from-an-outsiders-perspective/ target="_blank">
+					<h2>Today&#39;s Javascript, from an outsider&#39;s perspective</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-25">2020-05-25</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2020/04/lch-colors-in-css-what-why-and-how/ target="_blank">
+					<h2>LCH colors in CSS: what, why, and how?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-04">2020-04-04</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2019/12/issue-closing-stats-for-any-repo/ target="_blank">
+					<h2>Issue closing stats for any repo</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-13">2019-12-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2019/05/utility-convert-svg-path-to-all-relative-or-all-absolute-commands/ target="_blank">
+					<h2>Utility: Convert SVG path to all-relative or all-absolute commands</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-05-06">2019-05-06</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2018/12/referenceerror-x-is-not-defined/ target="_blank">
+					<h2>ReferenceError: x is not defined?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-12-14">2018-12-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2018/09/refresh-css-bookmarklet-v2/ target="_blank">
+					<h2>Refresh CSS Bookmarklet v2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-09-18">2018-09-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2018/06/easy-dynamic-regular-expressions-with-tagged-template-literals-and-proxies/ target="_blank">
+					<h2>Easy Dynamic Regular Expressions with Tagged Template Literals and Proxies</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-06-04">2018-06-04</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2018/05/never-forget-typebutton-on-generated-buttons/ target="_blank">
+					<h2>Never forget type=&#34;button&#34; on generated buttons!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-05-19">2018-05-19</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2018/05/responsive-tables-revisited/ target="_blank">
+					<h2>Responsive tables, revisited</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-05-14">2018-05-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2018/04/quicker-storify-export/ target="_blank">
+					<h2>Quicker Storify export</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-04-27">2018-04-27</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2018/02/free-intro-to-web-development-slides-with-demos/ target="_blank">
+					<h2>Free Intro to Web Development slides (with demos)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-02-20">2018-02-20</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2017/10/different-remote-and-local-resource-urls-with-service-workers/ target="_blank">
+					<h2>Different remote and local resource URLs, with Service Workers!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-10-30">2017-10-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2017/05/introducing-mavo-create-web-apps-entirely-by-writing-html/ target="_blank">
+					<h2>Introducing Mavo: Create web apps entirely by writing HTML!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-05-16">2017-05-16</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2017/02/html-apis-what-they-are-and-how-to-design-a-good-one/ target="_blank">
+					<h2>HTML APIs: What they are and how to design a good one</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-02-16">2017-02-16</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2017/02/duoload-simplest-website-load-comparison-tool-ever/ target="_blank">
+					<h2>Duoload: Simplest website load comparison tool, ever</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-02-03">2017-02-03</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2016/12/resolve-promises-externally-with-this-one-weird-trick/ target="_blank">
+					<h2>Resolve Promises externally with this one weird trick</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-12-14">2016-12-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2016/11/url-rewriting-with-github-pages/ target="_blank">
+					<h2>URL rewriting with Github Pages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-11-26">2016-11-26</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2016/09/autoprefixing-with-css-variables/ target="_blank">
+					<h2>Autoprefixing, with CSS variables!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-09-07">2016-09-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2016/08/markapp-a-list-of-html-libraries/ target="_blank">
+					<h2>Markapp: A list of HTML libraries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-08-26">2016-08-26</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2016/05/introducing-multirange-a-tiny-polyfill-for-html5-two-handle-sliders/ target="_blank">
+					<h2>Introducing Multirange: A tiny polyfill for HTML5.1 two-handle sliders</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-05-31">2016-05-31</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/12/my-positive-experience-as-a-woman-in-tech/ target="_blank">
+					<h2>My positive experience as a woman in tech</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-12-17">2015-12-17</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/12/introducing-bliss-a-3kb-library-for-happier-vanilla-js/ target="_blank">
+					<h2>Introducing Bliss: A 3KB library for happier Vanilla JS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-12-04">2015-12-04</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/08/copying-properties-the-robust-way/ target="_blank">
+					<h2>Copying object properties, the robust way</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-08-16">2015-08-16</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/08/on-the-blindness-of-blind-reviews/ target="_blank">
+					<h2>On the blindness of blind reviews</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-08-13">2015-08-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/07/stretchy-form-element-autosizing-the-way-it-should-be/ target="_blank">
+					<h2>Stretchy: Form element autosizing, the way it should be</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-07-26">2015-07-26</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/07/spot-the-unsubscribe-link/ target="_blank">
+					<h2>Spot the unsubscribe (link)!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-07-14">2015-07-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/06/conical-gradients-today/ target="_blank">
+					<h2>Conical gradients, today!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-06-18">2015-06-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/04/idea-extending-native-dom-prototypes-without-collisions/ target="_blank">
+					<h2>Idea: Extending native DOM prototypes without collisions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-04-20">2015-04-20</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/04/jquery-considered-harmful/ target="_blank">
+					<h2>jQuery considered harmful</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-04-19">2015-04-19</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2015/02/awesomplete-2kb-autocomplete-with-zero-dependencies/ target="_blank">
+					<h2>Awesomplete: 2KB autocomplete with zero dependencies</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-02-19">2015-02-19</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2014/07/an-easy-notation-for-grayscale-colors/ target="_blank">
+					<h2>An easy notation for grayscale colors</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-07-27">2014-07-27</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2014/07/image-comparison-slider-with-pure-css/ target="_blank">
+					<h2>Image comparison slider with pure CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-07-25">2014-07-25</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2014/04/dynamically-generated-svg-through-sass-a-3d-animated-rgb-cube/ target="_blank">
+					<h2>Dynamically generated SVG through SASS &#43; A 3D animated RGB cube!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-04-04">2014-04-04</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2014/02/im-going-to-mit/ target="_blank">
+					<h2>I’m going to MIT!!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-02-11">2014-02-11</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2014/02/whathecolor-a-color-game-for-web-developers/ target="_blank">
+					<h2>Introducing Whathecolor: A color game for web developers!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-02-08">2014-02-08</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2014/01/vote-for-me-in-the-net-awards-2014/ target="_blank">
+					<h2>Vote for me in the net awards 2014!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-01-30">2014-01-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2014/01/smooth-state-animations-with-animation-play-state/ target="_blank">
+					<h2>Smooth state animations with animation-play-state</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-01-09">2014-01-09</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/12/simple-script-automatic-talks-list/ target="_blank">
+					<h2>Simple script: Automatic talks list</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-12-28">2013-12-28</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/12/css-is-for-developers/ target="_blank">
+					<h2>CSS is for developers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-12-05">2013-12-05</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/11/cleanest-css-spinner-ever/ target="_blank">
+					<h2>Cleanest CSS spinner, ever</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-11-29">2013-11-29</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/11/flexible-google-style-loader-with-css/ target="_blank">
+					<h2>Flexible Google-style loader with CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-11-11">2013-11-11</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/10/slanted-tabs-with-css-3d-transforms/ target="_blank">
+					<h2>Slanted tabs with CSS 3D transforms</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-10-18">2013-10-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/07/what-makes-speakers-happy/ target="_blank">
+					<h2>What makes speakers happy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-07-19">2013-07-19</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/07/leaving-w3c/ target="_blank">
+					<h2>Leaving W3C</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-07-11">2013-07-11</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/06/meet-dpi-lv-more-than-you-probably-wanted-to-know-about-screen-dpi/ target="_blank">
+					<h2>Meet dpi.lv: More than you probably wanted to know about screen DPI</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-06-10">2013-06-10</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/04/can-we-get-rid-of-gradient-prefixes/ target="_blank">
+					<h2>Can we get rid of gradient prefixes?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-04-07">2013-04-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/03/border-corner-shape-is-in-danger-and-you-can-help/ target="_blank">
+					<h2>border-corner-shape is in danger, and you can help!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-03-28">2013-03-28</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/03/preview-border-corner-shape-before-implementations/ target="_blank">
+					<h2>Preview corner-shape, before implementations!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-03-24">2013-03-24</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/03/easily-center-text-vertically-with-svg/ target="_blank">
+					<h2>Easily center text vertically, with SVG!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-03-24">2013-03-24</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/03/use-mathml-today-with-css-fallback/ target="_blank">
+					<h2>Use MathML today, with CSS fallback!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-03-21">2013-03-21</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/03/ios-6-switch-style-checkboxes-with-pure-css/ target="_blank">
+					<h2>iOS 6 switch style checkboxes with pure CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-03-15">2013-03-15</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2013/01/w3conf-in-san-francisco-february-21-22/ target="_blank">
+					<h2>W3Conf in San Francisco, February 21-22</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-01-30">2013-01-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/12/one-year-of-pastries/ target="_blank">
+					<h2>One year of pastries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-12-30">2012-12-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/12/animations-with-one-keyframe/ target="_blank">
+					<h2>CSS Animations with only one keyframe</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-12-12">2012-12-12</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/11/lots-of-improvements-coming-to-dabblet/ target="_blank">
+					<h2>Lots of improvements coming to dabblet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-11-07">2012-11-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/10/easy-color-contrast-ratios/ target="_blank">
+					<h2>Easy color contrast ratios</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-10-14">2012-10-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/09/dive-deep-into-css3-in-bologna-italy/ target="_blank">
+					<h2>Dive deep into CSS3 (and Bolognese!) in Bologna, Italy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-09-13">2012-09-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/08/lea-at-w3-org/ target="_blank">
+					<h2>lea＠w3․org</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-08-01">2012-08-01</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/07/introducing-prism-an-awesome-new-syntax-highlighter/ target="_blank">
+					<h2>Introducing Prism: An awesome new syntax highlighter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-07-31">2012-07-31</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/07/important-prefix-free-update/ target="_blank">
+					<h2>Important -prefix-free update</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-07-24">2012-07-24</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/06/so-youve-been-invited-to-speak/ target="_blank">
+					<h2>So, you’ve been invited to speak</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-06-25">2012-06-25</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/06/why-i-bought-a-high-end-macbook-air-instead-of-the-retina-mbp/ target="_blank">
+					<h2>Why I bought a high-end MacBook Air instead of the Retina MBP</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-06-17">2012-06-17</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/05/hacking-lookahead-to-mimic-intersection-subtraction-and-negation/ target="_blank">
+					<h2>Hacking lookahead to mimic intersection, subtraction and negation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-05-13">2012-05-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/05/teaching-general-case-first-or-special-cases-first/ target="_blank">
+					<h2>Teaching: General case first or special cases first?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-05-09">2012-05-09</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/05/is-animation-direction-a-good-idea/ target="_blank">
+					<h2>Poll: ¿Is animation-direction a good idea?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-05-06">2012-05-06</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/05/text-masking-the-standards-way/ target="_blank">
+					<h2>Text masking — The standards way</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-05-04">2012-05-04</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/05/how-i-got-into-web-development-the-long-version/ target="_blank">
+					<h2>How I got into web development — the long version</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-05-01">2012-05-01</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/04/background-attachment-local/ target="_blank">
+					<h2>Pure CSS scrolling shadows with background-attachment: local</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-04-26">2012-04-26</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/04/git-commit-m-everything/ target="_blank">
+					<h2>git commit -m &#34;EVERYTHING&#34;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-04-04">2012-04-04</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/04/in-defense-of-reinventing-wheels/ target="_blank">
+					<h2>In defense of reinventing wheels</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-04-03">2012-04-03</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/02/flexible-multiline-definition-lists-with-2-lines-of-css/ target="_blank">
+					<h2>Flexible multiline definition lists with 2 lines of CSS 2.1</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-02-24">2012-02-24</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/02/a-list-apart-article-every-time-you-call-a-proprietary-feature-css3-a-kitten-dies/ target="_blank">
+					<h2>A List Apart article: Every time you call a proprietary feature &#34;CSS3&#34;, a kitten dies</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-02-14">2012-02-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/02/vendor-prefixes-the-css-wg-and-me/ target="_blank">
+					<h2>Vendor prefixes, the CSS WG and me</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-02-09">2012-02-09</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/02/moving-an-element-along-a-circle/ target="_blank">
+					<h2>Moving an element along a circle</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-02-08">2012-02-08</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/02/simpler-css-typing-animation-with-the-ch-unit/ target="_blank">
+					<h2>Simpler CSS typing animation, with the ch unit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-02-05">2012-02-05</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/02/exactly-how-much-css3-does-your-browser-support/ target="_blank">
+					<h2>Exactly how much CSS3 does your browser support?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-02-02">2012-02-02</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/01/why-tabs-are-clearly-superior/ target="_blank">
+					<h2>Why tabs are clearly superior</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-01-17">2012-01-17</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/01/my-new-years-resolution/ target="_blank">
+					<h2>My new year’s resolution</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-01-13">2012-01-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/01/what-we-still-can%E2%80%99t-do-client-side/ target="_blank">
+					<h2>What we still can’t do client-side</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-01-09">2012-01-09</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2012/01/dabblet-blog/ target="_blank">
+					<h2>Dabblet blog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-01-05">2012-01-05</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/12/on-web-apps-and-their-keyboard-shortcuts/ target="_blank">
+					<h2>On web apps and their keyboard shortcuts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-12-17">2011-12-17</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/12/introducing-dabblet-an-interactive-css-playground/ target="_blank">
+					<h2>Introducing dabblet: An interactive CSS playground</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-12-15">2011-12-15</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/11/vendor-prefixes-have-failed-whats-next/ target="_blank">
+					<h2>Vendor prefixes have failed, what’s next?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-11-18">2011-11-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/10/animatable-a-css-transitions-gallery/ target="_blank">
+					<h2>Animatable: A CSS transitions gallery</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-10-30">2011-10-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/10/my-experience-from-fronteers-jsconf-eu-frontend-and-fromthefront/ target="_blank">
+					<h2>My experience from Fronteers, JSConf EU, Frontend and FromTheFront</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-10-21">2011-10-21</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/10/optimizing-long-lists-of-yesno-values-with-javascript/ target="_blank">
+					<h2>Optimizing long lists of yes/no values with JavaScript</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-10-19">2011-10-19</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/10/easily-keep-gh-pages-in-sync-with-master/ target="_blank">
+					<h2>Easily keep gh-pages in sync with master</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-10-13">2011-10-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/10/prefixfree-break-free-from-css-prefix-hell/ target="_blank">
+					<h2>PrefixFree: Break free from CSS prefix hell!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-10-12">2011-10-12</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/09/my-experience-from-frontendconf-zurich/ target="_blank">
+					<h2>My experience from Frontendconf Zurich</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-09-20">2011-09-20</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/09/major-update-to-chainvas-modularity-a-client-side-build-script-more/ target="_blank">
+					<h2>Major update to Chainvas: modularity, a client side build script &amp; more</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-09-18">2011-09-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/09/a-better-tool-for-cubic-bezier-easing/ target="_blank">
+					<h2>A better tool for cubic-bezier() easing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-09-14">2011-09-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/09/chainvas-make-apis-chainable-enhance-the-canvas-api/ target="_blank">
+					<h2>Chainvas: Make APIs chainable, enhance the canvas API</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-09-11">2011-09-11</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/09/help-the-community-report-browser-bugs/ target="_blank">
+					<h2>Help the community: report browser bugs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-09-07">2011-09-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/09/pure-css3-typing-animation-with-steps/ target="_blank">
+					<h2>Pure CSS3 typing animation with steps()</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-09-05">2011-09-05</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/09/css-coloratum-convert-and-share-css-colors/ target="_blank">
+					<h2>CSS.coloratum: Convert and share CSS colors</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-09-02">2011-09-02</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/08/on-url-readability/ target="_blank">
+					<h2>On URL readability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-30">2011-08-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/08/to-write-good-code-you-sometimes-have-to-write-bad-code/ target="_blank">
+					<h2>To write good code, you sometimes have to write bad code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-20">2011-08-20</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/08/accessible-star-rating-widget-with-pure-css/ target="_blank">
+					<h2>Accessible star rating widget with pure CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-18">2011-08-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/08/why-i-love-our-industry/ target="_blank">
+					<h2>Why I love our industry</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-17">2011-08-17</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/08/better-css3-ticket-like-tags/ target="_blank">
+					<h2>Better “CSS3 ticket-like tags”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-15">2011-08-15</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/08/tweeplus-longer-tweets-no-strings-attached/ target="_blank">
+					<h2>twee&#43;: Longer tweets, no strings attached</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-14">2011-08-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/08/css-gradients-are-much-faster-than-svg/ target="_blank">
+					<h2>CSS gradients are faster than SVG backgrounds</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-12">2011-08-12</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/08/css3-for-developers-my-fronteers-2011-workshop/ target="_blank">
+					<h2>CSS3 for developers: My Fronteers 2011 workshop</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-06">2011-08-06</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/08/my-experience-from-the-css-summit-2011/ target="_blank">
+					<h2>My experience from the CSS Summit 2011</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-02">2011-08-02</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/07/vote-for-me-in-the-net-awards-2011/ target="_blank">
+					<h2>Vote for me in The .net awards 2011!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-07-25">2011-07-25</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/07/detecting-css-selectors-support-my-jsconf-eu-talk/ target="_blank">
+					<h2>Detecting CSS selectors support &#43; my JSConf EU talk</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-07-21">2011-07-21</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/07/a-polyfill-for-html5-progress-element-the-obsessive-perfectionist-way/ target="_blank">
+					<h2>A polyfill for HTML5 progress element, the obsessive perfectionist way</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-07-02">2011-07-02</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/06/css-reflections-for-firefox-with-moz-element-and-svg-masks/ target="_blank">
+					<h2>CSS reflections for Firefox, with -moz-element() and SVG masks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-06-29">2011-06-29</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/06/pure-css-tic-tac-toe/ target="_blank">
+					<h2>Pure CSS Tic Tac Toe</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-06-17">2011-06-17</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/06/jquery-pure/ target="_blank">
+					<h2>jQuery Pure: Call for contributors</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-06-09">2011-06-09</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/06/my-experience-from-web-directions-media-standards-next/ target="_blank">
+					<h2>My experience from Web Directions @media &amp; Standards.next</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-06-01">2011-06-01</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/05/get-your-hash-the-bulletproof-way/ target="_blank">
+					<h2>Get your hash — the bulletproof way</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-05-23">2011-05-23</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/05/my-experience-from-geek-meet/ target="_blank">
+					<h2>My experience from Geek Meet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-05-13">2011-05-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/05/change-url-hash-without-page-jump/ target="_blank">
+					<h2>Change URL hash without page jump</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-05-13">2011-05-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/05/strongly-typed-javascript/ target="_blank">
+					<h2>StronglyTyped: A library for strongly typed properties &amp; constants in JavaScript</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-05-05">2011-05-05</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/05/rule-filtering-based-on-specific-selectors-support/ target="_blank">
+					<h2>Rule filtering based on specific selector(s) support</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-05-02">2011-05-02</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/04/css3-patterns-gallery-and-a-new-pattern/ target="_blank">
+					<h2>CSS3 patterns gallery and a new pattern</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-04-15">2011-04-15</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/04/invert-a-whole-webpage-with-css-only/ target="_blank">
+					<h2>Invert a whole webpage with CSS only</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-04-14">2011-04-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/03/create-complex-regexps-more-easily/ target="_blank">
+					<h2>Create complex RegExps more easily</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-03-28">2011-03-28</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/03/convert-standard-gradient-syntax-to-webkit-gradient-and-others/ target="_blank">
+					<h2>Convert standard gradient syntax to -webkit-gradient and others</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-03-26">2011-03-26</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/03/beveled-corners-negative-border-radius-with-css3-gradients/ target="_blank">
+					<h2>Beveled corners &amp; negative border-radius with CSS3 gradients</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-03-14">2011-03-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/03/on-css-preprocessors/ target="_blank">
+					<h2>On CSS preprocessors</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-03-09">2011-03-09</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/03/wd-media-talk-subject-change/ target="_blank">
+					<h2>WD @media talk subject change</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-03-08">2011-03-08</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/03/custom-select-drop-downs-with-css3/ target="_blank">
+					<h2>Custom &lt;select&gt; drop downs with CSS3</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-03-04">2011-03-04</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/02/checkerboard-pattern-with-css3/ target="_blank">
+					<h2>Checkerboard pattern with CSS3</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-02-16">2011-02-16</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/02/incrementable-length-values-in-text-fields/ target="_blank">
+					<h2>Incrementable length values in text fields</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-02-14">2011-02-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/02/convert-php-serialized-data-to-unicode/ target="_blank">
+					<h2>Convert PHP serialized data to Unicode</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-02-13">2011-02-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/01/styling-children-based-on-their-number-with-css3/ target="_blank">
+					<h2>Styling elements based on sibling count</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-01-17">2011-01-17</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/01/yet-another-redesign/ target="_blank">
+					<h2>Yet another redesign</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-01-05">2011-01-05</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2011/01/im-speaking-at-atmedia-web-directions-11/ target="_blank">
+					<h2>I&#39;m speaking at @media Web Directions ’11!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-01-05">2011-01-05</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/12/checkered-stripes-other-background-patterns-with-css3-gradients/ target="_blank">
+					<h2>Checkerboard, striped &amp; other background patterns with CSS3 gradients</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-12-22">2010-12-22</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/12/rgba-php-v1-2-improved-url-syntax-now-at-github/ target="_blank">
+					<h2>rgba.php v1.2: Improved URL syntax, now at Github</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-12-08">2010-12-08</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/11/tag-editing-uis/ target="_blank">
+					<h2>Tag editing UIs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-11-14">2010-11-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/10/the-curious-case-of-border-radius50/ target="_blank">
+					<h2>The curious case of border-radius:50%</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-10-30">2010-10-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/10/my-ft2010-slides-and-csss-my-presentation-framework/ target="_blank">
+					<h2>My FT2010 slides and CSSS: My presentation framework</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-10-29">2010-10-29</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/09/on-attr-and-calc/ target="_blank">
+					<h2>On attr() and calc()</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-09-11">2010-09-11</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/08/automatic-login-via-notification-emails/ target="_blank">
+					<h2>Automatic login via notification emails?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-08-14">2010-08-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/08/lea-verou-at-front-trends-2010/ target="_blank">
+					<h2>Lea Verou @ Front-Trends 2010</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-08-03">2010-08-03</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/07/organizing-a-university-course-on-modern-web-development/ target="_blank">
+					<h2>Organizing a university course on modern Web development</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-07-26">2010-07-26</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/05/wow-mona-lisa-with-pure-css/ target="_blank">
+					<h2>&#34;Wow, Mona Lisa with pure CSS!&#34;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-05-25">2010-05-25</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/04/on-css-counters-plus-a-css3-reversi-ui/ target="_blank">
+					<h2>On CSS counters plus a CSS3 Reversi UI</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-04-01">2010-04-01</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/03/mysql-are-you-actually-utilizing-your-indexes/ target="_blank">
+					<h2>MySQL: Are you actually utilizing your indexes?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-03-25">2010-03-25</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/03/css3-structural-pseudo-class-selector-tester/ target="_blank">
+					<h2>CSS3 structural pseudo-class selector tester</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-03-14">2010-03-14</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/02/cssninjas-custom-forms-revisited-to-work-with-css-sprites/ target="_blank">
+					<h2>CSSNinja&#39;s custom forms revisited to work with CSS sprites</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-02-19">2010-02-19</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/02/iphone-keyboard-with-css3-no-images/ target="_blank">
+					<h2>iPhone keyboard with CSS3 -- no images</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-02-18">2010-02-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2010/02/redesign/ target="_blank">
+					<h2>Redesign</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-02-13">2010-02-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/12/quickly-find-the-gravatar-that-corresponds-to-a-given-email/ target="_blank">
+					<h2>Quickly find the Gravatar that cor­res­ponds to a given email</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-12-07">2009-12-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/12/reading-cookies-the-regular-expression-way/ target="_blank">
+					<h2>Reading cookies the regular expression way</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-12-03">2009-12-03</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/11/yet-another-email-hiding-technique/ target="_blank">
+					<h2>Yet another email hiding technique?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-11-29">2009-11-29</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/11/exploring-browser-supported-unicode-characters-and-a-tweet-shortening-experiment/ target="_blank">
+					<h2>Exploring browser-supported Unicode characters and a tweet shortening experiment</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-11-29">2009-11-29</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/11/a-different-approach-to-elastic-textareas/ target="_blank">
+					<h2>A different approach to elastic textareas</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-11-13">2009-11-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/10/new-version-of-rgba-php-is-out/ target="_blank">
+					<h2>New version of rgba.php is out!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-10-25">2009-10-25</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/10/a-css3-learning-tool/ target="_blank">
+					<h2>A CSS3 learning(?) tool</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-10-08">2009-10-08</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/09/css-text-shadow/ target="_blank">
+					<h2>Exploring CSS3 text-shadow</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-09-13">2009-09-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/07/bytesize-matters/ target="_blank">
+					<h2>(byte)size matters</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-07-31">2009-07-31</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/07/idea-the-simplest-registration-form-ever/ target="_blank">
+					<h2>Idea: The simplest registration form ever</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-07-23">2009-07-23</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/07/bevels-in-css3/ target="_blank">
+					<h2>Bevels in CSS3</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-07-23">2009-07-23</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/06/on-password-masking-and-usability/ target="_blank">
+					<h2>On password masking and usability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-06-28">2009-06-28</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/06/tip-multi-step-form-handling/ target="_blank">
+					<h2>Tip: Multi-step form handling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-06-16">2009-06-16</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/05/9-reasons-why-i-prefer-mysql-to-ms-sql-server/ target="_blank">
+					<h2>9 reasons why I prefer MySQL to MS SQL Server</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-05-16">2009-05-16</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/04/cross-browser-imageless-linear-gradients-v2/ target="_blank">
+					<h2>Cross-browser imageless linear gradients v2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-04-24">2009-04-24</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/04/creating-the-perfect-slider/ target="_blank">
+					<h2>Creating the perfect slider</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-04-24">2009-04-24</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/04/java-pretty-dates/ target="_blank">
+					<h2>Java pretty dates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-04-21">2009-04-21</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/04/better-usability-in-5-minutes/ target="_blank">
+					<h2>Better usability in 5 minutes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-04-10">2009-04-10</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/04/help-me-take-the-color-survey/ target="_blank">
+					<h2>Help me: take the color survey</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-04-06">2009-04-06</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/03/advocacy-of-javascript/ target="_blank">
+					<h2>Advocacy of JavaScript</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-03-30">2009-03-30</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/03/extend-mathlog-to-allow-for-bases-e/ target="_blank">
+					<h2>Extend Math.log to allow for bases != e</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-03-26">2009-03-26</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/03/100-cyan-in-cmyk-is-not-rgb0255255/ target="_blank">
+					<h2>100% Cyan in CMYK is NOT rgb(0,255,255)!!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-03-23">2009-03-23</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/03/cross-browser-imageless-linear-gradients/ target="_blank">
+					<h2>Cross browser, imageless linear gradients</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-03-20">2009-03-20</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/03/mockup-viewer-bookmarklet/ target="_blank">
+					<h2>Mockup viewer bookmarklet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-03-18">2009-03-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/03/css3-colors-today-mediacampathens-session/ target="_blank">
+					<h2>CSS3 colors, today (MediaCampAthens session)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-03-15">2009-03-15</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/03/cmyk-colors-in-css-useful-or-useless/ target="_blank">
+					<h2>CMYK colors in CSS: Useful or useless?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-03-09">2009-03-09</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/03/regarding-native-single-input-multiple-file-uploads/ target="_blank">
+					<h2>On native, single-input, multiple file uploads</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-03-07">2009-03-07</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/03/check-whether-the-browser-supports-rgba-and-other-css3-values/ target="_blank">
+					<h2>Check whether the browser supports RGBA (and other CSS3 values)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-03-01">2009-03-01</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/appearances-can-be-deceiving-mr-anderson-aka-short-code-is-not-always-fast-code/ target="_blank">
+					<h2>&#34;Appearances can be deceiving Mr. Anderson&#34; - a.k.a. short code is not always fast code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-25">2009-02-25</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/quick-dirty-way-to-run-snippets-of-javascript-anywhere/ target="_blank">
+					<h2>Quick &amp; dirty way to run snippets of JavaScript anywhere</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-23">2009-02-23</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/20things-you-should-know-when-not-using-a-js-library/ target="_blank">
+					<h2>20 things you should know when not using a JS library</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-22">2009-02-22</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/silent-automatic-updates-are-the-way-to-go/ target="_blank">
+					<h2>Silent, automatic updates are the way to go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-18">2009-02-18</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/bulletproof-cross-browser-rgba-backgrounds/ target="_blank">
+					<h2>Bulletproof, cross-browser RGBA backgrounds, today</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-15">2009-02-15</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/find-the-vendor-prefix-of-the-current-browser/ target="_blank">
+					<h2>Find the vendor prefix of the current browser</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-13">2009-02-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/css3-border-radius-today/ target="_blank">
+					<h2>CSS3 border-radius, today</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-13">2009-02-13</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/extend-mathround-mathceil-and-mathfloor-to-allow-precision/ target="_blank">
+					<h2>Extend Math.round, Math.ceil and Math.floor to allow for precision</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-12">2009-02-12</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/js-library-detector/ target="_blank">
+					<h2>JS library detector</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-11">2009-02-11</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/2009/02/check-if-a-css-property-is-supported/ target="_blank">
+					<h2>Check whether a CSS property is supported</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-02-10">2009-02-10</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://lea.verou.me/" target="_blank">Lea Verou’s blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="XzoarO40sotPbIT52nFuiOfRye_zEyorT8Yf_gfLzao-qyoxvM8TPgi-mI0s6mqSJ8sCJQuD5uipBXp0xUnPDvLo4dHo2RKP4UlAm5q5Yw_fHCZixSsjS0jll5iYeRNqU6Ka70L6jHZWgyIqekSVcOJyqickfdKfWhL-YgcNPmQId9CNGfZ-0guDHIGWt7BbiSMt7Sdv84fYN5fTNmmOFqa7YbkjjTFlu-qt3aWQlWbuxJtU4ApxvwXUMZtDhRWnKtTAK9_7NCy7WxZVyTn3jupPwDr6QTqdikZZCYoggFmQf1cKS24yiS_YrLJ7HGfjzvVh0EViM73d1SwlE6P6eg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

@@ -1,0 +1,21 @@
+{
+    "version": "https://jsonfeed.org/version/1.1",
+    "title": "Feed",
+    "home_page_url": "https://example.com",
+    "items": [
+        {
+            "id": "https://example.com/older",
+            "url": "https://example.com/older",
+            "title": "Older",
+            "date_published": "2026-01-01T00:00:00Z",
+            "date_modified": "2026-01-01T00:00:00Z"
+        },
+        {
+            "id": "https://example.com/newer",
+            "url": "https://example.com/newer",
+            "title": "Newer",
+            "date_published": "2026-01-02T00:00:00Z",
+            "date_modified": "2026-01-02T00:00:00Z"
+        }
+    ]
+}

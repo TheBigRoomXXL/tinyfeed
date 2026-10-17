@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-um6BAwnmSMi9Ma3mijSz76Yf8knxqyZTMsGyByfl6LNo4O1-XUHaKgIhYQl9zc1wV7dnuaLva12eNEfQShJW8JJBf8FdJa_c7lNIVgMRtQx5boxpBeaaJ33-LYdJVGAvSpD7WbPloNHSrlucblQkmQIkNdj0zWYKh0M2gWnvt_ba8562II1L3l9_s2GA2SALCR8gIIaHTfYUgLpk43jblI9aSIPS97qI-F8Mc76STcib77TTwMpowDLjqSJhDGvnYL_pVo-J8d3Z-m2Fzs111lUBdpuWOSWw1SKQhEoOcUtjjuF57nvIohcycssGEimd8ntIkFRDpSn1bs_A5A1BAg==' ;
+		script-src 'nonce-um6BAwnmSMi9Ma3mijSz76Yf8knxqyZTMsGyByfl6LNo4O1-XUHaKgIhYQl9zc1wV7dnuaLva12eNEfQShJW8JJBf8FdJa_c7lNIVgMRtQx5boxpBeaaJ33-LYdJVGAvSpD7WbPloNHSrlucblQkmQIkNdj0zWYKh0M2gWnvt_ba8562II1L3l9_s2GA2SALCR8gIIaHTfYUgLpk43jblI9aSIPS97qI-F8Mc76STcib77TTwMpowDLjqSJhDGvnYL_pVo-J8d3Z-m2Fzs111lUBdpuWOSWw1SKQhEoOcUtjjuF57nvIohcycssGEimd8ntIkFRDpSn1bs_A5A1BAg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="um6BAwnmSMi9Ma3mijSz76Yf8knxqyZTMsGyByfl6LNo4O1-XUHaKgIhYQl9zc1wV7dnuaLva12eNEfQShJW8JJBf8FdJa_c7lNIVgMRtQx5boxpBeaaJ33-LYdJVGAvSpD7WbPloNHSrlucblQkmQIkNdj0zWYKh0M2gWnvt_ba8562II1L3l9_s2GA2SALCR8gIIaHTfYUgLpk43jblI9aSIPS97qI-F8Mc76STcib77TTwMpowDLjqSJhDGvnYL_pVo-J8d3Z-m2Fzs111lUBdpuWOSWw1SKQhEoOcUtjjuF57nvIohcycssGEimd8ntIkFRDpSn1bs_A5A1BAg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://petemillspaugh.com/41-states target="_blank">
+					<h2>I’ve been to 41 US states</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-03">2026-10-03</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/40-states target="_blank">
+					<h2>I’ve been to 40 US states</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-26">2026-09-26</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/your-corner-of-the-internet target="_blank">
+					<h2>Your corner of the internet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-17">2026-09-17</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/mondays-like-fridays target="_blank">
+					<h2>Enjoying Mondays as much as Fridays</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/run-write target="_blank">
+					<h2>Run, write</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/searches target="_blank">
+					<h2>Searches by Vauhini Vara</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-31">2026-08-31</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/bird-by-bird target="_blank">
+					<h2>Bird by Bird, by Anne Lamott</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-29">2026-08-29</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/june-2026 target="_blank">
+					<h2>June 2026</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-01">2026-07-01</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/abottom target="_blank">
+					<h2>abottom</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-26">2026-05-26</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/dickens-was-a-blogger target="_blank">
+					<h2>Dickens was a blogger</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-21">2026-05-21</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/april-2026 target="_blank">
+					<h2>April 2026</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-01">2026-05-01</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/epistemic%20vigilance target="_blank">
+					<h2>Epistemic vigilance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-24">2026-04-24</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/draft-no-4 target="_blank">
+					<h2>Draft No. 4 by John McPhee</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-12">2026-04-12</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/evicted target="_blank">
+					<h2>Evicted by Matthew Desmond</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-05">2026-04-05</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/editorial-rigor target="_blank">
+					<h2>Editorial rigor</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-21">2026-02-21</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/take-it-from-me target="_blank">
+					<h2>Take It From Me by Alia Hanna Habib</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-21">2026-02-21</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/the-design-of-books target="_blank">
+					<h2>The Design of Books by Debbie Berne</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-21">2026-02-21</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/unhurried-ambition target="_blank">
+					<h2>Unhurried ambition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-21">2026-02-21</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/careless-people target="_blank">
+					<h2>Careless People by Sarah Wynn-Williams</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-06">2026-02-06</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/a-gentleman-in-moscow target="_blank">
+					<h2>A Gentleman in Moscow by Amor Towles</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-01">2026-02-01</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/writing-for-developers target="_blank">
+					<h2>Writing for Developers by Cynthia Dunlop and Piotr Sarna</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-02">2026-01-02</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/december-2025 target="_blank">
+					<h2>December 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-31">2025-12-31</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/leaving-twitter target="_blank">
+					<h2>Leaving Twitter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-31">2025-12-31</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/write-your-book-like-youd-run-a-startup target="_blank">
+					<h2>Write your book like you’d run a startup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-29">2025-12-29</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/the-couch-problem target="_blank">
+					<h2>The couch problem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-28">2025-12-28</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/bibliotech target="_blank">
+					<h2>Bibliotech by John Palfrey</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-27">2025-12-27</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/eating-marshmallows target="_blank">
+					<h2>Eating marshmallows</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-22">2025-12-22</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/the-world-beyond-your-head target="_blank">
+					<h2>The World Beyond Your Head by Matthew B. Crawford</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-22">2025-12-22</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/library-holds target="_blank">
+					<h2>Public library holds as your want-to-read book list</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-02">2025-12-02</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/interpreting-crafting-crafting-interpreters target="_blank">
+					<h2>Interpreting Crafting Crafting Interpreters</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-14">2025-11-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/programmer-writer target="_blank">
+					<h2>Programmer-writer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-14">2025-11-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/art-work target="_blank">
+					<h2>Art Work by Sally Mann</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-30">2025-10-30</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/this-is-for-everyone target="_blank">
+					<h2>This Is for Everyone by Tim Berners-Lee</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-28">2025-10-28</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/39-states target="_blank">
+					<h2>I’ve been to 39 US states</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-20">2025-10-20</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/september-2025 target="_blank">
+					<h2>September 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-03">2025-10-03</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/domains-for-startups target="_blank">
+					<h2>How to find a domain for your startup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-30">2025-09-30</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/weaving-the-web target="_blank">
+					<h2>Weaving the Web by Tim Berners-Lee</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-05">2025-09-05</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/august-2025 target="_blank">
+					<h2>August 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-03">2025-09-03</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/the-millspaugh-method target="_blank">
+					<h2>On the McPhee method</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-02">2025-09-02</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/on-writing-stephen-king target="_blank">
+					<h2>On Writing by Stephen King</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-26">2025-07-26</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/july-2025 target="_blank">
+					<h2>July 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-15">2025-07-15</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/the-creative-act target="_blank">
+					<h2>The Creative Act by Rick Rubin</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-12">2025-07-12</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/record-broken target="_blank">
+					<h2>Record broken; Broken record</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-04">2025-06-04</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/kitchen-confidential target="_blank">
+					<h2>Kitchen Confidential by Anthony Bourdain</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-21">2025-05-21</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/flying-pig-2025 target="_blank">
+					<h2>The Flying Pig Marathon 2025: race notes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-04">2025-05-04</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/words target="_blank">
+					<h2>Words &amp; shwords</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-01">2025-05-01</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/38-states target="_blank">
+					<h2>I’ve been to 38 US states</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-14">2025-04-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/your-mileage-may-vary target="_blank">
+					<h2>Your mileage may vary: Training for a marathon on a vegan diet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-11">2025-04-11</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/the-business-of-being-a-writer target="_blank">
+					<h2>The Business of Being a Writer by Jane Friedman</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-10">2025-04-10</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/on-dfw target="_blank">
+					<h2>On David Foster Wallace</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-08">2025-04-08</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/trading-ambition-for-presence target="_blank">
+					<h2>Trading ambition for presence</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-02">2025-04-02</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/dont-sweat-the-small-stuff target="_blank">
+					<h2>Don’t Sweat the Small Stuff by Richard Carlson</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-30">2025-03-30</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/vegan-dissonance target="_blank">
+					<h2>Vegan dissonance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-24">2025-03-24</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/number-two-unplugged target="_blank">
+					<h2>Number two, unplugged</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-13">2025-03-13</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/orderly-maximalist-design target="_blank">
+					<h2>Orderly maximalist design</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-10">2025-03-10</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/present-you target="_blank">
+					<h2>Present you</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-10">2025-03-10</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/yang-math target="_blank">
+					<h2>Yang MATH is good but impossible</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-10">2025-03-10</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/on-writing target="_blank">
+					<h2>On writing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-07">2025-03-07</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/born-to-run target="_blank">
+					<h2>Born to Run by Christopher McDougall</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-06">2025-03-06</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/breath target="_blank">
+					<h2>Breath by James Nestor</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-06">2025-03-06</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/eat-and-run target="_blank">
+					<h2>Eat &amp; Run by Scott Jurek</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-06">2025-03-06</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/north target="_blank">
+					<h2>North by Scott Jurek</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-06">2025-03-06</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/the-artists-way target="_blank">
+					<h2>The Artist’s Way by Julia Cameron</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-06">2025-03-06</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/where-youll-find-me target="_blank">
+					<h2>Where You’ll Find Me by Ty Gagne</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-06">2025-03-06</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/when-youre-already-in-a-bad-mood target="_blank">
+					<h2>When you’re already in a bad mood</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-28">2025-02-28</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/reading-begets-reading target="_blank">
+					<h2>Reading begets reading</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-27">2025-02-27</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/on-weather target="_blank">
+					<h2>On weather</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-26">2025-02-26</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/reading-like-running target="_blank">
+					<h2>Reading, like running</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-26">2025-02-26</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/vscode-fold-all target="_blank">
+					<h2>Folding code blocks in VS Code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-21">2025-02-21</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/the-nature-of-the-job target="_blank">
+					<h2>The nature of the job</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-20">2025-02-20</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/css-user-select target="_blank">
+					<h2>CSS user-select</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-19">2025-02-19</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/css-ampersand-selector target="_blank">
+					<h2>CSS ampersand selector</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-18">2025-02-18</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/writing-tils target="_blank">
+					<h2>Writing TILs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-14">2025-02-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/globalthis target="_blank">
+					<h2>this, self, window, global, globalThis, etc.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-14">2025-02-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/blob-api target="_blank">
+					<h2>Blob API</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-13">2025-02-13</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/css-cascade-layers target="_blank">
+					<h2>CSS cascade layers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-11">2025-02-11</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/css-revert-layer target="_blank">
+					<h2>CSS revert-layer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-11">2025-02-11</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/how-not-to-die target="_blank">
+					<h2>How Not to Die by Michael Greger</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-08">2025-02-08</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/javascript-engines-and-runtimes target="_blank">
+					<h2>What should I know about JavaScript engines and runtimes?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-25">2025-01-25</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/mandelbrot target="_blank">
+					<h2>Mandlebrot set</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-14">2024-12-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/dot-com target="_blank">
+					<h2>dot com et al</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-13">2024-12-13</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/rust-raw-strings target="_blank">
+					<h2>Raw strings in Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-12">2024-12-12</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/lowercase target="_blank">
+					<h2>lowercase</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-11">2024-11-11</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/size-and-speed target="_blank">
+					<h2>Building an intuition for file size and network speed</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-03">2024-11-03</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/37-states target="_blank">
+					<h2>I’ve been to 37 US states</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-18">2024-10-18</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/serious-tlds target="_blank">
+					<h2>Serious TLDs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-09">2024-10-09</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/opfs target="_blank">
+					<h2>Origin private file system (OPFS)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-07">2024-09-07</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/debugger target="_blank">
+					<h2>debugger</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-29">2024-08-29</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/malleable-garden target="_blank">
+					<h2>A malleable garden</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-13">2024-07-13</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/cron-irregularity target="_blank">
+					<h2>cron irregularity</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-01">2024-07-01</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/june-2024 target="_blank">
+					<h2>June 2024</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-30">2024-06-30</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/should-i-learn-computer-science target="_blank">
+					<h2>Should I learn Computer Science?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-11">2024-05-11</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/a-small-matter-of-programming target="_blank">
+					<h2>A Small Matter of Programming by Bonnie Nardi</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-08">2024-05-08</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/hello-rust target="_blank">
+					<h2>Hello, Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-24">2024-04-24</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/membrane-webmentions target="_blank">
+					<h2>Listening for webmentions with Membrane</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-03">2024-04-03</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/membrane-feedback-form target="_blank">
+					<h2>Writing a feedback form with Membrane</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-31">2024-03-31</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/browsertech-nyc-2024-3-7 target="_blank">
+					<h2>Browsertech NYC meetup - March 2024</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-07">2024-03-07</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/javascript-labeled-statement target="_blank">
+					<h2>JavaScript labeled statement</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-27">2024-02-27</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/foc-book-club target="_blank">
+					<h2>Starting a Future of Coding book club</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-11">2024-02-11</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/interaction-to-next-paint target="_blank">
+					<h2>Interaction to Next Paint (INP)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-10">2024-02-10</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/january-2024 target="_blank">
+					<h2>January 2024</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-31">2024-01-31</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/hackers-and-painters target="_blank">
+					<h2>Hackers &amp; Painters by Paul Graham</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-31">2024-01-31</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/newsletters target="_blank">
+					<h2>Newsletters</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-31">2024-01-31</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/pid-controllers target="_blank">
+					<h2>Proportional-integral-derivative (PID) controllers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-27">2024-01-27</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/what-do-you-do target="_blank">
+					<h2>What do you do?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-24">2024-01-24</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/blogrolls target="_blank">
+					<h2>Blogrolls</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-23">2024-01-23</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/email-course-creator target="_blank">
+					<h2>Building an email-based course creator with Val Town</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-22">2024-01-22</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/ram-is-like-battleship target="_blank">
+					<h2>RAM is like Battleship</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-18">2024-01-18</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/browser-terminal target="_blank">
+					<h2>How would you build a terminal in the browser?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-17">2024-01-17</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/anki target="_blank">
+					<h2>Choosing to remember with Anki</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-07">2024-01-07</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/think-small target="_blank">
+					<h2>Think small</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-23">2023-12-23</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/slippery-scope target="_blank">
+					<h2>Slippery scope</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-23">2023-12-23</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/weeks-of-your-life target="_blank">
+					<h2>Weeks of your life</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-23">2023-12-23</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/css-ch-unit target="_blank">
+					<h2>CSS ch unit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-23">2023-12-23</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/html-contenteditable target="_blank">
+					<h2>HTML contenteditable</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-23">2023-12-23</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/the-art-of-doing-science-and-engineering target="_blank">
+					<h2>The Art of Doing Science and Engineering by Richard Hamming</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-12">2023-12-12</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/cultivating-emails target="_blank">
+					<h2>Cultivating email with Val Town</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-18">2023-11-18</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/cloudflare-email-routing target="_blank">
+					<h2>Cloudflare email routing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-17">2023-11-17</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/val-town-button target="_blank">
+					<h2>The Val Town Button</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-14">2023-11-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/css-overscroll-behavior target="_blank">
+					<h2>CSS overscroll-behavior</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-05">2023-11-05</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/my-next-next-next-job target="_blank">
+					<h2>My next, next, next job</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-31">2023-10-31</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/nextjs-search-with-pagefind target="_blank">
+					<h2>Add search to your Next.js static site with Pagefind</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-25">2023-10-25</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/css-text-wrap target="_blank">
+					<h2>CSS text-wrap</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-24">2023-10-24</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/how-does-search-work-exactly target="_blank">
+					<h2>How does search work, exactly?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-21">2023-10-21</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/html-strikethrough target="_blank">
+					<h2>HTML strikethrough, del, ins</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-09">2023-10-09</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/mac-shortcut-special-chars target="_blank">
+					<h2>Mac keyboard shortcut for special characters</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-08">2023-10-08</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/url-character-limit target="_blank">
+					<h2>URL character limit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-06">2023-10-06</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/silly-tlds target="_blank">
+					<h2>Silly TLDs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-03">2023-10-03</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/css-unset target="_blank">
+					<h2>CSS unset</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-01">2023-10-01</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/canonical-link target="_blank">
+					<h2>HTML canonical link</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-12">2023-09-12</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/nextjs-automatic-webp target="_blank">
+					<h2>Next.js automatically converts PNGs to WebP</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-11">2023-09-11</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/edison-bulb target="_blank">
+					<h2>Edison bulb night mode</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-12">2023-08-12</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/map-in-the-woods target="_blank">
+					<h2>Downloading a 30MB map in the woods</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-26">2023-06-26</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/only-the-platform target="_blank">
+					<h2>Only the platform</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-25">2023-05-25</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://petemillspaugh.com" target="_blank">Pete Millspaugh</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="um6BAwnmSMi9Ma3mijSz76Yf8knxqyZTMsGyByfl6LNo4O1-XUHaKgIhYQl9zc1wV7dnuaLva12eNEfQShJW8JJBf8FdJa_c7lNIVgMRtQx5boxpBeaaJ33-LYdJVGAvSpD7WbPloNHSrlucblQkmQIkNdj0zWYKh0M2gWnvt_ba8562II1L3l9_s2GA2SALCR8gIIaHTfYUgLpk43jblI9aSIPS97qI-F8Mc76STcib77TTwMpowDLjqSJhDGvnYL_pVo-J8d3Z-m2Fzs111lUBdpuWOSWw1SKQhEoOcUtjjuF57nvIohcycssGEimd8ntIkFRDpSn1bs_A5A1BAg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

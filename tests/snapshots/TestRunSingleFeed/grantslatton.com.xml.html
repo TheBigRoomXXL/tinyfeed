@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-s-UjlKqZ0dS4ugryEuFMqYPHwSipM-OZRDONGtiVysGg940K2vAgzMMRxb9TvPhieJO5-ijmOefUG2xedG00O7XGb6ZV4PD8DAhes2xz7jGZb-YFDZCe07yMzL3_9rnO_ySK-2-2BraPtGGKsZI3VyeyOGO46oXGms0sRq7MgFmZ2d1WC6R_dRmjJbSDkKPhF_qaj941B-l5wkMUbUH2Xl_W3CoqhWDhu4xV7liL4NQEfwyvnl1X3S49rtw2ezxkq1Fgc4DHT6PbwAATy0mTfUUAOxMd18179pSsAtSV9cEKrjSzQAu7bZYChMf0DzHLJRKO4N4qVcKCQ1TAsICavQ==' ;
+		script-src 'nonce-s-UjlKqZ0dS4ugryEuFMqYPHwSipM-OZRDONGtiVysGg940K2vAgzMMRxb9TvPhieJO5-ijmOefUG2xedG00O7XGb6ZV4PD8DAhes2xz7jGZb-YFDZCe07yMzL3_9rnO_ySK-2-2BraPtGGKsZI3VyeyOGO46oXGms0sRq7MgFmZ2d1WC6R_dRmjJbSDkKPhF_qaj941B-l5wkMUbUH2Xl_W3CoqhWDhu4xV7liL4NQEfwyvnl1X3S49rtw2ezxkq1Fgc4DHT6PbwAATy0mTfUUAOxMd18179pSsAtSV9cEKrjSzQAu7bZYChMf0DzHLJRKO4N4qVcKCQ1TAsICavQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="s-UjlKqZ0dS4ugryEuFMqYPHwSipM-OZRDONGtiVysGg940K2vAgzMMRxb9TvPhieJO5-ijmOefUG2xedG00O7XGb6ZV4PD8DAhes2xz7jGZb-YFDZCe07yMzL3_9rnO_ySK-2-2BraPtGGKsZI3VyeyOGO46oXGms0sRq7MgFmZ2d1WC6R_dRmjJbSDkKPhF_qaj941B-l5wkMUbUH2Xl_W3CoqhWDhu4xV7liL4NQEfwyvnl1X3S49rtw2ezxkq1Fgc4DHT6PbwAATy0mTfUUAOxMd18179pSsAtSV9cEKrjSzQAu7bZYChMf0DzHLJRKO4N4qVcKCQ1TAsICavQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://grantslatton.com/solving-quoridor target="_blank">
+					<h2>Solving the board game Quoridor</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-25">2026-05-25</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/every-man-a-microservice target="_blank">
+					<h2>Every Man a Microservice</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-08">2026-02-08</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/manufacturing-as-maintenance target="_blank">
+					<h2>Manufacturing as Maintenance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-31">2026-01-31</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/llm-memory target="_blank">
+					<h2>LLM Memory</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-19">2025-05-19</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/claude-code target="_blank">
+					<h2>Claude Code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-11">2025-05-11</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/solution-space-taste target="_blank">
+					<h2>Solution-space Taste</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-25">2025-04-25</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/sorting-algorithm-the-game target="_blank">
+					<h2>Sorting Algorithm: The Game</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-22">2025-04-22</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/typo-minimizing-keyboard target="_blank">
+					<h2>Typo Minimizing Keyboard</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-06">2025-04-06</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/the-curve-is-bending target="_blank">
+					<h2>The Curve is Bending</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-05">2025-04-05</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/graph-search-puzzle-game target="_blank">
+					<h2>Graph Search Algorithm: The Game</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-04">2025-04-04</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/rohit-chess target="_blank">
+					<h2>Rohit Chess</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-10">2025-03-10</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/ai-software-nonexistence target="_blank">
+					<h2>AI software I&#39;m surprised doesn&#39;t exist yet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-20">2025-02-20</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/technocapital target="_blank">
+					<h2>Technocapital</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-06">2025-02-06</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/how-to-design-document target="_blank">
+					<h2>Writing a good design document</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-01">2025-02-01</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/design-patterns target="_blank">
+					<h2>Design Patterns</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-04">2025-01-04</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/how-to-software target="_blank">
+					<h2>How to write complex software</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-01">2025-01-01</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/bureaulogy target="_blank">
+					<h2>Bureaulogy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-21">2024-12-21</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/peasants-plight target="_blank">
+					<h2>A peasant&#39;s plight</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-14">2024-11-14</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/personal-api target="_blank">
+					<h2>Every Man his own API</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-09">2024-11-09</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/culture-schelling target="_blank">
+					<h2>Culture is a set of social Schelling points</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-27">2024-10-27</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/portals target="_blank">
+					<h2>Portals are Undertheorized</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-19">2024-10-19</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/binary-iq target="_blank">
+					<h2>Binary IQ</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-13">2024-10-13</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/bug-proof-engines target="_blank">
+					<h2>Designing bug-proof engines</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-13">2024-10-13</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/accidental-urbanism target="_blank">
+					<h2>Accidental Urbanism</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-11">2024-10-11</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/town-bootstrapping target="_blank">
+					<h2>How to Bootstrap a Town</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-01">2024-10-01</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/sports-vs-games target="_blank">
+					<h2>Sports vs Games</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-26">2024-09-26</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/nobody-cares target="_blank">
+					<h2>Nobody Cares</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-25">2024-09-25</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/rowzero-property-testing target="_blank">
+					<h2>Lightweight property-based testing at Row Zero</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-04">2024-09-04</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/rust-macros target="_blank">
+					<h2>Rust Macros: Zero to Hero</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-01">2024-09-01</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/software-pathfinding target="_blank">
+					<h2>Algorithms we develop software by</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-17">2024-08-17</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/status-among-whom target="_blank">
+					<h2>Status among whom?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-15">2024-08-15</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/bjj-ghost-escape target="_blank">
+					<h2>Ghost Side Control Escape System (BJJ)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-15">2024-08-15</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/ai-auditability target="_blank">
+					<h2>AI follows auditability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-30">2024-07-30</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/onsen-unreality target="_blank">
+					<h2>Onsen Unreality</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-16">2024-07-16</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/road-widths target="_blank">
+					<h2>Road Width Extremism</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-09">2024-07-09</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/twitter target="_blank">
+					<h2>Twitter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-01">2024-07-01</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/shuttle target="_blank">
+					<h2>Shuttle</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-01">2024-07-01</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/quasirandom target="_blank">
+					<h2>Quasirandom sequences</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-01">2024-07-01</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://grantslatton.com/book-review-the-perfectionists target="_blank">
+					<h2>Book Review: &#39;The Perfectionists: How Precision Engineers Created the Modern World&#39;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-01">2024-07-01</time>
+					|
+					<a href="https://grantslatton.com" target="_blank">grantslatton.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://grantslatton.com/" target="_blank">Grant Slatton&#39;s Blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="s-UjlKqZ0dS4ugryEuFMqYPHwSipM-OZRDONGtiVysGg940K2vAgzMMRxb9TvPhieJO5-ijmOefUG2xedG00O7XGb6ZV4PD8DAhes2xz7jGZb-YFDZCe07yMzL3_9rnO_ySK-2-2BraPtGGKsZI3VyeyOGO46oXGms0sRq7MgFmZ2d1WC6R_dRmjJbSDkKPhF_qaj941B-l5wkMUbUH2Xl_W3CoqhWDhu4xV7liL4NQEfwyvnl1X3S49rtw2ezxkq1Fgc4DHT6PbwAATy0mTfUUAOxMd18179pSsAtSV9cEKrjSzQAu7bZYChMf0DzHLJRKO4N4qVcKCQ1TAsICavQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

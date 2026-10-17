@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-huRL54ODx6pq5OpA9hfHhLVVLA91u8g4Iw2MboB2GHoKc1NIChJB73PaufELuxE4i28bobiUyMZxhjLpCKPbPmtlGcUhakuPJ330m7lRWhe0HUvT5_QN5B5G-6T30U8PbXl33plxSLAjq5JOhlyKfSddI8kF7aO6bqnzaBA6fKoBpgOjY-uyNoEdJzvpcupuJf3mH02WDrDSShhhWw2Wo5laa6k2pKEd4dJ8Rm6dRO19RIno2EmFotdguMiBYH7mUOMIUTo-FPpT7CrkxELwad6r1EOG-zK6TSoiYXKegFh8niYVksYJdveJ76pmgFajjuga9jeEMQryPeY7chNqHw==' ;
+		script-src 'nonce-huRL54ODx6pq5OpA9hfHhLVVLA91u8g4Iw2MboB2GHoKc1NIChJB73PaufELuxE4i28bobiUyMZxhjLpCKPbPmtlGcUhakuPJ330m7lRWhe0HUvT5_QN5B5G-6T30U8PbXl33plxSLAjq5JOhlyKfSddI8kF7aO6bqnzaBA6fKoBpgOjY-uyNoEdJzvpcupuJf3mH02WDrDSShhhWw2Wo5laa6k2pKEd4dJ8Rm6dRO19RIno2EmFotdguMiBYH7mUOMIUTo-FPpT7CrkxELwad6r1EOG-zK6TSoiYXKegFh8niYVksYJdveJ76pmgFajjuga9jeEMQryPeY7chNqHw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="huRL54ODx6pq5OpA9hfHhLVVLA91u8g4Iw2MboB2GHoKc1NIChJB73PaufELuxE4i28bobiUyMZxhjLpCKPbPmtlGcUhakuPJ330m7lRWhe0HUvT5_QN5B5G-6T30U8PbXl33plxSLAjq5JOhlyKfSddI8kF7aO6bqnzaBA6fKoBpgOjY-uyNoEdJzvpcupuJf3mH02WDrDSShhhWw2Wo5laa6k2pKEd4dJ8Rm6dRO19RIno2EmFotdguMiBYH7mUOMIUTo-FPpT7CrkxELwad6r1EOG-zK6TSoiYXKegFh8niYVksYJdveJ76pmgFajjuga9jeEMQryPeY7chNqHw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://samcurry.net/hacking-clubwpt-gold target="_blank">
+					<h2>Hacking the World Poker Tour: Inside ClubWPT Gold’s Back Office</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-12">2025-10-12</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/hacking-subaru target="_blank">
+					<h2>Hacking Subaru: Tracking and Controlling Cars via the STARLINK Admin Panel</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-23">2025-01-23</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/hacking-kia target="_blank">
+					<h2>Hacking Kia: Remotely Controlling Cars With Just a License Plate</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-20">2024-09-20</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/hacking-millions-of-modems target="_blank">
+					<h2>Hacking Millions of Modems (and Investigating Who Hacked My Modem)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-03">2024-06-03</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/points-com target="_blank">
+					<h2>Leaked Secrets and Unlimited Miles: Hacking the Largest Airline and Hotel Rewards Platform</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-03">2023-08-03</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/web-hackers-vs-the-auto-industry target="_blank">
+					<h2>Web Hackers vs. The Auto Industry: Critical Vulnerabilities in Ferrari, BMW, Rolls Royce, Porsche, and More</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-03">2023-01-03</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/universal-xss-on-netlifys-next-js-library target="_blank">
+					<h2>Exploiting Web3&#39;s Hidden Attack Surface: Universal XSS on Netlify&#39;s Next.js Library</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-21">2022-09-21</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/hacking-chesscom target="_blank">
+					<h2>Hacking Chess.com and Accessing 50 Million Customer Records</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-16">2020-12-16</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/hacking-apple target="_blank">
+					<h2>We Hacked Apple for 3 Months: Here’s What We Found</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-07">2020-10-07</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/hacking-starbucks target="_blank">
+					<h2>Hacking Starbucks and Accessing Nearly 100 Million Customer Records</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-20">2020-06-20</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/dont-force-yourself-to-become-a-bug-bounty-hunter target="_blank">
+					<h2>Don&#39;t Force Yourself to Become a Bug Bounty Hunter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-11">2020-05-11</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/abusing-http-path-normalization-and-cache-poisoning-to-steal-rocket-league-accounts target="_blank">
+					<h2>Abusing HTTP Path Normalization and Cache Poisoning to steal Rocket League accounts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-19">2020-04-19</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/filling-in-the-blanks-exploiting-null-byte-buffer-overflow-for-a-40000-bounty target="_blank">
+					<h2>Filling in the Blanks: Exploiting Null Byte Buffer Overflow for a $40,000 Bounty</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-11-01">2019-11-01</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/analysis-of-cve-2019-14994 target="_blank">
+					<h2>Analysis of CVE-2019-14994 - Jira Service Desk Path Traversal leads to Massive Information Disclosure</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-09-26">2019-09-26</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/cracking-my-windshield-and-earning-10000-on-the-tesla-bug-bounty-program target="_blank">
+					<h2>Cracking my windshield and earning $10,000 on the Tesla Bug Bounty Program</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-07-14">2019-07-14</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/reading-asp-secrets-for-17000 target="_blank">
+					<h2>Reading ASP secrets for $17,000</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-12-17">2018-12-17</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/the-12000-intersection-between-clickjacking-xss-and-denial-of-service target="_blank">
+					<h2>The $12,000 Intersection between Clickjacking, XSS, and Denial of Service</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-07-04">2018-07-04</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/hacking-a-massive-steam-scamming-and-phishing-operation-for-fun-and-profit target="_blank">
+					<h2>Hacking a Massive Steam Scamming and Phishing Operation for Fun and Profit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-05-09">2018-05-09</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/exploiting-directory-traversal-on-a-yahoo-acquisition target="_blank">
+					<h2>Exploiting Directory Traversal to View Customer Credit Card Information on Yahoo&#39;s Small Business Platform</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-11-10">2017-11-10</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/how-i-gained-access-to-chef-docker-aws-and-mongodb-instances-in-a-single-request target="_blank">
+					<h2>How I gained access to chef, docker, AWS, and MongoDB instances in a single request</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-08-03">2017-08-03</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/permanent-account-takeover-on-yahoo-small-business target="_blank">
+					<h2>Permanent account takeover on Yahoo&#39;s Small Business platform</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-06-25">2017-06-25</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/how-i-couldve-taken-over-the-production-server-of-a-yahoo-acquisition-through-command-injection target="_blank">
+					<h2>How I could&#39;ve taken over the production server of a Yahoo acquisition through command injection</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-06-04">2017-06-04</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/eradicating-image-authentication-injection-from-the-entire-internet target="_blank">
+					<h2>Eradicating image authentication injection from the entire internet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-05-10">2017-05-10</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://samcurry.net/how-i-stole-the-identity-of-every-yahoo-user target="_blank">
+					<h2>How I stole the identity of every Yahoo user</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-05-09">2017-05-09</time>
+					|
+					<a href="https://samcurry.net" target="_blank">samcurry.net</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://samcurry.net" target="_blank">Blog | Sam Curry</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="huRL54ODx6pq5OpA9hfHhLVVLA91u8g4Iw2MboB2GHoKc1NIChJB73PaufELuxE4i28bobiUyMZxhjLpCKPbPmtlGcUhakuPJ330m7lRWhe0HUvT5_QN5B5G-6T30U8PbXl33plxSLAjq5JOhlyKfSddI8kF7aO6bqnzaBA6fKoBpgOjY-uyNoEdJzvpcupuJf3mH02WDrDSShhhWw2Wo5laa6k2pKEd4dJ8Rm6dRO19RIno2EmFotdguMiBYH7mUOMIUTo-FPpT7CrkxELwad6r1EOG-zK6TSoiYXKegFh8niYVksYJdveJ76pmgFajjuga9jeEMQryPeY7chNqHw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

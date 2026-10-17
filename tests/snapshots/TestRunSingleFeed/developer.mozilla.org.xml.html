@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-ZYuAC0s5rfhHLa-jS0UrtmNlWG4j7eAeh0hco-StSJAafDzqgYy4MMSWrXHn_5oktdX-Wa6SXEEbMyTmDL89hn3SCoLbSSYQIHtA-TD5jBrmBCyvIh8AXbd5qOyqzSqWvh3egdwgnsT_BPbbaNqVSiHCmlOBEOaDkvA7KJcCWbiGT7i5SPa2yz2OlpXFBSBO4tZw7cgyZaH9V2vKPfoxnUy9fDDNIbfgOuAAyKkbenb92R4aPMUS1IGmbyHrlixrIYQwa1k_Rrbr9XJKmiFputV8kSA7hU3o--x0KFFTeuwYUiEa7FkcrWnVfm5-jAzx0XDdJqDj_0qhwKK-nHsmng==' ;
+		script-src 'nonce-ZYuAC0s5rfhHLa-jS0UrtmNlWG4j7eAeh0hco-StSJAafDzqgYy4MMSWrXHn_5oktdX-Wa6SXEEbMyTmDL89hn3SCoLbSSYQIHtA-TD5jBrmBCyvIh8AXbd5qOyqzSqWvh3egdwgnsT_BPbbaNqVSiHCmlOBEOaDkvA7KJcCWbiGT7i5SPa2yz2OlpXFBSBO4tZw7cgyZaH9V2vKPfoxnUy9fDDNIbfgOuAAyKkbenb92R4aPMUS1IGmbyHrlixrIYQwa1k_Rrbr9XJKmiFputV8kSA7hU3o--x0KFFTeuwYUiEa7FkcrWnVfm5-jAzx0XDdJqDj_0qhwKK-nHsmng==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="ZYuAC0s5rfhHLa-jS0UrtmNlWG4j7eAeh0hco-StSJAafDzqgYy4MMSWrXHn_5oktdX-Wa6SXEEbMyTmDL89hn3SCoLbSSYQIHtA-TD5jBrmBCyvIh8AXbd5qOyqzSqWvh3egdwgnsT_BPbbaNqVSiHCmlOBEOaDkvA7KJcCWbiGT7i5SPa2yz2OlpXFBSBO4tZw7cgyZaH9V2vKPfoxnUy9fDDNIbfgOuAAyKkbenb92R4aPMUS1IGmbyHrlixrIYQwa1k_Rrbr9XJKmiFputV8kSA7hU3o--x0KFFTeuwYUiEa7FkcrWnVfm5-jAzx0XDdJqDj_0qhwKK-nHsmng==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/introducing-mdn-mcp-server/ target="_blank">
+					<h2>Introducing the MDN MCP server</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-15">2026-06-15</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-front-end-deep-dive/ target="_blank">
+					<h2>Under the hood of MDN&#39;s new frontend</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-08">2026-04-08</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/image-formats-codecs-compression-tools/ target="_blank">
+					<h2>Image formats: Codecs and compression tools</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-05">2025-11-05</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/view-transitions-beginner-guide/ target="_blank">
+					<h2>A beginner-friendly guide to view transitions in CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-09">2025-10-09</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/launching-new-front-end/ target="_blank">
+					<h2>Launching MDN&#39;s new front end</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-19">2025-08-19</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/image-formats-pixels-graphics/ target="_blank">
+					<h2>Image formats: Pixel data from encoders to decoders</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-04">2025-08-04</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-turns-20/ target="_blank">
+					<h2>Celebrating 20 years of MDN</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-23">2025-07-23</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/color-models-humans-devices/ target="_blank">
+					<h2>Image formats: Color models for humans and devices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-06">2025-05-06</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/h1-element-styles/ target="_blank">
+					<h2>Default styles for h1 elements are changing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-11">2025-04-11</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/global-privacy-control/ target="_blank">
+					<h2>Implications of Global Privacy Control</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-15">2025-03-15</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/javascript-temporal-is-coming/ target="_blank">
+					<h2>JavaScript Temporal is coming</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-24">2025-01-24</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/fix-image-lcp/ target="_blank">
+					<h2>Fix your website&#39;s Largest Contentful Paint by optimizing image loading</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-13">2025-01-13</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-2024-content-projects/ target="_blank">
+					<h2>MDN 2024 content projects</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-08">2025-01-08</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/curriculum-learn-web-development/ target="_blank">
+					<h2>A new learning experience on MDN</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-20">2024-12-20</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/daily-holiday-javascript-challenges/ target="_blank">
+					<h2>Countdown to the holidays with daily coding challenges</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-01">2024-12-01</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/optimize-web-performance/ target="_blank">
+					<h2>Monitoring and optimizing website performance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-11">2024-11-11</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/how-to-land-your-first-developer-job/ target="_blank">
+					<h2>How to land your first developer job</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-01">2024-11-01</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/new-community-page/ target="_blank">
+					<h2>Introducing the new MDN Community page</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-15">2024-10-15</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/fix-javascript-performance/ target="_blank">
+					<h2>Fixing your website&#39;s JavaScript performance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-09">2024-10-09</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-scrimba-back2school/ target="_blank">
+					<h2>Get back to school! Supercharge your learning with MDN and Scrimba</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-12">2024-09-12</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/efficient-data-handling-with-the-streams-api/ target="_blank">
+					<h2>Efficient data handling with the Streams API</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-06">2024-09-06</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/javascript-intl-segmenter-i18n/ target="_blank">
+					<h2>Locale-sensitive text segmentation in JavaScript with Intl.Segmenter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-03">2024-09-03</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/optimize-your-workflow-git-stash/ target="_blank">
+					<h2>Optimize your workflow with Git stash</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-28">2024-08-28</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/debug-mobile-apps-across-devices/ target="_blank">
+					<h2>How to debug mobile apps across devices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-07">2024-08-07</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/html-details-exclusive-accordions/ target="_blank">
+					<h2>Exclusive accordions using the HTML details element</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-05">2024-08-05</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/exploring-the-broadcast-channel-api-for-cross-tab-communication/ target="_blank">
+					<h2>Exploring the Broadcast Channel API for cross-tab communication</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-12">2024-07-12</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-scrimba-partnership/ target="_blank">
+					<h2>MDN partners with Scrimba to enhance web development learning</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-09">2024-07-09</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-http-observatory-launch/ target="_blank">
+					<h2>Introducing the MDN HTTP Observatory</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-02">2024-07-02</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/static-site-generation-with-nextjs/ target="_blank">
+					<h2>Static Site Generation (SSG) with Next.js</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-28">2024-06-28</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/javascript-set-methods/ target="_blank">
+					<h2>New JavaScript Set methods</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-24">2024-06-24</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/securing-apis-express-rate-limit-and-slow-down/ target="_blank">
+					<h2>Securing APIs: Express rate limit and slow down</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-28">2024-05-28</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/using-the-page-visibility-api/ target="_blank">
+					<h2>Using the Page Visibility API</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-10">2024-05-10</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-blog-one-year-on/ target="_blank">
+					<h2>A year of publishing the MDN Blog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-03">2024-05-03</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/setting-up-service-workers-on-vultr/ target="_blank">
+					<h2>Setting up service workers on Vultr</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-23">2024-04-23</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/interop2023-mdn-doc-updates/ target="_blank">
+					<h2>Interop 2023: MDN updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-27">2024-03-27</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/test-javascript-with-jest-on-vultr/ target="_blank">
+					<h2>Testing JavaScript with Jest on Vultr</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-22">2024-03-22</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/color-palettes-css-color-mix/ target="_blank">
+					<h2>Creating color palettes with the CSS color-mix() function</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-08">2024-03-08</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/modernizing-test-automation-with-test-grid/ target="_blank">
+					<h2>Modernizing conventional test automation with TestGrid</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-29">2024-02-29</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-curriculum-launch/ target="_blank">
+					<h2>Lift-off: The MDN Curriculum launch</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-27">2024-02-27</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/technical-writing/ target="_blank">
+					<h2>Creating effective technical documentation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-13">2024-02-13</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/leveraging-bun-on-vultr-a-superior-node-js-alternative/ target="_blank">
+					<h2>Leveraging Bun on Vultr: A superior Node.js alternative</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-17">2024-01-17</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/border-images-interop-2023/ target="_blank">
+					<h2>Border images in CSS: A key focus area for Interop 2023</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-19">2023-12-19</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/build-ai-powered-apps-openllm-vultr-gpu/ target="_blank">
+					<h2>Build AI-powered applications using OpenLLM and Vultr Cloud GPU</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-12">2023-12-12</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/goodbye-third-party-cookies/ target="_blank">
+					<h2>Saying goodbye to third-party cookies in 2024</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-08">2023-12-08</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/baseline-evolution-on-mdn/ target="_blank">
+					<h2>Baseline&#39;s evolution on MDN</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-05">2023-12-05</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/learn-javascript-console-methods/ target="_blank">
+					<h2>Developer essentials: JavaScript console methods</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-30">2023-11-30</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/getting-started-with-css-container-queries/ target="_blank">
+					<h2>Getting started with CSS container queries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-16">2023-11-16</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/deploying-node-js-applications-with-pm2-on-vultr/ target="_blank">
+					<h2>Deploying Node.js applications with PM2 on Vultr</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-08">2023-11-08</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/vs-code-tips-tricks/ target="_blank">
+					<h2>VS Code: Tips and tricks for beginners</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-07">2023-11-07</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-observatory/ target="_blank">
+					<h2>Coming Soon: MDN Observatory 2.0</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-25">2023-10-25</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/optimizing-devsecops-workflows-with-gitlab-conditional-ci-cd-pipelines/ target="_blank">
+					<h2>Optimizing DevSecOps workflows with GitLab&#39;s conditional CI/CD pipelines</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-23">2023-10-23</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/introduction-to-web-sustainability/ target="_blank">
+					<h2>Introduction to web sustainability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-11">2023-10-11</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/migrating-from-github-to-gitlab-seamlessly-a-step-by-step-guide/ target="_blank">
+					<h2>Migrating from GitHub to GitLab seamlessly: A step-by-step guide</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-05">2023-10-05</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/announcing-mdn-front-end-developer-curriculum/ target="_blank">
+					<h2>Announcing the MDN front-end developer curriculum</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-14">2023-08-14</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/custom-easing-in-css-with-linear/ target="_blank">
+					<h2>Creating custom easing effects in CSS animations using the linear() function</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-01">2023-08-01</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/securing-cdn-using-sri-why-how/ target="_blank">
+					<h2>Securing your CDN: Why and how should you use SRI</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-21">2023-07-21</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/scroll-progress-animations-in-css/ target="_blank">
+					<h2>Scroll progress animations in CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-14">2023-07-14</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/ai-explain-postmortem/ target="_blank">
+					<h2>Reflections on AI Explain: A postmortem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-11">2023-07-11</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/searching-code-with-grep/ target="_blank">
+					<h2>Developer essentials: How to search code using grep</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-03">2023-07-03</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/introducing-ai-help/ target="_blank">
+					<h2>Introducing AI Help (Beta): Your Companion for Web Development</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-27">2023-06-27</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/learn-css-hues-colors-hsl/ target="_blank">
+					<h2>Learn how to use hue in CSS colors with HSL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-26">2023-06-26</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/introducing-the-mdn-playground/ target="_blank">
+					<h2>Introducing the MDN Playground: Bring your code to life!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-22">2023-06-22</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/mdn-docs-june-2023/ target="_blank">
+					<h2>MDN doc updates: CSS selectors &amp; media queries, WebGPU &amp; WebTransport APIs, Progressive web apps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-13">2023-06-13</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/javascript-shape-drawing-function/ target="_blank">
+					<h2>How to draw any regular shape with just one JavaScript function</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-26">2023-05-26</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/regular-expressions-reference-updates/ target="_blank">
+					<h2>New reference pages on MDN for JavaScript regular expressions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-23">2023-05-23</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/accessibility-celebrating-gaad-2023/ target="_blank">
+					<h2>Celebrating Global Accessibility Awareness Day</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-18">2023-05-18</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/aria-accessibility-html-landmark-roles/ target="_blank">
+					<h2>Using HTML landmark roles to improve accessibility</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-15">2023-05-15</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/baseline-unified-view-stable-web-features/ target="_blank">
+					<h2>Introducing Baseline: a unified view of stable web features</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-10">2023-05-10</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/css-not-pseudo-multiple-selectors/ target="_blank">
+					<h2>How :not() chains multiple selectors</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-05">2023-05-05</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/css-color-module-level-4/ target="_blank">
+					<h2>New functions, gradients, and hues in CSS colors (Level 4)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-03">2023-05-03</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://developer.mozilla.org/en-US/blog/welcome-to-the-MDN-blog/ target="_blank">
+					<h2>Welcome to the MDN blog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-03">2023-05-03</time>
+					|
+					<a href="https://developer.mozilla.org" target="_blank">developer.mozilla.org</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://developer.mozilla.org/en-US/blog/" target="_blank">MDN Blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="ZYuAC0s5rfhHLa-jS0UrtmNlWG4j7eAeh0hco-StSJAafDzqgYy4MMSWrXHn_5oktdX-Wa6SXEEbMyTmDL89hn3SCoLbSSYQIHtA-TD5jBrmBCyvIh8AXbd5qOyqzSqWvh3egdwgnsT_BPbbaNqVSiHCmlOBEOaDkvA7KJcCWbiGT7i5SPa2yz2OlpXFBSBO4tZw7cgyZaH9V2vKPfoxnUy9fDDNIbfgOuAAyKkbenb92R4aPMUS1IGmbyHrlixrIYQwa1k_Rrbr9XJKmiFputV8kSA7hU3o--x0KFFTeuwYUiEa7FkcrWnVfm5-jAzx0XDdJqDj_0qhwKK-nHsmng==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

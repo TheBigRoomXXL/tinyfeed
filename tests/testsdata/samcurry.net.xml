@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog | Sam Curry</title>
+    <link>https://samcurry.net</link>
+    <description></description>
+    <lastBuildDate>Fri, 27 Feb 2026 00:04:48 GMT</lastBuildDate>
+    <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <language>en</language>
+    <copyright>CC BY-NC-SA 4.0</copyright>
+    <atom:link href="https://samcurry.net/feed.rss" rel="self" type="application/rss+xml"></atom:link>
+    <item>
+      <title>
+        <![CDATA[Hacking the World Poker Tour: Inside ClubWPT Gold’s Back Office]]>
+      </title>
+      <link>https://samcurry.net/hacking-clubwpt-gold</link>
+      <guid>hacking-clubwpt-gold</guid>
+      <pubDate>Sun, 12 Oct 2025 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[In June, 2025, Shubs Shah and I discovered a vulnerability in the online poker website ClubWPT Gold which would have allowed an attacker to fully access the core back office application that is used for all administrative site functionality.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Hacking Subaru: Tracking and Controlling Cars via the STARLINK Admin Panel]]>
+      </title>
+      <link>https://samcurry.net/hacking-subaru</link>
+      <guid>hacking-subaru</guid>
+      <pubDate>Thu, 23 Jan 2025 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[On November 20, 2024, Shubham Shah and I discovered a security vulnerability in Subaru’s STARLINK admin panel that gave us unrestricted access to all vehicles and customer accounts in the United States, Canada, and Japan.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Hacking Kia: Remotely Controlling Cars With Just a License Plate]]>
+      </title>
+      <link>https://samcurry.net/hacking-kia</link>
+      <guid>hacking-kia</guid>
+      <pubDate>Fri, 20 Sep 2024 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[On June 11th, 2024, we discovered a set of vulnerabilities in Kia vehicles that allowed remote control over key functions using only a license plate. These attacks could be executed remotely on any hardware-equipped vehicle in about 30 seconds, regardless of whether it had an active Kia Connect subscription.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Hacking Millions of Modems (and Investigating Who Hacked My Modem)]]>
+      </title>
+      <link>https://samcurry.net/hacking-millions-of-modems</link>
+      <guid>hacking-millions-of-modems</guid>
+      <pubDate>Mon, 03 Jun 2024 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[Two years ago, something very strange happened to me while working from my home network. I was exploiting a blind XXE vulnerability that required an external HTTP server to smuggle out files, so I spun up an AWS box and ran a simple Python webserver to receive the traffic from the vulnerable server.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Leaked Secrets and Unlimited Miles: Hacking the Largest Airline and Hotel Rewards Platform]]>
+      </title>
+      <link>https://samcurry.net/points-com</link>
+      <guid>points-com</guid>
+      <pubDate>Thu, 03 Aug 2023 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[Between March 2023 and May 2023, we identified multiple security vulnerabilities within points.com, the backend provider for a significant portion of airline and hotel rewards programs. These vulnerabilities would have enabled an attacker to access sensitive customer account information, including names, billing addresses, redacted credit card details, emails, phone numbers, and transaction records.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Web Hackers vs. The Auto Industry: Critical Vulnerabilities in Ferrari, BMW, Rolls Royce, Porsche, and More]]>
+      </title>
+      <link>https://samcurry.net/web-hackers-vs-the-auto-industry</link>
+      <guid>web-hackers-vs-the-auto-industry</guid>
+      <pubDate>Tue, 03 Jan 2023 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[While we were visiting the University of Maryland, we came across a fleet of electric scooters scattered across the campus and couldn't resist poking at the scooter's mobile app. To our surprise, our actions caused the horns and headlights on all of the scooters to turn on and stay on for 15 minutes straight.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Exploiting Web3's Hidden Attack Surface: Universal XSS on Netlify's Next.js Library]]>
+      </title>
+      <link>https://samcurry.net/universal-xss-on-netlifys-next-js-library</link>
+      <guid>universal-xss-on-netlifys-next-js-library</guid>
+      <pubDate>Wed, 21 Sep 2022 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[On August 24th, 2022, we reported a vulnerability to Netlify affecting their Next.js "netlify-ipx" repository which would allow an attacker to achieve persistent cross-site scripting and full-response server side request forgery on any website out of the box.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Hacking Chess.com and Accessing 50 Million Customer Records]]>
+      </title>
+      <link>https://samcurry.net/hacking-chesscom</link>
+      <guid>hacking-chesscom</guid>
+      <pubDate>Wed, 16 Dec 2020 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[Jackpot, full arbitrary account takeover of any chess.com user!]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[We Hacked Apple for 3 Months: Here’s What We Found]]>
+      </title>
+      <link>https://samcurry.net/hacking-apple</link>
+      <guid>hacking-apple</guid>
+      <pubDate>Wed, 07 Oct 2020 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[Between the period of July 6th to October 6th myself, Brett Buerhaus, Ben Sadeghipour, Samuel Erb, and Tanner Barnes worked together and hacked on the Apple bug bounty program.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Hacking Starbucks and Accessing Nearly 100 Million Customer Records]]>
+      </title>
+      <link>https://samcurry.net/hacking-starbucks</link>
+      <guid>hacking-starbucks</guid>
+      <pubDate>Sat, 20 Jun 2020 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[After a long day of trying and failing to find vulnerabilities on the Verizon Media bug bounty program I decided to call it quits and do some chores. I needed to buy gifts for a friends birthday and went online to order a Starbucks gift card.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Don't Force Yourself to Become a Bug Bounty Hunter]]>
+      </title>
+      <link>https://samcurry.net/dont-force-yourself-to-become-a-bug-bounty-hunter</link>
+      <guid>dont-force-yourself-to-become-a-bug-bounty-hunter</guid>
+      <pubDate>Mon, 11 May 2020 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[Nearly every one of the successful bug bounty hunters I've met all seem to have one thing in common, and that is that they absolutely love what they do.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Abusing HTTP Path Normalization and Cache Poisoning to steal Rocket League accounts]]>
+      </title>
+      <link>https://samcurry.net/abusing-http-path-normalization-and-cache-poisoning-to-steal-rocket-league-accounts</link>
+      <guid>abusing-http-path-normalization-and-cache-poisoning-to-steal-rocket-league-accounts</guid>
+      <pubDate>Sun, 19 Apr 2020 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[Rocket League gives out in-game "white hats" for your character to wear if you submit, what is deemed by them, to be a "severe security vulnerability". Over the idle time provided by the ongoing pandemic, I decided why not try my luck at getting one of these items.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Filling in the Blanks: Exploiting Null Byte Buffer Overflow for a $40,000 Bounty]]>
+      </title>
+      <link>https://samcurry.net/filling-in-the-blanks-exploiting-null-byte-buffer-overflow-for-a-40000-bounty</link>
+      <guid>filling-in-the-blanks-exploiting-null-byte-buffer-overflow-for-a-40000-bounty</guid>
+      <pubDate>Fri, 01 Nov 2019 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[I was in San Francisco the few days leading up to me finding this bug with some friends. We’d spent the day hacking before a few of us were traveling to Vegas for DEF CON the next day. Some of them were going on a road trip and I decided to join them at the last minute, trading my seat for a travel voucher and leaving my checked baggage with all of my clothes behind. After buying some new clothes, we all met up the next morning at a nearby Starbucks to hack before we left.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Analysis of CVE-2019-14994 - Jira Service Desk Path Traversal leads to Massive Information Disclosure]]>
+      </title>
+      <link>https://samcurry.net/analysis-of-cve-2019-14994</link>
+      <guid>analysis-of-cve-2019-14994</guid>
+      <pubDate>Thu, 26 Sep 2019 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[The CVE-2019-14994 vulnerability allows an attacker, if able to access the customer portal, to traverse to the administrative portal and view issues within all Jira projects contained in the vulnerable instance. This could include Jira Service Desk projects, Jira Core projects, and Jira Software projects]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Cracking my windshield and earning $10,000 on the Tesla Bug Bounty Program]]>
+      </title>
+      <link>https://samcurry.net/cracking-my-windshield-and-earning-10000-on-the-tesla-bug-bounty-program</link>
+      <guid>cracking-my-windshield-and-earning-10000-on-the-tesla-bug-bounty-program</guid>
+      <pubDate>Sun, 14 Jul 2019 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[One of the more interesting things I've had the opportunity to hack on is the Tesla Model 3. It has a built in web browser, free premium LTE, and over-the-air software updates. It's a network connected computer on wheels that drives really fast.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Reading ASP secrets for $17,000]]>
+      </title>
+      <link>https://samcurry.net/reading-asp-secrets-for-17000</link>
+      <guid>reading-asp-secrets-for-17000</guid>
+      <pubDate>Mon, 17 Dec 2018 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[One of the more common vulnerabilities on ASP.NET applications is local file disclosure. If you've never developed or worked with this technology, exploiting LFD can be confusing and often unfruitful. In the following write up I describe approaching an application that ended up being vulnerable to LFD, then going on to exploit it.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[The $12,000 Intersection between Clickjacking, XSS, and Denial of Service]]>
+      </title>
+      <link>https://samcurry.net/the-12000-intersection-between-clickjacking-xss-and-denial-of-service</link>
+      <guid>the-12000-intersection-between-clickjacking-xss-and-denial-of-service</guid>
+      <pubDate>Wed, 04 Jul 2018 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[The specific application that I've been targeting over the last few weeks is a bitcoin gambling website where a stock will progressively rise over time. The gambler decides the amount of money they would like to put in and a multiplier to payout at. As the multiplier goes up, they have an option to click a button and receive whatever returns they had made it to. Each time the multiplier goes up, there is a chance the stock will "bust" and all of the investment will be lost.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Hacking a Massive Steam Scamming and Phishing Operation for Fun and Profit]]>
+      </title>
+      <link>https://samcurry.net/hacking-a-massive-steam-scamming-and-phishing-operation-for-fun-and-profit</link>
+      <guid>hacking-a-massive-steam-scamming-and-phishing-operation-for-fun-and-profit</guid>
+      <pubDate>Wed, 09 May 2018 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[When I'm not doing bug bounty or studying for school I'll often be playing Counter-Strike: Global Offensive or PLAYERUNKNOWN'S BATTLEGROUNDS. Both of these games are awesome and really fun to play, but something interesting about them is that their tradable in-game items are very valuable. Due to the high prices of items and often underage inexperienced players, these communities are ripe for scamming and fraud.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Exploiting Directory Traversal to View Customer Credit Card Information on Yahoo's Small Business Platform]]>
+      </title>
+      <link>https://samcurry.net/exploiting-directory-traversal-on-a-yahoo-acquisition</link>
+      <guid>exploiting-directory-traversal-on-a-yahoo-acquisition</guid>
+      <pubDate>Fri, 10 Nov 2017 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[The Yahoo small business platform was storing user information in a set of directories that were protected simply by obscurity. The attacker, with knowledge of the victims email, could run an wordlist against a very predictable/guessable service ID and receive information from the response in order to view the victims payment information.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[How I gained access to chef, docker, AWS, and MongoDB instances in a single request]]>
+      </title>
+      <link>https://samcurry.net/how-i-gained-access-to-chef-docker-aws-and-mongodb-instances-in-a-single-request</link>
+      <guid>how-i-gained-access-to-chef-docker-aws-and-mongodb-instances-in-a-single-request</guid>
+      <pubDate>Thu, 03 Aug 2017 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[The following article details the successful exploitation of a server sided request forgery vulnerability in Yahoo's small business platform.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Permanent account takeover on Yahoo's Small Business platform]]>
+      </title>
+      <link>https://samcurry.net/permanent-account-takeover-on-yahoo-small-business</link>
+      <guid>permanent-account-takeover-on-yahoo-small-business</guid>
+      <pubDate>Sun, 25 Jun 2017 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[If you decided to go out and spontaneously develop a content management system one of the most crucial and necessary setups would be the authentication of user accounts. This function is generally accomplished through designation of a username and password (normally created by the user), but can get messy when you have to deal with real world scenarios.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[How I could've taken over the production server of a Yahoo acquisition through command injection]]>
+      </title>
+      <link>https://samcurry.net/how-i-couldve-taken-over-the-production-server-of-a-yahoo-acquisition-through-command-injection</link>
+      <guid>how-i-couldve-taken-over-the-production-server-of-a-yahoo-acquisition-through-command-injection</guid>
+      <pubDate>Sun, 04 Jun 2017 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[On the night of May 20th I had begun to develop a small headache and neck pains after spending days looking at Yahoo's messenger application. I couldn't get a grasp of how it operated, so I stepped outside and made the decision to find a new target.]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[Eradicating image authentication injection from the entire internet]]>
+      </title>
+      <link>https://samcurry.net/eradicating-image-authentication-injection-from-the-entire-internet</link>
+      <guid>eradicating-image-authentication-injection-from-the-entire-internet</guid>
+      <pubDate>Wed, 10 May 2017 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[Thinking back to old forum days I can specifically remember an event where attackers modified their avatars to be invalid pages that responded with "HTTP 401 Unauthorized". This didn't really seem like an issue because there was interaction required by the users and the community was smart enough to simply close the prompt. After a long night of trying to escape the the "src" parameter of an image to achieve XSS I had an epiphany: why not try recreating the scenario presented years ago?]]>
+      </content:encoded>
+    </item>
+    <item>
+      <title>
+        <![CDATA[How I stole the identity of every Yahoo user]]>
+      </title>
+      <link>https://samcurry.net/how-i-stole-the-identity-of-every-yahoo-user</link>
+      <guid>how-i-stole-the-identity-of-every-yahoo-user</guid>
+      <pubDate>Tue, 09 May 2017 00:00:00 GMT</pubDate>
+      <content:encoded>
+        <![CDATA[When looking at bug bounty programs that have existed for a long time it’s often beneficial to assume that every public facing page has already been automatedly scanned to death. In many cases this isn’t valid because of the types of tools people use, different scopes people prefer, or the tendency for these scanners to break or return false positives but approaching something with a realistic mindset can be fruitful.]]>
+      </content:encoded>
+    </item>
+  </channel>
+</rss>

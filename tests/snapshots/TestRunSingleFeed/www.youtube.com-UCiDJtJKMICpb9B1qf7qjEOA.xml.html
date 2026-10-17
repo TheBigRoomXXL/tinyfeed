@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-SJeH1OX6avLy0wTDyfE8KcoIPqEt3MSF8f-CtOFcQsDlVLs23I2wn4EBdIc1pNUdXvB6iawkEkuPCVA41sy4mDjn1VOobYpQlbAuMaMrtNz731d_KlElxYcQhIJTc658Z4xbR2_pNJZAFtXRnazvsPKFJVo7RkVbFMSrG0lP0vM9Nt921DZqMc7D6nJL3SUA0hyYffHDymKDM_s_flhCtUgduUjEI20JTKyQtgIYfYyVypaJ2ylERSUNjYsADjZDK05QiyA84REPBQAyb3id--Bq3TDJBWRQxXyee4KlMOtrERVVGjviEkD8B6WONVzShjzy_8qrVTHiqzF29EwUKA==' ;
+		script-src 'nonce-SJeH1OX6avLy0wTDyfE8KcoIPqEt3MSF8f-CtOFcQsDlVLs23I2wn4EBdIc1pNUdXvB6iawkEkuPCVA41sy4mDjn1VOobYpQlbAuMaMrtNz731d_KlElxYcQhIJTc658Z4xbR2_pNJZAFtXRnazvsPKFJVo7RkVbFMSrG0lP0vM9Nt921DZqMc7D6nJL3SUA0hyYffHDymKDM_s_flhCtUgduUjEI20JTKyQtgIYfYyVypaJ2ylERSUNjYsADjZDK05QiyA84REPBQAyb3id--Bq3TDJBWRQxXyee4KlMOtrERVVGjviEkD8B6WONVzShjzy_8qrVTHiqzF29EwUKA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="SJeH1OX6avLy0wTDyfE8KcoIPqEt3MSF8f-CtOFcQsDlVLs23I2wn4EBdIc1pNUdXvB6iawkEkuPCVA41sy4mDjn1VOobYpQlbAuMaMrtNz731d_KlElxYcQhIJTc658Z4xbR2_pNJZAFtXRnazvsPKFJVo7RkVbFMSrG0lP0vM9Nt921DZqMc7D6nJL3SUA0hyYffHDymKDM_s_flhCtUgduUjEI20JTKyQtgIYfYyVypaJ2ylERSUNjYsADjZDK05QiyA84REPBQAyb3id--Bq3TDJBWRQxXyee4KlMOtrERVVGjviEkD8B6WONVzShjzy_8qrVTHiqzF29EwUKA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;1DGT2s8o2L8 target="_blank">
+					<h2>Adam Savage Stunned by 3D Printed Rubber!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;-irEzY_vLuk target="_blank">
+					<h2>Adam Savage Upgrades His Gibson Les Paul Guitar!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-15">2026-10-15</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;gQKQLC-Z4jQ target="_blank">
+					<h2>$700 Formlabs Form Studio 1 3D Printer Review</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;kqxsRuJ7hiU target="_blank">
+					<h2>Adam Savage Unboxes the Crown of Bethmora!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;p8NFfCNXLRo target="_blank">
+					<h2>Humanity&#39;s Greatest Engineering Feat?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;q_2Vrljn3F0 target="_blank">
+					<h2>The Tiny Mistake That Proved How This Movie Prop Was Built</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;8RwRwyxMmQY target="_blank">
+					<h2>Movie Quotes That Reshaped Adam Savage&#39;s Worldview</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/VcaCwGFN-bU target="_blank">
+					<h2>Meet an Androgynous Space Docking Module</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;wGxzcsSf7to target="_blank">
+					<h2>The Best Thing Adam Savage Found in Aircraft Salvage</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;xd8Fqs-j0gw target="_blank">
+					<h2>Uncovering the Secrets of a Rare WWI Fabric Biplane</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;FEDaFVvygbw target="_blank">
+					<h2>Adam Savage Upgrades His Workshop Lathe!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;V5FfRfIm_4Q target="_blank">
+					<h2>Adam Savage Meets The Smile Machine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;130c5_6tecs target="_blank">
+					<h2>Why It&#39;s Harder to Build a Mini Suit of Armor</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;PGYcEISGWJA target="_blank">
+					<h2>Adam Savage’s Exhausting MythBusters Spinoff Experience</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-04">2026-10-04</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;kewL6XmW4wo target="_blank">
+					<h2>Adam Savage&#39;s Worst Workshop Injury</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-03">2026-10-03</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA" target="_blank">Adam Savage’s Tested</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="SJeH1OX6avLy0wTDyfE8KcoIPqEt3MSF8f-CtOFcQsDlVLs23I2wn4EBdIc1pNUdXvB6iawkEkuPCVA41sy4mDjn1VOobYpQlbAuMaMrtNz731d_KlElxYcQhIJTc658Z4xbR2_pNJZAFtXRnazvsPKFJVo7RkVbFMSrG0lP0vM9Nt921DZqMc7D6nJL3SUA0hyYffHDymKDM_s_flhCtUgduUjEI20JTKyQtgIYfYyVypaJ2ylERSUNjYsADjZDK05QiyA84REPBQAyb3id--Bq3TDJBWRQxXyee4KlMOtrERVVGjviEkD8B6WONVzShjzy_8qrVTHiqzF29EwUKA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

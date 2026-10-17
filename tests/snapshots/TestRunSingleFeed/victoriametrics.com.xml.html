@@ -1,0 +1,2948 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-2fu-bL2T7VIZaPTnQj7kWwcZKfBoUo8Df-6OekQO7h5Ns9imPF22pE29100TfJ-HlGK31eYdT7t_tEDJmPjHc31MWv3iqEprIT9fJct3Dr8M6LXlQm7o-E46p8PrWYxmLCrcHuxL5TCx4D5If9ueASmJkKC2m-SWWT8Hb0760oeXcSD-wkbnPO3-aDGC_GdAZmHfjp-IV41tQJ0c6B8bl9WGg1Wx9F5Kz6k9CFK76JoUXobKmXHl7K3nNectJZiSz8zKudeWZAfapagN0eCzebb8Q8qyF7iC0TwfAHEPznt3wuqOUq_zoLoBDk_h2z-a5pnv4ajwYRTb0KNEt610gw==' ;
+		script-src 'nonce-2fu-bL2T7VIZaPTnQj7kWwcZKfBoUo8Df-6OekQO7h5Ns9imPF22pE29100TfJ-HlGK31eYdT7t_tEDJmPjHc31MWv3iqEprIT9fJct3Dr8M6LXlQm7o-E46p8PrWYxmLCrcHuxL5TCx4D5If9ueASmJkKC2m-SWWT8Hb0760oeXcSD-wkbnPO3-aDGC_GdAZmHfjp-IV41tQJ0c6B8bl9WGg1Wx9F5Kz6k9CFK76JoUXobKmXHl7K3nNectJZiSz8zKudeWZAfapagN0eCzebb8Q8qyF7iC0TwfAHEPznt3wuqOUq_zoLoBDk_h2z-a5pnv4ajwYRTb0KNEt610gw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="2fu-bL2T7VIZaPTnQj7kWwcZKfBoUo8Df-6OekQO7h5Ns9imPF22pE29100TfJ-HlGK31eYdT7t_tEDJmPjHc31MWv3iqEprIT9fJct3Dr8M6LXlQm7o-E46p8PrWYxmLCrcHuxL5TCx4D5If9ueASmJkKC2m-SWWT8Hb0760oeXcSD-wkbnPO3-aDGC_GdAZmHfjp-IV41tQJ0c6B8bl9WGg1Wx9F5Kz6k9CFK76JoUXobKmXHl7K3nNectJZiSz8zKudeWZAfapagN0eCzebb8Q8qyF7iC0TwfAHEPznt3wuqOUq_zoLoBDk_h2z-a5pnv4ajwYRTb0KNEt610gw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/announcing-victorialogs-lts-release/ target="_blank">
+					<h2>VictoriaLogs Has Now a Long Term Support (LTS) Release</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-september-ecosystem-updates/ target="_blank">
+					<h2>VictoriaMetrics September 2026 Ecosystem Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/http-race-condition/ target="_blank">
+					<h2>The Data Race That Wasn&#39;t a Bug (and the One That Was)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/year-2-price-cliff-observability-tco/ target="_blank">
+					<h2>The Year-2 Price Cliff: What Your Observability Stack Really Costs Over 3 Years</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/linux-readahead-and-fadvise/ target="_blank">
+					<h2>How Linux readahead works, and the two ways to change it</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/announcing-victoriatraces-in-cloud/ target="_blank">
+					<h2>VictoriaTraces in VictoriaMetrics Cloud: Complete Observability is Here</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/the-most-expensive-half-hour-of-an-incident/ target="_blank">
+					<h2>The most expensive half-hour of an incident.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-11">2026-09-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-august-2026-ecosystem-updates/ target="_blank">
+					<h2>VictoriaMetrics August 2026 Ecosystem Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-08">2026-09-08</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/postgres-19/ target="_blank">
+					<h2>PostgreSQL 19 interactive tour</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-07">2026-09-07</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/two-cats-two-dogs-four-vendors-and-the-model-ai-couldnt-find/ target="_blank">
+					<h2>Two cats, two dogs, four vendors, and the model the AI couldn&#39;t find (Tech Talk Companion)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-07">2026-09-07</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-swiss-table-map/ target="_blank">
+					<h2>How Go’s Built-in Map Works with Swiss Tables</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-03">2026-09-03</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/the-life-of-a-metric/ target="_blank">
+					<h2>The Life of a Metric</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-03">2026-09-03</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-sync-map-hash-trie/ target="_blank">
+					<h2>Understanding Go&#39;s sync.Map from API to Hash Trie</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-26">2026-08-26</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/open-source-is-good-marketing/ target="_blank">
+					<h2>Open Source Is Good Marketing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-24">2026-08-24</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/observabilitys-sixth-sense-grounding-anomaly-detection-in-reality/ target="_blank">
+					<h2>Observability&#39;s Sixth Sense: Grounding Anomaly Detection in Reality</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-12">2026-08-12</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-anomaly-detection-updates-2026-q2/ target="_blank">
+					<h2>What&#39;s new in VictoriaMetrics Anomaly Detection (Q2 2026)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-11">2026-08-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-july-2026-ecosystem-updates/ target="_blank">
+					<h2>VictoriaMetrics July 2026 Ecosystem Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-10">2026-08-10</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-1-27/ target="_blank">
+					<h2>Go 1.27 interactive tour</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-31">2026-07-31</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q2-2026-whats-new-victoriametrics-cloud/ target="_blank">
+					<h2>What&#39;s New in VictoriaMetrics Cloud Q2 2026? Transparent Credits, Navigation Improvements, and a New Path for Cluster Tiers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-28">2026-07-28</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-openlit-gpu-observability/ target="_blank">
+					<h2>GPU Observability with the OpenLIT Collector and the VictoriaMetrics observability stack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-21">2026-07-21</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmestimator-announcement/ target="_blank">
+					<h2>Announcing vmestimator: Real-time Cardinality Estimations for VictoriaMetrics and Prometheus</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-14">2026-07-14</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-2026-mid-year-roundup/ target="_blank">
+					<h2>VictoriaMetrics 2026 Mid Year Roundup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-13">2026-07-13</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-openlit-agents-observability/ target="_blank">
+					<h2>Observability for LLM Apps and Agents: OpenLIT SDK &#43; VictoriaMetrics observability stack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-03">2026-07-03</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victorialogs-internals-columnar-storage-on-disk/ target="_blank">
+					<h2>How VictoriaLogs Stores Your Logs in a Columnar Layout</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-26">2026-06-26</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-may-2026-ecosystem-updates/ target="_blank">
+					<h2>VictoriaMetrics May 2026 Ecosystem Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-01">2026-06-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/operator-lts/ target="_blank">
+					<h2>Operator now has Long-Term Support (LTS) version</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-26">2026-05-26</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/how-airbnb-built-a-high-volume-metrics-pipeline-with-opentelemetry-and-vmagent/ target="_blank">
+					<h2>How Airbnb Built a High-Volume Metrics Pipeline with OpenTelemetry and vmagent</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-20">2026-05-20</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/multi-tier-observability-a-practical-way-to-handle-diverse-workloads/ target="_blank">
+					<h2>Multi-tiered Observability: A Practical Way to Handle Diverse Workloads</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-08">2026-05-08</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-april-2026-ecosystem-updates/ target="_blank">
+					<h2>VictoriaMetrics April 2026 Ecosystem Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-06">2026-05-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/not-all-telemetry-deserves-premium-pricing/ target="_blank">
+					<h2>Not All Telemetry Requires Premium Pricing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-27">2026-04-27</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-at-kubecon-amsterdam/ target="_blank">
+					<h2>VictoriaMetrics at KubeCon Amsterdam: Community Highlights</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-23">2026-04-23</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-anomaly-detection-updates-2026-q1/ target="_blank">
+					<h2>What&#39;s new in VictoriaMetrics Anomaly Detection (Q1 2026)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-23">2026-04-23</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q1-2026-whats-new-victoriametrics-cloud/ target="_blank">
+					<h2>What&#39;s New in VictoriaMetrics Cloud Q1 2026? Logs, MCP Server, Better Alerting, and... a Secret Project</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-21">2026-04-21</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/kubecon-eu-2026-sampling/ target="_blank">
+					<h2>VictoriaMetrics at KubeCon: Optimizing Tail Sampling in OpenTelemetry with Retroactive Sampling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-16">2026-04-16</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-march-2026-ecosystem-updates/ target="_blank">
+					<h2>VictoriaMetrics March 2026 Ecosystem Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-05">2026-04-05</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/observability-lessons-from-openai/ target="_blank">
+					<h2>Observability Lessons From OpenAI</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-23">2026-03-23</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/log-collectors-benchmark-2026/ target="_blank">
+					<h2>Benchmarking Kubernetes Log Collectors: vlagent, Vector, Fluent Bit, OpenTelemetry Collector, and more</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-20">2026-03-20</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-february-2026-ecosystem-updates/ target="_blank">
+					<h2>VictoriaMetrics February 2026 Ecosystem Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-25">2026-02-25</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-fosdem-cloud-native-days-france-cfgmgmtcamp-ghent/ target="_blank">
+					<h2>VictoriaMetrics at FOSDEM, Cloud Native Days France, and CfgMgmtCamp Ghent</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-11">2026-02-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/announcing-victorialogs-in-cloud/ target="_blank">
+					<h2>VictoriaLogs in VictoriaMetrics Cloud: Fast, Cost-Effective Log Management is Here</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-10">2026-02-10</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-anomaly-detection-updates-2025/ target="_blank">
+					<h2>What’s new in VictoriaMetrics Anomaly Detection (2025)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-03">2026-02-03</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-january-2026-ecosystem-updates/ target="_blank">
+					<h2>VictoriaMetrics January 2026 Ecosystem Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-26">2026-01-26</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victorialogs-architecture-basics/ target="_blank">
+					<h2>VictoriaLogs Basics: What You Need to Know, with Examples &amp; Visuals</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-14">2026-01-14</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q4-2025-whats-new-victoriametrics-cloud/ target="_blank">
+					<h2>What&#39;s New in VictoriaMetrics Cloud Q4 2025? New tiers, more deployment options, IaC and alerting rules.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-13">2026-01-13</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vibe-coding-observability/ target="_blank">
+					<h2>Vibe coding tools observability with VictoriaMetrics Stack and OpenTelemetry</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-09">2026-01-09</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/anomaly-detection-for-reliable-traffic-alerting-a-case-study/ target="_blank">
+					<h2>How a US Software Provider Improved Traffic Alerting with VictoriaMetrics Anomaly Detection</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-24">2025-12-24</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-2025-developer-experience-a-year-in-review/ target="_blank">
+					<h2>VictoriaMetrics 2025 Developer Experience: A Year in Review</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-19">2025-12-19</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/spotifys-performance-and-control-across-large-monitoring-environments-with-victoriametrics/ target="_blank">
+					<h2>Spotify’s performance &amp; control across large monitoring environments with VictoriaMetrics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-16">2025-12-16</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/openshift-certification/ target="_blank">
+					<h2>VictoriaMetrics Achieves Red Hat OpenShift Operator Certification</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-15">2025-12-15</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/our-latest-updates-across-the-victoriametrics-observability-ecosystem/ target="_blank">
+					<h2>Our latest updates across the VictoriaMetrics Observability ecosystem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-01">2025-12-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/new-tiers-in-victoriametrics-cloud-2025/ target="_blank">
+					<h2>New Capacity Tiers in VictoriaMetrics Cloud</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-18">2025-11-18</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/announcing-1b-downloads-and-product-development-with-logs-traces-metrics/ target="_blank">
+					<h2>Announcing 1B&#43; Downloads &amp; Product Development With Logs, Traces, Metrics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-13">2025-11-13</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/ai-agents-observability/ target="_blank">
+					<h2>AI Agents Observability with OpenTelemetry and the VictoriaMetrics Stack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-07">2025-11-07</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/opentelemetry-without-grpc-go/ target="_blank">
+					<h2>Discarding gRPC-Go: The Story Behind OTLP/gRPC Support in VictoriaTraces</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-27">2025-10-27</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q3-2025-whats-new-victoriametrics-cloud/ target="_blank">
+					<h2>What&#39;s New in VictoriaMetrics Cloud Q3 2025? From new region in Asia to proactive alerts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-07">2025-10-07</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/dreamhost-case-study/ target="_blank">
+					<h2>How DreamHost Slashed Memory Usage by 80% and Scaled to 76 Million Time Series</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-05">2025-10-05</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/upcoming-conferences-and-meetups/ target="_blank">
+					<h2>Upcoming Conferences &amp; Meetups: Where to Meet Our Team</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-29">2025-09-29</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-long-term-support-h2-2025-update/ target="_blank">
+					<h2>VictoriaMetrics Long-Term Support (LTS): H2 2025 Update</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-26">2025-09-26</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/creating-a-sustainable-open-source-business-model/ target="_blank">
+					<h2>Creating a Sustainable Open Source Business Model - Introduction</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-24">2025-09-24</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-full-stack-observability-otel-demo/ target="_blank">
+					<h2>Full-Stack Observability with VictoriaMetrics in the OTel Demo</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-10">2025-09-10</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/alerting-best-practices/ target="_blank">
+					<h2>Alerting Best Practices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-22">2025-08-22</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-tech-talk-stream-vm-anomaly-deep-dive/ target="_blank">
+					<h2>vmanomaly Deep Dive: Smarter Alerting with AI (Tech Talk Companion)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-20">2025-08-20</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victorialogs-concepts-message-time-stream/ target="_blank">
+					<h2>VictoriaLogs Practical Ingestion Guide for Message, Time and Streams</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-08">2025-08-08</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-time-monotonic-wall-clock/ target="_blank">
+					<h2>Monotonic and Wall Clock Time in the Go time package</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-25">2025-07-25</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/cloud-new-region-ap-southeast-1/ target="_blank">
+					<h2>Hello Singapore! VictoriaMetrics Cloud Expands to Asia Pacific</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-11">2025-07-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q2-2025-whats-new-victoriametrics-cloud/ target="_blank">
+					<h2>MCP Server Integration &amp; Much More: What&#39;s New in VictoriaMetrics Cloud Q2 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-02">2025-07-02</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/fips-140-3-compatible-builds-for-victoriametrics-enterprise-components/ target="_blank">
+					<h2>FIPS 140-3 Compatible Builds for VictoriaMetrics Enterprise Components</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-24">2025-06-24</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victorialogs-unleashed-cluster-version-now-available-for-exceptional-linear-scaling/ target="_blank">
+					<h2>VictoriaLogs Unleashed: Cluster Version Now Available for Exceptional, Linear Scaling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-19">2025-06-19</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/integrations-made-easy-with-victoriametrics-cloud/ target="_blank">
+					<h2>Integrations made easy with VictoriaMetrics Cloud</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-10">2025-06-10</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/dev-note-distributed-tracing-with-victorialogs/ target="_blank">
+					<h2>Developer&#39;s Note: Research on Distributed Tracing, Comparing With Tempo and ClickHouse</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-09">2025-06-09</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmagent-key-features-explained/ target="_blank">
+					<h2>vmagent: Key Features Explained in Under 15 Minutes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-06">2025-06-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-synctest/ target="_blank">
+					<h2>Go synctest: Solving Flaky Tests</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-23">2025-05-23</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-tech-talk-stream-vmalert-maximize-your-monitoring/ target="_blank">
+					<h2>vmalert: Maximize Your Monitoring (Tech Talk Companion)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-22">2025-05-22</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/celebrating-14k-stars-on-github-spring-update/ target="_blank">
+					<h2>Celebrating 14K Stars on GitHub: Spring Update</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-21">2025-05-21</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmalert-maximize-your-monitoring/ target="_blank">
+					<h2>vmalert: Maximize Your Monitoring</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-15">2025-05-15</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-getting-started/ target="_blank">
+					<h2>VictoriaMetrics Components: Getting Started</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-09">2025-05-09</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/linuxfest-northwest-2025-recap/ target="_blank">
+					<h2>VictoriaMetrics Connects with the Open Source Community at LinuxFest Northwest 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-06">2025-05-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-graceful-shutdown/ target="_blank">
+					<h2>Graceful Shutdown in Go: Practical Patterns</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-02">2025-05-02</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-tech-talk-stream-victorialogs-gaps-gains-growth/ target="_blank">
+					<h2>VictoriaLogs: Gaps, Gains &amp; Growth</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-29">2025-04-29</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/prometheus-monitoring-function-operator-modifier/ target="_blank">
+					<h2>Prometheus Monitoring: Functions, Subqueries, Operators, and Modifiers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-25">2025-04-25</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q1-2025-whats-new-victoriametrics-cloud/ target="_blank">
+					<h2>VictoriaMetrics Cloud: What&#39;s New in Q1 2025?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-25">2025-04-25</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/dont-default-to-microservices-you-will-thank-us-later/ target="_blank">
+					<h2>Don’t default to microservices: You’ll thank us later!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-18">2025-04-18</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/kubernetes-cpu-go-gomaxprocs/ target="_blank">
+					<h2>Container CPU Requests &amp; Limits Explained with GOMAXPROCS Tuning</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-11">2025-04-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-grpc-basic-streaming-interceptor/ target="_blank">
+					<h2>gRPC in Go: Streaming RPCs, Interceptors, and Metadata</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-28">2025-03-28</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-tech-talk-stream-from-chaos-to-clarity-with-victorialogs/ target="_blank">
+					<h2>From Chaos to Clarity with VictoriaLogs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-25">2025-03-25</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/alerting-recording-rules-alertmanager/ target="_blank">
+					<h2>Prometheus Alerting 101: Rules, Recording Rules, and Alertmanager</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-18">2025-03-18</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/heading-to-london-meet-our-team-at-kubecon-europe-2025/ target="_blank">
+					<h2>Heading to London: Meet Our Team at KubeCon Europe 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-11">2025-03-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmselect-how-it-works/ target="_blank">
+					<h2>Inside vmselect: The Query Processing Engine of VictoriaMetrics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-07">2025-03-07</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/meet-our-team-at-scale-22x/ target="_blank">
+					<h2>Meet Our Team at Scale 22x</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-06">2025-03-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-protobuf-basic/ target="_blank">
+					<h2>Practical Protobuf - From Basic to Best Practices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-27">2025-02-27</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victorialogs-status-update-heading-towards-the-cluster-version/ target="_blank">
+					<h2>VictoriaLogs Status Update: Heading Towards the Cluster Version</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-26">2025-02-26</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/statement-feb-2025/ target="_blank">
+					<h2>24th of February 2025 Statement: VictoriaMetrics Stands with Ukraine!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-24">2025-02-24</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/prometheus-monitoring-metrics-counters-gauges-histogram-summaries/ target="_blank">
+					<h2>Prometheus Metrics Explained: Counters, Gauges, Histograms &amp; Summaries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-21">2025-02-21</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/prometheus-monitoring-instant-range-query/ target="_blank">
+					<h2>Prometheus Monitoring: Instant Queries and Range Queries Explained</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-21">2025-02-21</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/300-percent-growth-in-2024-join-our-team-in-2025/ target="_blank">
+					<h2>300%&#43; Growth in 2024: Join Our Team in 2025!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-20">2025-02-20</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/fosdem-2025/ target="_blank">
+					<h2>FOSDEM 2025 recap</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-14">2025-02-14</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-protobuf/ target="_blank">
+					<h2>How Protobuf Works—The Art of Data Encoding</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-07">2025-02-07</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/opentelemetry-prometheus-and-more/ target="_blank">
+					<h2>OpenTelemetry, Prometheus, and More: Which Is Better for Metrics Collection and Propagation?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-05">2025-02-05</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmstorage-how-it-handles-query-requests/ target="_blank">
+					<h2>How vmstorage Handles Query Requests From vmselect</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-03">2025-02-03</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmstorage-how-indexdb-works/ target="_blank">
+					<h2>How vmstorage&#39;s IndexDB Works</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-02">2025-02-02</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-tech-talk-stream-a-deep-dive-into-blackbox-monitoring/ target="_blank">
+					<h2>VictoriaMetrics Tech Talk Stream: A Deep Dive into Blackbox Monitoring</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-29">2025-01-29</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-http2/ target="_blank">
+					<h2>How HTTP/2 Works and How to Enable It in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-10">2025-01-10</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q4-2024-whats-new-victoriametrics-cloud/ target="_blank">
+					<h2>VictoriaMetrics Cloud: What&#39;s New in Q4 2024?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-02">2025-01-02</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmstorage-retention-merging-deduplication/ target="_blank">
+					<h2>How vmstorage Processes Data: Retention, Merging, Deduplication,...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-31">2024-12-31</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmstorage-how-it-handles-data-ingestion/ target="_blank">
+					<h2>How vmstorage Handles Data Ingestion From vminsert</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-30">2024-12-30</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vminsert-how-it-works/ target="_blank">
+					<h2>When Metrics Meet vminsert: A Data-Delivery Story</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-27">2024-12-27</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-net-rpc/ target="_blank">
+					<h2>From net/rpc to gRPC in Go Applications</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-20">2024-12-20</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-helps-ihi-terrasun-win-big-in-vegas-on-1.2b-clean-energy-project/ target="_blank">
+					<h2>VictoriaMetrics helps IHI Terrasun Win Big in Vegas on $1.2B Clean Energy Project</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-18">2024-12-18</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-weak-pointer/ target="_blank">
+					<h2>Weak Pointers in Go: Why They Matter Now</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-29">2024-11-29</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmagent-how-it-works/ target="_blank">
+					<h2>How vmagent Collects and Ships Metrics Fast with Aggregation, Deduplication, and More</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-15">2024-11-15</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-efficiently-simplifies-log-complexity-with-victorialogs/ target="_blank">
+					<h2>VictoriaMetrics Efficiently Simplifies Log Complexity with VictoriaLogs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-13">2024-11-13</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-anomaly-detection-updates-2024-q3/ target="_blank">
+					<h2>VictoriaMetrics Anomaly Detection: What&#39;s New in Q3 2024?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-11">2024-11-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-runtime-finalizer-keepalive/ target="_blank">
+					<h2>Go Runtime Finalizer and Keep Alive</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-08">2024-11-08</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-sync-once/ target="_blank">
+					<h2>Go sync.Once is Simple... Does It Really?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-01">2024-11-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/meet-our-team-at-kubecon-north-america-2024/ target="_blank">
+					<h2>Meet Our Team at KubeCon North America 2024</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-28">2024-10-28</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/monitoring-azure-aks-azure-linux-with-victoriametrics/ target="_blank">
+					<h2>Monitoring Azure AKS &amp; Azure Linux with VictoriaMetrics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-22">2024-10-22</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-io-closer-seeker-readfrom-writeto/ target="_blank">
+					<h2>Go I/O Closer, Seeker, WriterTo, and ReaderFrom</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-18">2024-10-18</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-io-reader-writer/ target="_blank">
+					<h2>Go I/O Readers, Writers, and Data in Motion</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-11">2024-10-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-sync-map/ target="_blank">
+					<h2>Go sync.Map: The Right Tool for the Right Job</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-04">2024-10-04</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-unique-package-intern-string/ target="_blank">
+					<h2>Inside Go&#39;s Unique Package: String Interning Simplified</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-30">2024-09-30</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-singleflight/ target="_blank">
+					<h2>Go Singleflight Melts in Your Code, Not in Your DB</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-20">2024-09-20</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-sync-cond/ target="_blank">
+					<h2>Go sync.Cond, the Most Overlooked Sync Mechanism</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-13">2024-09-13</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/the-rise-of-open-source-time-series-databases/ target="_blank">
+					<h2>The Rise of Open Source Time Series Databases</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-11">2024-09-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-sync-waitgroup/ target="_blank">
+					<h2>Go sync.WaitGroup and The Alignment Problem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-06">2024-09-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/churn-rate-in-victoriametrics/ target="_blank">
+					<h2>Community Question: High Churn Rate Without New Time Series?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-05">2024-09-05</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/open-source-software-licenses-vs-revenue-growth-rates/ target="_blank">
+					<h2>Open Source Software Licenses vs Revenue Growth Rates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-30">2024-08-30</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-slice/ target="_blank">
+					<h2>Slices in Go: Grow Big or Go Home</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-30">2024-08-30</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-sync-pool/ target="_blank">
+					<h2>Go sync.Pool and the Mechanics Behind It</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-23">2024-08-23</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-cloud-reduces-monitoring-costs-by-5x/ target="_blank">
+					<h2>VictoriaMetrics Cloud reduces monitoring costs by 5x</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-20">2024-08-20</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-map/ target="_blank">
+					<h2>Go Maps Explained: How Key-Value Pairs Are Actually Stored</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-16">2024-08-16</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-sync-mutex/ target="_blank">
+					<h2>Go sync.Mutex: Normal and Starvation Mode</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-09">2024-08-09</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/troubleshooting-tsdb/ target="_blank">
+					<h2>Troubleshooting Time Series Databases: Where Did My Metrics Go?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-09">2024-08-09</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/go-array/ target="_blank">
+					<h2>How Go Arrays Work and Get Tricky with For-Range</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-02">2024-08-02</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/defer-in-go/ target="_blank">
+					<h2>Golang Defer: From Basic To Traps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-26">2024-07-26</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-anomaly-detection-updates-2024-q1-2/ target="_blank">
+					<h2>VictoriaMetrics Anomaly Detection: What&#39;s New in H1 2024?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-17">2024-07-17</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vendoring-go-mod-vendor/ target="_blank">
+					<h2>Vendoring, or go mod vendor: What Is It?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-16">2024-07-16</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q2-2024-round-up-victoriametrics-and-victorialogs-updates/ target="_blank">
+					<h2>Q2 2024 Round Up: VictoriaMetrics &amp; VictoriaLogs Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-05">2024-07-05</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/proxmox-monitoring-with-vmcloud/ target="_blank">
+					<h2>Monitoring Proxmox VE via VictoriaMetrics Cloud</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-19">2024-06-19</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/introduction-to-managed-monitoring/ target="_blank">
+					<h2>Introduction to Managed Monitoring</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-12">2024-06-12</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/reducing-costs-p2/ target="_blank">
+					<h2>How to reduce expenses on monitoring: be smarter about data</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-06">2024-06-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-slashes-data-storage-bills-with-worlds-most-cost-efficient-monitoring/ target="_blank">
+					<h2>VictoriaMetrics slashes data storage bills by 90% with world’s most cost-efficient monitoring</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-30">2024-05-30</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/using-victoriametrics-and-ilert/ target="_blank">
+					<h2>How ilert Can Help Enhance Your Monitoring With Its VictoriaMetrics Integration</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-24">2024-05-24</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/comparing-agents-for-scraping/ target="_blank">
+					<h2>Comparing Performance and Resource Usage: Grafana Agent vs. Prometheus Agent Mode vs. VictoriaMetrics vmagent</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-27">2024-03-27</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-machine-learning-takes-monitoring-to-the-next-level/ target="_blank">
+					<h2>VictoriaMetrics Machine Learning takes monitoring to the next level</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-19">2024-03-19</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/reducing-costs-p1/ target="_blank">
+					<h2>How to reduce expenses on monitoring: Swapping in VictoriaMetrics for Prometheus</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-13">2024-02-13</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/5-year-anniversary-celebrations/ target="_blank">
+					<h2>5 Year Anniversary Celebrations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-21">2023-12-21</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/tsdb-performance-techniques-sync-pool/ target="_blank">
+					<h2>Performance optimization techniques in time series databases: sync.Pool for CPU-bound operations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-08">2023-12-08</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-enterprise-the-worlds-fastest-open-source-based-monitoring-try-it-for-free/ target="_blank">
+					<h2>VictoriaMetrics Enterprise, the World’s Fastest Open-Source-Based Monitoring: Try It for Free</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-06">2023-12-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-anomaly-detection-handbook-chapter-3/ target="_blank">
+					<h2>Anomaly Detection for Time Series Data: Techniques and Models</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-29">2023-11-29</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/tsdb-performance-techniques-limiting-concurrency/ target="_blank">
+					<h2>Performance optimization techniques in time series databases: Limiting concurrency</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-24">2023-11-24</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/tsdb-performance-techniques-functions-caching/ target="_blank">
+					<h2>Performance optimization techniques in time series databases: function caching</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-17">2023-11-17</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/tsdb-performance-techniques-strings-interning/ target="_blank">
+					<h2>Performance optimization techniques in time series databases: strings interning</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-07">2023-11-07</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/momentum-2023/ target="_blank">
+					<h2>Momentum: Announcing 268 Million Downloads &amp; 320% Growth in 2023</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-03">2023-11-03</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-anomaly-detection-handbook-chapter-2/ target="_blank">
+					<h2>Anomaly Detection for Time Series Data: Anomaly Types</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-27">2023-10-27</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-anomaly-detection-handbook-chapter-1/ target="_blank">
+					<h2>Anomaly Detection for Time Series Data: An Introduction</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-18">2023-10-18</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/lts-status-h2-2023/ target="_blank">
+					<h2>VictoriaMetrics Long-Term Support (LTS): Current State</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-15">2023-10-15</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/monitoring-kubernetes-costs-with-opencost-and-victoriametrics/ target="_blank">
+					<h2>Monitoring Kubernetes costs with OpenCost and VictoriaMetrics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-09">2023-10-09</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/bsl-is-short-term-fix-why-we-choose-open-source/ target="_blank">
+					<h2>The BSL is a short-term fix: Why we choose open source</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-08">2023-09-08</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/about-logging/ target="_blank">
+					<h2>Why we generate &amp; collect logs: About the usability &amp; cost of modern logging systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-01">2023-08-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q2-round-up-roadmap-review-q3-2023-look-ahead/ target="_blank">
+					<h2>Q2 Round Up: Roadmap Review &amp; Q3 2023 Look Ahead</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-12">2023-07-12</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victorialogs-release/ target="_blank">
+					<h2>VictoriaMetrics bolsters move from monitoring to observability with VictoriaLogs release</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-22">2023-06-22</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/never-firing-alerts/ target="_blank">
+					<h2>Never-firing alerts: What they are and how to deal with them</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-19">2023-05-19</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/using-victoriametrics-and-netdata/ target="_blank">
+					<h2>How to use VictoriaMetrics for monitoring with Netdata Agent</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-08">2023-05-08</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q1-roadmap-review-2023/ target="_blank">
+					<h2>Q1 Roadmap Review &amp; Q2 2023 Look Ahead</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-19">2023-04-19</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/graphite-query-language-opensource/ target="_blank">
+					<h2>Releasing Graphite Query Language in Open Source VictoriaMetrics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-19">2023-04-19</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-remote-write/ target="_blank">
+					<h2>Save network costs with VictoriaMetrics remote write protocol</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-08">2023-03-08</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/statement-feb-2023/ target="_blank">
+					<h2>24th of February 2023 - Statement</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-24">2023-02-24</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/lts-status-h1-2023/ target="_blank">
+					<h2>VictoriaMetrics Long-Term Support (LTS): Commitment, Current and Next LTS Versions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-17">2023-02-17</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/rules-replay/ target="_blank">
+					<h2>Rules backfilling via vmalert</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-31">2023-01-31</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/momentum-2022/ target="_blank">
+					<h2>Monitoring the Universe &amp; Beyond: Our 2022 in Review</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-25">2023-01-25</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/benchmark-100m/ target="_blank">
+					<h2>Monitoring benchmark: how to generate 100 million samples/s of production-like data</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-16">2023-01-16</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/latest-updates-for-backup-compnents-2023-q1/ target="_blank">
+					<h2>Latest updates about backup components of VictoriaMetrics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-09">2023-01-09</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/conferences-2022/ target="_blank">
+					<h2>Meet the VictoriaMetrics team at KubeCon NA, OSMC &amp; OSA Con 2022</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-23">2022-10-23</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/cardinality-explorer/ target="_blank">
+					<h2>Cardinality explorer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-04">2022-10-04</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-monitoring/ target="_blank">
+					<h2>VictoriaMetrics Monitoring</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-22">2022-09-22</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/mimir-benchmark/ target="_blank">
+					<h2>Grafana Mimir and VictoriaMetrics: performance tests</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-09">2022-09-09</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/storage-node-decommission/ target="_blank">
+					<h2>How to Decommission a vmstorage Node from a VictoriaMetrics Cluster</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-04">2022-08-04</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/the-cost-of-scale/ target="_blank">
+					<h2>How to Choose a Scalable Open Source Time Series Database: The Cost of Scale</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-16">2022-05-16</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vmagent-high-availability-examples/ target="_blank">
+					<h2>vmagent High-Availability Examples</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-10">2022-05-10</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/april-2022-company-status-update/ target="_blank">
+					<h2>Status Update: Our Team Is Safe and VictoriaMetrics Continues Full Speed Ahead</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-15">2022-04-15</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/q1-2022-release-roundup/ target="_blank">
+					<h2>Q1/2022 Release Roundup: Announcing VictoriaMetrics v1.76 &amp; More</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-08">2022-04-08</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/managed-prometheus-pricing/ target="_blank">
+					<h2>Pricing comparison for Managed Prometheus</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-04">2022-04-04</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/vm-on-arm/ target="_blank">
+					<h2>Running VictoriaMetrics on ARM-based processors</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-11">2022-03-11</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/no-war/ target="_blank">
+					<h2>VictoriaMetrics Statement re: Attack on Ukraine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-28">2022-02-28</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/managed-victoriametrics-announcement/ target="_blank">
+					<h2>Managed VictoriaMetrics announcement</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-14">2022-02-14</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/remote-write-benchmark/ target="_blank">
+					<h2>Benchmarking Prometheus-compatible time series databases</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-17">2022-01-17</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/user-community-2021/ target="_blank">
+					<h2>Vicky User Community 2021: Thank You for the Contributions!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-07">2022-01-07</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/features-roundup-2021/ target="_blank">
+					<h2>What’s new in VictoriaMetrics 2021?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-07">2022-01-07</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/momentum-2021/ target="_blank">
+					<h2>With 36M&#43; Downloads, VictoriaMetrics Skyrockets to New Heights: 2021 in Review</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-06">2022-01-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/piros/ target="_blank">
+					<h2>Piros | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/allenta/ target="_blank">
+					<h2>Allenta | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/cloudraft/ target="_blank">
+					<h2>CloudRaft | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/case-studies/sensedia/ target="_blank">
+					<h2>Sensedia &amp; VictoriaMetrics: API-compatible Efficient Storage</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/case-studies/dsv/ target="_blank">
+					<h2>Scalable Prometheus: Why DSV Chose VictoriaMetrics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/sensor-factory/ target="_blank">
+					<h2>Sensor Factory | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/erythix/ target="_blank">
+					<h2>Erythix | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/case-studies/groove-x/ target="_blank">
+					<h2>Groove X &amp; VictoriaMetrics: Faster Device Health Monitoring</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/case-studies/spotify/ target="_blank">
+					<h2>Scaled &amp; Performant Monitoring at Spotify with VictoriaMetrics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/case-studies/grammarly/ target="_blank">
+					<h2>Grammarly &amp; VictoriaMetrics: 10× Lower Costs &amp; Direct Access</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/zelarsoft/ target="_blank">
+					<h2>Zelarsoft | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/case-studies/dfki/ target="_blank">
+					<h2>DFKI &amp; VictoriaMetrics: Efficient Long-Term Metric Storage</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/niubits/ target="_blank">
+					<h2>Niubits | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/megazone-cloud/ target="_blank">
+					<h2>Megazone Cloud | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/cogito-software/ target="_blank">
+					<h2>Cogito Software | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/bajau/ target="_blank">
+					<h2>Bajau | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/case-studies/dig-security/ target="_blank">
+					<h2>Find Out Why Dig Security Chose VictoriaMetrics!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/ness/ target="_blank">
+					<h2>Ness | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/alpha-data/ target="_blank">
+					<h2>Alpha Data | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/sios/ target="_blank">
+					<h2>SIOS Technology | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/4data/ target="_blank">
+					<h2>4data | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/partners/proservability/ target="_blank">
+					<h2>Proservability | VictoriaMetrics Partner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/case-studies/mongodb/ target="_blank">
+					<h2>MongoDB</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/support/community-support/ target="_blank">
+					<h2>VictoriaMetrics Community Support | Join the Conversation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/support/enterprise-support/ target="_blank">
+					<h2>VictoriaMetrics Enterprise Support | 24/7 Expert Assistance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://victoriametrics.com/" target="_blank">VictoriaMetrics: Simple, Reliable &amp; Efficient Observability on VictoriaMetrics</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="2fu-bL2T7VIZaPTnQj7kWwcZKfBoUo8Df-6OekQO7h5Ns9imPF22pE29100TfJ-HlGK31eYdT7t_tEDJmPjHc31MWv3iqEprIT9fJct3Dr8M6LXlQm7o-E46p8PrWYxmLCrcHuxL5TCx4D5If9ueASmJkKC2m-SWWT8Hb0760oeXcSD-wkbnPO3-aDGC_GdAZmHfjp-IV41tQJ0c6B8bl9WGg1Wx9F5Kz6k9CFK76JoUXobKmXHl7K3nNectJZiSz8zKudeWZAfapagN0eCzebb8Q8qyF7iC0TwfAHEPznt3wuqOUq_zoLoBDk_h2z-a5pnv4ajwYRTb0KNEt610gw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

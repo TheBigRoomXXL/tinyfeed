@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-JbRJJ9Ldg4kGmCNikcC-3rPO0iQtfx0wmOZfxbUwjmSldV9BFQMCXOe-u6gMUmR91W6MVrBc_M3dl4BhTI53-jyhcNLBu7KLT3ArHsv2qjTiBgyNsF4iNDzwbuhswTDYn4C9a5F0oBXEXO7ewfkA6KRPihpMeJEBUZ28J6jLhTUwKXJexGk93KVm_duVwmfwmqHQJtFTq4OFXwu_3y3wUrL54E5ZW0MdUzo-ATzzntrC5190UjlyYLhwX6HRvMK9aopbFVZGxBCuIbeMlCiS9t4zKPAJbwhkYAJOmKIohPOQfvelesyzmTSHL1O8-2GFoN44Um7vJ9gHjLawK9Pqeg==' ;
+		script-src 'nonce-JbRJJ9Ldg4kGmCNikcC-3rPO0iQtfx0wmOZfxbUwjmSldV9BFQMCXOe-u6gMUmR91W6MVrBc_M3dl4BhTI53-jyhcNLBu7KLT3ArHsv2qjTiBgyNsF4iNDzwbuhswTDYn4C9a5F0oBXEXO7ewfkA6KRPihpMeJEBUZ28J6jLhTUwKXJexGk93KVm_duVwmfwmqHQJtFTq4OFXwu_3y3wUrL54E5ZW0MdUzo-ATzzntrC5190UjlyYLhwX6HRvMK9aopbFVZGxBCuIbeMlCiS9t4zKPAJbwhkYAJOmKIohPOQfvelesyzmTSHL1O8-2GFoN44Um7vJ9gHjLawK9Pqeg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="JbRJJ9Ldg4kGmCNikcC-3rPO0iQtfx0wmOZfxbUwjmSldV9BFQMCXOe-u6gMUmR91W6MVrBc_M3dl4BhTI53-jyhcNLBu7KLT3ArHsv2qjTiBgyNsF4iNDzwbuhswTDYn4C9a5F0oBXEXO7ewfkA6KRPihpMeJEBUZ28J6jLhTUwKXJexGk93KVm_duVwmfwmqHQJtFTq4OFXwu_3y3wUrL54E5ZW0MdUzo-ATzzntrC5190UjlyYLhwX6HRvMK9aopbFVZGxBCuIbeMlCiS9t4zKPAJbwhkYAJOmKIohPOQfvelesyzmTSHL1O8-2GFoN44Um7vJ9gHjLawK9Pqeg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://bitbashing.io/am-radio.html target="_blank">
+					<h2>Simulating Airband AM Radios</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-19">2026-06-19</time>
+					|
+					<a href="https://bitbashing.io" target="_blank">bitbashing.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bitbashing.io/async-arc.html target="_blank">
+					<h2>Arc Troopers: Adventures in Async Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-18">2025-08-18</time>
+					|
+					<a href="https://bitbashing.io" target="_blank">bitbashing.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bitbashing.io/haskell-concurrency.html target="_blank">
+					<h2>Concurrency in Haskell: Fast, Simple, Correct</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-13">2025-04-13</time>
+					|
+					<a href="https://bitbashing.io" target="_blank">bitbashing.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bitbashing.io/rust-http.html target="_blank">
+					<h2>Unsafe at Any Speed: Tradeoffs and values in the Rust ecosystem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-24">2024-01-24</time>
+					|
+					<a href="https://bitbashing.io" target="_blank">bitbashing.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bitbashing.io/gc-for-systems-programmers.html target="_blank">
+					<h2>Garbage Collection for Systems Programmers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-27">2023-09-27</time>
+					|
+					<a href="https://bitbashing.io" target="_blank">bitbashing.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bitbashing.io/async-rust.html target="_blank">
+					<h2>Async Rust Is A Bad Language</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-08">2023-09-08</time>
+					|
+					<a href="https://bitbashing.io" target="_blank">bitbashing.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bitbashing.io/stating-the-obvious-error-handling.html target="_blank">
+					<h2>Stating the Obvious: Error Handling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-22">2022-11-22</time>
+					|
+					<a href="https://bitbashing.io" target="_blank">bitbashing.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bitbashing.io/modern-latex.html target="_blank">
+					<h2>Modern LaTeX</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-25">2020-10-25</time>
+					|
+					<a href="https://bitbashing.io" target="_blank">bitbashing.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bitbashing.io/concurrency-primer.html target="_blank">
+					<h2>What every systems programmer should know about concurrency</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-11-29">2017-11-29</time>
+					|
+					<a href="https://bitbashing.io" target="_blank">bitbashing.io</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://bitbashing.io/" target="_blank">Bit Bashing</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="JbRJJ9Ldg4kGmCNikcC-3rPO0iQtfx0wmOZfxbUwjmSldV9BFQMCXOe-u6gMUmR91W6MVrBc_M3dl4BhTI53-jyhcNLBu7KLT3ArHsv2qjTiBgyNsF4iNDzwbuhswTDYn4C9a5F0oBXEXO7ewfkA6KRPihpMeJEBUZ28J6jLhTUwKXJexGk93KVm_duVwmfwmqHQJtFTq4OFXwu_3y3wUrL54E5ZW0MdUzo-ATzzntrC5190UjlyYLhwX6HRvMK9aopbFVZGxBCuIbeMlCiS9t4zKPAJbwhkYAJOmKIohPOQfvelesyzmTSHL1O8-2GFoN44Um7vJ9gHjLawK9Pqeg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

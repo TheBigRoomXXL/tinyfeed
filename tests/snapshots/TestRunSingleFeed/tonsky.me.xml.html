@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-NJK077KjTbTPemK7OmTZVY7NOeEkVNcGd4tvJU6kATwP1Yj8sYrK91uf8QpC4rnxmRi87h73qGWV1Dbe85yZ4FhFqGjvWzr7dlzosx72WKwN3QlNxiPZA5CJ3pGopRMrRsNUy_9oJB1mdSNCYdlrs4tA0MNbWx5pYp4LiDnqg_Dvfl9ppahFVB_CaGbBX3hHz-ahDo4Yg85alkN6Pdte_htPzq9viQAExaRDlbfADbppEJ7mq-TkCMKTr8MspmQVrGreU2nf6zrzd5sldRVbx1bdlg796EkFrozYJdtg2tFYWAriFvEh3bdOl1Lytn9qVsnKaWkvvWYwyHS0QM38Ng==' ;
+		script-src 'nonce-NJK077KjTbTPemK7OmTZVY7NOeEkVNcGd4tvJU6kATwP1Yj8sYrK91uf8QpC4rnxmRi87h73qGWV1Dbe85yZ4FhFqGjvWzr7dlzosx72WKwN3QlNxiPZA5CJ3pGopRMrRsNUy_9oJB1mdSNCYdlrs4tA0MNbWx5pYp4LiDnqg_Dvfl9ppahFVB_CaGbBX3hHz-ahDo4Yg85alkN6Pdte_htPzq9viQAExaRDlbfADbppEJ7mq-TkCMKTr8MspmQVrGreU2nf6zrzd5sldRVbx1bdlg796EkFrozYJdtg2tFYWAriFvEh3bdOl1Lytn9qVsnKaWkvvWYwyHS0QM38Ng==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="NJK077KjTbTPemK7OmTZVY7NOeEkVNcGd4tvJU6kATwP1Yj8sYrK91uf8QpC4rnxmRi87h73qGWV1Dbe85yZ4FhFqGjvWzr7dlzosx72WKwN3QlNxiPZA5CJ3pGopRMrRsNUy_9oJB1mdSNCYdlrs4tA0MNbWx5pYp4LiDnqg_Dvfl9ppahFVB_CaGbBX3hHz-ahDo4Yg85alkN6Pdte_htPzq9viQAExaRDlbfADbppEJ7mq-TkCMKTr8MspmQVrGreU2nf6zrzd5sldRVbx1bdlg796EkFrozYJdtg2tFYWAriFvEh3bdOl1Lytn9qVsnKaWkvvWYwyHS0QM38Ng==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://tonsky.me/design/#2026-07-squawkbox target="_blank">
+					<h2>Logo: Squawkbox</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-14">2026-07-14</time>
+					|
+					<a href="https://tonsky.me" target="_blank">tonsky.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://tonsky.me/blog/every-frame-perfect/ target="_blank">
+					<h2>Every Frame Perfect</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-13">2026-06-13</time>
+					|
+					<a href="https://tonsky.me" target="_blank">tonsky.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://tonsky.me/blog/fall-of-native/ target="_blank">
+					<h2>Claude is an Electron App because we’ve lost native</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-03">2026-03-03</time>
+					|
+					<a href="https://tonsky.me" target="_blank">tonsky.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://tonsky.me/talks/#2026-01-15 target="_blank">
+					<h2>Podcast: На Маке нет никаких шкафов @ Думаем дальше</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-15">2026-01-15</time>
+					|
+					<a href="https://tonsky.me" target="_blank">tonsky.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://tonsky.me/blog/tahoe-icons/ target="_blank">
+					<h2>It’s hard to justify Tahoe icons</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-05">2026-01-05</time>
+					|
+					<a href="https://tonsky.me" target="_blank">tonsky.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://tonsky.me/blog/clj-simple-stats/ target="_blank">
+					<h2>Statistics made simple</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-15">2025-12-15</time>
+					|
+					<a href="https://tonsky.me" target="_blank">tonsky.me</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://tonsky.me/" target="_blank">tonsky.me</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="NJK077KjTbTPemK7OmTZVY7NOeEkVNcGd4tvJU6kATwP1Yj8sYrK91uf8QpC4rnxmRi87h73qGWV1Dbe85yZ4FhFqGjvWzr7dlzosx72WKwN3QlNxiPZA5CJ3pGopRMrRsNUy_9oJB1mdSNCYdlrs4tA0MNbWx5pYp4LiDnqg_Dvfl9ppahFVB_CaGbBX3hHz-ahDo4Yg85alkN6Pdte_htPzq9viQAExaRDlbfADbppEJ7mq-TkCMKTr8MspmQVrGreU2nf6zrzd5sldRVbx1bdlg796EkFrozYJdtg2tFYWAriFvEh3bdOl1Lytn9qVsnKaWkvvWYwyHS0QM38Ng==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

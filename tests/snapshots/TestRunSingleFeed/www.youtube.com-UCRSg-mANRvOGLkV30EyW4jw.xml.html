@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-HCzHkRyMDw15aQy7i7pln8CikgKopnnK90j5zXZaeywK1ZzZfT6dXRNMAdzlAtayDuYUg76ZW9CivA8sW9O6zf6YOH7Coj9Z5jh3r-WVXzGvX6eJwvdC-pa4qu09wcTRFpL0y9_0VN4aJjpEuBLLjR59DEQUNyKudZuOxEO2c_pFBTomfJbw8J36QIlMRR-W7HQjXM35I2yQR_4s1QKAK4dAwwlGzOi-k2U2PUVBIN3vZAYxrc_tVr1kZb641WsIcaf2cJlXPHNrAKTt3nuyj79LzDQCYQsNpKi72RZD4ixBTUMBlpGLuk70MuyHMkqUwk7kvasV0z-BY9uT_9jmjg==' ;
+		script-src 'nonce-HCzHkRyMDw15aQy7i7pln8CikgKopnnK90j5zXZaeywK1ZzZfT6dXRNMAdzlAtayDuYUg76ZW9CivA8sW9O6zf6YOH7Coj9Z5jh3r-WVXzGvX6eJwvdC-pa4qu09wcTRFpL0y9_0VN4aJjpEuBLLjR59DEQUNyKudZuOxEO2c_pFBTomfJbw8J36QIlMRR-W7HQjXM35I2yQR_4s1QKAK4dAwwlGzOi-k2U2PUVBIN3vZAYxrc_tVr1kZb641WsIcaf2cJlXPHNrAKTt3nuyj79LzDQCYQsNpKi72RZD4ixBTUMBlpGLuk70MuyHMkqUwk7kvasV0z-BY9uT_9jmjg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="HCzHkRyMDw15aQy7i7pln8CikgKopnnK90j5zXZaeywK1ZzZfT6dXRNMAdzlAtayDuYUg76ZW9CivA8sW9O6zf6YOH7Coj9Z5jh3r-WVXzGvX6eJwvdC-pa4qu09wcTRFpL0y9_0VN4aJjpEuBLLjR59DEQUNyKudZuOxEO2c_pFBTomfJbw8J36QIlMRR-W7HQjXM35I2yQR_4s1QKAK4dAwwlGzOi-k2U2PUVBIN3vZAYxrc_tVr1kZb641WsIcaf2cJlXPHNrAKTt3nuyj79LzDQCYQsNpKi72RZD4ixBTUMBlpGLuk70MuyHMkqUwk7kvasV0z-BY9uT_9jmjg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;p1FvV-jH1_o target="_blank">
+					<h2>Waterfall &amp; Underground Ruins - Ithya Original Soundtrack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-04">2026-07-04</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;gazYvkjRUQk target="_blank">
+					<h2>River Boat - Relaxing Fantasy Music [no AI]</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-09">2026-05-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;Kuc-9gAmQ9I target="_blank">
+					<h2>Winter Adventures - Fantasy Music for Inspiration [no AI]</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-04">2026-02-04</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;Xgxc8G9Cdb8 target="_blank">
+					<h2>Ithya: Magic Studies - Winter Update ❄️</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-19">2025-12-19</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/Gg-78KU2j-k target="_blank">
+					<h2>Ithya: Magic Studies - Autumn Update</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-03">2025-11-03</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;iKcHuQRdJJk target="_blank">
+					<h2>Destined for Adventure - Ithya Original Soundtrack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-05">2025-09-05</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;Pgk5CwKzJTk target="_blank">
+					<h2>Endless Wanderings - Ithya Original Soundtrack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-20">2025-06-20</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;BzvjejYaacw target="_blank">
+					<h2>Ithya: Magic Studies - Original Soundtrack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-07">2025-06-07</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;cXI85VPm1Kc target="_blank">
+					<h2>Ithya: Magic Studies - Official Release Trailer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-07">2025-05-07</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;2bsJrVkKKKM target="_blank">
+					<h2>Ithya: Magic Studies - Launch Day Premiere</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-07">2025-05-07</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/0IqacagR3dM target="_blank">
+					<h2>Ithya Magic Studies Trailer #cozygames #indiegame #fantasymusic</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-05">2025-05-05</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;w4OoYUNUQCM target="_blank">
+					<h2>20min Study Session with Fantasy Music</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-03">2025-05-03</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/4ZLeLcwomyA target="_blank">
+					<h2>Making a Fantasy City  #cozygames #fantasymusic #animation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-02">2025-05-02</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;P6pO9J7b4AU target="_blank">
+					<h2>Ithya: Magic Studies - Release Date Trailer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-23">2025-04-23</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;GkSHE6wOzX0 target="_blank">
+					<h2>3 Hours of Fantasy Music - Best of 2024 [no AI]</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-30">2024-12-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCRSg-mANRvOGLkV30EyW4jw" target="_blank">Blue Turtle</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="HCzHkRyMDw15aQy7i7pln8CikgKopnnK90j5zXZaeywK1ZzZfT6dXRNMAdzlAtayDuYUg76ZW9CivA8sW9O6zf6YOH7Coj9Z5jh3r-WVXzGvX6eJwvdC-pa4qu09wcTRFpL0y9_0VN4aJjpEuBLLjR59DEQUNyKudZuOxEO2c_pFBTomfJbw8J36QIlMRR-W7HQjXM35I2yQR_4s1QKAK4dAwwlGzOi-k2U2PUVBIN3vZAYxrc_tVr1kZb641WsIcaf2cJlXPHNrAKTt3nuyj79LzDQCYQsNpKi72RZD4ixBTUMBlpGLuk70MuyHMkqUwk7kvasV0z-BY9uT_9jmjg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

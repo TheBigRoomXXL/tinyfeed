@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-6eLZ3krS1EEePF-33vDBOceCkx_dUeJe4z2OjzoQ2DuzuxndRzRa4CUesMvm01HE3V8GqyoYozOG5VdvBQqcnhxt50KDSaDSt8E2OiK6xG-rTaTfoeS0N5kc8EgTGBYELw47R7eBnSq73_k-DnQw_ah0H9o3mpRcjdyu1sbBoOicUQw-opne5eIGrd-V4sJkmKzDXEKjH_X7RfsVsoB5O-cF8zHODPS7eYzuGKupoOcJ63SzbHoC5vZs_8M2sJMeh0nhq2eRv2v_gbCIOpd1O8SBEeZjJMH3MHC8FzDnApAKdMvgPTpe9FowfcA-OImgC23NJaFhOXoOor2boKVq8g==' ;
+		script-src 'nonce-6eLZ3krS1EEePF-33vDBOceCkx_dUeJe4z2OjzoQ2DuzuxndRzRa4CUesMvm01HE3V8GqyoYozOG5VdvBQqcnhxt50KDSaDSt8E2OiK6xG-rTaTfoeS0N5kc8EgTGBYELw47R7eBnSq73_k-DnQw_ah0H9o3mpRcjdyu1sbBoOicUQw-opne5eIGrd-V4sJkmKzDXEKjH_X7RfsVsoB5O-cF8zHODPS7eYzuGKupoOcJ63SzbHoC5vZs_8M2sJMeh0nhq2eRv2v_gbCIOpd1O8SBEeZjJMH3MHC8FzDnApAKdMvgPTpe9FowfcA-OImgC23NJaFhOXoOor2boKVq8g==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="6eLZ3krS1EEePF-33vDBOceCkx_dUeJe4z2OjzoQ2DuzuxndRzRa4CUesMvm01HE3V8GqyoYozOG5VdvBQqcnhxt50KDSaDSt8E2OiK6xG-rTaTfoeS0N5kc8EgTGBYELw47R7eBnSq73_k-DnQw_ah0H9o3mpRcjdyu1sbBoOicUQw-opne5eIGrd-V4sJkmKzDXEKjH_X7RfsVsoB5O-cF8zHODPS7eYzuGKupoOcJ63SzbHoC5vZs_8M2sJMeh0nhq2eRv2v_gbCIOpd1O8SBEeZjJMH3MHC8FzDnApAKdMvgPTpe9FowfcA-OImgC23NJaFhOXoOor2boKVq8g==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;5rh_DswKRqM target="_blank">
+					<h2>Photo-ablative Micromachining (and Other Contagious Diseases)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;BMCxCuTc1MA target="_blank">
+					<h2>What if angles were metric?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-14">2026-08-14</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;reDaHg4QAH0 target="_blank">
+					<h2>This clever mechanism can double its length</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-28">2026-05-28</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;CDiRZrl7ntM target="_blank">
+					<h2>I built a better bandsaw</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-20">2026-03-20</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;8UlASBVusb8 target="_blank">
+					<h2>Can I make a precision component from scrap metal?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-04">2025-12-04</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;ExNgwQxWs44 target="_blank">
+					<h2>Are gears that bend, better?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-30">2025-10-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;khRzQz0PnZ0 target="_blank">
+					<h2>I made a mechanical counter, but it&#39;s a little bit different.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-15">2025-08-15</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;PIBVM0Pyxyk target="_blank">
+					<h2>Precision machine control is harder than it looks (it looks hard)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-29">2025-05-29</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;FfsGUQjTAZs target="_blank">
+					<h2>The answer is DRAWERS! (I don’t care what the question is)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-06">2025-03-06</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;CdrQqRY8wuc target="_blank">
+					<h2>Building precision machines is simple, until it isn&#39;t.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-21">2024-12-21</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;z1fYeBZptUc target="_blank">
+					<h2>How I gave my lathe a &#34;nut&#34; button, and why I&#39;ll never look back</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-26">2024-09-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;iSDNKmk5B20 target="_blank">
+					<h2>Putting an end to the WORST kind of gears.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-12">2024-09-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;io4S9amExNM target="_blank">
+					<h2>I made a parallel axis tripteron</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-20">2024-06-20</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;YFJJkZm796I target="_blank">
+					<h2>I made a precision gearbox - with NO GEARS.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-04">2024-04-04</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;fWomfEL9Jrw target="_blank">
+					<h2>I just want to make things ROUND (accurately)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-15">2024-02-15</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q" target="_blank">Not An Engineer</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="6eLZ3krS1EEePF-33vDBOceCkx_dUeJe4z2OjzoQ2DuzuxndRzRa4CUesMvm01HE3V8GqyoYozOG5VdvBQqcnhxt50KDSaDSt8E2OiK6xG-rTaTfoeS0N5kc8EgTGBYELw47R7eBnSq73_k-DnQw_ah0H9o3mpRcjdyu1sbBoOicUQw-opne5eIGrd-V4sJkmKzDXEKjH_X7RfsVsoB5O-cF8zHODPS7eYzuGKupoOcJ63SzbHoC5vZs_8M2sJMeh0nhq2eRv2v_gbCIOpd1O8SBEeZjJMH3MHC8FzDnApAKdMvgPTpe9FowfcA-OImgC23NJaFhOXoOor2boKVq8g==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

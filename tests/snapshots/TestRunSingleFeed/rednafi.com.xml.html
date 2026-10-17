@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-LrsbDYp4YZFKbzYGz2z0A6EWntqtkpVsGiM9uyyu9tg_TVyKR7FXRIg4PoqRQD7noDgL-lw2ojP6ZYNp4ku8ZgtPacL46IOOrnJsgWipXeeVZkWRrNK6ekyGdJlIOWrb6T3DeeFhpUnFVhPr80-x0vUivYzZ1imNAWAFuN5v0aq0XtY3nrkKwA9aVPvJJS-87e25PsspknlK15xUhvtX7DeDhl4VowEkujKwXo39RbmTZBleci-r6cV1yyhXlptQgMKqa03-o_mPDafA7WGNQy-019MuPo_oF0vAFIvE9XFVNmrzt2T7CcTPFlIOB-1m7fDVLd8N9iF_b9v9Zuj5jQ==' ;
+		script-src 'nonce-LrsbDYp4YZFKbzYGz2z0A6EWntqtkpVsGiM9uyyu9tg_TVyKR7FXRIg4PoqRQD7noDgL-lw2ojP6ZYNp4ku8ZgtPacL46IOOrnJsgWipXeeVZkWRrNK6ekyGdJlIOWrb6T3DeeFhpUnFVhPr80-x0vUivYzZ1imNAWAFuN5v0aq0XtY3nrkKwA9aVPvJJS-87e25PsspknlK15xUhvtX7DeDhl4VowEkujKwXo39RbmTZBleci-r6cV1yyhXlptQgMKqa03-o_mPDafA7WGNQy-019MuPo_oF0vAFIvE9XFVNmrzt2T7CcTPFlIOB-1m7fDVLd8N9iF_b9v9Zuj5jQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="LrsbDYp4YZFKbzYGz2z0A6EWntqtkpVsGiM9uyyu9tg_TVyKR7FXRIg4PoqRQD7noDgL-lw2ojP6ZYNp4ku8ZgtPacL46IOOrnJsgWipXeeVZkWRrNK6ekyGdJlIOWrb6T3DeeFhpUnFVhPr80-x0vUivYzZ1imNAWAFuN5v0aq0XtY3nrkKwA9aVPvJJS-87e25PsspknlK15xUhvtX7DeDhl4VowEkujKwXo39RbmTZBleci-r6cV1yyhXlptQgMKqa03-o_mPDafA7WGNQy-019MuPo_oF0vAFIvE9XFVNmrzt2T7CcTPFlIOB-1m7fDVLd8N9iF_b9v9Zuj5jQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://rednafi.com/go/patch-field-mask/ target="_blank">
+					<h2>Partial updates with field masks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/zephyr/no-skin-in-the-game/ target="_blank">
+					<h2>Why do we listen to people with no skin in the game?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-19">2026-09-19</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/misc/pi-harness/ target="_blank">
+					<h2>The irrational effectiveness of the Pi harness</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-04">2026-09-04</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/system/pg-isolation-ref/ target="_blank">
+					<h2>Postgres as an isolation reference model</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-19">2026-08-19</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/shards/2026/07/go-flag-all-is-set/ target="_blank">
+					<h2>Accepted proposal: range over all command-line flags</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-29">2026-07-29</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/shards/2026/07/go-example-any-signature/ target="_blank">
+					<h2>Accepted proposal: Go examples with any signature</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-28">2026-07-28</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/go/supervised-fire-and-forget/ target="_blank">
+					<h2>Supervised fire-and-forget in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-25">2026-07-25</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/go/gc-shape-stenciling/ target="_blank">
+					<h2>GC shape stenciling in Go generics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-11">2026-07-11</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/go/gofix/ target="_blank">
+					<h2>Modernizers &amp; go fix</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-04">2026-07-04</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/go/request-coalescing/ target="_blank">
+					<h2>Request coalescing with Go singleflight</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-27">2026-06-27</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/go/channel-iteration-goroutine-leak/ target="_blank">
+					<h2>Channel iteration and goroutine leak</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-21">2026-06-21</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/shards/2026/06/go-goroutine-leak-profile/ target="_blank">
+					<h2>Accepted proposal: a goroutine leak profile in the Go standard library</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-18">2026-06-18</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/system/pg-wait-for-lsn/ target="_blank">
+					<h2>Reading your own writes with WAIT FOR LSN in Postgres 19</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-13">2026-06-13</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/misc/chezmoi/ target="_blank">
+					<h2>Migrating from GNU stow to chezmoi</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-11">2026-06-11</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/misc/standard-site/ target="_blank">
+					<h2>Putting this blog on ATProto with standard.site</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-07">2026-06-07</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://rednafi.com/" target="_blank">Redowan&#39;s Reflections</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="LrsbDYp4YZFKbzYGz2z0A6EWntqtkpVsGiM9uyyu9tg_TVyKR7FXRIg4PoqRQD7noDgL-lw2ojP6ZYNp4ku8ZgtPacL46IOOrnJsgWipXeeVZkWRrNK6ekyGdJlIOWrb6T3DeeFhpUnFVhPr80-x0vUivYzZ1imNAWAFuN5v0aq0XtY3nrkKwA9aVPvJJS-87e25PsspknlK15xUhvtX7DeDhl4VowEkujKwXo39RbmTZBleci-r6cV1yyhXlptQgMKqa03-o_mPDafA7WGNQy-019MuPo_oF0vAFIvE9XFVNmrzt2T7CcTPFlIOB-1m7fDVLd8N9iF_b9v9Zuj5jQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

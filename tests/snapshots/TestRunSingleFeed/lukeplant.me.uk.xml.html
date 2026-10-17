@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-mC-hJ1UWjDtk_Fjtf9XtQ6pf4iHpgJJiKBNC8bw--bzW067rjeqNEY9wnY3HwF2kU6h7THPMyug08NlS9PkiPE-gfaWDqFgwMC8LBGVJM4HiPA2P1u5W2NkHHJ8q0Uu7zS4U5xZNdWW1VjblLsudH5jmmP5VUQhP_O0tX93g6FsmW2ZNHunLvoJXUZoDwEZvCldhTT4QfHjrSkdHb-3miymTYVkaUFkaP1NYr1qy_BZ_DPxktw7hufKBEqaOqlQU4H3-DHRYlr8UyHk0xZoJ19vytr8fGrR3QtbKWGKz9S-w6G0bPwKaF3OZ9NCtQKkZvGo4aSiBP17hxMH83fQMFQ==' ;
+		script-src 'nonce-mC-hJ1UWjDtk_Fjtf9XtQ6pf4iHpgJJiKBNC8bw--bzW067rjeqNEY9wnY3HwF2kU6h7THPMyug08NlS9PkiPE-gfaWDqFgwMC8LBGVJM4HiPA2P1u5W2NkHHJ8q0Uu7zS4U5xZNdWW1VjblLsudH5jmmP5VUQhP_O0tX93g6FsmW2ZNHunLvoJXUZoDwEZvCldhTT4QfHjrSkdHb-3miymTYVkaUFkaP1NYr1qy_BZ_DPxktw7hufKBEqaOqlQU4H3-DHRYlr8UyHk0xZoJ19vytr8fGrR3QtbKWGKz9S-w6G0bPwKaF3OZ9NCtQKkZvGo4aSiBP17hxMH83fQMFQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="mC-hJ1UWjDtk_Fjtf9XtQ6pf4iHpgJJiKBNC8bw--bzW067rjeqNEY9wnY3HwF2kU6h7THPMyug08NlS9PkiPE-gfaWDqFgwMC8LBGVJM4HiPA2P1u5W2NkHHJ8q0Uu7zS4U5xZNdWW1VjblLsudH5jmmP5VUQhP_O0tX93g6FsmW2ZNHunLvoJXUZoDwEZvCldhTT4QfHjrSkdHb-3miymTYVkaUFkaP1NYr1qy_BZ_DPxktw7hufKBEqaOqlQU4H3-DHRYlr8UyHk0xZoJ19vytr8fGrR3QtbKWGKz9S-w6G0bPwKaF3OZ9NCtQKkZvGo4aSiBP17hxMH83fQMFQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/git-is-still-awful/ target="_blank">
+					<h2>Git is still awful</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/inverse-sapir-whorf-and-programming-languages/ target="_blank">
+					<h2>Inverse Sapir-Whorf and programming languages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-01">2026-05-01</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/announcing-nt-ot-bible-quotation-database/ target="_blank">
+					<h2>Announcing: NT/OT Bible quotation database</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-18">2026-04-18</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/when-perfection-is-table-stakes/ target="_blank">
+					<h2>When perfection is table stakes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-16">2026-03-16</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/announcing-fluent-codegen/ target="_blank">
+					<h2>Announcing fluent-codegen</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-10">2026-03-10</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/help-my-website-is-too-small/ target="_blank">
+					<h2>Help my website is too small</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-19">2025-12-19</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/ target="_blank">
+					<h2>Breaking “provably correct” Leftpad</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-03">2025-10-03</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/devotions-on-1-thessalonians-1-august-2025/ target="_blank">
+					<h2>Devotions on 1 Thessalonians 1, August 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-13">2025-09-13</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/ target="_blank">
+					<h2>Why I’m not letting the juniors use GenAI for coding</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-26">2025-07-26</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/ target="_blank">
+					<h2>Statically checking Python dicts for completeness</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-27">2025-06-27</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://lukeplant.me.uk/blog/" target="_blank">Luke Plant&#39;s home page</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="mC-hJ1UWjDtk_Fjtf9XtQ6pf4iHpgJJiKBNC8bw--bzW067rjeqNEY9wnY3HwF2kU6h7THPMyug08NlS9PkiPE-gfaWDqFgwMC8LBGVJM4HiPA2P1u5W2NkHHJ8q0Uu7zS4U5xZNdWW1VjblLsudH5jmmP5VUQhP_O0tX93g6FsmW2ZNHunLvoJXUZoDwEZvCldhTT4QfHjrSkdHb-3miymTYVkaUFkaP1NYr1qy_BZ_DPxktw7hufKBEqaOqlQU4H3-DHRYlr8UyHk0xZoJ19vytr8fGrR3QtbKWGKz9S-w6G0bPwKaF3OZ9NCtQKkZvGo4aSiBP17hxMH83fQMFQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

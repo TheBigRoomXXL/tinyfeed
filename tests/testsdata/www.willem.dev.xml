@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Boost Your Go/Golang Skills, One Article at a Time.</title>
+    <link>https://www.willem.dev/articles/</link>
+    <description>Beginner friendly / Learn Real World Skills / Interactive Source Code / Have fun.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 18 Jun 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://www.willem.dev/articles/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Confused by http.HandlerFunc? This post makes it click - Learn Go/Golang</title>
+      <link>https://www.willem.dev/articles/http-handler-func/</link>
+      <pubDate>Thu, 02 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/http-handler-func/</guid>
+      <description>&lt;p&gt;When trying to use functions as Go http handlers, you will run into &lt;code&gt;http.HandlerFunc&lt;/code&gt; from the &lt;code&gt;net/http&lt;/code&gt; package.&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re not yet comfortable with Go&amp;rsquo;s type system and/or interfaces it can be a surprisingly difficult thing to wrap your head around. Several things can trip you up:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;There are two similarly named &lt;code&gt;http.Handle(r)Func&lt;/code&gt; functions/types that do different things.&lt;/li&gt;
+&lt;li&gt;Examples using &lt;code&gt;http.HandlerFunc&lt;/code&gt; make it look like a function call, which it is not.&lt;/li&gt;
+&lt;li&gt;The way &lt;code&gt;http.HandlerFunc&lt;/code&gt; implements the &lt;code&gt;http.Handler&lt;/code&gt; interface.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In this article we&amp;rsquo;ll go over each of these difficulties and by the end you&amp;rsquo;ll - hopefully - have a solid understanding of &lt;code&gt;http.HandlerFunc&lt;/code&gt; and can confidently use functions as handlers.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Dealing with large structs in (table) tests in Go/Golang</title>
+      <link>https://www.willem.dev/articles/large-structs-in-table-tests/</link>
+      <pubDate>Thu, 07 Sep 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/large-structs-in-table-tests/</guid>
+      <description>&lt;p&gt;Working with a lot of large structs in tests can be a bit of a pain.&lt;/p&gt;
+&lt;figure class=&#34;img&#34;&gt;
+&lt;video src=&#34;https://www.willem.dev/articles/large-structs-in-table-tests/scroll4ever.mp4&#34; autoplay muted loop playsinline class=&#34;rounded w-2/3 sepia&#34;&gt;
+&lt;/figure&gt;
+&lt;p&gt;While this is an extreme example I made up so I could get a video, I have encountered (and written) similarly structured code in real life.&lt;/p&gt;
+&lt;p&gt;If we zoom in on one test, you get something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;t.Run(&amp;quot;diff meta title and title, publishable&amp;quot;, func(t *testing.T) {
+	p := Post{
+		Title:       &amp;quot;My smile is stuck&amp;quot;,
+		Description: &amp;quot;I cannot go back to your frownland&amp;quot;,
+		Content:     &amp;quot;My spirit is made up of the ocean&amp;quot;,
+		MetaTitle:   &amp;quot;SEO Optimized Title&amp;quot;,
+	}
+
+	assertTrue(t, IsPublishable(p))
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;What makes this painful?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Should you use pointers to slices in Go/Golang?</title>
+      <link>https://www.willem.dev/articles/should-you-use-pointers-to-slices/</link>
+      <pubDate>Thu, 03 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/should-you-use-pointers-to-slices/</guid>
+      <description>&lt;p&gt;If you&amp;rsquo;re unfamiliar with Go slices, it might look like a good idea to pass around a pointer instead of the &amp;ldquo;entire collection&amp;rdquo;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;s := []string{&amp;quot;👁&amp;quot;, &amp;quot;👃&amp;quot;, &amp;quot;👁&amp;quot;}
+doSomething(&amp;amp;s)
+andAgain(&amp;amp;s)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;img&#34;&gt;
+  &lt;img src=&#34;pointer-to-slice-wrong.svg&#34; alt=&#34;wrong mental model of a pointer to a slice&#34; loading=&#34;lazy&#34; width=&#34;343&#34; height=&#34;123&#34;&gt;
+&lt;/div&gt;
+&lt;p&gt;However, this has no real upsides.&lt;/p&gt;
+&lt;p&gt;By passing around a slice, you&amp;rsquo;re already passing around a pointer: &lt;strong&gt;A slice holds a pointer to an underlying array&lt;/strong&gt;.&lt;/p&gt;
+&lt;div class=&#34;notice&#34;&gt;
+&lt;p&gt;&lt;span class=&#34;notice-icon&#34;&gt;
+
+  
+
+  &lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 24 24&#34; fill=&#34;currentColor&#34; aria-hidden=&#34;true&#34; data-slot=&#34;icon&#34;&gt;
+  &lt;path fill-rule=&#34;evenodd&#34; d=&#34;M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z&#34; clip-rule=&#34;evenodd&#34;/&gt;
+&lt;/svg&gt;
+
+
+&lt;/span&gt; If you want to know more about how slices work and are constructed, check out my &lt;a href=&#34;https://www.willem.dev/articles/build-your-own-slice-start-here/&#34;&gt;build your own slice&lt;/a&gt; series of articles.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>No string interpolation in Go/Golang. Use these alternatives</title>
+      <link>https://www.willem.dev/articles/string-interpolation/</link>
+      <pubDate>Wed, 03 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/string-interpolation/</guid>
+      <description>&lt;p&gt;Coming from other languages it can be surprising that Go does &lt;strong&gt;not support string interpolation&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;What do I mean by string interpolation?&lt;/p&gt;
+&lt;p&gt;Well, take this snippet of PHP for example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-php&#34;&gt;$x = 49;
+$msg = &amp;quot;Hello world&amp;quot;;
+echo &amp;quot;The number is $x and the message is $msg&amp;quot;;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When running the program PHP will evaluate the double quoted string and automatically replace the &lt;code&gt;$x&lt;/code&gt; and &lt;code&gt;$msg&lt;/code&gt; placeholders with the appropriate values. In the end, &lt;code&gt;The number is 49 and the message is Hello world&lt;/code&gt; will be echoed.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Should you use a slice of pointers to structs in Go/Golang?</title>
+      <link>https://www.willem.dev/articles/slice-of-pointers-structs/</link>
+      <pubDate>Sun, 20 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/slice-of-pointers-structs/</guid>
+      <description>&lt;p&gt;While writing Go, you might might run into the following situation: You want to collect the results of a function in a &lt;strong&gt;slice&lt;/strong&gt;. However, the function &lt;strong&gt;returns a pointer&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;You might then ask yourself:&lt;/p&gt;
+&lt;p&gt;What kind of slice should I use? A slice of values or a slice of pointers?&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s make this a bit more concrete.&lt;/p&gt;
+&lt;p&gt;Suppose the following &lt;code&gt;Album&lt;/code&gt; struct and &lt;code&gt;ProduceAlbum&lt;/code&gt; function exist:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;type Album struct {
+	Title  string
+	Artist string
+}
+
+// ProduceAlbum produces a random album. The details
+// don&#39;t really matter in this article, in real code this might
+// do an expensive calculation or retrieve data from a database.
+func ProduceAlbum() *Album {
+	vol := rand.Intn(100) + 1
+	return &amp;amp;Album{
+		Title:  fmt.Sprintf(&amp;quot;Groovy vol. %d&amp;quot;, vol),
+		Artist: &amp;quot;👨‍🎤&amp;quot;,
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Every time &lt;code&gt;ProduceAlbum&lt;/code&gt; is called, it returns a pointer to a randomly titled &lt;code&gt;Album&lt;/code&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to Parse a Time or Date using time.Parse in Go/Golang</title>
+      <link>https://www.willem.dev/articles/how-to-parse-time-date/</link>
+      <pubDate>Thu, 23 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/how-to-parse-time-date/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Every Go developer trips up on it at some point: parsing a date or time. If you haven&amp;rsquo;t done it before, it can be a frustrating experience.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;But.. you&amp;rsquo;re not alone. There are a lot of developers who share your frustration:&lt;/p&gt;
+&lt;figure class=&#34;img&#34;&gt;
+  &lt;img src=&#34;frustrations.png&#34; alt=&#34;Graphic showing quotes: &#39;Time parsing is a joke&#39;, &#39;Truly awful indeed&#39;, &#39;We should open a support group&#39; and &#39;I always forget if it was Monday or not&#39;&#34; loading=&#34;lazy&#34; width=&#34;1280&#34; height=&#34;720&#34;&gt;
+&lt;/figure&gt;
+&lt;p&gt;So why does this go so wrong for so often?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to use Confidential Computing to prove what code is on your server</title>
+      <link>https://www.willem.dev/articles/prove-what-code-your-system-is-running/</link>
+      <pubDate>Thu, 18 Jun 2026 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/prove-what-code-your-system-is-running/</guid>
+      <description>&lt;p&gt;If you&amp;rsquo;re a developer, you&amp;rsquo;ve probably got a few deployments under your belt.&lt;/p&gt;
+&lt;p&gt;After deploying something, have you ever doubted your own tools so much that you had to SSH into a system to check the &amp;ldquo;impossible&amp;rdquo; things you were seeing and make sure you weren&amp;rsquo;t going insane?&lt;/p&gt;
+&lt;p&gt;I definitely had to. Fun times.&lt;/p&gt;
+&lt;p&gt;Today we&amp;rsquo;re going to lean into this doubt and see how it&amp;rsquo;s possible to combine Confidential Computing and read-only OS images to prove exactly what code is running on a system. No SSH-ing required.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Compliance as a runtime problem</title>
+      <link>https://www.willem.dev/articles/compliance-as-a-runtime-problem/</link>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/compliance-as-a-runtime-problem/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Let&amp;rsquo;s try a thought experiment: I&amp;rsquo;m a customer who has been burned by a bad vendor,
+and you&amp;rsquo;re a competing vendor trying to sell me your service.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;My previous vendor had all the required certifications and claimed my data was encrypted before being stored.&lt;/p&gt;
+&lt;p&gt;It wasn&amp;rsquo;t, and it leaked.&lt;/p&gt;
+&lt;p&gt;Overnight, my competitors became more capable. I was humiliated in the press. Lawsuits are ongoing.&lt;/p&gt;
+&lt;p&gt;With that in mind, what can you give me to back up the claim that your service is doing &amp;ldquo;the right thing&amp;rdquo;?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Dear HTTP service, how can I trust you not to break my heart?</title>
+      <link>https://www.willem.dev/articles/openpcc-short-intro/</link>
+      <pubDate>Thu, 12 Mar 2026 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/openpcc-short-intro/</guid>
+      <description>&lt;p&gt;When you send your most intimate data to an AI-platform, how do you know it&amp;rsquo;s not being shared with third parties? Or, how
+do you know it won&amp;rsquo;t be used to train the next generation of models?&lt;/p&gt;
+&lt;p&gt;More generally, how do you know that any web service will fulfill its social, contractual and legal obligations?&lt;/p&gt;
+&lt;p&gt;From the outside you might be able to see that an endpoint is using SSL, but you&amp;rsquo;ll have no guarantees what happens beyond that.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Writing Benchmarks: Performance testing in Go/Golang</title>
+      <link>https://www.willem.dev/articles/benchmarks-performance-testing/</link>
+      <pubDate>Thu, 24 Oct 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/benchmarks-performance-testing/</guid>
+      <description>&lt;p&gt;A big part of programming is about making choices:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What data type do I use? A map, a slice, something more fancy?&lt;/li&gt;
+&lt;li&gt;Do I implement this using recursion or a loop?&lt;/li&gt;
+&lt;li&gt;Should I pass a value or a pointer?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;How to determine the best choice?&lt;/p&gt;
+&lt;p&gt;One way is to &lt;strong&gt;measure performance using benchmarks&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Go has built-in support for benchmarking in the &lt;code&gt;testing&lt;/code&gt; package.&lt;/p&gt;
+&lt;p&gt;In this article you&amp;rsquo;ll see how benchmarks are structured, what to keep in mind when writing them and how to execute them.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Avoid inaccurate tests: Use httptest when testing HTTP handlers in Go/Golang</title>
+      <link>https://www.willem.dev/articles/testing-http-handlers-using-httptest/</link>
+      <pubDate>Thu, 03 Oct 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/testing-http-handlers-using-httptest/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;In Go, testing HTTP handlers is more work than testing regular functions. Inputs must be wrapped in HTTP requests, and responses are written to &lt;code&gt;http.ResponseWriter&lt;/code&gt;, rather than being returned directly.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To make matters worse, handlers expect server-side requests, while it&amp;rsquo;s easy to mistakenly construct client-side requests.&lt;/p&gt;
+&lt;p&gt;You&amp;rsquo;d almost give up on testing your handlers altogether.&lt;/p&gt;
+&lt;p&gt;Please don&amp;rsquo;t.&lt;/p&gt;
+&lt;p&gt;This article will discuss how we can use &lt;code&gt;httptest&lt;/code&gt; to safely test HTTP handlers.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Sets in Go/Golang – Using Maps and Recommended Packages</title>
+      <link>https://www.willem.dev/articles/sets-in-golang/</link>
+      <pubDate>Thu, 19 Sep 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/sets-in-golang/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Go doesn&amp;rsquo;t offer a native set type, and the standard library doesn&amp;rsquo;t provide one either. So, how do you create sets in Go?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;You use a map.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;First, we&amp;rsquo;ll explore how maps can be used to implement sets.&lt;/p&gt;
+&lt;p&gt;However, if your program relies heavily on sets, maps can quickly become tedious. That&amp;rsquo;s why, in the second part, we&amp;rsquo;ll introduce an open-source package that offers two convenient set implementations.&lt;/p&gt;
+&lt;p&gt;Finally, since these solutions only work with comparable types, we&amp;rsquo;ll wrap up by exploring how to handle non-comparable types in sets.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Devlog I: The foundations of a Go/Golang web application</title>
+      <link>https://www.willem.dev/articles/may-househunt-update/</link>
+      <pubDate>Thu, 02 May 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/may-househunt-update/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Back in March I began working on a Go web application called &lt;a href=&#34;https://www.willem.dev/articles/example-web-application-project/&#34;&gt;Househunt&lt;/a&gt;. It&amp;rsquo;s goal is to be a non-trivial reference code base.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;While progress has been slower than I wanted, most of the foundational components are in place. They might see little tweaks and bugfixes, but I don&amp;rsquo;t expect major changes at this moment.&lt;/p&gt;
+&lt;p&gt;In this devlog I&amp;rsquo;ll list the major components and notes I made along the way.&lt;/p&gt;
+&lt;p&gt;But first, a screenshot of how the project looks now:&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Prevent sensitive data from leaking in Go/Golang</title>
+      <link>https://www.willem.dev/articles/prevent-sensitive-data-from-leaking/</link>
+      <pubDate>Thu, 28 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/prevent-sensitive-data-from-leaking/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;By default Go allows you to easily format, log or output values of most types.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For example, the following code prints the &lt;code&gt;XYZ&lt;/code&gt; struct as a string.&lt;/p&gt;
+&lt;div class=&#34;mini-ide&#34;&gt;
+
+
+  
+  
+  
+  &lt;div class=&#34;mini-ide-file&#34;&gt;
+  &lt;span class=&#34;bg-stone-800 text-paper inline-block px-3 py-1 font-mono text-sm&#34;&gt;main.go&lt;/span&gt;
+  &lt;pre&gt;&lt;code language=&#34;go&#34; class=&#34;&#34;&gt;package main
+
+import (
+	&amp;#34;fmt&amp;#34;
+)
+
+type MyData struct {
+	Field string
+}
+
+func main() {
+	d := MyData{
+		Field: &amp;#34;Hello world!&amp;#34;,
+	}
+
+	fmt.Println(d)
+}
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;Usually this is a good thing, as it allows for easy debugging and/or formatting.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Maps of functions in Go (Golang)</title>
+      <link>https://www.willem.dev/articles/maps-of-functions/</link>
+      <pubDate>Thu, 21 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/maps-of-functions/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Sometimes a declarative approach makes your code a lot clearer.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Take environment variable handling for example. Some environment variables might have widly different validation rules, while others share the same rules.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Organizing code like this using just &lt;code&gt;if&lt;/code&gt; statements can be challenging. Ideally you&amp;rsquo;d just specify the enviroment variable&amp;rsquo;s name and the relevant rules&lt;/p&gt;
+&lt;p&gt;Now, there are great packages like &lt;a href=&#34;https://github.com/spf13/viper&#34;&gt;&lt;code&gt;spf13/viper&lt;/code&gt;&lt;/a&gt; and &lt;a href=&#34;https://github.com/kelseyhightower/envconfig&#34;&gt;&lt;code&gt;kelseyhightower/envconfig&lt;/code&gt;&lt;/a&gt; that use reflection and struct tags to provide a more declarative solution.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Documented Example Project: Go/Golang Web Application</title>
+      <link>https://www.willem.dev/articles/example-web-application-project/</link>
+      <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/example-web-application-project/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;You know the saying &amp;ldquo;a good example is worth a thousand blog posts&amp;rdquo;?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Well probably not, because I just made it up. But the point stands, source code can provide a great way to learn.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I remember when I started out in Go, that I looked for example repositories. I don&amp;rsquo;t think I ever found any.&lt;/p&gt;
+&lt;p&gt;Most public repositories fall into two categories:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Kubernetes, Docker or similar giant open source projects.&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Quick start&amp;rdquo; repositories that provide scaffolding for getting a project of the ground.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;While both are interesting, this is usually not what you&amp;rsquo;re looking for. You want something similar to what you&amp;rsquo;re building.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Composable HTTP Handlers using generics in Go/Golang</title>
+      <link>https://www.willem.dev/articles/generic-http-handlers/</link>
+      <pubDate>Tue, 27 Feb 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/generic-http-handlers/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Implementing HTTP handlers in Go can be a bit of a chore. Most handlers will have to:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Retrieve&lt;/strong&gt; request data from parameters, body, headers etc.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Validate&lt;/strong&gt; this data: The &amp;ldquo;shape&amp;rdquo; of the data is often validated as soon as possible.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Call out&lt;/strong&gt; to business logic or a data store for further validation, processing and/or querying.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Format responses&lt;/strong&gt; for successful requests.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Handle errors&lt;/strong&gt; by sending different responses.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Even if you move this functionality to dedicated functions it will still get quite repetitive, handlers need to call those functions and deal with errors.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>URL path parameters and variables in Go (Golang) 1.22 and later</title>
+      <link>https://www.willem.dev/articles/url-path-parameters-in-routes/</link>
+      <pubDate>Thu, 15 Feb 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/url-path-parameters-in-routes/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;When dealing with HTTP based API&amp;rsquo;s it&amp;rsquo;s common to pass data using URL path parameters (also called path variables). These parameters are part of the path segment of an URL. They are usually used to identify resources for API operations.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In all but the simplest web apps, API&amp;rsquo;s are defined using &lt;strong&gt;routes&lt;/strong&gt;. Patterns which map requests to HTTP handlers.&lt;/p&gt;
+&lt;figure class=&#34;img&#34;&gt;
+  &lt;img src=&#34;routes.svg&#34; alt=&#34;Location and monotonic timelines of a time.Time value&#34; loading=&#34;lazy&#34; width=&#34;397&#34; height=&#34;143&#34;&gt;
+&lt;/figure&gt;
+&lt;p&gt;As part of these routes, we may want to define &lt;strong&gt;path parameters&lt;/strong&gt;:&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Change JSON Time and Date format in Go/Golang</title>
+      <link>https://www.willem.dev/articles/change-time-format-json/</link>
+      <pubDate>Thu, 25 Jan 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/change-time-format-json/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;The JSON standard does not have a built in type for time, so time values are usually handled as strings. With strings, there&amp;rsquo;s always a choice that must be made: How to format these the time values?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In the &lt;code&gt;time&lt;/code&gt; package the choice was made to format &lt;code&gt;time.Time&lt;/code&gt; values as &lt;code&gt;time.RFC3339Nano&lt;/code&gt; by default. A common and practical format:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;timestamp&amp;quot;: &amp;quot;2024-01-24T00:00:00Z&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But what if you want to use a different format? Say &lt;code&gt;YYYY-DD-MM&lt;/code&gt;, &lt;code&gt;25 Jan 2024&lt;/code&gt; or Unix timestamps?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How to Compare Time or Date in Go/Golang with example code</title>
+      <link>https://www.willem.dev/articles/how-to-compare-time-date/</link>
+      <pubDate>Thu, 18 Jan 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/how-to-compare-time-date/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;It&amp;rsquo;s tempting to think of time (and dates by extension) as an ever increasing number. While you&amp;rsquo;re developing in Go you might even try to compare two &lt;code&gt;time.Time&lt;/code&gt; values using the comparison operators.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You will then find out that comparisons using &lt;code&gt;&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;&lt;/code&gt;, &lt;code&gt;&amp;lt;=&lt;/code&gt; or &lt;code&gt;&amp;gt;=&lt;/code&gt; won&amp;rsquo;t compile:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-txt&#34;&gt;invalid operation: t &amp;gt; u (operator &amp;gt; not defined on struct)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Comparisons using &lt;code&gt;==&lt;/code&gt; and &lt;code&gt;!=&lt;/code&gt; will compile, but you should be careful, it probably doesn&amp;rsquo;t do what you intended to do!&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Get the Current Time: The Monotonic Clock in Go/Golang</title>
+      <link>https://www.willem.dev/articles/time-now-monotonic-clock/</link>
+      <pubDate>Thu, 11 Jan 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/time-now-monotonic-clock/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;In the documentation of Go&amp;rsquo;s &lt;code&gt;time&lt;/code&gt; package you will find the term &lt;em&gt;&amp;ldquo;monotonic clock&amp;rdquo;&lt;/em&gt; roughly 30 times. However, you likely won&amp;rsquo;t ever work with it directly. So, what is it for and why should you care?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In the &lt;a href=&#34;https://www.willem.dev/articles/time-location-explained/&#34;&gt;previous article&lt;/a&gt;, we looked at how &lt;code&gt;time.Time&lt;/code&gt; values represent &amp;ldquo;time instants&amp;rdquo; on timelines using a &lt;code&gt;time.Location&lt;/code&gt; reference.&lt;/p&gt;
+&lt;p&gt;When created using &lt;code&gt;time.Now()&lt;/code&gt; a &lt;code&gt;time.Time&lt;/code&gt; can also contain a different time representation: &lt;strong&gt;The monotonic clock reading&lt;/strong&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Time and Location Explained in Go/Golang</title>
+      <link>https://www.willem.dev/articles/time-location-explained/</link>
+      <pubDate>Thu, 21 Dec 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/time-location-explained/</guid>
+      <description>&lt;p&gt;Have you ever used &lt;code&gt;time.Now()&lt;/code&gt; or ran a method like &lt;code&gt;createdAt.Format(...)&lt;/code&gt;?&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;time&lt;/code&gt; package is a staple in many Go programs, often used for core functionality, logging, or other metadata.&lt;/p&gt;
+&lt;p&gt;When diving into its documentation, you&amp;rsquo;ll find it&amp;rsquo;s thorough but focusses on niche topics like &amp;ldquo;Monotonic Clocks&amp;rdquo;. It doesn&amp;rsquo;t really provide beginners with a clear introduction to the package.&lt;/p&gt;
+&lt;p&gt;This might raise questions like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What exactly is the &lt;em&gt;&amp;ldquo;instant in time&amp;rdquo;&lt;/em&gt; mentioned in the docs?&lt;/li&gt;
+&lt;li&gt;How does &lt;code&gt;time.Time&lt;/code&gt; &lt;em&gt;&amp;ldquo;represent&amp;rdquo;&lt;/em&gt; such an instant?&lt;/li&gt;
+&lt;li&gt;Is a &lt;code&gt;time.Location&lt;/code&gt; just another term for &lt;em&gt;&amp;ldquo;time zone&amp;rdquo;&lt;/em&gt;?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This article aims to answer such questions and (hopefully!) provide you with a solid mental model of the &lt;code&gt;time&lt;/code&gt; package.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Anonymous structs in Go (Golang): What, How and When</title>
+      <link>https://www.willem.dev/articles/anonymous-structs/</link>
+      <pubDate>Thu, 16 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/anonymous-structs/</guid>
+      <description>&lt;p&gt;Have you run into an elaborate struct definition with a &lt;code&gt;struct&lt;/code&gt; inside a &lt;code&gt;struct&lt;/code&gt;? Or, has someone told you to &amp;ldquo;use an inline struct definition&amp;rdquo;?&lt;/p&gt;
+&lt;p&gt;If you&amp;rsquo;re not sure how to approach any of this, then you&amp;rsquo;re in the right place.&lt;/p&gt;
+&lt;p&gt;This article will discuss &lt;strong&gt;anonymous structs&lt;/strong&gt;: what they are and when to consider using them.&lt;/p&gt;
+&lt;h2 id=&#34;what-is-an-anonymous-struct&#34;&gt;What is an anonymous struct?&lt;/h2&gt;
+&lt;p&gt;You probably know that you can define struct types using a type definition:&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Type safe way to add a value to a Go/Golang context</title>
+      <link>https://www.willem.dev/articles/how-to-add-values-to-context/</link>
+      <pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/how-to-add-values-to-context/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Are you unsure how to pass trace IDs (or other request-scoped data) through your application stack? Or are your fingers sore from typing type assertions for context values?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You&amp;rsquo;re in the right place!&lt;/p&gt;
+&lt;p&gt;This article will show you how to store and retrieve values from contexts:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;In a type safe way.&lt;/li&gt;
+&lt;li&gt;Without littering your code base with keys and type assertions.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;But, let&amp;rsquo;s start at the beginning: how do you actually add a value to a context?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Should you store *that value* in a Go/Golang context?</title>
+      <link>https://www.willem.dev/articles/what-values-store-in-context/</link>
+      <pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/what-values-store-in-context/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;You might find yourself needing to pass new data to a significant amount of functions in your code base. Maybe you need to add a new parameter to an API, or every request should generate an ID to track it.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In Go web apps it&amp;rsquo;s common to pass a &lt;code&gt;context.Context&lt;/code&gt; to practically every function or method. When half of the the functions in your code base need to be modified to accept new data it can be tempting to just add it to context instead. The context is already being passed around after all&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Make, Literals and Re-slicing - Go/Golang slice fundamentals</title>
+      <link>https://www.willem.dev/articles/build-your-own-slice-make-literal-reslice/</link>
+      <pubDate>Wed, 30 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/build-your-own-slice-make-literal-reslice/</guid>
+      <description>&lt;p&gt;In this series we&amp;rsquo;ve thus far seen only one way of creating slices: by slicing an existing array.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;food:= [4]string{&amp;quot;🍔&amp;quot;, &amp;quot;🍕&amp;quot;, &amp;quot;🍏&amp;quot;, &amp;quot;🍊&amp;quot;}
+fruits := food[2:4]
+fmt.Println(fruits) // prints [🍏 🍊]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Creating slices like this was useful to introduce and demonstrate the relationship between arrays and slices.&lt;/p&gt;
+&lt;p&gt;However, it would be a bit annoying if this was the only way to create a slice. We&amp;rsquo;d be forced to use two variables (one for the array, one for the slice) every time we need one.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Append and Copy - Go/Golang slice fundamentals</title>
+      <link>https://www.willem.dev/articles/build-your-own-slice-append-copy/</link>
+      <pubDate>Tue, 18 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/build-your-own-slice-append-copy/</guid>
+      <description>&lt;p&gt;Did you know that &lt;code&gt;append&lt;/code&gt; can turn broccoli into pizza?&lt;/p&gt;
+&lt;div class=&#34;mini-ide&#34;&gt;
+
+
+  
+  
+  
+  &lt;div class=&#34;mini-ide-file&#34;&gt;
+  &lt;span class=&#34;bg-stone-800 text-paper inline-block px-3 py-1 font-mono text-sm&#34;&gt;main.go&lt;/span&gt;
+  &lt;pre&gt;&lt;code language=&#34;go&#34; class=&#34;&#34;&gt;package main
+
+import &amp;#34;fmt&amp;#34;
+
+func main() {
+    // a is an array with 3 elements.
+    a := [3]string{&amp;#34;🍔&amp;#34;, &amp;#34;🌭&amp;#34;, &amp;#34;🥦&amp;#34;}
+
+    // fastfood is a slice into the first two elements of a.
+    fastfood := a[0:2]
+    
+    // broccoli is a slice into the last element of a.
+    broccoli := a[2:3]
+
+    fmt.Println(&amp;#34;before&amp;#34;, broccoli)
+
+    fastfood = append(fastfood, &amp;#34;🍕&amp;#34;)
+
+    fmt.Println(&amp;#34;after&amp;#34;, broccoli)
+}&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;While delicious, this is a bit weird.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Arrays and slices - Go/Golang slice fundamentals</title>
+      <link>https://www.willem.dev/articles/build-your-own-slice-start-here/</link>
+      <pubDate>Mon, 26 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/build-your-own-slice-start-here/</guid>
+      <description>&lt;p&gt;When it comes to slices you can get pretty far without knowing &lt;em&gt;how the sausage is made&lt;/em&gt;. However, things can get weird once you start slicing and reslicing.&lt;/p&gt;
+&lt;p&gt;If you consider slices to be &amp;ldquo;some kind of dynamic array&amp;rdquo;, the following output might be surprising.&lt;/p&gt;
+&lt;div class=&#34;mini-ide&#34;&gt;
+
+
+  
+  
+  
+  &lt;div class=&#34;mini-ide-file&#34;&gt;
+  &lt;span class=&#34;bg-stone-800 text-paper inline-block px-3 py-1 font-mono text-sm&#34;&gt;main.go&lt;/span&gt;
+  &lt;pre&gt;&lt;code language=&#34;go&#34; class=&#34;&#34;&gt;package main
+
+import &amp;#34;fmt&amp;#34;
+
+func main() {
+    // create an array with 4 fruits.
+    fruits := [4]string{&amp;#34;🍊&amp;#34;, &amp;#34;🍏&amp;#34;, &amp;#34;🍎&amp;#34;, &amp;#34;🍐&amp;#34;}
+
+    // citrus is a slice with only the orange.
+    citrus := fruits[0:1]
+
+    // replace the orange with a lemon in citrus.
+    citrus[0] = &amp;#34;🍋&amp;#34;
+
+    // now print the original fruits array.
+    fmt.Println(fruits)
+}&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;If &lt;code&gt;citrus&lt;/code&gt; and &lt;code&gt;fruits&lt;/code&gt; were two independent collections, this would have output &lt;code&gt;[🍊 🍏 🍎 🍐]&lt;/code&gt;.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Choosing between context.Background() and context.TODO() in Go/Golang</title>
+      <link>https://www.willem.dev/articles/context-todo-or-background/</link>
+      <pubDate>Fri, 14 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/context-todo-or-background/</guid>
+      <description>&lt;p&gt;If you have used the context package in the standard library, you might have noticed that there
+are two constructors that create an empty context: &lt;code&gt;context.Background()&lt;/code&gt; and &lt;code&gt;context.TODO()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;So which one should you use when you need a new context?&lt;/p&gt;
+&lt;h2 id=&#34;lets-check-the-docs&#34;&gt;Let&amp;rsquo;s check the docs&lt;/h2&gt;
+&lt;p&gt;First, &lt;a href=&#34;https://pkg.go.dev/context#Background&#34;&gt;&lt;code&gt;context.Background()&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Background returns a non-nil, empty Context. It is never canceled, has no values, and has no deadline. It is typically used by the main function, initialization, and tests, and as the top-level Context for incoming requests.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Context cancellation: Don&#39;t waste resources on aborted requests in Go/Golang</title>
+      <link>https://www.willem.dev/articles/context-cancellation-explained/</link>
+      <pubDate>Thu, 23 Mar 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.willem.dev/articles/context-cancellation-explained/</guid>
+      <description>&lt;p&gt;If you open your browser and load a web page, but press the &amp;ldquo;stop loading&amp;rdquo; or &amp;ldquo;X&amp;rdquo; button before it is fully loaded, the browser will abort any open requests.&lt;/p&gt;
+&lt;p&gt;But what happens if such a http request already reached your Go application and it is being served by a handler?&lt;/p&gt;
+&lt;p&gt;Well.. if you&amp;rsquo;re not explicitly supporting &lt;strong&gt;cancellation&lt;/strong&gt;, the handler will happily continue executing until it is time to write a response to the client. Once enough data is written, the server will attempt to write that data to the underlying connection, which will fail with an error like this:&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

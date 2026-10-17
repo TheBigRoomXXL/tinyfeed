@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-yPhMwcxZ1UCVFu8gqy5j8VrG-JR-rs4FvreTJtz7_DnMb-daJxPBtSsVjajLuRfEDTZJu8qOZ5xGZ6M1O6WnB3XOAQ-NQg6tVW6SE6bHIBUgtGOcg_ETO4PfjZR8NdfISHcUoq_hqgoFAuUU3HUERKeOHQmLOF6R2Z9boNE-SwOi1Ao9qfAX_pjqeUPKUG0gV-h8Hx7jPOjzJhIT7uhzETbpmcTp8oZbc1_PhBYMw7t_An3kcnRKNP8mQU1fc0yLBavMcc_jXqSEu1UZMjQZElFinDBsHT3DABxvVo89H1mL63O5H3Jmm1j2wngURynGSXEqPcKwCOXr56sKyrA9xA==' ;
+		script-src 'nonce-yPhMwcxZ1UCVFu8gqy5j8VrG-JR-rs4FvreTJtz7_DnMb-daJxPBtSsVjajLuRfEDTZJu8qOZ5xGZ6M1O6WnB3XOAQ-NQg6tVW6SE6bHIBUgtGOcg_ETO4PfjZR8NdfISHcUoq_hqgoFAuUU3HUERKeOHQmLOF6R2Z9boNE-SwOi1Ao9qfAX_pjqeUPKUG0gV-h8Hx7jPOjzJhIT7uhzETbpmcTp8oZbc1_PhBYMw7t_An3kcnRKNP8mQU1fc0yLBavMcc_jXqSEu1UZMjQZElFinDBsHT3DABxvVo89H1mL63O5H3Jmm1j2wngURynGSXEqPcKwCOXr56sKyrA9xA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="yPhMwcxZ1UCVFu8gqy5j8VrG-JR-rs4FvreTJtz7_DnMb-daJxPBtSsVjajLuRfEDTZJu8qOZ5xGZ6M1O6WnB3XOAQ-NQg6tVW6SE6bHIBUgtGOcg_ETO4PfjZR8NdfISHcUoq_hqgoFAuUU3HUERKeOHQmLOF6R2Z9boNE-SwOi1Ao9qfAX_pjqeUPKUG0gV-h8Hx7jPOjzJhIT7uhzETbpmcTp8oZbc1_PhBYMw7t_An3kcnRKNP8mQU1fc0yLBavMcc_jXqSEu1UZMjQZElFinDBsHT3DABxvVo89H1mL63O5H3Jmm1j2wngURynGSXEqPcKwCOXr56sKyrA9xA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/6U6Z6pb6ewI target="_blank">
+					<h2>When you lose weight where does it go?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-15">2026-10-15</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;NiCgcUTL9_Q target="_blank">
+					<h2>The Absurd Engineering Behind the Internet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/j9p3Sn8ROL4 target="_blank">
+					<h2>What is edge dislocation?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/IHkp5Kq72ro target="_blank">
+					<h2>How Dangerous Are Non-Stick Pans?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;ONAuUyml0yI target="_blank">
+					<h2>We&#39;re trying something new...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/VKlulHwMxgU target="_blank">
+					<h2>What happens to these balloons when you open the valve?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;JsBZOcqZerk target="_blank">
+					<h2>The Insane Real Engineering of the Nazi Enigma Machine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/hPoJWjJ9Ao8 target="_blank">
+					<h2>Heating A Ball Just By Squeezing It</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/O3a99HNskNk target="_blank">
+					<h2>The Scariest Chart In Engineering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-10">2026-09-10</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/oR94cicO7xM target="_blank">
+					<h2>The Most Dangerous Escalator In Europe</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-06">2026-09-06</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/F5_G0AHfYhI target="_blank">
+					<h2>A Physics Professor Bet Me $10,000 I&#39;m Wrong...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-02">2026-09-02</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/b3KpFdb1pW8 target="_blank">
+					<h2>We Took $10,000 From @mkbhd&#39;s Locked iPhone</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-26">2026-08-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/5U-V0y-fkSw target="_blank">
+					<h2>It&#39;s impossible to choose a number at random</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-24">2026-08-24</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/nHAFnH3xRl4 target="_blank">
+					<h2>Could identical twins commit the perfect crime?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-18">2026-08-18</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;J1WoNuemKOg target="_blank">
+					<h2>We sent a camera to space to film the solar eclipse</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-17">2026-08-17</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCHnyfMqiRRG1u-2MsSQLbXA" target="_blank">Veritasium</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="yPhMwcxZ1UCVFu8gqy5j8VrG-JR-rs4FvreTJtz7_DnMb-daJxPBtSsVjajLuRfEDTZJu8qOZ5xGZ6M1O6WnB3XOAQ-NQg6tVW6SE6bHIBUgtGOcg_ETO4PfjZR8NdfISHcUoq_hqgoFAuUU3HUERKeOHQmLOF6R2Z9boNE-SwOi1Ao9qfAX_pjqeUPKUG0gV-h8Hx7jPOjzJhIT7uhzETbpmcTp8oZbc1_PhBYMw7t_An3kcnRKNP8mQU1fc0yLBavMcc_jXqSEu1UZMjQZElFinDBsHT3DABxvVo89H1mL63O5H3Jmm1j2wngURynGSXEqPcKwCOXr56sKyrA9xA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

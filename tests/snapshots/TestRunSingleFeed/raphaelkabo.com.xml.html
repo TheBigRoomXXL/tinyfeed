@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-MrdrmA8zn1zAvDUP7HhaeVKgYJu7B9Oqlgk5V_uuWmj92xpAvjc1pyKQo7bdI3bkX7YHbotGSR5FebBtqf8lWc2nA5tzBkH-nZj-xxDTw1rSSuM3aAnWsWHtxIvW7PshN1FXgsz7tPhF62-4OBdesfBNyvEu2oGKSG1ru-unu1XuQR6YLTi3xXCb51tBA0oKbeEEqJahPyOUgoZWilz03ialxTa0zWpSY5RZfTMbmt7onBvKKdGw4Q2lQSyrajWtEnJHv2S9Fmfq9zWkBkZFyB0k85ZpjeYoPgViVJdu5CrUulh84d8sBEXkTtFk16-cnx78bXuanW4yo1VsgplKKw==' ;
+		script-src 'nonce-MrdrmA8zn1zAvDUP7HhaeVKgYJu7B9Oqlgk5V_uuWmj92xpAvjc1pyKQo7bdI3bkX7YHbotGSR5FebBtqf8lWc2nA5tzBkH-nZj-xxDTw1rSSuM3aAnWsWHtxIvW7PshN1FXgsz7tPhF62-4OBdesfBNyvEu2oGKSG1ru-unu1XuQR6YLTi3xXCb51tBA0oKbeEEqJahPyOUgoZWilz03ialxTa0zWpSY5RZfTMbmt7onBvKKdGw4Q2lQSyrajWtEnJHv2S9Fmfq9zWkBkZFyB0k85ZpjeYoPgViVJdu5CrUulh84d8sBEXkTtFk16-cnx78bXuanW4yo1VsgplKKw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="MrdrmA8zn1zAvDUP7HhaeVKgYJu7B9Oqlgk5V_uuWmj92xpAvjc1pyKQo7bdI3bkX7YHbotGSR5FebBtqf8lWc2nA5tzBkH-nZj-xxDTw1rSSuM3aAnWsWHtxIvW7PshN1FXgsz7tPhF62-4OBdesfBNyvEu2oGKSG1ru-unu1XuQR6YLTi3xXCb51tBA0oKbeEEqJahPyOUgoZWilz03ialxTa0zWpSY5RZfTMbmt7onBvKKdGw4Q2lQSyrajWtEnJHv2S9Fmfq9zWkBkZFyB0k85ZpjeYoPgViVJdu5CrUulh84d8sBEXkTtFk16-cnx78bXuanW4yo1VsgplKKw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/lua-http-cve target="_blank">
+					<h2>An infinite loop bug in lua-http version 0.4</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-08">2026-09-08</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/pooky-lamp-home-assistant target="_blank">
+					<h2>We Hate The Big Light: Adventures In Making a Dumb Lamp Smart</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-22">2026-08-22</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/gardener-and-morning-paper target="_blank">
+					<h2>A Gardener for my Obsidian vault and a Morning Paper for my reMarkable</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-17">2026-08-17</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/navigating-git-diffs-vscode-vim target="_blank">
+					<h2>Navigating git diffs in VSCode with VSCodeVim</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-26">2026-02-26</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/self-hosted-matrix-synapse target="_blank">
+					<h2>Self-hosting Matrix Synapse with Docker Compose and Caddy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-25">2026-02-25</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/framework-12 target="_blank">
+					<h2>The Framework 12 is the Thinkpad X220 we deserve in 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-04">2025-07-04</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/tell-tale-heart target="_blank">
+					<h2>Building a Tell-Tale Heart with an Adafruit Prop-Maker FeatherWing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-13">2025-04-13</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/photo-blog-eleventy target="_blank">
+					<h2>Using Eleventy and S3 to build a personal photo blog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-13">2025-04-13</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/openorb-curated-search-engine target="_blank">
+					<h2>OpenOrb - a curated RSS and Atom feed search engine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-17">2024-04-17</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/plasma-stick-2040-w-esphome target="_blank">
+					<h2>WS2812 fairy lights with ESPHome and the Pimoroni Plasma Stick</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-14">2023-04-14</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/damage-to-dice-calculator target="_blank">
+					<h2>Best-fit D&amp;D damage to dice calculator</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-02">2023-02-02</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/astro-sourcehut-deployment target="_blank">
+					<h2>Deploying an Astro site through SourceHut</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-31">2023-01-31</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/undocumented-bin-collection-api target="_blank">
+					<h2>Finding out when the bins need to go out using Python, Docker, and Pushover</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-04">2022-05-04</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/void-linux-swayidle target="_blank">
+					<h2>Suspending on idle on Void Linux using Sway WM</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-16">2022-03-16</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/wireguard-docker-caddy target="_blank">
+					<h2>Wiring up Wireguard, Caddy, and Docker on a home server</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-09">2022-02-09</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/20gb-logfile target="_blank">
+					<h2>uvcdynctrl-udev.log - a 20GB logfile</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-07">2021-02-07</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/pi-pico-hd44780 target="_blank">
+					<h2>Using a HD44780 LCD display with MicroPython on the Raspberry Pi Pico</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-06">2021-02-06</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/gocryptfs-mounting-script target="_blank">
+					<h2>A simple gocryptfs mounting/unmounting script</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-23">2020-07-23</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/two-online-utopian-games target="_blank">
+					<h2>Announcing two new online utopian games</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-28">2020-06-28</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/write-a-static-site-generator target="_blank">
+					<h2>You should write a static site generator</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-18">2020-06-18</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/helloedit target="_blank">
+					<h2>HelloEdit: The demon child of a Markdown editor, Microsoft Word 5.1, and Macintosh System 7</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-05-29">2019-05-29</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/tiny-zines-script target="_blank">
+					<h2>A script to create print-ready tiny zine layouts on macOS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-05-25">2019-05-25</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/introducing-docdown target="_blank">
+					<h2>Introducing DocDown, the easy way to turn academic Markdown into Word documents</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-01-12">2019-01-12</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/caddy-wordpress-subdirectory target="_blank">
+					<h2>Wordpress in a subdirectory with Caddy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-01-10">2019-01-10</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/jekyll-image-captions target="_blank">
+					<h2>Simple image captions in Jekyll</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-10-08">2018-10-08</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/jekyll-rsync-script target="_blank">
+					<h2>A simple Jekyll rsync script</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-08-03">2018-08-03</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/command-line-die-roller target="_blank">
+					<h2>A command line die roller for D&amp;D</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-08-03">2018-08-03</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://raphaelkabo.com/blog/markdown-to-word target="_blank">
+					<h2>My workflow for transforming academic Markdown into beautiful Word documents</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-05-11">2017-05-11</time>
+					|
+					<a href="https://raphaelkabo.com" target="_blank">raphaelkabo.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://raphaelkabo.com/" target="_blank">Raphael Kabo&#39;s blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="MrdrmA8zn1zAvDUP7HhaeVKgYJu7B9Oqlgk5V_uuWmj92xpAvjc1pyKQo7bdI3bkX7YHbotGSR5FebBtqf8lWc2nA5tzBkH-nZj-xxDTw1rSSuM3aAnWsWHtxIvW7PshN1FXgsz7tPhF62-4OBdesfBNyvEu2oGKSG1ru-unu1XuQR6YLTi3xXCb51tBA0oKbeEEqJahPyOUgoZWilz03ialxTa0zWpSY5RZfTMbmt7onBvKKdGw4Q2lQSyrajWtEnJHv2S9Fmfq9zWkBkZFyB0k85ZpjeYoPgViVJdu5CrUulh84d8sBEXkTtFk16-cnx78bXuanW4yo1VsgplKKw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

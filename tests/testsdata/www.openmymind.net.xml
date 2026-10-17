@@ -1,0 +1,2624 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="/assets/feed.xsl" type="text/xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title>openmymind.net</title>
+	<subtitle>Programming blog exploring Zig, Elixir, Go, Testing, Design and Performance</subtitle>
+"https://www.openmymind.net/atom.xml" rel="self"/>
+	<link href="https://www.openmymind.net/"/>
+	<updated>2026-08-04T00:00:00Z</updated>
+	<id>https://www.openmymind.net/</id>
+	<author><name>Karl Seguin</name></author>
+	<entry>
+		<title>ArenaAllocators don&#39;t play nicely with ArrayLists</title>
+		<link href="https://www.openmymind.net/Arena-Allocators-and-ArrayLists/"/>
+		<updated>2026-08-04T00:00:00Z</updated>
+		<id>/Arena-Allocators-and-ArrayLists/</id>
+		<content type="html">
+			&lt;p&gt;A while ago, we looked at ArenaAllocators and &lt;a href=&quot;https://www.openmymind.net/ArenaAllocator-free-and-Nested-Arenas/&quot;&gt;why you should view their free as a noop.&lt;/a&gt; The short version is that, in order for a &lt;code&gt;free&lt;/code&gt; or &lt;code&gt;destroy&lt;/code&gt; to actually return memory to the arena, two conditions need to be met:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The freed memory must have been the last allocated memory, and
+  &lt;/li&gt;&lt;li&gt;The freed memory must have been allocated on the Arena&#39;s current node (which is an internal detail of how the Arena grows)
+&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;Thus, given this code:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var a = try arena.alloc(u8, 100);
+var b = try arena.alloc(u8, 100);
+arena.free(b);
+arena.free(a);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can be certain that the memory for &lt;code&gt;b&lt;/code&gt; will be returned to the arena, but can&#39;t say what will happen to &lt;code&gt;a&lt;/code&gt;&#39;s memory. Why? &lt;code&gt;b&lt;/code&gt; is freed because it was the last allocation and, by definition, had to have come from the arena&#39;s current node. After &lt;code&gt;b&lt;/code&gt; is freed, &lt;code&gt;a&lt;/code&gt; satisfies the first requirement: it becomes the last allocated memory. However, we don&#39;t know whether the allocation of &lt;code&gt;b&lt;/code&gt; caused a new node to be created; the arena&#39;s current node may or may not be the one &lt;code&gt;a&lt;/code&gt; came from.&lt;/p&gt;
+
+&lt;p&gt;If the node thing seems confusing, go read the original post, or just forget about it, because there&#39;s a common situation where the first simpler rule isn&#39;t met: &lt;code&gt;ArrayList&lt;/code&gt; (or &lt;code&gt;Writer.Allocating&lt;/code&gt;) growth. When data is appended to an &lt;code&gt;ArrayList&lt;/code&gt; it will first try to remap the existing memory (i.e. grow-in-place). But if that fails, it&#39;ll allocate a new larger chunk, copy the memory over, and free the previous allocation. See the issue? Here&#39;s the code from &lt;code&gt;array_list.zig&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const new_memory = try gpa.alignedAlloc(T, alignment, new_capacity);
+@memcpy(new_memory[0..self.items.len], self.items);
+gpa.free(old_memory);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Even if you aren&#39;t interleaving other allocations with your &lt;code&gt;ArrayList&lt;/code&gt; growth, the allocate + copy + free guarantees that &lt;code&gt;old_memory&lt;/code&gt; isn&#39;t the last allocation (the last allocation is &lt;code&gt;new_memory&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;Is there a solution? Not really, but there are two things you can do. First, size your &lt;code&gt;ArrayList&lt;/code&gt; (e.g. with &lt;code&gt;initCapacity&lt;/code&gt; or &lt;code&gt;ensureTotalCapacityPrecise&lt;/code&gt;). Second, avoid interleaving other allocations with your appends/writes. If you can do that, you&#39;ll hit the &lt;code&gt;remap&lt;/code&gt; branch much more often and circumvent this issue. Both of those are good to keep in mind regardless of what type of &lt;code&gt;Allocator&lt;/code&gt; you&#39;re using, but with an &lt;code&gt;ArenaAllocator&lt;/code&gt; the worst case is ~3x the memory.&lt;/p&gt;
+
+&lt;p&gt;I know this is obvious, but I never actually thought about it. I&#39;m probably not the only one.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>std.Io.Writer.Allocating ate all my memory</title>
+		<link href="https://www.openmymind.net/std-io-writer-allocating-ate-my-memory/"/>
+		<updated>2026-07-30T00:00:00Z</updated>
+		<id>/std-io-writer-allocating-ate-my-memory/</id>
+		<content type="html">
+			
+&lt;p&gt;If I told you that the following prints &lt;strong&gt;1665&lt;/strong&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var b: std.ArrayList(u8) = try .initCapacity(init.gpa, 1024);
+try b.appendSlice(init.gpa, &quot;a&quot; ** 1025);
+std.debug.print(&quot;{d}&#92;n&quot;, .{b.capacity});&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Would you be able to guess what this prints?&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var w: Io.Writer.Allocating = try .initCapacity(init.gpa, 1024);
+try w.writer.writeAll(&quot;a&quot; ** 1025);
+std.debug.print(&quot;{d}&#92;n&quot;, .{w.writer.buffer.len});&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Like me, you might be surprised to see &lt;strong&gt;3204&lt;/strong&gt;. What&#39;s even weirder is that if you split the write, you get a more reasonable &lt;strong&gt;1668&lt;/strong&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var w: Io.Writer.Allocating = try .initCapacity(init.gpa, 1024);
+try w.writer.writeAll(&quot;a&quot; ** 1024);
+try w.writer.writeAll(&quot;a&quot;);
+std.debug.print(&quot;{d}&#92;n&quot;, .{w.writer.buffer.len});&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What&#39;s going on here? It appears to be a bug in the &lt;code&gt;drain&lt;/code&gt; implementation of &lt;code&gt;std.Io.Writer.Allocating&lt;/code&gt;. &lt;code&gt;drain&lt;/code&gt; is the one method a &lt;code&gt;Writer&lt;/code&gt; has to implement, and, besides &lt;code&gt;self&lt;/code&gt;, it takes two parameters:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn drain(w: *Writer, data: []const []const u8, splat: usize) Error!usiz&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It takes a list of values to write (to support vectored I/O) and a &quot;splat&quot; count which is the number of times the last value in &lt;code&gt;data&lt;/code&gt; should be written. &lt;code&gt;splat&lt;/code&gt; is particularly useful, I believe, for compression. Here&#39;s a relevant line from &lt;code&gt;zstd/Decompress.zig&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+try w.splatByteAll(d.literal_streams.one[0], len);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Where &lt;code&gt;writer.splatByteAll&lt;/code&gt; finds its way to calling &lt;code&gt;drain&lt;/code&gt;. So we have some idea of &lt;code&gt;drain&lt;/code&gt;&#39;s parameters, but why does it grow so much. Here&#39;s a simplified version of &lt;code&gt;Allocating&lt;/code&gt;&#39;s &lt;code&gt;drain&lt;/code&gt; function:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn drain(self: *Allocating, data: []const []const u8, splat: usize) !usize {
+  const pattern = data[data.len - 1];
+  const splat_len = pattern.len * splat;
+  const start_len = self.writer.end;
+
+  for (data) |bytes| {
+    try self.ensureUnusedCapacity(bytes.len + splat_len + 1);
+    @memcpy(self.writer.buffer[self.writer.end..][0..bytes.len], bytes);
+    self.writer.end += bytes.len;
+  }
+
+  // ...
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Can you spot the issue? I couldn&#39;t, but Claude could. For the common case where &lt;code&gt;data.len == 1&lt;/code&gt; and &lt;code&gt;splat == 1&lt;/code&gt;, we&#39;re actually reserving 2x the memory: once for the data and once for &lt;code&gt;splat_len&lt;/code&gt; which is the data again (what the code calls the &lt;code&gt;pattern&lt;/code&gt;). If we called &lt;code&gt;drain(&amp;.{&quot;hello&quot;, &quot; &quot;}, 100)&lt;/code&gt;, the code would need to reserve space 5 bytes for &lt;code&gt;&quot;hello&quot;&lt;/code&gt; and 100 bytes for the &lt;code&gt;pattern&lt;/code&gt; (&lt;code&gt;&quot; &quot;.len * 100&lt;/code&gt;). But the implementation reserves the splat space for every value, including the pattern itself.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ArrayList&lt;/code&gt; doesn&#39;t suffer from this: it has no splat. If your use-case is simple, if you&#39;re just appending bytes, you might want to stick with it.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>On AI</title>
+		<link href="https://www.openmymind.net/On-AI/"/>
+		<updated>2026-05-22T00:00:00Z</updated>
+		<id>/On-AI/</id>
+		<content type="html">
+			
+&lt;p&gt;I use AI (Claude Code). A lot. I think it&#39;s a useful tool and like all tools, its usefulness will vary based on how you use it and what you&#39;re trying to do with it. Considering where things stand now, I have a hard time imagining a case where the value doesn&#39;t outweigh the cost.&lt;/p&gt;
+
+&lt;p&gt;I think there&#39;s one major factor that will determine how useful these tools are for you: do you enjoy doing code reviews? If you don&#39;t, then I imagine the experience will be unpleasant and the result far from ideal. Anecdotally, I feel that most developers aren&#39;t too keen on doing code reviews, and that&#39;s where a lot of the push-back is coming from. Some of the blame also belongs to Claude Code (and I assume all the other tools, though I have limited experience) for making the review experience awful.&lt;/p&gt;
+
+&lt;p&gt;Who/What wrote a piece of code doesn&#39;t change one obvious fact: the smaller the change, the easier it is to review. Concretely, this means I&#39;m happy to let Claude write a simple feature and then review it in full. But for large changes, I can review incrementally - which is &lt;strong&gt;the&lt;/strong&gt; killer feature in my workflow. I often co-drive and interact upfront, until I get a feel that the scope is well defined, and Claude &quot;understands&quot; what I want and how I want it. Claude itself seems to like to get the &quot;shape&quot; of things done upfront. I know it&#39;s silly, but I sometimes feel embarrassed to ask for an explanation; sometimes having to ask multiple times. But that&#39;s another noteworthy benefit: I&#39;m not blocking a PR or wasting a colleague&#39;s time with my own lack of understanding, so I&#39;m more likely to ask and thus more likely to gain a deeper understanding (or, in rare cases, fix an actual bug in the implementation).&lt;/p&gt;
+
+&lt;p&gt;Another important part of my flow is to yak-shave and nitpick. Rewriting comments (another major miss on coding agents is how verbose they are), renaming variables and going through my personal catalog of preferred refactorings, is something I&#39;m free to do with AI-generated code that I avoid/limit with a human-generated PR. This works particularly well with the incremental review strategy. It gives me something to start with and often results in a brief summary or admonishment from Claude explaining why my change is good or bad; further cementing both of our &quot;understanding&quot;.&lt;/p&gt;
+
+&lt;p&gt;My setup is out-of-the-box basic. The only time I have more than one session open is if I&#39;m working on a large feature and hit a side quest, e.g. we&#39;ve hit a segfault. My experience is that a new session will often figure things out faster, while the original session remains more focused. The fanciest thing I do is make sure to name all my sessions for future recall. I don&#39;t use any significant agent-specific tooling/files.&lt;/p&gt;
+
+&lt;p&gt;My biggest non-tooling complaint is that the quality and interactions are inconsistently inconsistent. With no apparent rhyme or reason, a specific session can see Claude failing to do basic things (e.g. running tests) that it has done a hundreds of times correctly in previous sessions. Lately, it frequently flags my benign work as violating Anthropic&#39;s AUP. Normally that happens when I&#39;m troubleshooting a crash, and I&#39;d generally consider this a tooling-issue, but I dislike and worry about what that could mean in the future.&lt;/p&gt;
+
+&lt;p&gt;Whenever someone snickers at AI slop from vibe coding, I wonder what they&#39;re comparing it to. Between poorly designed buggy code written by a human and poorly designed buggy code written by AI, the latter has the advantage of being cheaper and faster. I realize people will call this a simplification and false dichotomy, but I think for a significant number of cases, that&#39;s the point we&#39;re at today. There are plenty of reasons not to go all-in on AI, but code quality isn&#39;t one of them. I think it stands to reason that poorly designed codebases and poorly functioning teams will get less value from AI tools. That isn&#39;t to say that anyone struggling with AI tools is a bad developer. This is provably false, just like it&#39;s provably true that some people are able to extract tremendous value. You can sit on the sidelines and snicker, or you can roll up your sleeves and work through whatever&#39;s blocking you/your team/your company from benefiting.&lt;/p&gt;
+
+&lt;p&gt;The last point I want to make is about cost/value. I don&#39;t want to speculate about future costs, but being bullish as I am about coding agents (yet bearish about AI in general), I do worry about AI inequality. Where I live, $100/month isn&#39;t realistic for most developers; it can represent 15%+ of a developer&#39;s salary. I have no solution or prediction about this, I just think it could be an issue.&lt;/p&gt;
+
+&lt;p&gt;I have two disclaimers to make. First, I work in browser-tech: something very well understood and documented. I used to think Claude worked well for me in large part because of this. I no longer think that&#39;s true. Too much of the work is specific to our implementation. I&#39;d like to think our codebase is relatively well structured, tested, documented and understood, and that&#39;s what makes the real difference. Second, I have a free open-source-related Claude subscription. I used to pay for it, and I&#39;ll pay for it (or something else) when that gift expires.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Is Zig&#39;s New Writer Unsafe?</title>
+		<link href="https://www.openmymind.net/Is-Zigs-New-Io-Unsafe/"/>
+		<updated>2025-09-20T00:00:00Z</updated>
+		<id>/Is-Zigs-New-Io-Unsafe/</id>
+		<content type="html">
+			
+&lt;p&gt;If we wanted to write a function that takes one of Zig&#39;s new &lt;code&gt;*std.Io.Reader&lt;/code&gt; and write it to stdout, we might start with something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn output(r: *std.Io.Reader) !void {
+    const stdout = std.fs.File.stdout();
+    var buffer: [???]u8 = undefined;
+    var writer = stdout.writer(&amp;buffer);
+    _ = try r.stream(&amp;writer.interface, .unlimited);
+    try writer.interface.flush();
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But what should the size of &lt;code&gt;buffer&lt;/code&gt; be? If this was a one-and-done, maybe we&#39;d leave it empty or put some seemingly sensible default, like 1K or 4K. If it was a mission critical piece of code, maybe we&#39;d benchmark it or make it platform dependent.&lt;/p&gt;
+
+&lt;p&gt;But unless I&#39;m missing something, whatever size we use, this function&#39;s behavior is undefined. You see, the issue is that readers can require a specific buffer sizes on a writer (and writers can require a specific buffer size on a reader). For example, this code, with a small buffer of 64, fails an assertion in debug mode, and falls into an endless loop in release mode:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var fixed = std.Io.Reader.fixed(&amp;.{
+        40, 181, 47, 253, 36, 110, 149, 0, 0, 88, 111, 118, 101, 114, 32, 57,
+        48, 48, 48, 33, 10, 1, 0, 192, 105, 241, 2, 170, 69, 248, 150
+    });
+
+    var decompressor = std.compress.zstd.Decompress.init(&amp;fixed, &amp;.{}, .{});
+    try output(&amp;decompressor.reader);
+}
+
+fn output(r: *std.Io.Reader) !void {
+    const stdout = std.fs.File.stdout();
+    var buffer: [64]u8 = undefined;
+    var writer = stdout.writer(&amp;buffer);
+    _ = try r.stream(&amp;writer.interface, .unlimited);
+    try writer.interface.flush();
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Some might argue that this is a documentation challenge. It&#39;s true that the documentation for &lt;code&gt;zstd.Decompress&lt;/code&gt; mentions what a &lt;code&gt;Writer&lt;/code&gt;&#39;s buffer must be. &lt;strong&gt;But this is not a documentation problem&lt;/strong&gt;. There are legitimate scenarios where the nature of a &lt;code&gt;Reader&lt;/code&gt; is unknown (or, at least, difficult to figure out). A type of a reader could be conditional, say based on an HTTP response header. A library developer might take a &lt;code&gt;Reader&lt;/code&gt; as an input and present their own &lt;code&gt;Reader&lt;/code&gt; as an output - what buffer requirement should they document?&lt;/p&gt;
+
+&lt;p&gt;Worse is that the failure can be conditional on the input. For example, if we change our source to:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var fixed = std.Io.Reader.fixed(&amp;.{
+    40, 181, 47, 253, 36, 11, 89, 0, 0, 111, 118, 101, 114, 32, 57,
+    48, 48, 48, 33, 10, 112, 149, 178, 212,
+});&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Everything works, making this misconfiguration particularly hard to catch early.&lt;/p&gt;
+
+&lt;p&gt;To me this seems almost impossible - like, I must be doing something wrong. And if I am, I&#39;m sorry. But, if I&#39;m not, this is a problem right?&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Everything is a []u8</title>
+		<link href="https://www.openmymind.net/Everything-Is-A-u8-array/"/>
+		<updated>2025-09-07T00:00:00Z</updated>
+		<id>/Everything-Is-A-u8-array/</id>
+		<content type="html">
+			
+&lt;p&gt;If you&#39;re coming to Zig from a more hand-holding language, one of the things worth exploring is the relationship between the compiler and memory. I think code is the best way to do that, but briefly put into words: the memory that your program uses is all just bytes; it is only the compile-time information (the type system) that gives meaning to and dictates how that memory is used and interpreted. This is meaningful in Zig and other similar languages because developers are allowed to override how the compiler interprets those bytes.&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;This is something I&#39;ve written about before; longtime readers might find this post repetitive.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Consider this code:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+  std.debug.print(&quot;{d}&#92;n&quot;, .{@sizeOf(User)});
+}
+
+const User = struct {
+  id: u32,
+  name: []const u8,
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It &lt;em&gt;should&lt;/em&gt; print 24. The point of this post isn&#39;t &lt;em&gt;why&lt;/em&gt; it prints 24. What&#39;s important here is that when we create a &lt;code&gt;User&lt;/code&gt; - whether it&#39;s on the stack or the heap - it is represented by 24 bytes of memory.&lt;/p&gt;
+
+&lt;p&gt;If you examine those 24 bytes, there&#39;s nothing &quot;User&quot; about them. The memory isn&#39;t self-describing - that would be inefficient. Rather, it&#39;s the compiler itself that maintains meta data about memory. Very naively, we could imagine that the compiler maintains a lookup where the key is the variable name and the value is the memory address (our 24 bytes) + the type (&lt;code&gt;User&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;The fun, and sometimes useful thing about this is that we can alter the compiler&#39;s meta data. Here&#39;s an working but impractical example:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+  var user = User{.id = 9001, .name = &quot;Goku&quot;};
+  const tea: *Tea = @ptrCast(&amp;user);
+  std.debug.print(&quot;{any}&#92;n&quot;, .{tea});
+}
+
+const User = struct {
+  id: u32,
+  name: []const u8,
+};
+
+const Tea = struct {
+  price: u32,
+  type: TeaType,
+
+  const TeaType = enum {
+    black,
+    white,
+    green,
+    herbal,
+  };
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;First we create a &lt;code&gt;User&lt;/code&gt; - nothing unusual about that. Next we use &lt;a href=&quot;https://www.openmymind.net/Zig-Tiptoeing-Around-ptrCast/&quot;&gt;@ptrCast&lt;/a&gt; to tell the compiler to treat the memory referenced by &lt;code&gt;user&lt;/code&gt; as a &lt;code&gt;*Tea&lt;/code&gt;. &lt;code&gt;@ptrCast&lt;/code&gt; works on addresses, which is why we give it address of (&lt;code&gt;&amp;&lt;/code&gt;) &lt;code&gt;user&lt;/code&gt; and get back a pointer (&lt;code&gt;*&lt;/code&gt;) to &lt;code&gt;Tea&lt;/code&gt;. Here the return type of &lt;code&gt;@ptrCast&lt;/code&gt; is inferred by the type it&#39;s being assigned to.&lt;/p&gt;
+
+&lt;p&gt;You might have some questions like what does it print? Or, is it safe? And, is this ever useful?&lt;/p&gt;
+
+&lt;p&gt;We&#39;ll dig more into the safety of this in a bit. But briefly, the main concern is about the size of our structures. If &lt;code&gt;@sizeOf(User)&lt;/code&gt; is 24 bytes, we&#39;ll be able to re-interpret that memory as anything which is 24 bytes or less. The &lt;code&gt;@sizeOf(Tea)&lt;/code&gt; is 8 bytes, so this is safe.&lt;/p&gt;
+
+&lt;p&gt;I get different results on each run:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+.{ .price = 39897726, .type = .white }
+.{ .price = 75123326, .type = .white }
+.{ .price = 6441598, .type = .white }
+.{ .price = 77826686, .type = .white }
+.{ .price = 4950654, .type = .white }
+.{ .price = 69438078, .type = .white }
+.{ .price = 78498430, .type = .white }
+.{ .price = 79022718, .type = .white }&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It&#39;s possible (but not likely) you get consistent result. I find these results surprising. If had to imagine what the 24 bytes of &lt;code&gt;user&lt;/code&gt; looks like, I&#39;d come up with:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+ 41, 35, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, x, x, x, x, x, x, x, x&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Why that? Well, I&#39;d expect the first 8 bytes to be the id, 9001, which has a byte representation of &lt;code&gt;41, 35, 0, 0, 0, 0, 0, 0&lt;/code&gt;. The next 8 bytes I think would be the string length, or &lt;code&gt;4, 0, 0, 0, 0, 0, 0, 0&lt;/code&gt; The last 8 bytes would be the pointer to actual string value - an address that I have no way of guessing, so I mark it with &lt;code&gt;x, x, x, x, x, x, x, x&lt;/code&gt;.
+
+&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;If you think the &lt;code&gt;id&lt;/code&gt; should only take 4 bytes, given that it&#39;s a u32, good! But Zig will usually align struct fields, so it really will take 8 bytes. That isn&#39;t something we&#39;ll dive into this post though.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Since &lt;code&gt;Tea&lt;/code&gt; is only 8 bytes and since the first 8 bytes of &lt;code&gt;user&lt;/code&gt; are always the same (only the pointer to the name value changes from instance to instance and from run to run), shouldn&#39;t we always get the same &lt;code&gt;Tea&lt;/code&gt; value?&lt;/p&gt;
+
+&lt;p&gt;Yes, but only if I&#39;m correct about the contents of those 24 bytes for &lt;code&gt;user&lt;/code&gt;. Unless we tell it otherwise, Zig makes no guarantees about how it lays out the fields of a struct. The fact that our &lt;code&gt;tea&lt;/code&gt; keeps changing, makes me believe that, for reasons I don&#39;t know, Zig decided to put the pointer to our name at the start.&lt;/p&gt;
+
+&lt;p&gt;The reason you might get different results is that Zig might have organized the user&#39;s memory different based on your platform or version of Zig (or any other factor, but those are the two more realistic reasons).&lt;/p&gt;
+
+&lt;p&gt;So while this code might never crash, doesn&#39;t the lack of guarantee make it useless? No. At least not in three cases.&lt;/p&gt;
+
+&lt;h3 id=&quot;welldefined&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#welldefined&quot; aria-hidden=&quot;true&quot;&gt;Well-Defined In-Memory Layout&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;While Zig usually doesn&#39;t make guarantees about how data will be organized, C programs &lt;strong&gt;do&lt;/strong&gt; . In Zig, a structure declared as &lt;code&gt;extern&lt;/code&gt; follows that specification. We can similarly declare a structure as &lt;code&gt;packed&lt;/code&gt; which also has a well-defined memory layout (but just not necessarily the same as C&#39;s / &lt;code&gt;extern&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;extern&lt;/code&gt; and &lt;code&gt;packed&lt;/code&gt; structs can only contain &lt;code&gt;extern&lt;/code&gt; and &lt;code&gt;packed&lt;/code&gt; fields. In order for a struct to have a well-known memory layout, all of its field must have a well-known memory layout. They can&#39;t, for example, have slices - which don&#39;t have a guaranteed layout. Still, here&#39;s a reliable and realistic example:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+  var manager = Manager{.id = 4, .name = &quot;Leto&quot;, .name_len = 4, .level = 99};
+  const user: *User = @ptrCast(&amp;manager);
+  std.debug.print(&quot;{d}: {s}&#92;n&quot;, .{user.id, user.name[0..user.name_len]});
+}
+
+const User = extern struct {
+  id: u32,
+  name: [*c]const u8,
+  name_len: usize,
+};
+
+const Manager = extern struct {
+  id: u32,
+  name: [*c]const u8,
+  name_len: usize,
+  level: u16,
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Part of the guarantee is that the fields are laid out in the order that they&#39;re declared. Above, when I guessed at the layout of &lt;code&gt;user&lt;/code&gt;, I made that assumption - but it&#39;s only valid for &lt;code&gt;extern&lt;/code&gt; structs. We can be sure that the above code will print &lt;code&gt;4: Leto&lt;/code&gt; because &lt;code&gt;Manager&lt;/code&gt; has the same fields as &lt;code&gt;User&lt;/code&gt; and in the same order. We can, and should, make this more explicit:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const Manager = extern struct {
+  user: User,
+  level: u16,
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Because the type information is only meta data of the compiler, both declarations of &lt;code&gt;Manager&lt;/code&gt; are the same - they&#39;re the same size and have the same layout. There&#39;s no overhead to embedding the &lt;code&gt;User&lt;/code&gt; into &lt;code&gt;Manager&lt;/code&gt; this way.&lt;/p&gt;
+
+&lt;p&gt;This type of memory-reinterpretation can be found in some C code and thus see in any Zig code that interacts with such a C codebase.&lt;/p&gt;
+
+&lt;h3 id=&quot;builtins&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#builtins&quot; aria-hidden=&quot;true&quot;&gt;Leveraging Zig Builtins&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;While we can&#39;t assume anything about the memory layout of non-extern (or packed) struct, we can leverage various built-in functions to programmatically figure things out, such as &lt;code&gt;@sizeOf&lt;/code&gt;. Probably the most useful is &lt;code&gt;@offsetOf&lt;/code&gt; which gives us the offset of a field in bytes.&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+  std.debug.print(&quot;name offset: {d}&#92;n&quot;, .{@offsetOf(User, &quot;name&quot;)});
+  std.debug.print(&quot;id offset: {d}&#92;n&quot;, .{@offsetOf(User, &quot;id&quot;)});
+}
+
+const User = struct {
+  id: u32,
+  name: []const u8,
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For me, this prints:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+name offset: 0
+id offset: 16&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This helps confirm that Zig did, in fact, put the &lt;code&gt;name&lt;/code&gt; before the &lt;code&gt;id&lt;/code&gt;. We saw the result of that when we treated the user&#39;s memory as an instance of &lt;code&gt;Tea&lt;/code&gt;. If we wanted to create a &lt;code&gt;Tea&lt;/code&gt; based on  the address of &lt;code&gt;user.id&lt;/code&gt; rather than &lt;code&gt;user&lt;/code&gt;, we could do:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+  var user = User{.id = 9001, .name = &quot;Goku&quot;};
+
+  // changed from &amp;user to &amp;user.id
+  const tea: *Tea = @ptrCast(&amp;user.id);
+  std.debug.print(&quot;{any}&#92;n&quot;, .{tea});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will now always output the same result. But how would we take &lt;code&gt;tea&lt;/code&gt; and get a &lt;code&gt;user&lt;/code&gt; out of it? Generally speaking, this wouldn&#39;t be safe since &lt;code&gt;@sizeOf(Tea) &amp;lt; @sizeOf(User)&lt;/code&gt; - the memory created to hold an instance of &lt;code&gt;Tea&lt;/code&gt;, 8 bytes, can&#39;t represent the 24 bytes need for &lt;code&gt;User&lt;/code&gt;. But for this instance of &lt;code&gt;Tea&lt;/code&gt;, we know that there are 24 bytes available &quot;around&quot; &lt;code&gt;tea&lt;/code&gt;. Where exactly those 24 bytes start depends on the relative position of &lt;code&gt;user.id&lt;/code&gt; to &lt;code&gt;user&lt;/code&gt; itself. If we don&#39;t adjust for that offset, we risk crashing unless the offset happens to be 0. Since we know the offset is 16, not 0, this should crash:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+  var user = User{.id = 9001, .name = &quot;Goku&quot;};
+  var tea: *Tea = @ptrCast(&amp;user.id);
+
+  const user2: *User = @ptrCast(&amp;tea);
+  std.debug.print(&quot;{any}&#92;n&quot;, .{user2});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is our &lt;code&gt;user&lt;/code&gt;&#39;s memory (as 24 contiguous bytes of memory, broken up by the 3 8-byte fields):&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+name.ptr =&gt; x, x, x, x, x, x, x, x
+name.len =&gt; 4, 0, 0, 0, 0, 0, 0, 0,
+user.id  =&gt; 41, 35, 0, 0, 0, 0, 0, 0&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And when we make &lt;code&gt;tea&lt;/code&gt; from &lt;code&gt;&amp;user.id&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+&amp;nbsp;      name.ptr =&gt; x, x, x, x, x, x, x, x
+       name.len =&gt; 4, 0, 0, 0, 0, 0, 0, 0,
+tea =&gt; user.id  =&gt; 41, 35, 0, 0, 0, 0, 0, 0
+                   more memory, but not ours to play with&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we try to cast &lt;code&gt;tea&lt;/code&gt; back into a &lt;code&gt;*User&lt;/code&gt;, we&#39;ll be 16 bytes off, and end up reading 16 bytes of memory adjacent to &lt;code&gt;tea&lt;/code&gt; which isn&#39;t ours.&lt;/p&gt;
+
+&lt;p&gt;To make this work, we need to take the address of &lt;code&gt;tea&lt;/code&gt; and subtract the &lt;code&gt;@offset(User, &quot;id&quot;)&lt;/code&gt; from it:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+  var user = User{.id = 9001, .name = &quot;Goku&quot;};
+  const tea: *Tea = @ptrCast(&amp;user.id);
+  const user2: *User = @ptrFromInt(@intFromPtr(tea) - @offsetOf(User, &quot;id&quot;));
+  std.debug.print(&quot;{any}&#92;n&quot;, .{user2});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Because we use &lt;code&gt;@offsetOf&lt;/code&gt;, it no longer matters how the structure is laid out. We&#39;re always able to find the starting address of &lt;code&gt;user&lt;/code&gt; based on the address of &lt;code&gt;user.id&lt;/code&gt; (which is where &lt;code&gt;tea&lt;/code&gt; points to) because we know &lt;code&gt;@offsetOf(User, &quot;id&quot;)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;asmemory&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#asmemory&quot; aria-hidden=&quot;true&quot;&gt;As Raw Memory&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The above example is convoluted. There&#39;s no relationship between the data of a &lt;code&gt;User&lt;/code&gt; and of &lt;code&gt;Tea&lt;/code&gt;. What does it mean to create &lt;code&gt;Tea&lt;/code&gt; out of a user&#39;s &lt;code&gt;id&lt;/code&gt;? Nothing.&lt;/p&gt;
+
+&lt;p&gt;What if we forget about &lt;code&gt;user&lt;/code&gt;&#39;s data, the &lt;code&gt;id&lt;/code&gt; and &lt;code&gt;name&lt;/code&gt;, and treat those 24 bytes as usable space?&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+  var user = User{.id = 9001, .name = &quot;Goku&quot;};
+
+  const tea: *Tea = @ptrCast(&amp;user);
+  tea.* = .{.price = 2492, .type = .black};
+
+  std.debug.print(&quot;{any}&#92;n&quot;, .{tea});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;user&lt;/code&gt; and &lt;code&gt;tea&lt;/code&gt; still share the same memory. We cannot safely use &lt;code&gt;user&lt;/code&gt; after writing to &lt;code&gt;tea.*&lt;/code&gt; - that write might have stored data that cannot safely be interpreted as a &lt;code&gt;User&lt;/code&gt;. Specifically in this case, the write to tea has probably made &lt;code&gt;name.ptr&lt;/code&gt; point to invalid memory. But if we&#39;re done with &lt;code&gt;user&lt;/code&gt; and know it won&#39;t be used again, we just saved a few bytes of memory by re-using its space.&lt;/p&gt;
+
+&lt;p&gt;This can go on forever. We can safely re-use the space to create another &lt;code&gt;User&lt;/code&gt;, as long as we&#39;re 100% sure that we&#39;re done with &lt;code&gt;tea:&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn main() !void {
+  var user = User{.id = 9001, .name = &quot;Goku&quot;};
+
+  const tea: *Tea = @ptrCast(&amp;user);
+  tea.* = .{.price = 2492, .type = .black};
+  std.debug.print(&quot;{any}&#92;n&quot;, .{tea});
+
+  const user2: *User = @ptrCast(@alignCast(tea));
+  user2.* = .{.id = 32, .name = &quot;Son Goku&quot;};
+  std.debug.print(&quot;{any}&#92;n&quot;, .{user2});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can re-use those 24 bytes to represent anything that takes 24 bytes of memory or less.&lt;/p&gt;
+
+&lt;p&gt;The best practical example of this is &lt;code&gt;std.heap.MemoryPool(T)&lt;/code&gt;. The &lt;code&gt;MemoryPool&lt;/code&gt; is an allocator that can create a single type, &lt;code&gt;T&lt;/code&gt;. That might not sound particularly useful, but using what we&#39;ve learned so far, it can efficiently at re-use memory of discarded values.&lt;/p&gt;
+
+&lt;p&gt;We&#39;ll build a simplified version to see how it works, starting with a basic API - one without any recycling ability. Further, rather than make it generic, we&#39;ll make a &lt;code&gt;UserPool&lt;/code&gt; specific for &lt;code&gt;User&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const UserPool = struct {
+  allocator: Allocator,
+
+  pub fn init(allocator: Allocator) UserPool {
+    return .{
+      .allocator = allocator,
+    };
+  }
+
+  pub fn create(self: *UserPool) !*User {
+    return self.allocator.create(User);
+  }
+
+  pub fn destroy(self: *UserPool, user: *User) void {
+    self.allocator.destroy(user);
+  }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As-is, this is just a wrapper that limits what the allocator is able to create. Not particularly useful. But what if instead of destroying a &lt;code&gt;user&lt;/code&gt; we made it available to subsequent &lt;code&gt;create&lt;/code&gt;? One way to do that would be to hold an &lt;code&gt;std.SinglyLinkedList&lt;/code&gt;. But for that to work, we&#39;d need to make additional allocations - the linked list node has to exist somewhere. But why? The &lt;code&gt;@sizeOf(User)&lt;/code&gt; is large enough to be used as-is, and whenever a &lt;code&gt;user&lt;/code&gt; is destroyed, we&#39;re being told that memory is free to be used. If an application &lt;em&gt;did&lt;/em&gt; use a &lt;code&gt;user&lt;/code&gt; after destroying it, it would be undefined behavior, just like it is with any other allocator. Let&#39;s add a bit of decoration to our &lt;code&gt;UserPool&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const UserPool = struct {
+  allocator: Allocator,
+  free_list: ?*FreeEntry = null,
+
+  const FreeEntry = struct {
+      next: ?*FreeEntry,
+  };
+
+  // rest is unchanged . . . for now.
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We&#39;ve added a linked list to our &lt;code&gt;UserPool&lt;/code&gt;. Every &lt;code&gt;FreeEntry&lt;/code&gt; points to another &lt;code&gt;*FreeEntry&lt;/code&gt; or &lt;code&gt;null&lt;/code&gt;, including the initial one referenced by &lt;code&gt;free_list&lt;/code&gt;. Now we change &lt;code&gt;destroy&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const UserPool = struct {
+  // ...
+
+  pub fn destroy(self: *UserPool, user: *User) void {
+    const entry: *FreeEntry = @ptrCast(user);
+    entry.* = .{ .next = self.free_list };
+    self.free_list = entry;
+  }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We use the ideas we&#39;ve explored above to create a simple linked list. All that&#39;s left is to change &lt;code&gt;create&lt;/code&gt; to leverage it:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const UserPool = struct {
+  // ...
+
+  pub fn create(self: *UserPool) !*User {
+    if (self.free_list) |entry| {
+      self.free_list = entry.next;
+      return @ptrCast(entry);
+    }
+    return self.allocator.create(User);
+  }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we have a &lt;code&gt;FreeEntry&lt;/code&gt;, then we can turn that into a &lt;code&gt;*User&lt;/code&gt;. We make sure to advanced our &lt;code&gt;free_list&lt;/code&gt; to the next entry, which might be &lt;code&gt;null&lt;/code&gt;. If there isn&#39;t an available &lt;code&gt;FreeEntry&lt;/code&gt;, we allocate a new one.&lt;/p&gt;
+
+&lt;p&gt;As a final step, we should add a &lt;code&gt;deinit&lt;/code&gt; to free the memory held by our &lt;code&gt;free_list&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const UserPool = struct {
+  // ...
+
+  pub fn deinit(self: *UserPool) void {
+    var entry = self.free_list;
+    while (entry) |e| {
+      entry = e.next;
+      const user: *User = @ptrCast(e);
+      self.allocator.destroy(user);
+    }
+    self.free_list = null;
+  }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That final &lt;code&gt;@ptrCast&lt;/code&gt; from a &lt;code&gt;*FreeEntry&lt;/code&gt; to a &lt;code&gt;*User&lt;/code&gt; might seem unnecessary. If we&#39;re freeing the memory, why does the type matter? But allocators only know how much memory to free because the compiler tells them - based on the type. Freeing &lt;code&gt;e&lt;/code&gt;, a &lt;code&gt;*FreeEntry&lt;/code&gt; would only work if &lt;code&gt;@sizeOf(FreeEntry) == @sizeOf(User)&lt;/code&gt; (which it isn&#39;t).&lt;/p&gt;
+
+&lt;p&gt;In addition to being generic, Zig&#39;s actual &lt;code&gt;MemoryPool&lt;/code&gt; is a bit more sophisticated, handling different alignments and even handling the case where &lt;code&gt;@sizeOf(T) &lt; @sizeOf(FreeEntry)&lt;/code&gt;, but our &lt;code&gt;UserPool&lt;/code&gt; is pretty close.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#conclusion&quot; aria-hidden=&quot;true&quot;&gt;Conclusion&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;By altering the compiler&#39;s view of our program, we can do all types of things and get into all types of trouble. While these manipulations can be done safely, they rely on understanding the lack of guarantees Zig makes. If you&#39;re programming in Zig, this is the type of thing you should try to get comfortable with. Most of this is fundamental regardless of the programming language, it&#39;s just that some languages, like Zig, give you more control.&lt;/p&gt;
+
+&lt;p&gt;I had initially planned on writing a version of &lt;code&gt;MemoryPool&lt;/code&gt; which expanded on the standard library&#39;s. I wanted to create a pool for multiple types. For example, one that can be used for both &lt;code&gt;User&lt;/code&gt; and &lt;code&gt;Tea&lt;/code&gt; instances The trick, of course, would be to always allocate memory for the largest supported type (&lt;code&gt;User&lt;/code&gt; in this case). But this post is already long, so I leave it as an exercise for you.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>I&#39;m too dumb for Zig&#39;s new IO interface</title>
+		<link href="https://www.openmymind.net/Im-Too-Dumb-For-Zigs-New-IO-Interface/"/>
+		<updated>2025-08-22T00:00:00Z</updated>
+		<id>/Im-Too-Dumb-For-Zigs-New-IO-Interface/</id>
+		<content type="html">
+			
+&lt;p&gt;You might have heard that Zig 0.15 introduces a new IO interface, with the focus for this release being the new std.Io.Reader and std.Io.Writer types. The old &quot;interfaces&quot; had problems. Like &lt;a href=&quot;https://github.com/ziglang/zig/issues/17985&quot;&gt;this performance issue&lt;/a&gt; that I opened. And it relied on a &lt;a href=&quot;https://www.openmymind.net/In-Zig-Whats-a-Writer/&quot;&gt;mix of types&lt;/a&gt;, which always confused me, and a lot of &lt;code&gt;anytype&lt;/code&gt; - which is generally great, but a poor foundation to build an interface on.&lt;/p&gt;
+
+&lt;p&gt;I&#39;ve been slowly upgrading my libraries, and I ran into changes to the &lt;code&gt;tls.Client&lt;/code&gt; client used by my smtp library. For the life of me, I just don&#39;t understand how it works.&lt;/p&gt;
+
+&lt;p&gt;Zig has never been known for its documentation, but if we look at the documentation for &lt;code&gt;tls.Client.init&lt;/code&gt;, we&#39;ll find:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn init(input: *std.Io.Reader, output: *std.Io.Writer, options: Options) InitError!Client
+Initiates a TLS handshake and establishes a TLSv1.2 or TLSv1.3 session.&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So it takes one of these new Readers and a new Writer, along with some options (sneak peak, which aren&#39;t all optional). It doesn&#39;t look like you can just give it a &lt;code&gt;net.Stream&lt;/code&gt;, but &lt;code&gt;net.Stream&lt;/code&gt; does expose a &lt;code&gt;reader()&lt;/code&gt; and &lt;code&gt;writer()&lt;/code&gt; method, so that&#39;s probably a good place to start:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const stream = try std.net.tcpConnectToHost(allocator, &quot;www.openmymind.net&quot;, 443);
+defer stream.close();
+
+var writer = stream.writer(&amp;.{});
+var reader = stream.reader(&amp;.{});
+
+var tls_client = try std.crypto.tls.Client.init(
+  reader.interface(),
+  &amp;writer.interface,
+  .{}, // options TODO
+);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that &lt;code&gt;stream.writer()&lt;/code&gt; returns a &lt;code&gt;Stream.Writer&lt;/code&gt; and &lt;code&gt;stream.reader()&lt;/code&gt; returns a &lt;code&gt;Stream.Reader&lt;/code&gt; - those aren&#39;t the types our &lt;code&gt;tls.Client&lt;/code&gt; expects. To convert the &lt;code&gt;Stream.Reader&lt;/code&gt; to an &lt;code&gt;*std.Io.Reader&lt;/code&gt;, we need to call its &lt;code&gt;interface()&lt;/code&gt; method. To get a &lt;code&gt;*std.io.Writer&lt;/code&gt; from an &lt;code&gt;Stream.Writer&lt;/code&gt;, we need the address of its &lt;code&gt;&amp;interface&lt;/code&gt; field. This doesn&#39;t seem particularly consistent. Don&#39;t forget that the &lt;code&gt;writer&lt;/code&gt; and &lt;code&gt;reader&lt;/code&gt; need a stable address. Because I&#39;m trying to get the simplest example working, this isn&#39;t an issue - everything will live on the stack of &lt;code&gt;main&lt;/code&gt;. In a real word example, I think it means that I&#39;ll always have to wrap the &lt;code&gt;tls.Client&lt;/code&gt; into my own heap-allocated type; giving the writer and reader have a cozy stable home.&lt;/p&gt;
+
+&lt;p&gt;Speaking of allocations, you might have noticed that &lt;code&gt;stream.writer&lt;/code&gt; and &lt;code&gt;stream.reader&lt;/code&gt; take a parameter. It&#39;s the buffer they should use. Buffering is a first class citizen of the new Io interface - who needs composition? The documentation &lt;strong&gt;does&lt;/strong&gt; tell me these need to be at least &lt;code&gt;std.crypto.tls.max_ciphertext_record_len&lt;/code&gt; large, so we need to fix things a bit:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var write_buf: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+var writer = stream.writer(&amp;write_buf);
+
+var read_buf: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+var reader = stream.reader(&amp;read_buf);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here&#39;s where the code stands: &lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+  var gpa: std.heap.DebugAllocator(.{}) = .init;
+  const allocator = gpa.allocator();
+
+  const stream = try std.net.tcpConnectToHost(allocator, &quot;www.openmymind.net&quot;, 443);
+  defer stream.close();
+
+  var write_buf: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+  var writer = stream.writer(&amp;write_buf);
+
+  var read_buf: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+  var reader = stream.reader(&amp;read_buf);
+
+  var tls_client = try std.crypto.tls.Client.init(
+      reader.interface(),
+      &amp;writer.interface,
+      .{
+      },
+  );
+  defer tls_client.end() catch {};
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But if you try to run it, you&#39;ll get a compilation error. Turns out we have to provide 4 options: the ca_bundle, a host, a &lt;code&gt;write_buffer&lt;/code&gt; and a &lt;code&gt;read_buffer&lt;/code&gt;. Normally I&#39;d expect the options parameter to be for optional parameters, I don&#39;t understand why some parameters (input and output) are passed one way while &lt;code&gt;writer_buffer&lt;/code&gt; and &lt;code&gt;read_buffer&lt;/code&gt; are passed another.&lt;/p&gt;
+
+&lt;p&gt;Let&#39;s give it what it wants AND send some data:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+
+// existing setup...
+
+var bundle = std.crypto.Certificate.Bundle{};
+try bundle.rescan(allocator);
+defer bundle.deinit(allocator);
+
+var tls_client = try std.crypto.tls.Client.init(
+  reader.interface(),
+  &amp;writer.interface,
+  .{
+    .ca = .{.bundle = bundle},
+    .host = .{ .explicit = &quot;www.openmymind.net&quot; } ,
+    .read_buffer = &amp;.{},
+    .write_buffer = &amp;.{},
+  },
+);
+defer tls_client.end() catch {};
+
+try tls_client.writer.writeAll(&quot;GET / HTTP/1.1&#92;r&#92;n&#92;r&#92;n&quot;);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, if I try to run it, the program just hangs. I don&#39;t know what &lt;code&gt;write_buffer&lt;/code&gt; is, but I know Zig now loves buffers, so let&#39;s try to give it something:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+
+// existing setup...
+
+// I don&#39;t know what size this should/has to be??
+var write_buf2: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+
+var tls_client = try std.crypto.tls.Client.init(
+  reader.interface(),
+  &amp;writer.interface,
+  .{
+    .ca = .{.bundle = bundle},
+    .host = .{ .explicit = &quot;www.openmymind.net&quot; } ,
+    .read_buffer = &amp;.{},
+    .write_buffer = &amp;write_buf2,
+  },
+);
+defer tls_client.end() catch {};
+
+try tls_client.writer.writeAll(&quot;GET / HTTP/1.1&#92;r&#92;n&#92;r&#92;n&quot;);&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;p&gt;Great, now the code doesn&#39;t hang, all we need to do is read the response. &lt;code&gt;tls.Client&lt;/code&gt; exposes a &lt;code&gt;reader: *std.Io.Reader&lt;/code&gt; field which is &quot;Decrypted stream from the server to the client.&quot; That sounds like what we want, but believe it or not &lt;code&gt;std.Io.Reader&lt;/code&gt; doesn&#39;t have a &lt;code&gt;read&lt;/code&gt; method. It has a &lt;code&gt;peak&lt;/code&gt; a &lt;code&gt;takeByteSigned&lt;/code&gt;, a &lt;code&gt;readSliceShort&lt;/code&gt; (which seems close, but it blocks until the provided buffer is full), a &lt;code&gt;peekArray&lt;/code&gt; and a lot more, but nothing like the &lt;code&gt;read&lt;/code&gt; I&#39;d expect. The closest I can find, which I think does what I want, is to stream it to a writer:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var buf: [1024]u8 = undefined;
+var w: std.Io.Writer = .fixed(&amp;buf);
+const n = try tls_client.reader.stream(&amp;w, .limited(buf.len));
+std.debug.print(&quot;read: {d} - {s}&#92;n&quot;, .{n, buf[0..n]});&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we try to run the code now, it crashes. We&#39;ve apparently failed an assertion regarding the length of a buffer. So it seems like we also &lt;em&gt;have&lt;/em&gt; to provide a &lt;code&gt;read_buffer&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here&#39;s my current version (it doesn&#39;t work, but it doesn&#39;t crash!):&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+  var gpa: std.heap.DebugAllocator(.{}) = .init;
+  const allocator = gpa.allocator();
+
+  const stream = try std.net.tcpConnectToHost(allocator, &quot;www.openmymind.net&quot;, 443);
+  defer stream.close();
+
+  var write_buf: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+  var writer = stream.writer(&amp;write_buf);
+
+  var read_buf: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+  var reader = stream.reader(&amp;read_buf);
+
+  var bundle = std.crypto.Certificate.Bundle{};
+  try bundle.rescan(allocator);
+  defer bundle.deinit(allocator);
+
+  var write_buf2: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+  var read_buf2: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+
+  var tls_client = try std.crypto.tls.Client.init(
+      reader.interface(),
+      &amp;writer.interface,
+      .{
+        .ca = .{.bundle = bundle},
+        .host = .{ .explicit = &quot;www.openmymind.net&quot; } ,
+        .read_buffer = &amp;read_buf2,
+        .write_buffer = &amp;write_buf2,
+      },
+  );
+  defer tls_client.end() catch {};
+
+  try tls_client.writer.writeAll(&quot;GET / HTTP/1.1&#92;r&#92;n&#92;r&#92;n&quot;);
+
+  var buf: [std.crypto.tls.max_ciphertext_record_len]u8 = undefined;
+  var w: std.Io.Writer = .fixed(&amp;buf);
+  const n = try tls_client.reader.stream(&amp;w, .limited(buf.len));
+  std.debug.print(&quot;read: {d} - {s}&#92;n&quot;, .{n, buf[0..n]});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When I looked through Zig&#39;s source code, there&#39;s &lt;a href=&quot;https://github.com/ziglang/zig/blob/306176046e6ae5e30bc58e5f3bcf786159e367f2/lib/std/http/Client.zig#L329&quot;&gt;only one place&lt;/a&gt; using &lt;code&gt;tls.Client&lt;/code&gt;. It helped to get me where where I am. I couldn&#39;t find any tests.&lt;/p&gt;
+
+&lt;p&gt;I&#39;ll admit that during this migration, I&#39;ve missed some basic things. For example, someone had to help me find &lt;code&gt;std.fmt.printInt&lt;/code&gt; - the renamed version of &lt;code&gt;std.fmt.formatIntBuf&lt;/code&gt;. Maybe there&#39;s a helper like: &lt;code&gt;tls.Client.init(allocator, stream)&lt;/code&gt; somewhere. And maybe it makes sense that we do &lt;code&gt;reader.interface()&lt;/code&gt; but &lt;code&gt;&amp;writer.interface&lt;/code&gt; - I&#39;m reminded of Go&#39;s &lt;code&gt;*http.Request&lt;/code&gt; and &lt;code&gt;http.ResponseWrite&lt;/code&gt;. And maybe Zig has some consistent rule for what parameters belong in options. And I know nothing about TLS, so maybe it makes complete sense to need 4 buffers. I feel a bit more confident about the weirdness of not having a &lt;code&gt;read(buf: []u8) !usize&lt;/code&gt; function on &lt;code&gt;Reader&lt;/code&gt;, but at this point I wouldn&#39;t bet on me.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Zig&#39;s new Writer</title>
+		<link href="https://www.openmymind.net/Zigs-New-Writer/"/>
+		<updated>2025-07-17T00:00:00Z</updated>
+		<id>/Zigs-New-Writer/</id>
+		<content type="html">
+			
+&lt;p&gt;As you might have heard, Zig&#39;s &lt;code&gt;Io&lt;/code&gt; namespace is being reworked. Eventually, this will mean the re-introduction of async. As a first step though, the Writer and Reader interfaces and some of the related code have been revamped.&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;This post is written based on a mid-July 2025 development release of Zig. It doesn&#39;t apply to Zig 0.14.x (or any previous version) and is likely to be outdated as more of the Io namespace is reworked.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Not long ago, I wrote a blog post which tried to explain &lt;a href=&quot;https://www.openmymind.net/In-Zig-Whats-a-Writer/&quot;&gt;Zig&#39;s Writers&lt;/a&gt;. At best, I&#39;d describe the current state as &quot;confusing&quot; with two writer interfaces while often dealing with &lt;code&gt;anytype&lt;/code&gt;. And while &lt;code&gt;anytype&lt;/code&gt; is convenient, it lacks developer ergonomics. Furthermore, the current design has significant performance issues for some common cases.&lt;/p&gt;
+
+&lt;h3 id=&quot;drain&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#drain&quot; aria-hidden=&quot;true&quot;&gt;Drain&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The new &lt;code&gt;Writer&lt;/code&gt; interface is &lt;code&gt;std.Io.Writer&lt;/code&gt;. At a minimum, implementations have to provide a &lt;code&gt;drain&lt;/code&gt; function. Its signature looks like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn drain(w: *Writer, data: []const []const u8, splat: usize) Error!usize&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You might be surprised that this is the method a custom writer needs to implemented. Not only does it take an array of strings, but what&#39;s that &lt;code&gt;splat&lt;/code&gt; parameter? Like me, you might have expected a simpler &lt;code&gt;write&lt;/code&gt; method:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn write(w: *Writer, data: []const u8) Error!usize&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It turns out that &lt;code&gt;std.Io.Writer&lt;/code&gt; has buffering built-in. For example, if we want a &lt;code&gt;Writer&lt;/code&gt; for an &lt;code&gt;std.fs.File&lt;/code&gt;, we need to provide the buffer:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var buffer: [1024]u8 = undefined;
+var writer = my_file.writer(&amp;buffer);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Of course, if we don&#39;t want buffering, we can always pass an empty buffer:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var writer = my_file.writer(&amp;.{});&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This explains why custom writers need to implement a &lt;code&gt;drain&lt;/code&gt; method, and not something simpler like &lt;code&gt;write&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The simplest way to implement &lt;code&gt;drain&lt;/code&gt;, and what a lot of the Zig standard library has been upgraded to while this larger overhaul takes place, is:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn drain(io_w: *std.Io.Writer, data: []const []const u8, splat: usize) !usize {
+    _ = splat;
+    const self: *@This() = @fieldParentPtr(&quot;interface&quot;, io_w);
+    return self.writeAll(data[0]) catch return error.WriteFailed;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We ignore the &lt;code&gt;splat&lt;/code&gt; parameter, and just write the first value in &lt;code&gt;data&lt;/code&gt; (&lt;code&gt;data.len &gt; 0&lt;/code&gt; is guaranteed to be true). This turns &lt;code&gt;drain&lt;/code&gt; into what a simpler &lt;code&gt;write&lt;/code&gt; method would look like. Because we return the length of bytes written, &lt;code&gt;std.Io.Writer&lt;/code&gt; will know that we potentially didn&#39;t write all the data and call &lt;code&gt;drain&lt;/code&gt; again, if necessary, with the rest of the data.&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;If you&#39;re confused by the call to &lt;code&gt;@fieldParentPtr&lt;/code&gt;, check out my post on the &lt;a href=&quot;https://www.openmymind.net/Zigs-New-LinkedList-API/&quot;&gt;upcoming linked list changes&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The actual implementation of &lt;code&gt;drain&lt;/code&gt; for the &lt;code&gt;File&lt;/code&gt; is a non-trivial ~150 lines of code. It has platform-specific code and leverages &lt;a href=&quot;https://www.openmymind.net/TCP-Server-In-Zig-Part-3-Minimizing-Writes-and-Reads/#writev&quot;&gt;vectored I/O&lt;/a&gt; where possible. There&#39;s obviously flexibility to provide a simple implementation or a more optimized one.&lt;/p&gt;
+
+&lt;h3 id=&quot;interface&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#interface&quot; aria-hidden=&quot;true&quot;&gt;The Interface&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Much like the current state, when you do &lt;code&gt;file.writer(&amp;buffer)&lt;/code&gt;, you don&#39;t get an &lt;code&gt;std.Io.Writer&lt;/code&gt;. Instead, you get a &lt;code&gt;File.Writer&lt;/code&gt;. To get an actual &lt;code&gt;std.Io.Writer&lt;/code&gt;, you need to access the &lt;code&gt;interface&lt;/code&gt; field. This is merely a convention, but expect it to be used throughout the standard, and third-party, library. Get ready to see a lot of &lt;code&gt;&amp;xyz.interface&lt;/code&gt; calls!&lt;/p&gt;
+
+&lt;p&gt;This simplification of &lt;code&gt;File&lt;/code&gt; shows the relationship between the three types:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const File = struct {
+
+  pub fn writer(self: *File, buffer: []u8) Writer{
+    return .{
+      .file = self,
+      .interface = std.Io.Writer{
+        .buffer = buffer,
+        .vtable = .{.drain = Writer.drain},
+      }
+    };
+  }
+
+  pub const Writer = struct {
+    file: *File,
+    interface: std.Io.Writer,
+    // this has a bunch of other fields
+
+    fn drain(io_w: *std.Io.Writer, data: []const []const u8, splat: usize) !usize {
+      const self: *Writer = @fieldParentPtr(&quot;interface&quot;, io_w);
+      // ....
+    }
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The instance of &lt;code&gt;File.Writer&lt;/code&gt; needs to exist somewhere (e.g. on the stack) since that&#39;s where the &lt;code&gt;std.Io.Writer&lt;/code&gt; interface exists. It&#39;s possible that &lt;code&gt;File&lt;/code&gt; could directly have an &lt;code&gt;writer_interface: std.Io.Writer&lt;/code&gt; field, but that would limit you to one writer per file and would bloat the &lt;code&gt;File&lt;/code&gt; structure.&lt;/p&gt;
+
+&lt;p&gt;We can see from the above that, while we call &lt;code&gt;Writer&lt;/code&gt; an &quot;interface&quot;, it&#39;s just a normal struct. It has a few fields beyond &lt;code&gt;buffer&lt;/code&gt; and &lt;code&gt;vtable.drain&lt;/code&gt;, but these are the only two with non-default values; we have to provide them. The &lt;code&gt;Writer&lt;/code&gt; interface implements a lot of typical &quot;writer&quot; behavior, such as a &lt;code&gt;writeAll&lt;/code&gt; and &lt;code&gt;print&lt;/code&gt; (for formatted writing). It also has a number of methods which only a &lt;code&gt;Writer&lt;/code&gt; implementation would likely care about. For example, &lt;code&gt;File.Writer.drain&lt;/code&gt; has to call &lt;code&gt;consume&lt;/code&gt; so that the writer&#39;s internal state can be updated. Having all of these functions listed side-by-side in the documentation confused me at first. Hopefully it&#39;s something the documentation generation will one day be able to help disentangle.&lt;/p&gt;
+
+&lt;h3 id=&quot;migrating&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#migrating&quot; aria-hidden=&quot;true&quot;&gt;Migrating&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The new &lt;code&gt;Writer&lt;/code&gt; has taken over a number of methods. For example, &lt;code&gt;std.fmt.formatIntBuf&lt;/code&gt; no longer exists. The replacement is the &lt;code&gt;printInt&lt;/code&gt; method of &lt;code&gt;Writer&lt;/code&gt;. But this requires a &lt;code&gt;Writer&lt;/code&gt; instance rather than the simple &lt;code&gt;[]u8&lt;/code&gt; previous required.&lt;/p&gt;
+
+&lt;p&gt;It&#39;s easy to miss, but the &lt;code&gt;Writer.fixed([]u8) Writer&lt;/code&gt; function is what you&#39;re looking for. You&#39;ll use this for any function that was migrating to &lt;code&gt;Writer&lt;/code&gt; and used to work on a &lt;code&gt;buffer: []u8&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;While migrating, you might run into the following error: &lt;em&gt;no field or member function named &#39;adaptToNewApi&#39; in &#39;...&#39;&lt;/em&gt;. You can see why this happens by looking at the updated implementation of &lt;code&gt;std.fmt.format&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn format(writer: anytype, comptime fmt: []const u8, args: anytype) !void {
+    var adapter = writer.adaptToNewApi();
+    return adapter.new_interface.print(fmt, args) catch |err| switch (err) {
+        error.WriteFailed =&gt; return adapter.err.?,
+    };
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Because this functionality was moved to &lt;code&gt;std.Io.Writer&lt;/code&gt;, any &lt;code&gt;writer&lt;/code&gt; passed into &lt;code&gt;format&lt;/code&gt; has to be able to upgrade itself to the new interface. This is done, again only be convention, by having the &quot;old&quot; writer expose an &lt;code&gt;adaptToNewApi&lt;/code&gt; method which returns a type that exposes a &lt;code&gt;new_interface: std.Io.Writer&lt;/code&gt; field. This is pretty easy to implement using the basic &lt;code&gt;drain&lt;/code&gt; implementation, and you can find a handful of examples in the standard library, but it&#39;s of little help if you don&#39;t control the legacy writer.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#conclusion&quot; aria-hidden=&quot;true&quot;&gt;Conclusion&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;I&#39;m hesitant to provide opinion on this change. I don&#39;t understand language design. However, while I think this is an improvement over the current API, I keep thinking that adding buffering directly to the &lt;code&gt;Writer&lt;/code&gt; isn&#39;t ideal.&lt;/p&gt;
+
+&lt;p&gt;I believe that most languages deal with buffering via composition. You take a reader/writer and wrap it in a BufferedReader or BufferedWriter. This approach seems both simple to understand and implement while being powerful. It can be applied to things beyond buffering and IO. Zig seems to struggle with this model. Rather than provide a cohesive and generic approach for such problems, one specific feature (buffering) for one specific API (IO) was baked into the standard library. Maybe I&#39;m too dense to understand or maybe future changes will address this more holistically.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Zig&#39;s new LinkedList API (it&#39;s time to learn @fieldParentPtr)</title>
+		<link href="https://www.openmymind.net/Zigs-New-LinkedList-API/"/>
+		<updated>2025-04-10T00:00:00Z</updated>
+		<id>/Zigs-New-LinkedList-API/</id>
+		<content type="html">
+			
+&lt;p&gt;In a recent, post-Zig 0.14 commit, Zig&#39;s &lt;code&gt;SinglyLinkedList&lt;/code&gt; and &lt;code&gt;DoublyLinkedList&lt;/code&gt; saw &lt;a href=&quot;https://github.com/ziglang/zig/commit/1639fcea43549853f1fded32aa1d711d21771e1c&quot;&gt;significant changes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The previous version was a generic and, with all the methods removed, looked like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn SinglyLinkedList(comptime T: type) type {
+  return struct {
+    first: ?*Node = null,
+
+    pub const Node = struct {
+      next: ?*Node = null,
+      data: T,
+    };
+  };
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The new version isn&#39;t generic. Rather, you embed the linked list node with your data. This is known as an intrusive linked list and tends to perform better and require fewer allocations. Except in trivial examples, the data that we store in a linked list is typically stored on the heap. Because an intrusive linked list has the linked list node embedded in the data, it doesn&#39;t need its own allocation. Before we jump into an example, this is what the new structure looks like, again, with all methods removed:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const SinglyLinkedList = struct {
+  first: ?*Node = null,
+
+  pub const Node = struct {
+    next: ?*Node = null,
+  };
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Much simpler, and, notice that this has no link or reference to any of our data. Here&#39;s a working example that shows how you&#39;d use it:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+const SinglyLinkedList = std.SinglyLinkedList;
+
+pub fn main() !void {
+    // GeneralPurposeAllocator is being renamed
+    // to DebugAllocator. Let&#39;s get used to that name
+    var gpa: std.heap.DebugAllocator(.{}) = .init;
+    const allocator = gpa.allocator();
+
+    var list: SinglyLinkedList = .{};
+
+    const user1 = try allocator.create(User);
+    defer allocator.destroy(user1);
+    user1.* = .{
+        .id = 1,
+        .power = 9000,
+        .node = .{},
+    };
+    list.prepend(&amp;user1.node);
+
+    const user2 = try allocator.create(User);
+    defer allocator.destroy(user2);
+    user2.* = .{
+        .id = 2,
+        .power = 9001,
+        .node = .{},
+    };
+    list.prepend(&amp;user2.node);
+
+    var node = list.first;
+    while (node) |n| {
+        std.debug.print(&quot;{any}&#92;n&quot;, .{n});
+        node = n.next;
+    }
+}
+
+const User = struct {
+    id: i64,
+    power: u32,
+    node: SinglyLinkedList.Node,
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To run this code, you&#39;ll need a nightly release from within the last week. What do you think the output will be? You should see something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+SinglyLinkedList.Node{ .next = SinglyLinkedList.Node{ .next = null } }
+SinglyLinkedList.Node{ .next = null }&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We&#39;re only getting the nodes, and, as we can see here and from the above skeleton structure of the new &lt;code&gt;SinglyLinkedList&lt;/code&gt;, there&#39;s nothing about our users. Users have nodes, but there&#39;s seemingly nothing that links a node back to its containing user. Or is there?&lt;/p&gt;
+
+&lt;p&gt;In the past, we&#39;ve described how &lt;a href=&quot;https://www.openmymind.net/learning_zig/pointers/&quot;&gt;the compiler uses the type information&lt;/a&gt; to figure out how to access fields. For example, when we execute &lt;code&gt;user1.power&lt;/code&gt;, the compiler knows that:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code&gt;id&lt;/code&gt; is +0 bytes from the start of the structure,
+  &lt;/li&gt;&lt;li&gt;&lt;code&gt;power&lt;/code&gt; is +8 bytes from the start of the structure (because id is an i64), and
+  &lt;/li&gt;&lt;li&gt;&lt;code&gt;power&lt;/code&gt; is an i32
+&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;With this information, the compiler knows how to access &lt;code&gt;power&lt;/code&gt; from &lt;code&gt;user1&lt;/code&gt; (i.e. jump forward 8 bytes, read 4 bytes and treat it as an i32). But if you think about it, that logic is simple to reverse. If we know the address of &lt;code&gt;power&lt;/code&gt;, then the address of &lt;code&gt;user&lt;/code&gt; has to be &lt;code&gt;address_of_power - 8&lt;/code&gt;. We can prove this:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var user = User{
+        .id = 1,
+        .power = 9000,
+    };
+    std.debug.print(&quot;address of user: {*}&#92;n&quot;, .{&amp;user});
+
+    const address_of_power = &amp;user.power;
+    std.debug.print(&quot;address of power: {*}&#92;n&quot;, .{address_of_power});
+
+    const power_offset = 8;
+    const also_user: *User = @ptrFromInt(@intFromPtr(address_of_power) - power_offset);
+    std.debug.print(&quot;address of also_user: {*}&#92;n&quot;, .{also_user});
+
+    std.debug.print(&quot;also_user: {}&#92;n&quot;, .{also_user});
+}
+
+const User = struct {
+    id: i64,
+    power: u32,
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The magic happens here:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const power_offset = 8;
+const also_user: *User = @ptrFromInt(@intFromPtr(address_of_power) - power_offset);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We&#39;re turning the address of our user&#39;s power field, &lt;code&gt;&amp;user.power&lt;/code&gt; into an integer, subtracting 8 (8 bytes, 64 bits), and telling the compiler that it should treat that memory as a &lt;code&gt;*User&lt;/code&gt;. This code will &lt;em&gt;probably&lt;/em&gt; work for you, but it isn&#39;t safe. Specifically, unless we&#39;re using a packed or extern struct, Zig makes no guarantees about the layout of a structure. It could put &lt;code&gt;power&lt;/code&gt; BEFORE &lt;code&gt;id&lt;/code&gt;, in which case our &lt;code&gt;power_offset&lt;/code&gt; should be 0. It could add padding after every field. It can do anything it wants. To make this code safer, we use the &lt;code&gt;@offsetOf&lt;/code&gt; builtin to get the actual byte-offset of a field with respect to its struct:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const power_offset = @offsetOf(User, &quot;power&quot;);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Back to our linked list, given that we have the address of a &lt;code&gt;node&lt;/code&gt; and we know that it is part of the &lt;code&gt;User&lt;/code&gt; structure, we &lt;em&gt;are&lt;/em&gt; able to get the &lt;code&gt;User&lt;/code&gt; from a node. Rather than use the above code though, we&#39;ll use the &lt;em&gt;slightly&lt;/em&gt; friendlier &lt;code&gt;@fieldParentPtr&lt;/code&gt; builtin. Our &lt;code&gt;while&lt;/code&gt; loop changes to:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+while (node) |n| {
+  const user: *User = @fieldParentPtr(&quot;node&quot;, n);
+  std.debug.print(&quot;{any}&#92;n&quot;, .{user});
+  node = n.next;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We give &lt;code&gt;@fieldParentPtr&lt;/code&gt; the name of the field, a pointer to that field as well as a return type (which is inferred above by the assignment to a &lt;code&gt;*User&lt;/code&gt; variable), and it gives us back the instance that contains that field.&lt;/p&gt;
+
+&lt;p&gt;Performance aside, I have mixed feelings about the new API. My initial reaction is that I dislike exposing, what I consider, a complicated builtin like &lt;code&gt;@fieldParentPtr&lt;/code&gt; for something as trivial as using a linked list. However, while &lt;code&gt;@fieldParentPtr&lt;/code&gt; seems esoteric, it&#39;s quite useful and developers should be familiar with it because it can help solve problems which are otherwise problematic.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Allocator.resize</title>
+		<link href="https://www.openmymind.net/Allocator-resize/"/>
+		<updated>2025-03-27T00:00:00Z</updated>
+		<id>/Allocator-resize/</id>
+		<content type="html">
+			
+&lt;p&gt;There are four important methods on Zig&#39;s &lt;code&gt;std.mem.Allocator&lt;/code&gt; interface that Zig developers must be comfortable with:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;alloc(T, n)&lt;/code&gt; - which creates an array of &lt;code&gt;n&lt;/code&gt; items of type &lt;code&gt;T&lt;/code&gt;,&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;free(ptr)&lt;/code&gt; - which frees memory allocate with &lt;code&gt;alloc&lt;/code&gt; (although, this &lt;a href=&quot;https://www.openmymind.net/ArenaAllocator-free-and-Nested-Arenas/&quot;&gt;is implementation specific&lt;/a&gt;),&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;create(T)&lt;/code&gt; - which creates a single item of type &lt;code&gt;T&lt;/code&gt;, and
+  &lt;/li&gt;&lt;li&gt;&lt;code&gt;destroy(ptr)&lt;/code&gt; - which destroys an item created with &lt;code&gt;create&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;While you might never need to use them, the &lt;code&gt;Allocator&lt;/code&gt; interface has other methods which, if nothing else, can be useful to be aware of and informative to learn about.&lt;/p&gt;
+
+&lt;p&gt;In particularly, the &lt;code&gt;resize&lt;/code&gt; method is used to try and resize an existing allocation to a larger (or smaller) size. The main promise of &lt;code&gt;resize&lt;/code&gt; is that it&#39;s guaranteed &lt;em&gt;not&lt;/em&gt; to move the pointer. However, to satisfy that guarantee, resize is allowed to fail, in which case nothing changes.&lt;/p&gt;
+
+&lt;p&gt;We can imagine a simple allocation:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+// var buf = try allocator.alloc(u8, 5);
+// buf[0] = &#39;h&#39;
+
+           0x102e00000
+           -------------------------------
+buf.ptr -&gt; |  h  |     |     |     |     |
+          --------------------------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, if we were to call &lt;code&gt;allocator.resize(buf, 7)&lt;/code&gt;, there are be two possible outcomes. The first is that the call returns &lt;code&gt;false&lt;/code&gt;, indicating that the resize operation fails, and thus nothing changed::&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+           0x102e00000
+           -------------------------------
+buf.ptr -&gt; |  h  |     |     |     |     |
+          --------------------------------&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;p&gt;However, when &lt;code&gt;resize&lt;/code&gt; succeeds and returns &lt;code&gt;true&lt;/code&gt;, the allocated space has grown without having relocated (i.e. moved) the pointer:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+           0x102e00000
+           -------------------------------------------
+buf.ptr -&gt; |  h  |     |     |     |     |     |     |
+          --------------------------------------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now under what circumstances &lt;code&gt;resize&lt;/code&gt; succeeds and fails is a black box. It depends on a lot of factors and is going to be allocator-specific. For example, for me, this code prints &lt;code&gt;false&lt;/code&gt; indicating that the resize failed:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var gpa: std.heap.GeneralPurposeAllocator(.{}) = .init;
+    const allocator = gpa.allocator();
+    _ = gpa.detectLeaks();
+
+    const buf = try allocator.alloc(usize, 10);
+    std.debug.print(&quot;{any}&#92;n&quot;, .{allocator.resize(buf, 20)});
+    allocator.free(buf);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Because we&#39;re using a &lt;code&gt;GeneralPurposeAllocator&lt;/code&gt; (that name is deprecated in Zig 0.14 in favor of &lt;code&gt;DebugAllocator&lt;/code&gt;) we could dive into its internals and try to leverage knowledge of its implementation to force a resize to succeed, but a simpler option is to resize our buffer to &lt;code&gt;0&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var gpa: std.heap.GeneralPurposeAllocator(.{}) = .init;
+    const allocator = gpa.allocator();
+    _ = gpa.detectLeaks();
+
+    const buf = try allocator.alloc(usize, 10);
+    // change 20 -&gt; 0
+    std.debug.print(&quot;{any}&#92;n&quot;, .{allocator.resize(buf, 0)});
+    allocator.free(buf);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Success, the code now prints &lt;code&gt;true&lt;/code&gt;, indicating that the resize succeeded. However, I also get &lt;strong&gt;segfault&lt;/strong&gt;. Can you guess what we&#39;re doing wrong?&lt;/p&gt;
+
+&lt;p&gt;In our above visualization, we saw how a successful resize does not move our pointer. We can confirm this by looking at the address of &lt;code&gt;buf.ptr&lt;/code&gt; before and after our resize. This code still segfaults, but it prints out the information first:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn main() !void {
+    var gpa: std.heap.GeneralPurposeAllocator(.{}) = .init;
+    const allocator = gpa.allocator();
+    _ = gpa.detectLeaks();
+
+    const buf = try allocator.alloc(usize, 10);
+    std.debug.print(&quot;address before resize: {*}&#92;n&quot;, .{buf.ptr});
+    std.debug.print(&quot;resize succeeded: {any}&#92;n&quot;, .{allocator.resize(buf, 0)});
+    std.debug.print(&quot;address after resize: {*}&#92;n&quot;, .{buf.ptr});
+    allocator.free(buf);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So far, we&#39;ve only considered the &lt;code&gt;ptr&lt;/code&gt; of our slice, but, like the criminal justice system, a slice is represented by two separate yet equally important groups: a &lt;code&gt;ptr&lt;/code&gt; and a &lt;code&gt;len&lt;/code&gt;. If we change our code to also look at the &lt;code&gt;len&lt;/code&gt; of &lt;code&gt;buf&lt;/code&gt;, the issue might become more obvious:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+// change the 1st and 3rd line to also print buf.len:
+std.debug.print(&quot;address &amp; len before resize: {*} {d}&#92;n&quot;, .{buf.ptr, buf.len});
+std.debug.print(&quot;resize succeeded: {any}&#92;n&quot;, .{allocator.resize(buf, 0)});
+std.debug.print(&quot;address &amp; len after resize: {*} {d}&#92;n&quot;, .{buf.ptr, buf.len});&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is what I get:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+address &amp; len before resize: usize@100280000 10
+resize succeeded: true
+address &amp; len after resize: usize@100280000 10
+Segmentation fault at address 0x100280000&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;While it isn&#39;t the cleanest output, notice that even after we successfully resize our ptr, the length remains unchanged (i.e. &lt;code&gt;10&lt;/code&gt;). Herein lies our bug problem. &lt;code&gt;resize&lt;/code&gt; updates the underlying memory, it doesn&#39;t update the length of the slice. That&#39;s something we need to take care of. Here&#39;s a non-crashing version:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var gpa: std.heap.GeneralPurposeAllocator(.{}) = .init;
+    const allocator = gpa.allocator();
+    _ = gpa.detectLeaks();
+
+    var buf = try allocator.alloc(usize, 10);
+    if (allocator.resize(buf, 0)) {
+        std.debug.print(&quot;resize succeeded!&#92;n&quot;, .{});
+        buf.len = 0;
+    } else {
+        // we need to handle the case where resize doesn&#39;t succeed
+    }
+
+    allocator.free(buf);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What&#39;s left out of the above code is handling the case where &lt;code&gt;resize&lt;/code&gt; fails. This becomes application specific. In most cases, where we&#39;re likely resizing to a larger size, we&#39;ll generally need to fallback to calling &lt;code&gt;alloc&lt;/code&gt; to create our larger memory, and then, most likely, &lt;code&gt;@memcpy&lt;/code&gt; to copy data from the existing (now too small) buffer to the newly created larger one.&lt;/p&gt;
+
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>ArenaAllocator.free and Nested Arenas</title>
+		<link href="https://www.openmymind.net/ArenaAllocator-free-and-Nested-Arenas/"/>
+		<updated>2025-03-15T00:00:00Z</updated>
+		<id>/ArenaAllocator-free-and-Nested-Arenas/</id>
+		<content type="html">
+			&lt;p&gt;What happens when you &lt;code&gt;free&lt;/code&gt; with an ArenaAllocator? You might be tempted to look at the documentation for &lt;a href=&quot;https://ziglang.org/documentation/master/std/#std.mem.Allocator.free&quot;&gt;std.mem.Allocator.free&lt;/a&gt; which says &quot;Free an array allocated with alloc&quot;. But this is the one thing we&#39;re sure it &lt;em&gt;won&#39;t&lt;/em&gt; do.&lt;/p&gt;
+
+&lt;p&gt;In its current implementation, calling &lt;code&gt;free&lt;/code&gt; usually does nothing: the freed memory isn&#39;t made available for subsequent allocations by the arena, and it certainly isn&#39;t released back to the operating system. However, under specific conditions &lt;code&gt;free&lt;/code&gt; will make the memory re-usable by the arena. The only way to really &quot;free&quot; the memory is to call &lt;code&gt;deinit&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The only case when we&#39;re guaranteed that the memory will be reusable by the arena is when it was the last allocation made:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const str1 = try arena.dupe(u8, &quot;Over 9000!!!&quot;);
+arena.free(str1);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Above, whatever memory was allocated to duplicate our string will be available for subsequent allocations made with &lt;code&gt;arena&lt;/code&gt;. In the following case, the two calls to &lt;code&gt;arena.free&lt;/code&gt; do nothing:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const str1 = try arena.dupe(u8, &quot;ab&quot;);
+const str2 = try arena.dupe(u8, &quot;12&quot;);
+arena.free(str1);
+arena.free(str2);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In order to  &quot;fix&quot; this code, we&#39;d need to reverse the order of the two frees:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const str1 = try arena.dupe(u8, &quot;ab&quot;);
+const str2 = try arena.dupe(u8, &quot;12&quot;);
+arena.free(str2);  //swapped this line with the next
+arena.free(str1);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, when we call &lt;code&gt;arena.free(str2)&lt;/code&gt;, the memory allocated for &lt;code&gt;str2&lt;/code&gt; will be available to subsequent allocations. But what happens when we call &lt;code&gt;arena.free(str1)&lt;/code&gt;? The answer, again, is: &lt;em&gt;it depends&lt;/em&gt;. It has to do with the internal state of the arena. Simplistically, an &lt;code&gt;ArenaAllocator&lt;/code&gt; keeps a linked list of memory buffers. Imagine something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+buffer_list.head -&gt; ------------
+                    |   next   | -&gt; null
+                    |   ----   |
+                    |          |
+                    |          |
+                    |          |
+                    |          |
+                    |          |
+                    ------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Our linked list has a single node along with 5 bytes of available space. After we allocate &lt;code&gt;str1&lt;/code&gt;, it looks like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+buffer_list.head -&gt; ------------
+                    |   next   | -&gt; null
+                    |   ----   |
+            str1 -&gt; |    a     |
+                    |    b     |
+                    |          |
+                    |          |
+                    |          |
+                    ------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then, when we allocate &lt;code&gt;str2&lt;/code&gt;, it looks like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+buffer_list.head -&gt; ------------
+                    |   next   | -&gt; null
+                    |   ----   |
+            str1 -&gt; |    a     |
+                    |    b     |
+            str2 -&gt; |    1     |
+                    |    2     |
+                    |          |
+                    ------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When we free &lt;code&gt;str2&lt;/code&gt;, it goes back to how it was before:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+buffer_list.head -&gt; ------------
+                    |   next   | -&gt; null
+                    |   ----   |
+            str1 -&gt; |    a     |
+                    |    b     |
+                    |          |
+                    |          |
+                    |          |
+                    ------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Which means that when we &lt;code&gt;arena.free(str1)&lt;/code&gt;, it &lt;strong&gt;will&lt;/strong&gt; make that memory available again. However, if instead of allocating two strings, we allocate three:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const str1 = try arena.dupe(u8, &quot;ab&quot;);
+const str2 = try arena.dupe(u8, &quot;12&quot;);
+const str3 = try arena.dupe(u8, &quot;()&quot;);
+arena.free(str3);
+arena.free(str2);
+arena.free(str1);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Our first buffer doesn&#39;t have enough space for the new string, so a new node is prepended to our linked list:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+buffer_list.head -&gt; ------------    ------------
+                    |   next   | -&gt; |   next   | -&gt; null
+                    |   ----   |    |   ----   |
+            str3 -&gt; |    (     |    |    a     | &lt;- str1
+                    |    )     |    |    b     |
+                    |          |    |    1     | &lt;- str2
+                    |          |    |    2     |
+                    |          |    |          |
+                    ------------    ------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When we call &lt;code&gt;arena.free(str3)&lt;/code&gt;, the memory for that allocation will be made available, but subsequent frees, even if they&#39;re in the correct order (i.e. freeing &lt;code&gt;str2&lt;/code&gt; then &lt;code&gt;str1&lt;/code&gt;) will be noops. The ArenaAllocator doesn&#39;t have the capability to go back to act on anything but the head of our linked list, even if it&#39;s empty.&lt;/p&gt;
+
+&lt;p&gt;In short, when we &lt;code&gt;free&lt;/code&gt; the last allocation, that memory will &lt;em&gt;always&lt;/em&gt; be made available. But subsequent &lt;code&gt;frees&lt;/code&gt; only behave this way if (a) they&#39;re also in order and (b) happen to be allocate within the same internal memory node.&lt;/p&gt;
+
+&lt;h3 id=&quot;nested&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#nested&quot; aria-hidden=&quot;true&quot;&gt;Nested Arenas&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Zig&#39;s allocator are said to be composable. When we create an &lt;code&gt;ArenaAllocator&lt;/code&gt;, we pass a single parameter: an allocator. That parent allocator &lt;sup&gt;(1)&lt;/sup&gt; can be any other type of allocator. You can, for example, create an &lt;code&gt;ArenaAllocator&lt;/code&gt; on top of a &lt;code&gt;FixedBufferAllocator&lt;/code&gt;. You can also create an &lt;code&gt;ArenaAllocator&lt;/code&gt; on top of another &lt;code&gt;ArenaAllocator&lt;/code&gt;.&lt;/p&gt;
+
+&lt;aside&gt;&lt;p&gt;&lt;sup&gt;(1)&lt;/sup&gt; Zig calls this the &quot;child allocator&quot;, but that doesn&#39;t make any sense to me.&lt;/p&gt;&lt;/aside&gt;
+
+&lt;p&gt;This kind of thing often happens within libraries, where an API takes an &lt;code&gt;std.mem.Allocator&lt;/code&gt; and the library creates an &lt;code&gt;ArenaAllocator&lt;/code&gt;. And what happens when the provided allocator was already an arena? Libraries aside, I&#39;m mean something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var parent_arena = ArenaAllocator.init(gpa_allocator);
+const parent_allocator = parent_arena.allocator();
+
+var inner_arena = ArenaAllocator.init(parent_allocator);
+const inner_allocator = inner_arena.allocator();
+
+_ = try inner_allocator.dupe(u8, &quot;Over &quot;);
+_ = try inner_allocator.dupe(u8, &quot;9000!&quot;);
+
+inner_arena.deinit();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It does work, but at best, when &lt;code&gt;deinit&lt;/code&gt; is called, the memory will be made available to be re-used by &lt;code&gt;inner_arena&lt;/code&gt;. Except in simple cases, allocations made by &lt;code&gt;inner_arena&lt;/code&gt; are likely to span multiple buffers of &lt;code&gt;parent_arena&lt;/code&gt;, and of course you can still make allocations directly in &lt;code&gt;parent_arena&lt;/code&gt; which can generate its own new buffers or simply make the ordering requirement impossible to fulfill. For example, if we make an allocation in &lt;code&gt;parent_arena&lt;/code&gt; before &lt;code&gt;inner_arena.deinit();&lt;/code&gt; is called:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+_ = try parent_allocator.dupe(u8, &quot;!!!&quot;);
+inner_arena.deinit();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then the &lt;code&gt;deinit&lt;/code&gt; does nothing.&lt;/p&gt;
+
+&lt;p&gt;So while nesting ArenaAllocator&#39;s works, I don&#39;t think there&#39;s any advantage over using a single Arena. And, I think in many cases where you have an &quot;inner_arena&quot;, like in a library, it&#39;s better if the caller provides a non-Arena parent allocator so that all the memory is really freed when the library is done with it. Of course, there&#39;s a transparency issue here. Unless the library documents exactly how it&#39;s using your provided allocator, or unless you explore the code - and assuming the implementation doesn&#39;t change - it&#39;s hard to know what you should use.&lt;/p&gt;
+
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Zig&#39;s dot star syntax (value.*)</title>
+		<link href="https://www.openmymind.net/Zig-Dot-Star-Syntax/"/>
+		<updated>2025-03-07T00:00:00Z</updated>
+		<id>/Zig-Dot-Star-Syntax/</id>
+		<content type="html">
+			
+&lt;p&gt;Maybe I&#39;m the only one, but it always takes my little brain a split second to understand what&#39;s happening whenever I see, or have to write, something like &lt;code&gt;value.* = .{...}&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If we take a step back, a variable is just a convenient name for an address on the stack. When this function executes:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn isOver9000(power: i64) bool {
+    return power &gt; 9000;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Say, with a &lt;code&gt;power&lt;/code&gt; of 593, we could visualize its stack as:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+power -&gt;  -------------
+          |    593    |
+          -------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we changed our function to take a pointer to an integer:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+// i64 changed to *i64
+fn isOver9000(power: *i64) bool {
+    return power &gt; 9000;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Our &lt;code&gt;power&lt;/code&gt; argument would still be a label for a stack address, but instead of directly containing an number, the stack value would itself be an address. That&#39;s the &lt;em&gt;indirection&lt;/em&gt; of pointers:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+power -&gt;  -------------
+          | 1182145c0 |------------------------
+          -------------                        |
+                                               |
+          .............  empty space           |
+          .............  or other data         |
+                                               |
+          -------------                        |
+          |    593    | &lt;----------------------
+          -------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But this code doen&#39;t work: it&#39;s trying to compare a &lt;code&gt;comptime_int&lt;/code&gt; (&lt;code&gt;9000&lt;/code&gt;) with an &lt;code&gt;*i64&lt;/code&gt;. We need to make another change to the function:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+// i64 changed to *i64
+fn isOver9000(power: *i64) bool {
+    // power changed to power.*
+    return power.* &gt; 9000;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;power.*&lt;/code&gt; is how we dereference a pointer. Dereferencing means to get the value pointed to by a pointer. From our above visualization, you could say that the &lt;code&gt;.*&lt;/code&gt; follows the arrow to get the value, &lt;code&gt;593&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This same syntax works for writing as well. The following is valid:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn isOver9000(power: *i64) bool {
+    power.* = 9001;
+    return true;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Like before, the dereferencing operator (&lt;code&gt;.*&lt;/code&gt;), &quot;follows&quot; the pointer, but now that it&#39;s on the receiving end of an assignment, we write the value into the pointed add memory.&lt;/p&gt;
+
+&lt;p&gt;This is all true for more complex types. Let&#39;s say we have a &lt;code&gt;User&lt;/code&gt; struct with an &lt;code&gt;id&lt;/code&gt; and a &lt;code&gt;name&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const User = struct {
+    id: i32,
+    name: []const u8,
+};
+
+var user = User{
+    .id = 900,
+    .name = &quot;Teg&quot;
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;user&lt;/code&gt; variable is a label for the location of the [start of] the user:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+user  -&gt;  -------------
+          |    900    |
+          -------------
+          |     3     |
+          -------------
+          | 3c9414e99 | -----------------------
+          -------------                        |
+                                               |
+          .............  empty space           |
+          .............  or other data         |
+                                               |
+          -------------                        |
+          |     T     | &lt;----------------------
+          -------------
+          |     e     |
+          -------------
+          |     g     |
+          -------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A slice in Zig, like our &lt;code&gt;[]const u8&lt;/code&gt;, is a length (&lt;code&gt;3&lt;/code&gt;) and a pointer to the values. Now, if we were to take the address of &lt;code&gt;user&lt;/code&gt;, via &lt;code&gt;&amp;user&lt;/code&gt;, we introduce a level of indirection. For example, imagine this code:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+const User = struct {
+    id: i32,
+    name: []const u8,
+};
+
+pub fn main() !void {
+    var user = User{
+        .id = 900,
+        .name = &quot;Teg&quot;
+    };
+    updateUser(&amp;user);
+    std.debug.print(&quot;{d}&#92;n&quot;, .{user.id});
+}
+
+fn updateUser(user: *User) void {
+    user.id += 100000;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;user&lt;/code&gt; parameter of our &lt;code&gt;updateUser&lt;/code&gt; function is pointing to the  &lt;code&gt;user&lt;/code&gt; on &lt;code&gt;main&lt;/code&gt;&#39;s stack:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+updateUser
+user  -&gt;   -------------
+           |  83abcc30 |------------------------
+           -------------                        |
+                                                |
+           .............  empty space           |
+           .............  or other data         |
+                                                |
+main                                            |
+user  -&gt;   -------------                        |
+           |    900    | &lt;----------------------
+           -------------
+           |     3     |
+           -------------
+           | 3c9414e99 | -----------------------
+           -------------                        |
+                                                |
+           .............  empty space           |
+           .............  or other data         |
+                                                |
+           -------------                        |
+           |     T     | &lt;----------------------
+           -------------
+           |     e     |
+           -------------
+           |     g     |
+           -------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Because we&#39;re referencing &lt;code&gt;main&lt;/code&gt;&#39;s &lt;code&gt;user&lt;/code&gt; (rather than a copy), any changes we make will be reflected in &lt;code&gt;main&lt;/code&gt;. But, we aren&#39;t limited to operating on fields of &lt;code&gt;user&lt;/code&gt;, we can operate on its entire memory.&lt;/p&gt;
+
+&lt;p&gt;Of course, we can create a copy of the id field (assignment are always copies, just an matter of knowing &lt;em&gt;what&lt;/em&gt; we&#39;re copying):&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn updateUser(user: *User) void {
+    const id = user.id
+    // ....
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now the stack for our function looks like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+user  -&gt;  -------------
+          |  83abcc30 |
+id    -&gt;  -------------
+          |    900    |
+          -------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But we can also copy the entire user:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn updateUser(user: *User) void {
+    const copy = user.*;
+    // ....
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Whch gives us something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+updateUser
+user  -&gt;  -------------
+          |  83abcc30 |---------------------
+copy  -&gt;  -------------                     |
+          |    900    |                     |
+          -------------                     |
+          |     3     |                     |
+          -------------                     |
+          | 3c9414e99 | --------------------|--
+          -------------                     |  |
+                                            |  |
+          .............  empty space        |  |
+          .............  or other data      |  |
+                                            |  |
+main                                        |  |
+user   -&gt; -------------                     |  |
+          |    900    | &lt;-------------------   |
+          -------------                        |
+          |     3     |                        |
+          -------------                        |
+          | 3c9414e99 | -----------------------|
+          -------------                        |
+                                               |
+          .............  empty space           |
+          .............  or other data         |
+                                               |
+          -------------                        |
+          |     T     | &lt;----------------------
+          -------------
+          |     e     |
+          -------------
+          |     g     |
+          -------------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Notice that it didn&#39;t create a copy of the value &#39;Teg&#39;. You could call this copying &quot;shallow&quot;: it copied the &lt;code&gt;900&lt;/code&gt;, the &lt;code&gt;3&lt;/code&gt; (name length) and the &lt;code&gt;3c9414e99&lt;/code&gt; (address of the name pointer).&lt;/p&gt;
+
+&lt;p&gt;Just like our simpler example above, we can also assign using the dereferencing operator:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn updateUser(user: *User) void {
+    // using type inference
+    // could be more explicit and do
+    // user.* = User{....}
+
+    user.* = .{
+        .id = 5,
+        .name = &quot;Paul&quot;,
+    };
+}&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;p&gt;This doesn&#39;t copy anything; it writes into the address that we were given, the address of the main&#39;s &lt;code&gt;user&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+updateUser
+user  -&gt;  -------------
+          |  83abcc30 |------------------------
+          -------------                        |
+                                               |
+          .............  empty space           |
+          .............  or other data         |
+                                               |
+main                                        |  |
+user  -&gt;  -------------                        |
+          |     5     | &lt;----------------------
+          -------------
+          |     4     |
+          -------------
+          | 9bf4a990  | -----------------------
+          -------------                        |
+                                               |
+          .............  empty space           |
+          .............  or other data         |
+                                               |
+          -------------                        |
+          |     P     | &lt;----------------------
+          -------------
+          |     a     |
+          -------------
+          |     u     |
+          -------------
+          |     l     |
+          -------------&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;p&gt;If you&#39;re still not fully comfortable with this, and if you haven&#39;t done so already, you might be interested in the &lt;a href=&quot;https://www.openmymind.net/learning_zig/pointers/&quot;&gt;pointers&lt;/a&gt; and &lt;a href=&quot;https://www.openmymind.net/learning_zig/stack_memory/&quot;&gt;stack memory&lt;/a&gt; parts of my learning zig series.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>GetOrPut With String Keys</title>
+		<link href="https://www.openmymind.net/GetOrPut-With-String-Keys/"/>
+		<updated>2025-02-27T00:00:00Z</updated>
+		<id>/GetOrPut-With-String-Keys/</id>
+		<content type="html">
+			
+&lt;p&gt;I&#39;ve previously blogged about how much I like Zig&#39;s &lt;code&gt;getOrPut&lt;/code&gt; hashmap method. As a brief recap, we can visualize Zig&#39;s hashmap as two arrays:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+  keys:               values:
+       --------          --------
+       | Paul  |         | 1234 |     @mod(hash(&quot;Paul&quot;), 5) == 0
+       --------          --------
+       |      |          |      |
+       --------          --------
+       |      |          |      |
+       --------          --------
+       | Goku |          | 9001 |    @mod(hash(&quot;Goku&quot;), 5) == 3
+       --------          --------
+       |      |          |      |
+       --------          --------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When we call &lt;code&gt;get(&quot;Paul&quot;)&lt;/code&gt;, we could think of this simplified implementation:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn get(map: *Self, key: K) ?V {
+  const index = map.getIndexOf(key) orelse return null;
+  return map.values[index];
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And, when we call &lt;code&gt;getPtr(&quot;Paul&quot;)&lt;/code&gt;, we&#39;d have this implementation:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn getPtr(map: *Self, key: K) ?*V {
+  const index = map.getIndexOf(key) orelse return null;
+  // notice the added &#39;&amp;&#39;
+  // we&#39;re taking the address of the array index
+  return &amp;map.values[index];
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;By taking the address of the value directly from the hashmap&#39;s array, we avoid copying the entire value. That can have performance implications (though not for the integer value we&#39;re using here). It also allows us to directly manipulate that slot of the array:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const value = map.getPtr(&quot;Paul&quot;) orelse return;
+value.* = 10;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is a powerful feature, but a dangerous one. If the underlying array changes, as can happen when items are added to the map, &lt;code&gt;value&lt;/code&gt; would become invalid. So, while &lt;code&gt;getPtr&lt;/code&gt; is useful, it requires mindfulness: try to minimize the scope of such references.&lt;/p&gt;
+
+&lt;aside&gt;&lt;p&gt;Currently, Zig&#39;s HashMap doesn&#39;t shrink when items are removed, so, for now, removing items doesn&#39;t invalidate any pointers into the hashmap. But expect that to change at some point.&lt;/p&gt;&lt;/aside&gt;
+
+&lt;h3 id=&quot;getOrPut&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#getOrPut&quot; aria-hidden=&quot;true&quot;&gt;GetOrPut&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;getOrPut&lt;/code&gt; builds on the above concept. It returns a pointer to the value &lt;strong&gt;and&lt;/strong&gt; the key, as well as creating the entry in the hashmap if necessary. For example, given that we already have an entry for &quot;Paul&quot;, if we call &lt;code&gt;map.getOrPut(&quot;Paul&quot;)&lt;/code&gt;, we&#39;d get back a &lt;code&gt;value_ptr&lt;/code&gt; that points to a slot in the hahmap&#39;s &lt;code&gt;values&lt;/code&gt; array, as well as a&lt;code&gt;key_ptr&lt;/code&gt; that points to a slot in the hashmap&#39;s &lt;code&gt;keys&lt;/code&gt; array. If the requested key &lt;em&gt;doesn&#39;t&lt;/em&gt; exist, we get back the same two pointers, and it&#39;s our responsibility to set the value.&lt;/p&gt;
+
+&lt;p&gt;If I asked you to increment counters inside of a hashmap, without &lt;code&gt;getOrPut&lt;/code&gt;, you&#39;d end up with two hash lookups:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+// Go
+count, exists := counters[&quot;hits&quot;]
+if exists == false {
+  counters[&quot;hits&quot;] = 1
+} else {
+  counters[&quot;hits&quot;] = count + 1;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With &lt;code&gt;getOrPut&lt;/code&gt;, it&#39;s a single hash lookup:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const gop = try counters.getOrPut(&quot;hits&quot;);
+if (gop.found_existing) {
+  gop.value_ptr.* += 1;
+} else {
+  gop.value_ptr.* = 1;
+}&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;h3 id=&quot;stringKeys&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#stringKeys&quot; aria-hidden=&quot;true&quot;&gt;getOrPut With String Keys&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;It seems trivial, but the most important thing to understand about &lt;code&gt;getOrPut&lt;/code&gt; is that it will set the key for you if the entry has to be created. In our last example, notice that even when &lt;code&gt;gop.found_existing == false&lt;/code&gt;, we never set &lt;code&gt;key_ptr&lt;/code&gt; - &lt;code&gt;getOrPut&lt;/code&gt; automatically sets it to the key we pass in, i.e. &lt;code&gt;&quot;hits&quot;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;If we were to put a breakpoint after &lt;code&gt;getOrPut&lt;/code&gt; returns but before we set the value, we&#39;d see that our two arrays look something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+  keys:               values:
+       --------          --------
+       |      |          |      |
+       --------          --------
+       | hits  |         | ???? |
+       --------          --------
+       |      |          |      |
+       --------          --------&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Where the entry in the &lt;code&gt;keys&lt;/code&gt; array is set, but the corresponding entry in &lt;code&gt;values&lt;/code&gt; is left undefined. You&#39;ll note that &lt;code&gt;getOrPut&lt;/code&gt; doesn&#39;t take a value. I assume this is because, in some cases, the value might be expensive to derive, so the current API lets us avoid calculating it when &lt;code&gt;gop.found_existing == true&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is important for keys that need to be owned by the hashmap. Most commonly strings, but this applies to any other key which we&#39;ll &quot;manage&quot;. Taking a step back, if we wanted to track hits in a hashmap, and, most likely, we wanted the lifetime of the keys to be tied to the hashmap, you&#39;d do something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn register(allocator: Allocator, map: *std.StringHashMap(u32), name: []const u8) !void {
+  const owned = try allocator.dupe(u8, name);
+  try map.put(owned, 0);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Creating your &quot;owned&quot; copy of &lt;code&gt;name&lt;/code&gt;, frees the caller from having to maintain &lt;code&gt;name&lt;/code&gt; beyond the call to &lt;code&gt;register&lt;/code&gt;. Now, if this key is removed, or the entire map cleaned up, we need to free the keys. That&#39;s why I like the name &quot;owned&quot;, it means the hash map &quot;owns&quot; the key (i.e. is responsible for freeing it):&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var it = map.keyIterator();
+while (it.next()) |key_ptr| {
+  allocator.free(key_ptr.*);
+}
+map.deinit(allocator);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The interaction between key ownership and &lt;code&gt;getOrPut&lt;/code&gt; is worth thinking about. If we try to merge this ownership idea with our incrementing counter code, we might try:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn hit(allocator: Allocator, map: *std.StringHashMap(u32), name: []const u8) !void {
+  const owned = try allocator.dupe(u8, name);
+  const gop = try map.getOrPut(owned);
+  if (gop.found_existing) {
+    gop.value_ptr.* += 1;
+  } else {
+    gop.value_ptr.* = 1;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But this code has a potential memory leak, can you spot it? (see &lt;a href=&quot;https://www.openmymind.net/#appendix-a&quot;&gt;Appendix A&lt;/a&gt; for a complete runnable example) When &lt;code&gt;gop.found_existing == true&lt;/code&gt;, &lt;code&gt;owned&lt;/code&gt; is never used and never freed. One bad option would be to free &lt;code&gt;owned&lt;/code&gt; when the entry already exists:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn hit(allocator: Allocator, map: *std.StringHashMap(u32), name: []const u8) !void {
+  const owned = try allocator.dupe(u8, name);
+  const gop = try map.getOrPut(owned);
+  if (gop.found_existing) {
+    // This line was added. But this is a bad solution
+    allocator.free(owned);
+    gop.value_ptr.* += 1;
+  } else {
+    gop.value_ptr.* = 1;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It works, but we needlessly &lt;code&gt;dupe&lt;/code&gt; &lt;code&gt;name&lt;/code&gt; if the entry already exists. Rather than prematurely duping the key in case the entry doesn&#39;t exist, we want to delay our &lt;code&gt;dupe&lt;/code&gt; until we know it&#39;s needed. Here&#39;s a better option:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn hit(allocator: Allocator, map: *std.StringHashMap(u32), name: []const u8) !void {
+  // we use `name` for the lookup.
+  const gop = try map.getOrPut(name);
+  if (gop.found_existing) {
+    gop.value_ptr.* += 1;
+  } else {
+    // this line was added
+    gop.key_ptr.* = try allocator.dupe(u8, name);
+    gop.value_ptr.* = 1;
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It might seem reckless to pass &lt;code&gt;name&lt;/code&gt; into &lt;code&gt;getOrPut&lt;/code&gt;. We need the key to remain valid as long as the map entry exists. Aren&#39;t we undermining that requirement? Let&#39;s walk through the code. When &lt;code&gt;hit&lt;/code&gt; is called for a new &lt;code&gt;name&lt;/code&gt;, &lt;code&gt;gop.found_existing&lt;/code&gt; will be false. &lt;code&gt;getOrPut&lt;/code&gt; will insert &lt;code&gt;name&lt;/code&gt; in our &lt;code&gt;keys&lt;/code&gt; array. This is bad because we have no &lt;code&gt;guarantee&lt;/code&gt; that &lt;code&gt;name&lt;/code&gt; will be valid for as long as we need it to be. But the problem is immediately remedied when we overwrite &lt;code&gt;key_ptr.*&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;On subsequent calls for an existing &lt;code&gt;name&lt;/code&gt;, when &lt;code&gt;gop.found_existing == true&lt;/code&gt;, the &lt;code&gt;name&lt;/code&gt; is only used as a lookup. It&#39;s no different than doing a &lt;code&gt;getPtr&lt;/code&gt;; &lt;code&gt;name&lt;/code&gt; only has to be valid for the call to &lt;code&gt;getOrPut&lt;/code&gt; because &lt;code&gt;getOrPut&lt;/code&gt; doesn&#39;t keep a reference to it when an existing entry is found.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#conclusion&quot; aria-hidden=&quot;true&quot;&gt;Conclusion&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;This post was a long way to say: don&#39;t be afraid to write to &lt;code&gt;key_ptr.*&lt;/code&gt;. Of course you can screw up your map this way. Consider this example:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn hit(allocator: Allocator, map: *std.StringHashMap(u32), name: []const u8) !void {
+    // we use `name` for the lookup.
+    const gop = try map.getOrPut(name);
+    if (gop.found_existing) {
+      gop.value_ptr.* += 1;
+    } else {
+      // what&#39;s this?
+      gop.key_ptr.* = &quot;HELLO&quot;;
+      gop.value_ptr.* = 1;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Because the key is used to organize the map - find where items go and where they are, jamming random keys where they don&#39;t belong is going to cause issues. But it can also be used correctly and safely, as long as you understand the details.&lt;/p&gt;
+
+&lt;h3 id=&quot;appendix-a&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#appendix-a&quot; aria-hidden=&quot;true&quot;&gt;Appendix A - Memory Leak&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;This code &lt;code&gt;should&lt;/code&gt; report a memory leak.&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+const Allocator = std.mem.Allocator;
+
+pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+    defer _ = gpa.detectLeaks();
+
+    // I&#39;m using the Unmanaged variant because the Managed ones are likely to
+    // be removed (which I think is a mistake). Using Unmanaged makes this
+    // snippet more future-proof. I explain unmanaged here:
+    // https://www.openmymind.net/Zigs-HashMap-Part-1/#Unmanaged
+    var map: std.StringHashMapUnmanaged(u32) = .{};
+    try hit(allocator, &amp;map, &quot;teg&quot;);
+    try hit(allocator, &amp;map, &quot;teg&quot;);
+
+    var it = map.keyIterator();
+    while (it.next()) |key_ptr| {
+      allocator.free(key_ptr.*);
+    }
+    map.deinit(allocator);
+}
+
+fn hit(allocator: Allocator, map: *std.StringHashMapUnmanaged(u32), name: []const u8) !void {
+    const owned = try allocator.dupe(u8, name);
+    const gop = try map.getOrPut(allocator, owned);
+    if (gop.found_existing) {
+      gop.value_ptr.* += 1;
+    } else {
+      gop.value_ptr.* = 1;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Comparing Strings as Integers with @bitCast</title>
+		<link href="https://www.openmymind.net/Comparing-Strings-as-Integers-with-bitCast/"/>
+		<updated>2025-02-20T00:00:00Z</updated>
+		<id>/Comparing-Strings-as-Integers-with-bitCast/</id>
+		<content type="html">
+			
+&lt;p&gt;In the last blog posts, we looked at &lt;a href=&quot;https://www.openmymind.net/Switching-On-Strings-In-Zig/&quot;&gt;different ways to compare strings in Zig&lt;/a&gt;. A few posts back, we &lt;a href=&quot;https://www.openmymind.net/Zigs-bitCast/#bitCast&quot;&gt;introduced Zig&#39;s &lt;code&gt;@bitCast&lt;/code&gt;&lt;/a&gt;. As a quick recap, &lt;code&gt;@bitCast&lt;/code&gt; lets us force a specific type onto a value. For example, the following prints 1067282596:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+    const f: f32 = 1.23;
+    const n: u32 = @bitCast(f);
+    std.debug.print(&quot;{d}&#92;n&quot;, .{n});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;What&#39;s happening here is that Zig represents the 32-bit float value of &lt;code&gt;1.23&lt;/code&gt; as: &lt;code&gt;[4]u8{164, 112, 157, 63}&lt;/code&gt;. This is also how Zig represents the 32-bit unsigned integer  value of &lt;code&gt;1067282596&lt;/code&gt;. Data is just bytes; it&#39;s the type system - the compiler&#39;s knowledge of what data is what type - that controls what and how that data is manipulated.&lt;/p&gt;
+
+&lt;p&gt;It might seem like there&#39;s something special about bitcasting from a float to an integer; they&#39;re both numbers after all. But you can &lt;code&gt;@bitCast&lt;/code&gt; from any two equivalently sized types. Can you guess what this prints?:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+pub fn main() !void {
+    const data = [_]u8{3, 0, 0, 0};
+    const x: i32 = @bitCast(data);
+    std.debug.print(&quot;{d}&#92;n&quot;, .{x});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The answer is &lt;code&gt;3&lt;/code&gt;. Think about the above snippet a bit more. We&#39;re taking an array of bytes and telling the compiler to treat it like an integer. If we made &lt;code&gt;data&lt;/code&gt; equal to &lt;code&gt;[_]u8{&#39;b&#39;, &#39;l&#39;, &#39;u&#39;, &#39;e&#39;}&lt;/code&gt;, it would still work (and print &lt;code&gt;1702194274&lt;/code&gt;). We&#39;re slowly heading towards being able to compare strings as-if they were integers.&lt;/p&gt;
+
+&lt;aside&gt;&lt;p&gt;If you&#39;re wondering why 3 is encoded as &lt;code&gt;[4]u8{3, 0, 0, 0}&lt;/code&gt; and not &lt;code&gt;[4]u8{0, 0, 0, 3}&lt;/code&gt;, I talked about binary encoding in my &lt;a href=&quot;https://www.openmymind.net/TCP-Server-In-Zig-Part-2-Message-Boundaries/#binary_encoding&quot;&gt;Learning TCP&lt;/a&gt; series.&lt;/p&gt;&lt;/aside&gt;
+
+&lt;p&gt;From the last post, we could use multiple &lt;code&gt;std.mem.eql&lt;/code&gt; or, more simply, &lt;code&gt;std.meta.stringToEnum&lt;/code&gt; to complete the following method:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn parseMethod(value: []const u8) ?Method {
+    // ...
+}
+
+const Method = enum {
+    get,
+    put,
+    post,
+    head,
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can also use &lt;code&gt;@bitCast&lt;/code&gt;. Let&#39;s take it step-by-step.&lt;/p&gt;
+
+&lt;p&gt;The first thing we&#39;ll need to do is switch on &lt;code&gt;value.len&lt;/code&gt;. This is necessary because the three-byte &quot;GET&quot; will need to be &lt;code&gt;@bitCast&lt;/code&gt; to a &lt;code&gt;u24&lt;/code&gt;, whereas the four-byte &quot;POST&quot; needs to be &lt;code&gt;@bitCast&lt;/code&gt; to a &lt;code&gt;u32&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn parseMethod(value: []const u8) ?Method {
+    switch (value.len) {
+        3 =&gt; switch (@as(u24, @bitCast(value[0..3]))) {
+            // TODO
+            else =&gt; {},
+        },
+        4 =&gt; switch (@as(u32, @bitCast(value[0..4]))) {
+            // TODO
+            else =&gt; {},
+        },
+        else =&gt; {},
+    }
+
+    return null;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you try to run this code, you&#39;ll get a compilation error: &lt;em&gt;cannot @bitCast from &#39;*const [3]u8&#39;&lt;/em&gt;. &lt;code&gt;@bitCast&lt;/code&gt; works on actual bits, but when we slice our &lt;code&gt;[]const u8&lt;/code&gt; with a compile-time known range (&lt;code&gt;[0..3]&lt;/code&gt;), we get a pointer to an array. We can&#39;t &lt;code&gt;@bitCast&lt;/code&gt; a pointer, we can only &lt;code&gt;@bitCast&lt;/code&gt; actual bits of data. For this to work, we need to derefence the pointer, i.e. use: &lt;code&gt;value[0..3].*&lt;/code&gt;. This will turn our &lt;code&gt;*const [3]u8&lt;/code&gt; into a &lt;code&gt;const [3]u8&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn parseMethod(value: []const u8) ?Method {
+    switch (value.len) {
+        // changed: we now derefernce the value (.*)
+        3 =&gt; switch (@as(u24, @bitCast(value[0..3].*))) {
+            // TODO
+            else =&gt; {},
+        },
+        // changed: we now dereference the value (.*)
+        4 =&gt; switch (@as(u32, @bitCast(value[0..4].*))) {
+            // TODO
+            else =&gt; {},
+        },
+        else =&gt; {},
+    }
+
+    return null;
+}&lt;/code&gt;&lt;/pre&gt;
+
+ &lt;p&gt;Also, you might have noticed the &lt;code&gt;@as(u24, ...)&lt;/code&gt; and &lt;code&gt;@as(u32, ...)&lt;/code&gt;. &lt;code&gt;@bitCast&lt;/code&gt;, like most of Zig&#39;s builtin functions, infers its return type. When we&#39;re assiging the result of a &lt;code&gt;@bitCast&lt;/code&gt; to a variable of a known type, i.e: &lt;code&gt;const x: i32 = @bitCast(data);&lt;/code&gt;, the return type of &lt;code&gt;i32&lt;/code&gt; is inferred. In the above &lt;code&gt;switch&lt;/code&gt;, we aren&#39;t assigning the result to a varible. We have to use &lt;code&gt;@as(u24, ...)&lt;/code&gt; in order for &lt;code&gt;@bitCast&lt;/code&gt; to kknow what it should be casting to (i.e. what its return type should be).&lt;/p&gt;
+
+&lt;p&gt;The last thing we need to do is fill our switch blocks. Hopefully it&#39;s obvious that we can&#39;t just do:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+3 =&gt; switch (@as(u24, @bitCast(value[0..3].*))) {
+    &quot;GET&quot; =&gt; return .get,
+    &quot;PUT&quot; =&gt; return .put,
+    else =&gt; {},
+},
+...&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But you might be thinking that, while ugly, something like this might work:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+3 =&gt; switch (@as(u24, @bitCast(value[0..3].*))) {
+    @as(u24, @bitCast(&quot;GET&quot;.*)) =&gt; return .get,
+    @as(u24, @bitCast(&quot;PUT&quot;.*)) =&gt; return .put,
+    else =&gt; {},
+},
+...&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Because &lt;code&gt;&quot;GET&quot;&lt;/code&gt; and &lt;code&gt;&quot;PUT&quot;&lt;/code&gt; are string literals, they&#39;re null terminated and of type &lt;code&gt;*const [3:0]u8&lt;/code&gt;. When we dereference them, we get a &lt;code&gt;const [3:0]u8&lt;/code&gt;. It&#39;s close, but it means that the value is 4 bytes (&lt;code&gt;[4]u8{&#39;G&#39;, &#39;E&#39;, &#39;T&#39;, 0}&lt;/code&gt;) and thus cannot be &lt;code&gt;@bitCast&lt;/code&gt; into a &lt;code&gt;u24&lt;/code&gt;. This is ugly, but it works:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn parseMethod(value: []const u8) ?Method {
+    switch (value.len) {
+        3 =&gt; switch (@as(u24, @bitCast(value[0..3].*))) {
+            @as(u24, @bitCast(@as([]const u8, &quot;GET&quot;)[0..3].*)) =&gt; return .get,
+            @as(u24, @bitCast(@as([]const u8, &quot;PUT&quot;)[0..3].*)) =&gt; return .put,
+            else =&gt; {},
+        },
+        4 =&gt; switch (@as(u32, @bitCast(value[0..4].*))) {
+            @as(u32, @bitCast(@as([]const u8, &quot;HEAD&quot;)[0..4].*)) =&gt; return .head,
+            @as(u32, @bitCast(@as([]const u8, &quot;POST&quot;)[0..4].*)) =&gt; return .post,
+            else =&gt; {},
+        },
+        else =&gt; {},
+    }
+    return null;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&#39;s a mouthful, so we can add small function to help:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn parseMethod(value: []const u8) ?Method {
+    switch (value.len) {
+        3 =&gt; switch (@as(u24, @bitCast(value[0..3].*))) {
+            asUint(u24, &quot;GET&quot;) =&gt; return .get,
+            asUint(u24, &quot;PUT&quot;) =&gt; return .put,
+            else =&gt; {},
+        },
+        4 =&gt; switch (@as(u32, @bitCast(value[0..4].*))) {
+            asUint(u32, &quot;HEAD&quot;) =&gt; return .head,
+            asUint(u32, &quot;POST&quot;) =&gt; return .post,
+            else =&gt; {},
+        },
+        else =&gt; {},
+    }
+    return null;
+}
+
+pub fn asUint(comptime T: type, comptime string: []const u8) T {
+    return @bitCast(string[0..string.len].*);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Like the verbose version, the trick is to cast our null-terminated string literal into a string slice, &lt;code&gt;[]const u8&lt;/code&gt;. By passing it through the &lt;code&gt;asUint&lt;/code&gt; function, we get this without needing to add the explicit &lt;code&gt;@as([]const u8)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;There is a more advanced version of &lt;code&gt;asUint&lt;/code&gt; which doesn&#39;t take the uint type parameter (&lt;code&gt;T&lt;/code&gt;). If you think about it, the uint type can be inferred from the string&#39;s length:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn asUint(comptime string: []const u8) @Type(.{
+    .int = .{
+        // bits, not bytes, hence * 8
+        .bits = string.len * 8,
+        .signedness = .unsigned,
+    },
+}) {
+    return @bitCast(string[0..string.len].*);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Which allows us to call it with a single parameter: &lt;code&gt;asUint(&quot;GET&quot;)&lt;/code&gt;. This might be your first time seeing such a return type. The &lt;code&gt;@Type&lt;/code&gt; builtin is the opposite of &lt;code&gt;@typeInfo&lt;/code&gt;. The latter takes a type and returns information on it in the shape of a &lt;code&gt;std.builtin.Type&lt;/code&gt; union. Whereas &lt;code&gt;@Type&lt;/code&gt; takes the  &lt;code&gt;std.builtin.Type&lt;/code&gt; and returns an actual usable type. One of these days I&#39;ll find the courage to blog about &lt;code&gt;std.builtin.Type&lt;/code&gt;!&lt;/p&gt;
+
+&lt;p&gt;As a final note, some people dislike the look of this sort of return type and rather encapsulate the logic in its own function. This is the same:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn asUint(comptime string: []const u8) AsUintReturn(string) {
+    return @bitCast(string[0..string.len].*);
+}
+
+// Remember that, in Zig, by convention, a function should be
+// PascalCase if it returns a type (because types are PascalCase).
+fn AsUintReturn(comptime string: []const u8) type {
+    return @Type(.{
+        .int = .{
+            // bits, not bytes, hence * 8
+            .bits = string.len * 8,
+            .signedness = .unsigned,
+        },
+    });
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;Of the three approaches, this is the least readable and less approachable. Is it worth it? It depends on your input and the values you&#39;re comparing against. In my benchmarks, using &lt;code&gt;@bitCast&lt;/code&gt; performs roughly the same as &lt;code&gt;std.meta.stringToEnum&lt;/code&gt;. But there are some cases where &lt;code&gt;@bitCast&lt;/code&gt; can outperform &lt;code&gt;std.meta.stringToEnum&lt;/code&gt; by as much as 50%. Perhaps that&#39;s the real value of this approach: the performance is less dependent on the input or the values being matched against.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Switching on Strings in Zig</title>
+		<link href="https://www.openmymind.net/Switching-On-Strings-In-Zig/"/>
+		<updated>2025-02-13T00:00:00Z</updated>
+		<id>/Switching-On-Strings-In-Zig/</id>
+		<content type="html">
+			
+&lt;p&gt;Newcomers to Zig will quickly learn that you can&#39;t switch on a string (i.e. &lt;code&gt;[]const u8&lt;/code&gt;). The following code gives us the unambiguous error message &lt;em&gt;cannot switch on strings&lt;/em&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+switch (color) {
+    &quot;red&quot; =&gt; {},
+    &quot;blue&quot; =&gt; {},
+    &quot;green&quot; =&gt; {},
+    &quot;pink&quot; =&gt; {},
+    else =&gt; {},
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I&#39;ve seen two explanations for why this isn&#39;t supported. The first is that there&#39;s ambiguity around string identity. Are two strings only considered equal if they point to the same address? Is a null-terminated string the same as its non-null-terminated counterpart? The other reason is that users of &lt;code&gt;switch&lt;/code&gt; [apparently] expect &lt;a href=&quot;https://en.wikipedia.org/wiki/Branch_table&quot;&gt;certain optimizations&lt;/a&gt; which are not possible with strings (although, presumably, these same users would know that such optimizations aren&#39;t possible with string).&lt;/p&gt;
+
+&lt;p&gt;Instead, in Zig, there are two common methods for comparing strings.&lt;/p&gt;
+
+&lt;h3 id=&quot;mem_eql&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#mem_eql&quot; aria-hidden=&quot;true&quot;&gt;std.mem.eql&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The most common way to compare strings is using &lt;code&gt;std.mem.eql&lt;/code&gt; with &lt;code&gt;if / else if / else&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+if (std.mem.eql(u8, color, &quot;red&quot;) == true) {
+
+} else if (std.mem.eql(u8, color, &quot;blue&quot;) == true) {
+
+} else if (std.mem.eql(u8, color, &quot;green&quot;) == true) {
+
+} else if (std.mem.eql(u8, color, &quot;pink&quot;) == true) {
+
+} else {
+
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The implementation for &lt;code&gt;std.mem.eql&lt;/code&gt; depends on what&#39;s being compared. Specifically, it has an optimized code path when comparing strings. Although that&#39;s what we&#39;re interested in, let&#39;s look at the non-optimized version:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn eql(comptime T: type, a: []const T, b: []const T) bool {
+    if (a.len != b.len) return false;
+    if (a.len == 0 or a.ptr == b.ptr) return true;
+
+    for (a, b) |a_elem, b_elem| {
+        if (a_elem != b_elem) return false;
+    }
+    return true;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Whether we&#39;re dealing with slices of bytes or some other type, if they&#39;re of different length, they can&#39;t be equal. Once we know that they&#39;re the same length, if they point to the same memory, then they must be equal. I&#39;m not a fan of this second check; it might be cheap, but I think it&#39;s quite uncommon. Once those initial checks are done, we compare each element (each byte of our string) one at a time.&lt;/p&gt;
+
+&lt;p&gt;The optimized version, which &lt;em&gt;is&lt;/em&gt; used for strings, is &lt;a href=&quot;https://github.com/ziglang/zig/blob/5b9b5e45cb710ddaad1a97813d1619755eb35a98/lib/std/mem.zig#L720&quot;&gt;much more involved&lt;/a&gt;. But it&#39;s fundamentally the same as the above with &lt;a href=&quot;https://www.openmymind.net/SIMD-With-Zig/&quot;&gt;SIMD&lt;/a&gt; to compare multiple bytes at once.&lt;/p&gt;
+
+&lt;p&gt;The nature of string comparison means that real-world performance is dependent on the values being compared. We know that if we have 100 &lt;code&gt;if / else if&lt;/code&gt; branches then, at the worse case, we&#39;ll need to call &lt;code&gt;std.mem.eql&lt;/code&gt; 100 times. But comparing strings of different lengths or strings which differ early will be significantly faster. For example, consider these three cases:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+{
+    const str1 = &quot;a&quot; ** 10_000 ++ &quot;1&quot;;
+    const str2 = &quot;a&quot; ** 10_000 ++ &quot;2&quot;;
+    _ = std.mem.eql(u8, str1, str2);
+}
+
+{
+    const str1 = &quot;1&quot; ++ a&quot; ** 10_000;
+    const str2 = &quot;2&quot; ++ a&quot; ** 10_000;
+    _ = std.mem.eql(u8, str1, str2);
+}
+
+{
+    const str1 = &quot;a&quot; ** 999_999;
+    const str2 = &quot;a&quot; ** 1_000_000;
+    _ = std.mem.eql(u8, str1, str2);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For me, the first comparison takes ~270ns, whereas the other two take ~20ns - despite the last one involving much larger strings. The second case is faster because the difference is early in the string allowing the &lt;code&gt;for&lt;/code&gt; loop to return after only one comparison. The third case is faster because the strings are of a different length: &lt;code&gt;false&lt;/code&gt; is returned by the initial &lt;code&gt;len&lt;/code&gt; check.&lt;/p&gt;
+
+&lt;h3 id=&quot;string_to_enum&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#string_to_enum&quot; aria-hidden=&quot;true&quot;&gt;std.meta.stringToEnum&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;std.meta.stringToEnum&lt;/code&gt; takes an enum type and a string value and returns the corresponding enum value or null. This code prints &quot;you picked: blue&quot;&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+const Color = enum {
+    red,
+    blue,
+    green,
+    pink,
+};
+
+pub fn main() !void {
+    const color = std.meta.stringToEnum(Color, &quot;blue&quot;) orelse {
+        return error.InvalidChoice;
+    };
+
+    switch (color) {
+        .red =&gt; std.debug.print(&quot;you picked: red&#92;n&quot;, .{}),
+        .blue =&gt; std.debug.print(&quot;you picked: blue&#92;n&quot;, .{}),
+        .green =&gt; std.debug.print(&quot;you picked: green&#92;n&quot;, .{}),
+        .pink =&gt; std.debug.print(&quot;you picked: pink&#92;n&quot;, .{}),
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you don&#39;t need the enum type (i.e. &lt;code&gt;Color&lt;/code&gt;) beyond this check, you can leverage Zig&#39;s anonymous types. This is equivalent:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    const color = std.meta.stringToEnum(enum {
+        red,
+        blue,
+        green,
+        pink,
+    }, &quot;blue&quot;) orelse return error.InvalidChoice;
+
+    switch (color) {
+        .red =&gt; std.debug.print(&quot;you picked: red&#92;n&quot;, .{}),
+        .blue =&gt; std.debug.print(&quot;you picked: blue&#92;n&quot;, .{}),
+        .green =&gt; std.debug.print(&quot;you picked: green&#92;n&quot;, .{}),
+        .pink =&gt; std.debug.print(&quot;you picked: pink&#92;n&quot;, .{}),
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It&#39;s &lt;strong&gt;not&lt;/strong&gt; obvious how this should perform versus the straightforward &lt;code&gt;if / else if&lt;/code&gt; approach. Yes, we now have a &lt;code&gt;switch&lt;/code&gt; statement that the compiler can [hopefully] optimize, but &lt;code&gt;std.meta.stringToEnum&lt;/code&gt; still has convert our input, &lt;code&gt;&quot;blue&quot;&lt;/code&gt;, into an enum.&lt;/p&gt;
+
+&lt;p&gt;The implementation of &lt;code&gt;std.meta.stringToEnum&lt;/code&gt; depends on the number of possible values, i.e. the number of enum values. Currently, if there are more than 100 values, it&#39;ll fallback to using the same &lt;code&gt;if / else if&lt;/code&gt; that we explored above. Thus, with more than 100 values it does the &lt;code&gt;if / else if&lt;/code&gt; check PLUS the switch. This should &lt;a href=&quot;https://github.com/ziglang/zig/issues/3863&quot;&gt;improve in the future&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;However, with 100 or fewer values, &lt;code&gt;std.meta.stringToEnum&lt;/code&gt; creates a comptime &lt;code&gt;std.StaticStringMap&lt;/code&gt; which can then be used to lookup the value. &lt;code&gt;std.StaticStringMap&lt;/code&gt; isn&#39;t something we&#39;ve looked at before. It&#39;s a specialized map that buckets keys by their length. Its advantage over Zig&#39;s &lt;a href=&quot;https://www.openmymind.net/Zigs-HashMap-Part-1/&quot;&gt;other hash maps&lt;/a&gt; is that it can be constructed at compile-time. For our &lt;code&gt;Color&lt;/code&gt; enum, the internal state of a &lt;code&gt;StaticStringMap&lt;/code&gt; would look something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+// keys are ordered by length
+keys:     [&quot;red&quot;, &quot;blue&quot;, &quot;pink&quot;, &quot;green&quot;];
+
+// values[N] corresponds to keys[N]
+values:   [.red, .blue, .pink, .green];
+
+// What&#39;s this though?
+indexes:  [0, 0, 0, 0, 1, 3];&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It might not be obvious how &lt;code&gt;indexes&lt;/code&gt; is used. Let&#39;s write our own &lt;code&gt;get&lt;/code&gt; implementation, simulating the above &lt;code&gt;StaticStringMap&lt;/code&gt; state:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn get(str: []const u8) ?Color {
+    // Simulate the state of the StaticStringMap which
+    // stringToMeta built at compile-time.
+    const keys = [_][]const u8{&quot;red&quot;, &quot;blue&quot;, &quot;pink&quot;, &quot;green&quot;};
+    const values = [_]Color{.red, .blue, .pink, .green};
+    const indexes = [_]usize{0, 0, 0, 0, 1, 3};
+
+    if (str.len &gt;= indexes.len) {
+        // our map has no strings of this length
+        return null;
+    }
+
+    var index = indexes[str.len];
+    while (index &lt; keys.len) {
+        const key = keys[index];
+
+        if (key.len != str.len) {
+            // we&#39;ve gone into the next bucket, everything after
+            // this is longer and thus can&#39;t be a match
+            return null;
+        }
+
+        if (std.mem.eql(u8, key, str)) {
+            return values[index];
+        }
+        index += 1;
+    }
+    return null;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Take note that &lt;code&gt;keys&lt;/code&gt; are ordered by length. As a naive implementation, we could iterate through the keys until we either find a match or find a key with a longer length. Once we find a key with a longer length, we can stop searching, as all remaining candidates won&#39;t match - they&#39;ll all be too long. &lt;code&gt;StaticStringMap&lt;/code&gt; goes a step further and records the index within &lt;code&gt;keys&lt;/code&gt; where entries of a specific length begin. &lt;code&gt;indexes[3]&lt;/code&gt; tells us where to start looking for keys with a length of 3 (at index 0). &lt;code&gt;indexes[5]&lt;/code&gt; tells us where to start looking for keys with a length of 5 (at index 3).&lt;/p&gt;
+
+&lt;p&gt;Above, we fallback to using &lt;code&gt;std.mem.eql&lt;/code&gt; for any key which is the same length as our target string. &lt;code&gt;StaticStringMap&lt;/code&gt; uses its own &quot;optimized&quot; version:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn defaultEql(a: []const u8, b: []const u8) bool {
+    if (a.ptr == b.ptr) return true;
+    for (a, b) |a_elem, b_elem| {
+        if (a_elem != b_elem) return false;
+    }
+    return true;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is the same as the simple &lt;code&gt;std.mem.eql&lt;/code&gt; implementation, minus the length check. This is done because the &lt;code&gt;eql&lt;/code&gt; within our &lt;code&gt;while&lt;/code&gt; loop is only ever called for values with matching length. On the flip side, &lt;code&gt;StaticStringMap&lt;/code&gt;&#39;s &lt;code&gt;eql&lt;/code&gt; doesn&#39;t use SIMD, so it would be slower for large strings.&lt;/p&gt;
+
+&lt;aside&gt;&lt;p&gt;&lt;code&gt;StaticStringMap&lt;/code&gt; is a wrapper to &lt;code&gt;StaticStringMapWithEql&lt;/code&gt; which accept a custom &lt;code&gt;eql&lt;/code&gt; function, so if you &lt;em&gt;did&lt;/em&gt; want to use it for long strings or some other purposes, you have a reasonable amount of flexibility. You even have the option to use &lt;code&gt;std.static_string_map.eqlAsciiIgnoreCase&lt;/code&gt; for ASCII-aware case-insensitive comparison.&lt;/p&gt;&lt;/aside&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#conclusion&quot; aria-hidden=&quot;true&quot;&gt;Conclusion&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;In my own benchmarks, in general, I&#39;ve seen little difference between the two approaches. It does seem like &lt;code&gt;std.meta.stringToEnum&lt;/code&gt; is generally as fast or faster. It also results in more concise code and is ideal if the resulting enum is useful beyond the comparison.&lt;/p&gt;
+
+&lt;p&gt;You usually don&#39;t have long enum values, so the lack of SIMD-optimization isn&#39;t a concern. However, if you&#39;re considering building your own &lt;code&gt;StaticStringMap&lt;/code&gt; at compile time with long keys, you should benchmark with a custom &lt;code&gt;eql&lt;/code&gt; function based on &lt;code&gt;std.mem.eql&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;We could manually bucket those &lt;code&gt;if / else if&lt;/code&gt; branches ourselves, similar to what the &lt;code&gt;StaticStringMap&lt;/code&gt; does. Something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+switch (color.len) {
+    3 =&gt; {
+        if (std.mem.eql(u8, color, &quot;red&quot;) == true) {
+            // ...
+            return;
+        }
+    },
+    4 =&gt; {
+        if (std.mem.eql(u8, color, &quot;blue&quot;) == true) {
+            // ...
+            return;
+        }
+        if (std.mem.eql(u8, color, &quot;pink&quot;) == true) {
+            // ...
+            return;
+        }
+    },
+    5 =&gt; {
+        if (std.mem.eql(u8, color, &quot;green&quot;) == true) {
+            // ...
+            return;
+        }
+    },
+    else =&gt; {},
+}
+// not found&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ughhh. This highlights the convenience of using &lt;code&gt;std.meta.stringToEnum&lt;/code&gt; to generate similar code. Also, do remember that &lt;code&gt;std.mem.eql&lt;/code&gt; quickly discards strings of different lengths, which helps to explain why both approaches generally perform similarly.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Using Generics to Inject Stubs when Testing</title>
+		<link href="https://www.openmymind.net/Using-Generics-To-Inject-Stubs-When-Testing/"/>
+		<updated>2025-02-07T00:00:00Z</updated>
+		<id>/Using-Generics-To-Inject-Stubs-When-Testing/</id>
+		<content type="html">
+			
+&lt;p&gt;I have an unapologetic and, I&#39;d like to think, pragmatic take on testing. I want tests to run fast, not be flaky and not be brittle. By &quot;flaky&quot;, I mean tests that randomly fail. By &quot;brittle&quot;, I mean tests that break due to seemingly unrelated changes in the code.&lt;/p&gt;
+
+&lt;p&gt;I&#39;m happy that the definition of &quot;unit tests&quot; has broadened over the years: it&#39;s now acceptable to have &quot;unit tests&quot; do more, i.e. hitting a database. I call the period of time where I (we?) over-relied on dependency injection and mocking frameworks, the &quot;dark ages&quot;. Still, I do believe that stubs and similar testing tools can be useful in specific cases.&lt;/p&gt;
+
+&lt;p&gt;One pattern that I&#39;ve recently leveraged is using a generic to inject a stub for testing. For example, imagine we have a &lt;code&gt;Client&lt;/code&gt; struct which encapsulate communication over the TCP socket:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const Client = struct {
+    stream: net.Stream,
+
+    // Prefix the message with its 4-byte length
+    pub fn write(self: Client, data: []const u8) !void {
+        var header: [4]u8 = undefined;
+        std.mem.writeInt(u32, &amp;header, @intCast(data.len), .big);
+        try self.stream.writeAll(&amp;header);
+        return self.stream.writeAll(data);
+    }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Admittedly, a unit test for this specific code doesn&#39;t make much sense to me. The code itself is trivial, but setting up a test for it wouldn&#39;t be straightforward. But what if we did want to test it? Maybe we had a bit more logic with an edge-case that might be hard to reproduce in a broader end-to-end test. Here&#39;s how I&#39;d do it:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const Client = ClientT(net.Stream);
+
+fn ClientT(comptime S: type) type {
+    return struct {
+        stream: S,
+
+        const Self = @This();
+
+        // Prefix the message with its 4-byte length
+        pub fn write(self: Self, data: []const u8) !void {
+            var header: [4]u8 = undefined;
+            std.mem.writeInt(u32, &amp;header, @intCast(data.len), .big);
+            try self.stream.writeAll(&amp;header);
+            return self.stream.writeAll(data);
+        }
+    };
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The generic, &lt;code&gt;ClientT&lt;/code&gt;, exists only for testing purposes. To shield everything else from this implementation detail, we continue to expose a &lt;code&gt;Client&lt;/code&gt; which behaves exactly like our original version, i.e. it&#39;s a &lt;code&gt;Client&lt;/code&gt; that behaves on a &lt;code&gt;net.Stream&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now we can test our &lt;code&gt;Client&lt;/code&gt; against something other than a &lt;code&gt;net.Stream&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const TestStream = struct {
+    written: std.ArrayListUnmanaged(u8) = .{},
+
+    const allocator = testing.allocator;
+
+    fn deinit(self: *TestStream) void {
+        self.written.deinit(allocator);
+    }
+
+    pub fn writeAll(self: *TestStream, data: []const u8) !void {
+        return self.written.appendSlice(allocator, data);
+    }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Our &lt;code&gt;TestStream&lt;/code&gt; records all data written. This will allow our tests to assert that, for a given input (or inputs), the correct data was written. Here&#39;s a test:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+test &quot;Client: write&quot; {
+    var stream = TestStream{};
+    defer stream.deinit();
+
+    const client: ClientT(*TestStream) = .{.stream = &amp;stream};
+
+    try client.write(&quot;over 9000!&quot;);
+
+    // we still need to write this!
+    try stream.expectWritten(&amp;.{
+        [_]u8{0, 0, 0, 10} ++ &quot;over 9000!&quot;,
+    });
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;By injecting our &lt;code&gt;TestStream&lt;/code&gt; into the client, we&#39;re able to control the interaction between the client and the &quot;stream&quot;. Our test calls &lt;code&gt;client.write&lt;/code&gt;, like normal code would, and, in our tests, this ends up calling our &lt;code&gt;TestStream.writeAll&lt;/code&gt; method. To finish off this example, we still need to implement the &lt;code&gt;expectWritten&lt;/code&gt; function, which the above test calls:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const TestStream = struct {
+    // add this field
+    read_pos: usize = 0
+
+    written: std.ArrayListUnmanaged(u8) = .{},
+
+    // ... everything else is the same ...
+
+    // add this method
+    fn expectWritten(self: *TestStream, expected: []const []const u8) !void {
+        var read_pos = self.read_pos;
+        var written = self.written.items[read_pos..];
+        for (expected) |e| {
+            try testing.expectEqual(true, written.len &gt;= e.len);
+            try testing.expectEqualSlices(u8, e, written[read_pos..e.len]);
+            read_pos += e.len;
+        }
+        self.read_pos = read_pos;
+    }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are a lot of different ways we can assert that the expected data was written. The above implementation is straightforward, but by adding the &lt;code&gt;read_pos&lt;/code&gt; field, we&#39;ll be able to incrementally write/assert.&lt;/p&gt;
+
+&lt;p&gt;Again, this isn&#39;t a pattern that I use often. And there are different ways to achieve the same thing. For example, we could extract the message framing logic (in our case, the 4-byte length header), into its own struct). But I believe every alternative will have some compromises. Therefore it comes down to picking the best option for a given problem, and hopefully this is another tool you can add to your toolbelt.&lt;/p&gt;
+
+&lt;aside&gt;&lt;p&gt;If you&#39;re wondering why we need to prefix the message with its length, you might be interested in my &lt;a href=&quot;https://www.openmymind.net/TCP-Server-In-Zig-Part-2-Message-Boundaries/&quot;&gt;TCP Message Boundaries post&lt;/a&gt;. If you&#39;re wondering whether the 2 &lt;code&gt;writeAll&lt;/code&gt; calls, which will result in at least 2 system calls, can be merged, you might be interested to &lt;a href=&quot;https://www.openmymind.net/TCP-Server-In-Zig-Part-3-Minimizing-Writes-and-Reads/#writev&quot;&gt;learn about &lt;code&gt;writev&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/aside&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>In Zig, What&#39;s a Writer?</title>
+		<link href="https://www.openmymind.net/In-Zig-Whats-a-Writer/"/>
+		<updated>2025-01-28T00:00:00Z</updated>
+		<id>/In-Zig-Whats-a-Writer/</id>
+		<content type="html">
+			
+&lt;blockquote&gt;&lt;p&gt;As of mid-July 2025, development on a new &lt;code&gt;Io&lt;/code&gt; namespace is underway. If you&#39;re using Zig 0.14.1 or earlier, this post is still relevant. I&#39;ve written a bit about &lt;a href=&quot;https://www.openmymind.net/Zigs-New-Writer/&quot;&gt;Zig&#39;s new Writer&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I find Zig&#39;s idea of a &quot;writer&quot; confusing. This is probably because there are three different types, each trying to compensate for compromises made by the others. Let&#39;s try to understand what each is and how it fits into a bigger whole.&lt;/p&gt;
+
+&lt;h3 id=&quot;anytype&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#anytype&quot; aria-hidden=&quot;true&quot;&gt;writer: anytype&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The first writer that you&#39;re likely to run into is a &lt;code&gt;writer: anytype&lt;/code&gt;, with the most visible cases found in the &lt;code&gt;std.fmt&lt;/code&gt; package, i.e. &lt;code&gt;std.fmt.print&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;I&#39;ve written about &lt;a href=&quot;https://www.openmymind.net/learning_zig/coding_in_zig/#anytype&quot;&gt;anytype&lt;/a&gt; before. As a quick recap, think of it as a template. For example, if we have this code:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn writeN(writer: anytype, data: []const u8, n: usize) !void {
+    var i: usize = 0;
+    while (i &lt; n) : (i += 1) {
+        try writer.writeAll(data)
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A copy of this function will be created for every type of &lt;code&gt;writer&lt;/code&gt; that is used. Given this invocation:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+var logger = MyLogger{};
+try writeN(logger, &quot;.&quot;, 10);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We&#39;d end up with this copy of &lt;code&gt;writeN&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+// anytype -&gt; MyLogger
+fn writeN(writer: MyLogger, data: []const u8, n: usize) !void {
+    var i: usize = 0;
+    while (i &lt; n) : (i += 1) {
+        try writer.writeAll(data)
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If &lt;code&gt;MyLogger&lt;/code&gt; didn&#39;t implement the necessary &lt;code&gt;writeAll([]const u8) !void&lt;/code&gt; method, we&#39;d get a compiler error - just like we&#39;d expect if we wrote the &lt;code&gt;writeN(writer: MyLogger, ...)&lt;/code&gt; function ourselves.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;anytype&lt;/code&gt; is super useful and has zero runtime overhead. But there are a few downsides. First, it can make binaries larger and compilation slower. In most cases, there&#39;s ever only one or maybe a few different types that are used, so, it isn&#39;t an issue. Second, it&#39;s a documentation black hole. A function that takes a &lt;code&gt;writer: anytype&lt;/code&gt; likely expects one or many of the following methods:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+write(data: []const u8) !void
+writeAll(data: []const u8) !void
+writeByte(b: u8) !void
+writeByteNTimes(b: u8, n: usize) !void
+writeBytesNTimes(data: []const u8, n: usize) !void&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But this is just a convention based on the fact that the parameter name is &lt;code&gt;writer&lt;/code&gt;. You either have to go through the source code and see how &lt;code&gt;writer&lt;/code&gt; is used, or let the compiler tell you which function is expected.&lt;/p&gt;
+
+&lt;p&gt;But the main issue with &lt;code&gt;anytype&lt;/code&gt; is that it can only be a used as a function parameter. This isn&#39;t valid:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const Opts = struct {
+    output: anytype
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For that, we need something else.&lt;/p&gt;
+
+
+&lt;h3 id=&quot;anywriter&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#anywriter&quot; aria-hidden=&quot;true&quot;&gt;std.io.AnyWriter&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;std.io.AnyWriter&lt;/code&gt; type is the closest thing Zig has to a writer interface. We&#39;ve covered &lt;a href=&quot;https://www.openmymind.net/Zig-Interfaces/&quot;&gt;Zig interfaces&lt;/a&gt; before and &lt;code&gt;AnyWriter&lt;/code&gt; is essentially the simplest version we looked at, i.e.:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const AnyWriter = struct {
+  context: *const anyopaque,
+  writeFn: *const fn (context: *const anyopaque, bytes: []const u8) anyerror!usize,
+
+    pub fn write(self: AnyWriter, bytes: []const u8) anyerror!usize {
+        return self.writeFn(self.context, bytes);
+    }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Unlike other languages where interfaces are purely a contract with no implementation, Zig tends to stuff a lot of behavior into its interfaces. For example, &lt;code&gt;AnyWriter&lt;/code&gt; implements &lt;code&gt;writeAll&lt;/code&gt; which relies on the above &lt;code&gt;write&lt;/code&gt; function, and &lt;code&gt;writeByteNTimes&lt;/code&gt; which relies on &lt;code&gt;writeAll&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn writeAll(self: AnyWriter, bytes: []const u8) anyerror!void {
+    var index: usize = 0;
+    while (index != bytes.len) {
+        index += try self.write(bytes[index..]);
+    }
+}
+
+pub fn writeByteNTimes(self: AnyWriter, byte: u8, n: usize) anyerror!void {
+    var bytes: [256]u8 = undefined;
+    @memset(bytes[0..], byte);
+
+    var remaining: usize = n;
+    while (remaining &gt; 0) {
+        const to_write = @min(remaining, bytes.len);
+        try self.writeAll(bytes[0..to_write]);
+        remaining -= to_write;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now this approach can have &lt;a href=&quot;https://github.com/ziglang/zig/issues/17985&quot;&gt;performance issues&lt;/a&gt;, since there&#39;s no way for an implementation to provide, for example, an optimized &lt;code&gt;writeByteNTimes&lt;/code&gt;. Still, &lt;code&gt;AnyWriter&lt;/code&gt; fills that gap around the limitations of &lt;code&gt;anytype&lt;/code&gt;&#39;s usage.&lt;/p&gt;
+
+&lt;h3 id=&quot;genericwriter&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#genericwriter&quot; aria-hidden=&quot;true&quot;&gt;std.io.GenericWriter&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;It would be reasonable to think that when you call &lt;code&gt;file.writer()&lt;/code&gt; or &lt;code&gt;array_list.writer()&lt;/code&gt;, you&#39;re getting an &lt;code&gt;std.io.AnyWriter&lt;/code&gt; interface. In reality though, you&#39;re getting a &lt;code&gt;std.io.GenericWriter&lt;/code&gt;, which &lt;code&gt;std.io.Writer&lt;/code&gt; aliases. To understand what this type is, we need to look at the &lt;code&gt;writeFn&lt;/code&gt; field of &lt;code&gt;AnyType&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+*const fn (context: *const anyopaque, bytes: []const u8) anyerror!usize&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Specifically, notice the &lt;code&gt;anyerror&lt;/code&gt; return type. Unlike an inferred error type (i.e. &lt;code&gt;!usize&lt;/code&gt;) which will implicitly create an errorset based on the function&#39;s possible error values, &lt;code&gt;anyerror&lt;/code&gt; is an implicitly created errorset for the &lt;strong&gt;entire project&lt;/strong&gt;. This means that even though your specific writer&#39;s &lt;code&gt;write&lt;/code&gt; function might only be able to return an &lt;code&gt;error.OutOfMemory&lt;/code&gt;, the &lt;code&gt;AnyError&lt;/code&gt; interface will expose any possible error your program might return. In many cases, that won&#39;t be an issue. But projects with strict reliability requirements might need/want to handle every error explicitly, especially when we&#39;re talking about something like writing data. Think of a database persisting a WAL file to disk, for example.&lt;/p&gt;
+
+&lt;p&gt;Thus we have&lt;code&gt;std.io.GenericWriter&lt;/code&gt; which, as part of its generic contract, takes an error type. Here&#39;s what the generic parameters look like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn GenericWriter(
+    comptime Context: type,
+    comptime WriteError: type,
+    comptime writeFn: fn (context: Context, bytes: []const u8) WriteError!usize,
+) type {
+    ....
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Notice that the &lt;code&gt;writeFn&lt;/code&gt;&#39;s return value is now a typed error - with the type being provided by the implementation.&lt;/p&gt;
+
+&lt;p&gt;Let&#39;s look at some examples. Here&#39;s what an implementation that returns an &lt;code&gt;AnyWriter&lt;/code&gt; might look like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const DummyWriterAny = struct {
+    fn write(_: *const anyopaque, data: []const u8) error{OutOfMemory}!usize {
+        _ = data;
+        return error.OutOfMemory;
+    }
+
+    pub fn writer(self: *DummyWriterAny) std.io.AnyWriter {
+        return .{
+            .context = self,
+            .writeFn = write,
+        };
+    }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Even though our &lt;code&gt;write&lt;/code&gt; function returns an explicit error, that type information is lost when we convert our &lt;code&gt;DummyWriterAny&lt;/code&gt; to a &lt;code&gt;AnyWriter&lt;/code&gt;. Here&#39;s a similar implementation but for a &lt;code&gt;GenericWriter&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub const DummyWriterGen = struct {
+    fn write(_: *DummyWriterGen, data: []const u8) error{OutOfMemory}!usize {
+        _ = data;
+        return error.OutOfMemory;
+    }
+
+    pub const Writer = std.io.Writer(*DummyWriterGen, error{OutOfMemory}, write);
+
+    pub fn writer(self: *DummyWriterGen) Writer {
+        return .{.context = self};
+    }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;aside&gt;&lt;p&gt;Declaring a public &lt;code&gt;Writer&lt;/code&gt; type within the structure isn&#39;t necessary, but it is common.&lt;/p&gt;&lt;/aside&gt;
+
+&lt;p&gt;Now when we convert our &lt;code&gt;DummyWriterGen&lt;/code&gt; to an &lt;code&gt;std.io.GenericWriter&lt;/code&gt;, the error type is preserved.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;However&lt;/strong&gt;, it&#39;s important to realize that &lt;code&gt;GenericWriter&lt;/code&gt; isn&#39;t just a better, more type-aware, version of &lt;code&gt;AnyWriter&lt;/code&gt;. One is a generic the other is an interface. Specifically, a &lt;code&gt;GenericWriter&lt;/code&gt; for a &lt;code&gt;File&lt;/code&gt; is a different type than a &lt;code&gt;GenericWriter&lt;/code&gt; for an &lt;code&gt;ArrayList(u8)&lt;/code&gt;. It isn&#39;t an interface and can&#39;t be used like one.
+
+&lt;/p&gt;&lt;h3 id=&quot;conclusion&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#conclusion&quot; aria-hidden=&quot;true&quot;&gt;Bringing it all Together&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;For everyday programming, what all of this means is that if you have a &lt;code&gt;File&lt;/code&gt;, &lt;code&gt;ArrayList(u8)&lt;/code&gt;, &lt;code&gt;Stream&lt;/code&gt; or any other type which has a &lt;code&gt;writer&lt;/code&gt; method, you&#39;re almost certainly getting an &lt;code&gt;GenericWriter&lt;/code&gt;. This writer can usually be passed to a function with a &lt;code&gt;writer: anytype&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+    var arr = std.ArrayList(u8).init(allocator);
+
+    // The first parameter to format is a writer: anytype
+    // we can pass our arr.writer() to it.
+    try std.fmt.format(arr.writer(), &quot;over {d}!!&quot;, .{9000});
+
+    std.debug.print(&quot;{s}&#92;n&quot;, .{arr.items});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I say &quot;usually&quot;, because there&#39;s no guarantee; it relies on all of us agreeing that a variable named &lt;code&gt;writer&lt;/code&gt; of type &lt;code&gt;anytype&lt;/code&gt; only ever uses methods available to a &lt;code&gt;GenericWriter&lt;/code&gt;. Sarcasm aside, it does mostly work.&lt;/p&gt;
+
+&lt;p&gt;For cases where an &lt;code&gt;std.io.AnyWriter&lt;/code&gt; is needed, such as storing a implementation-independent writer in a struct field, you&#39;ll need to use an &lt;code&gt;AnyWriter&lt;/code&gt;, which you can easily get by calling &lt;code&gt;any()&lt;/code&gt; on your &lt;code&gt;GenericWriter&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+// a slightly dumb example
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+
+    var arr = std.ArrayList(u8).init(allocator);
+    const opts = Opts{
+        .output = arr.writer().any(),
+    };
+    try write(&quot;hello world&quot;, opts);
+}
+
+const Opts = struct {
+    output: std.io.AnyWriter,
+};
+
+fn write(data: []const u8, opts: Opts) !void {
+    _ = try opts.output.write(data);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If I understand correctly, &lt;a href=&quot;https://github.com/ziglang/zig/pull/17344&quot;&gt;the motivation for this design&lt;/a&gt;, was reducing code bloat while providing a mechanism to preserve typed errors. This is possible because &lt;code&gt;GenericWriter&lt;/code&gt; relies on the various methods of &lt;code&gt;AnyWriter&lt;/code&gt;, like &lt;code&gt;writeAll&lt;/code&gt; and &lt;code&gt;writeByteNTimes&lt;/code&gt;. So while there will be many copies of &lt;code&gt;GenericWriter&lt;/code&gt; (for &lt;code&gt;File&lt;/code&gt;, &lt;code&gt;Stream&lt;/code&gt;, &lt;code&gt;ArrayList(u8)&lt;/code&gt;, etc.), they each have a very small functions which only invoke the &lt;code&gt;AnyReader&lt;/code&gt; logic and re-type the error. For example, here&#39;s &lt;code&gt;GenericWriter.writeAll&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub inline fn writeAll(self: Self, bytes: []const u8) Error!void {
+    return @errorCast(self.any().writeAll(bytes));
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We see that &lt;code&gt;@errorCast&lt;/code&gt; does the heavy lifting, converting the &lt;code&gt;anyerror&lt;/code&gt; that &lt;code&gt;AnyWriter.writeAll&lt;/code&gt; returns into the narrow type-specific error for this implementation.&lt;/p&gt;
+
+&lt;p&gt;Like I said, for everyday programming, you&#39;ll mostly be passing the result of &lt;code&gt;writer()&lt;/code&gt; to a &lt;code&gt;writer: anytype&lt;/code&gt; function parameter. And it mostly works, possibly after you&#39;ve wasted time trying to figure out exactly what the requirements for the &lt;code&gt;writer&lt;/code&gt; are. It&#39;s only when you can&#39;t use &lt;code&gt;anytype&lt;/code&gt;, i.e. in a structure field, that this &lt;code&gt;GenericWriter&lt;/code&gt; / &lt;code&gt;AnyReader&lt;/code&gt; chimera becomes something you need to be aware of.&lt;/p&gt;
+
+&lt;p&gt;Hopefully the situation can be improved, specifically with some of the &lt;a href=&quot;https://github.com/ziglang/zig/issues/21566&quot;&gt;performance&lt;/a&gt; &lt;a href=&quot;https://github.com/ziglang/zig/issues/17985&quot;&gt;issues&lt;/a&gt; and resulting poor documentation.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Using SIMD to Tell if the High Bit is Set</title>
+		<link href="https://www.openmymind.net/Using-SIMD-to-Tell-if-the-High-Bit-is-Set/"/>
+		<updated>2025-01-21T00:00:00Z</updated>
+		<id>/Using-SIMD-to-Tell-if-the-High-Bit-is-Set/</id>
+		<content type="html">
+			
+&lt;p&gt;One of the first Zig-related blog posts I wrote was &lt;a href=&quot;https://www.openmymind.net/SIMD-With-Zig/&quot;&gt;an overview of SIMD with Zig&lt;/a&gt;. I recently needed to revisit this topic when enhancing my &lt;a href=&quot;https://github.com/karlseguin/smtp_client.zig&quot;&gt;smtp client library&lt;/a&gt;. Specifically, SMTP mostly expects printable ASCII characters. Almost all other characters, including UTF-8 text, must be encoded.&lt;/p&gt;
+
+&lt;p&gt;I found the various SMTP and MIME RFCs confusing. So I settled on a simple approach: if the high bit of a character is set, I&#39;ll base64 encode the value. The simple approach to do detect this is:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn isHighBitSet(input: []const u8) bool {
+    for (input) |c| {
+        if (c &gt; 127) {
+            return true;
+        }
+    }
+    return false;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But with SIMD, we can do this check on multiple bytes at a time. The first thing we have to do is get the ideal size for SIMD operations for our CPU:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+if (comptime std.simd.suggestVectorLength(u8)) |vector_len| {
+    // TODO
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can tell, &lt;code&gt;suggestVectorLength&lt;/code&gt; returns an optional value: some platforms don&#39;t support SIMD. On my computer, this returns &lt;code&gt;16&lt;/code&gt;, which mean that I can process 16 bytes at a time. We can extend our skeleton:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+if (comptime std.simd.suggestVectorLength(u8)) |vector_len| {
+    var remaining = input;
+    while (remaining.len &gt; vector_len) {
+        const chunk: @Vector(vector_len, u8) = remaining[0..vector_len].*;
+        // TODO
+        remaining = remaining[vector_len..];
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Above we&#39;re breaking our input into &lt;code&gt;vector_len&lt;/code&gt; chunks. The &lt;code&gt;@Vector&lt;/code&gt; builtin returns a type (in Zig, by convention, upper-case functions return types). To see if our &lt;code&gt;chunk&lt;/code&gt; has a high bit set, we use &lt;code&gt;@reduce&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+if (@reduce(.Max, chunk) &gt; 127) {
+    return true;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Like &lt;code&gt;@Vector&lt;/code&gt;, &lt;code&gt;@reduce&lt;/code&gt; is one of a handful of SIMD-specific builtins. Its job is to take an &lt;code&gt;std.builtin.ReduceOp&lt;/code&gt; and a vector input (&lt;code&gt;.Max&lt;/code&gt; and &lt;code&gt;chunk&lt;/code&gt;) and return a scalar value. The possible  operations depend on the vector type. For example, &lt;code&gt;std.builtin.ReduceOp.And&lt;/code&gt; is only valid for a vector of booleans. With &lt;code&gt;Max&lt;/code&gt;, we&#39;re asking &lt;code&gt;@reduce&lt;/code&gt; to return the higher value in the provided vector.&lt;/p&gt;
+
+&lt;p&gt;As I said, on my computer, the code will process 16 bytes of data at a time, but our input might not be perfectly divisible by 16. Our &lt;code&gt;while&lt;/code&gt; loop exits when &lt;code&gt;remaining.len &gt; vector_len&lt;/code&gt;; if our input was 35 bytes long, we&#39;d process 2 chunks (2 * 16) and be left with 3 bytes. These last 3 bytes still need to be checked:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+fn isHighBitSet(input: []const u8) bool {
+    var remaining = input;
+    if (comptime std.simd.suggestVectorLength(u8)) |vector_len| {
+        while (remaining.len &gt; vector_len) {
+            const chunk: @Vector(vector_len, u8) = remaining[0..vector_len].*;
+            if (@reduce(.Max, chunk) &gt; 127) {
+                return true;
+            }
+            remaining = remaining[vector_len..];
+        }
+    }
+
+     for (remaining) |c| {
+        if (c &gt; 127) {
+            return true;
+        }
+    }
+
+    return false;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We&#39;ve made another subtle change: we moved &lt;code&gt;remaining&lt;/code&gt; to the outer scope. Our code not only handles chunks that aren&#39;t perfectly divisible by &lt;code&gt;vector_len&lt;/code&gt;, it also handles cases where &lt;code&gt;suggestVectorLength&lt;/code&gt; return &lt;code&gt;null&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, more recent versions of Zig have introduced different backends. Not all of these necessarily support SIMD operations. So, for completeness, we need one more check:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+// strange that std.simd doesn&#39;t export something like this
+const backend_supports_vectors = switch (@import(&quot;builtin&quot;).zig_backend) {
+    .stage2_llvm, .stage2_c =&gt; true,
+    else =&gt; false,
+};
+
+fn isHighBitSet(input: []const u8) bool {
+    var remaining = input;
+    if (comptime backend_supports_vectors) {
+        if (comptime std.simd.suggestVectorLength(u8)) |vector_len| {
+            while (remaining.len &gt; vector_len) {
+                const chunk: @Vector(vector_len, u8) = remaining[0..vector_len].*;
+                if (@reduce(.Max, chunk) &gt; 127) {
+                    return true;
+                }
+                remaining = remaining[vector_len..];
+            }
+        }
+    }
+
+     for (remaining) |c| {
+        if (c &gt; 127) {
+            return true;
+        }
+    }
+
+    return false;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Hopefully this is something that will get cleaned up, but note that it&#39;s only really necessary if you&#39;re going to use a different backend (I&#39;m using it because the code is in a library, and I don&#39;t know how users of my library will compile it).&lt;/p&gt;
+
+&lt;p&gt;For very short strings, the SIMD version is the same as the linear version, so there&#39;s no performance difference. But for a string of &lt;code&gt;&quot;a&quot; ** 100&lt;/code&gt; (which requires scanning the entire string), the SIMD version is ~2x faster and for a string of &lt;code&gt;&quot;a&quot; ** 1000&lt;/code&gt;, it&#39;s ~8x faster.&lt;/p&gt;
+
+&lt;aside&gt;&lt;p&gt;If you want to learn more, check out my earlier &lt;a href=&quot;https://www.openmymind.net/SIMD-With-Zig/&quot;&gt;SIMD With Zig&lt;/a&gt; post, which goes into greater detail with a more complicated example.&lt;/p&gt;&lt;/aside&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Peeking Behind Zig Interfaces by Creating a Dummy std.Random Implementation</title>
+		<link href="https://www.openmymind.net/Peeking-Behind-Interfaces-by-Creating-a-Dummy-std-Random/"/>
+		<updated>2025-01-15T00:00:00Z</updated>
+		<id>/Peeking-Behind-Interfaces-by-Creating-a-Dummy-std-Random/</id>
+		<content type="html">
+			
+&lt;p&gt;Zig doesn&#39;t have an &lt;code&gt;interface&lt;/code&gt; keyword or some simple way to create interfaces. Nonetheless, types like &lt;code&gt;std.mem.Allocator&lt;/code&gt; and &lt;code&gt;std.Random&lt;/code&gt; are often cited as examples that, with a bit of elbow grease, Zig offers every thing needed to create them.&lt;/p&gt;
+
+&lt;p&gt;We&#39;ve looked at &lt;a href=&quot;https://www.openmymind.net/Zig-Interfaces/&quot;&gt;Zig Interfaces&lt;/a&gt; in the past. If you want to understand how they work and how to write your own, I recommend you read that post first. But I recently needed to create a dummy &lt;code&gt;std.Random&lt;/code&gt; implementation (for testing purposes) and felt that the experience was a nice refresher.&lt;/p&gt;
+
+&lt;p&gt;When I think about an interface, I think about a contract with no implementation. But if we look at most types in Zig&#39;s standard library which people call an &quot;interface&quot;, it&#39;s usually something different. Interfaces in Zig have a tendency to expose their own behavior which enhance an underlying implementation&#39;s algorithm. For example, the &lt;code&gt;std.io.Reader&lt;/code&gt; &quot;interface&quot; has an &lt;code&gt;readAtLeast&lt;/code&gt; method. &lt;code&gt;readAtLeast&lt;/code&gt; is implemented directly in &lt;code&gt;std.io.Reader&lt;/code&gt;. It uses the underlying implementation&#39;s &lt;code&gt;read&lt;/code&gt; method as part of its implementation. (that underlying implementation could be a file, or a socket, etc).&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;std.Random&lt;/code&gt; is no different and methods like &lt;code&gt;intRangeAtMost&lt;/code&gt; are implemented within the &lt;code&gt;std.Random&lt;/code&gt; type itself. These method utilize behavior for the underlying implementation. In order to write our own [mock] implementation, we need to know what method(s) &lt;code&gt;std.Random&lt;/code&gt; needs us to implement. If you&#39;re already comfortable in Zig, you can probably look at the documentation for &lt;code&gt;std.Random&lt;/code&gt; and figure it out, although it isn&#39;t explicitly stated. You&#39;d see that it has two fields:&lt;/p&gt;
+
+&lt;ol&gt;
+    &lt;li&gt;&lt;code&gt;ptr: *anyopaque&lt;/code&gt;,&lt;/li&gt;
+    &lt;li&gt;&lt;code&gt;fillFn: *const fn (ptr: *anyopaque, buf: []u8) void&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;and realize that this interface requires a single &lt;code&gt;fill&lt;/code&gt; function.&lt;/p&gt;
+
+&lt;p&gt;Another way to try to divine the requirements would be to look at an existing implementation. For example, if we look at &lt;code&gt;std.Random.DefaultPrng&lt;/code&gt;, we&#39;ll be brought to the &lt;code&gt;std.Random.Xoshiro256&lt;/code&gt; type, where we can find the &lt;code&gt;random&lt;/code&gt; method. This is the method we call on an implementation to get the an &lt;code&gt;std.Random&lt;/code&gt; interface. Just like you call &lt;code&gt;allocator&lt;/code&gt; on a GPA to get an &lt;code&gt;std.mem.Allocator&lt;/code&gt;. The implementation of &lt;code&gt;random&lt;/code&gt; is:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn random(self: *Xoshiro256) std.Random {
+    return std.Random.init(self, fill);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This tells us that, if we want to create an &lt;code&gt;std.Random&lt;/code&gt;, we can use its &lt;code&gt;init&lt;/code&gt; function. &lt;code&gt;std.Random.init&lt;/code&gt; has the following signature:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn init(
+    pointer: anytype,
+    comptime fillFn: fn (ptr: @TypeOf(pointer), buf: []u8
+) void) Random&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;p&gt;Thus, &lt;code&gt;init&lt;/code&gt; expects a pointer of any type as well as a function pointer. Knowing this, we can take a stab at writing our dummy implementation:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var dr = DummyRandom{};
+    var random = dr.random();
+
+    std.debug.print(&quot;{d}&#92;n&quot;, .{random.int(u8)});
+}
+
+const DummyRandom = struct {
+    pub fn fill(_: *DummyRandom, buf: []u8) void {
+        @memset(buf, 0);
+    }
+
+    pub fn random(self: *DummyRandom) std.Random {
+        return std.Random.init(self, fill);
+    }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This code works, but can we make it less verbose? In normal cases, such as with the real &lt;code&gt;Xoshiro256&lt;/code&gt; implementation, the underlying instance exists because it maintains some state (such as a seed). That&#39;s why &lt;code&gt;std.Random&lt;/code&gt; maintains a &lt;code&gt;pointer&lt;/code&gt; to the instance and then passes back to the given &lt;code&gt;fill&lt;/code&gt; function. Our implementation is dumb though. Do we really need the &lt;code&gt;DummyRandom&lt;/code&gt; structure and an instance of it?&lt;/p&gt;
+
+&lt;aside&gt;&lt;p&gt;The following assumes a familiarity with Zig&#39;s &lt;code&gt;*anyopaque&lt;/code&gt;, &lt;code&gt;@ptrCast&lt;/code&gt; and &lt;code&gt;@constCast&lt;/code&gt;. These are all topics we&#39;ve covered before in &lt;a href=&quot;https://www.openmymind.net/Zig-Interfaces/&quot;&gt;Zig Interfaces&lt;/a&gt;, &lt;a href=&quot;https://www.openmymind.net/Zig-Tiptoeing-Around-ptrCast/&quot;&gt;Tiptoeing Around @ptrCast&lt;/a&gt; and &lt;a href=&quot;https://www.openmymind.net/Zigs-ConstCast/&quot;&gt;Zig&#39;s @constCast&lt;/a&gt;.&lt;/p&gt;&lt;/aside&gt;
+
+&lt;p&gt;If we try to pass &lt;code&gt;void&lt;/code&gt; as our type, and use an anonymous struct, we can tighten up the code:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var random = std.Random.init({}, struct {
+        pub fn fill(_: void, buf: []u8) void {
+            @memset(buf, 0);
+        }
+    }.fill);
+
+    std.debug.print(&quot;{d}&#92;n&quot;, .{random.int(u8)});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But it won&#39;t compile. We get the following error: &lt;em&gt;access of union field &#39;pointer&#39; while field &#39;void&#39; is active&lt;/em&gt;. Looking at the implementation of &lt;code&gt;std.Random.init&lt;/code&gt; we see all of these compile-time check:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn init(pointer: anytype, comptime fillFn: fn (ptr: @TypeOf(pointer), buf: []u8) void) Random {
+    const Ptr = @TypeOf(pointer);
+    assert(@typeInfo(Ptr) == .pointer); // Must be a pointer
+    assert(@typeInfo(Ptr).pointer.size == .One); // Must be a single-item pointer
+    assert(@typeInfo(@typeInfo(Ptr).pointer.child) == .@&quot;struct&quot;); // Must point to a struct&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Essentially, we &lt;em&gt;must&lt;/em&gt; pass a pointer to a structure, e.g. a pointer to a &lt;code&gt;Xoshiro256&lt;/code&gt; or &lt;code&gt;DummyRandom&lt;/code&gt; or whatever. From what I can tell, there&#39;s no good reason for this restriction. &lt;code&gt;std.Random&lt;/code&gt; only uses the provided &lt;code&gt;pointer&lt;/code&gt; to pass it back to the provided &lt;code&gt;fill&lt;/code&gt; function - it shouldn&#39;t care if it&#39;s a struct, an integer, or void.&lt;/p&gt;
+
+&lt;p&gt;To get around this, we&#39;ll need to circumvent &lt;code&gt;init&lt;/code&gt; and set the fields directly:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var random = std.Random{
+        .ptr = {},
+        .fillFn = struct {
+            pub fn fill(_: *anyopaque, buf: []u8) void {
+                @memset(buf, 0);
+            }
+        }.fill,
+    };
+    std.debug.print(&quot;{d}&#92;n&quot;, .{random.int(u8)});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This also gives us an error: &lt;em&gt;expected type &#39;*anyopaque&#39;, found &#39;void&#39;&lt;/em&gt;. That seems right to me. The &lt;code&gt;ptr&lt;/code&gt; field is of type &lt;code&gt;*anyopaque&lt;/code&gt;, and we&#39;re trying to assign &lt;code&gt;void&lt;/code&gt;. We can&#39;t just &lt;code&gt;@ptrCast({})&lt;/code&gt;, because &lt;code&gt;@ptrCast&lt;/code&gt; expects a pointer, but what if we try &lt;code&gt;@ptrCast(&amp;{})&lt;/code&gt;?&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var random = std.Random{
+        // added @ptrCast and switch {} to &amp;{}
+        .ptr = @ptrCast(&amp;{}),
+        .fillFn = struct {
+            pub fn fill(_: *anyopaque, buf: []u8) void {
+                @memset(buf, 0);
+            }
+        }.fill,
+    };
+    std.debug.print(&quot;{d}&#92;n&quot;, .{random.int(u8)});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We get a different error: &lt;em&gt;@ptrCast discards const qualifier&lt;/em&gt;. So now our problem is that our void pointer, &lt;code&gt;&amp;{}&lt;/code&gt; is a &lt;code&gt;const&lt;/code&gt;, but the &lt;code&gt;ptr&lt;/code&gt; field is an &lt;code&gt;*anyopaque&lt;/code&gt; &lt;strong&gt;not&lt;/strong&gt; an &lt;code&gt;*const anyopque&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Since we&#39;re already using &lt;code&gt;@ptrCast&lt;/code&gt;, which is always questionable, why not add an even more questionable &lt;code&gt;@constCast&lt;/code&gt;?:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var random = std.Random{
+        // added @constCast
+        .ptr = @constCast(@ptrCast(&amp;{})),
+        .fillFn = struct {
+            pub fn fill(_: *anyopaque, buf: []u8) void {
+                @memset(buf, 0);
+            }
+        }.fill,
+    };
+    std.debug.print(&quot;{d}&#92;n&quot;, .{random.int(u8)});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This code works. It&#39;s safe because our &lt;code&gt;fill&lt;/code&gt; implementation never uses it and thus the invalid &lt;code&gt;const&lt;/code&gt; discard is never a factor. But it&#39;s unsafe because, in theory, &lt;code&gt;std.Random&lt;/code&gt; could one day change and use &lt;code&gt;self.ptr&lt;/code&gt; itself or assume that it&#39;s a pointer to a struct - which is what its &lt;code&gt;init&lt;/code&gt; function enforces.&lt;/p&gt;
+
+&lt;p&gt;Creating our &lt;code&gt;DummyRandom&lt;/code&gt; and going through &lt;code&gt;std.Random.init&lt;/code&gt; is safer and the &lt;em&gt;right way.&lt;/em&gt; But, creating &lt;code&gt;std.Random&lt;/code&gt; directly is more fun.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Comptime as Configuration</title>
+		<link href="https://www.openmymind.net/Comptime-as-Configuration/"/>
+		<updated>2025-01-10T00:00:00Z</updated>
+		<id>/Comptime-as-Configuration/</id>
+		<content type="html">
+			
+&lt;p&gt;If you look at my &lt;a href=&quot;https://github.com/karlseguin/http.zig&quot;&gt;httpz&lt;/a&gt; library, you&#39;ll notice that &lt;code&gt;httpz.Server(T)&lt;/code&gt; is a generic. The type passed to &lt;code&gt;Server&lt;/code&gt; serves two purposes. The first is to support an application-specific context - whatever instance of &lt;code&gt;T&lt;/code&gt; passed into &lt;code&gt;Server(T).init&lt;/code&gt; gets passed back to your custom HTTP handlers.&lt;/p&gt;
+
+&lt;p&gt;But the other purpose of &lt;code&gt;T&lt;/code&gt; is to act as a configuration object. For example, if you want to circumvent most of httpz&#39; request processing, you can define a &lt;code&gt;T.handle&lt;/code&gt; method:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const App = struct {
+  pub fn handle(app: *App, req: *Request, res: *Response) void {
+     // circumvent&#39;s httpz routing, middleware, error handling and dispatching
+  }
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is how &lt;a href=&quot;https://www.jetzig.dev/&quot;&gt;Jetzig&lt;/a&gt; uses httpz. In my &lt;a href=&quot;https://www.openmymind.net/Basic-MetaProgramming-in-Zig/&quot;&gt;Basic MetaProgramming&lt;/a&gt; post, we looked at how a few of Zig&#39;s built-in functions and &lt;code&gt;std.meta&lt;/code&gt; namespace can help us write this kind of code. For the specific case of the &lt;code&gt;handle&lt;/code&gt; override, it looks something like:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+if (comptime std.meta.hasFn(Handler, &quot;handle&quot;)) {
+    if (comptime @typeInfo(@TypeOf(Handler.handle)).@&quot;fn&quot;.return_type != void) {
+        @compileError(@typeName(Handler) ++ &quot;.handle must return &#39;void&#39;&quot;);
+    }
+    self.handler.handle(&amp;req, &amp;res);
+    return;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The return-type check is there to make it clear that the custom &lt;code&gt;handle&lt;/code&gt; cannot return an error (or anything else). There are a few different possible overrides in httpz, but they&#39;re more or less variations of the above.&lt;/p&gt;
+
+&lt;p&gt;More recently, in &lt;a href=&quot;https://github.com/karlseguin/ztl&quot;&gt;Zig Template Language&lt;/a&gt;, I extended this pattern to include scalar configuration:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const AppTemplate = struct {
+    pub const ZtlConfig = struct {
+        pub const escape_by_default = true;
+        pub const deduplicate_string_literals = true;
+    };
+
+    // can also define custom functions
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To get a specific configuration value, you do:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const Defaults = struct {
+    pub const escape_by_default: bool = false;
+    pub const deduplicate_string_literals: bool = true;
+};
+
+pub fn extract(comptime A: type, comptime field_name: []const u8) @TypeOf(@field(Defaults, field_name)) {
+    const App = switch (@typeInfo(A)) {
+        .@&quot;struct&quot; =&gt; A,
+        .pointer =&gt; |ptr| ptr.child,
+        .void =&gt; void,
+        else =&gt; @compileError(&quot;Template App must be a struct, got: &quot; ++ @tagName(@typeInfo(A))),
+    };
+
+    if (App != void and @hasDecl(App, &quot;ZtlConfig&quot;) and @hasDecl(App.ZtlConfig, field_name)) {
+        return @field(App.ZtlConfig, field_name);
+    }
+
+    return @field(Defaults, field_name);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;One reason I went with this approach is that, as with httpz, the type is needed anyways. Like httpz, it&#39;s possible to extend the functionality of ztl and add a application-specific context. The obviously downside is that the user of the library has to create a comptime-known configuration.&lt;/p&gt;
+
+&lt;p&gt;The benefit of this approach is the opportunity for some optimization. In most cases, that&#39;s simply being able to do conditional checks at compile-time rather than runtime. But some optimizations can be a little more meaningful. For example, ztl&#39;s VM will use a &lt;code&gt;u8&lt;/code&gt; or a &lt;code&gt;u16&lt;/code&gt; depending on the &lt;code&gt;max_locals&lt;/code&gt; configuration, and because &lt;code&gt;max_call_frames&lt;/code&gt; is known at compile time, the VM&#39;s call stack can be allocated on the stack.&lt;/p&gt;
+
+&lt;p&gt;I&#39;m not suggestion that all configuration should be like this. However, if you&#39;re building a library and want to provide hooks for users to override or add behavior, I think doing feature detection on a provided &lt;code&gt;T: type&lt;/code&gt; is a good approach. Unless you have really good reason to, you probably should not do this for normal options - it makes your library much more rigid by requiring that the user of your library know the options at comptime.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+	<entry>
+		<title>Zig&#39;s @bitCast</title>
+		<link href="https://www.openmymind.net/Zigs-bitCast/"/>
+		<updated>2025-01-03T00:00:00Z</updated>
+		<id>/Zigs-bitCast/</id>
+		<content type="html">
+			
+&lt;p&gt;In an older post, we explored &lt;a href=&quot;https://www.openmymind.net/Zig-Tiptoeing-Around-ptrCast/&quot;&gt;Zig&#39;s &lt;code&gt;@ptrCast&lt;/code&gt;&lt;/a&gt; and then looked at a concrete usage in the shape of &lt;a href=&quot;https://www.openmymind.net/Zig-MemoryPool-Allocator/&quot;&gt;std.heap.MemoryPool&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;ptrCast&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#ptrCast&quot; aria-hidden=&quot;true&quot;&gt;@ptrCast&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;As a brief recap, when we use &lt;code&gt;@ptrCast&lt;/code&gt;, we&#39;re telling the compiler to treat a pointer as a given type. For example, this code runs fine:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+const std = @import(&quot;std&quot;);
+
+pub fn main() !void {
+    var user = User{.power = 9001, .name = &quot;Goku&quot;, .active = true};
+
+    const cat: *Cat = @ptrCast(&amp;user);
+    std.debug.print(&quot;{any}&#92;n&quot;, .{cat});
+}
+
+const User = struct {
+    power: i64,
+    name: []const u8,
+    active: bool,
+};
+
+const Cat = struct {
+    id: i64,
+    breed: []const u8,
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The compiler knows that &lt;code&gt;user&lt;/code&gt; is a &lt;code&gt;User&lt;/code&gt;, but we&#39;re saying &quot;trust me and treat that memory as though it&#39;s a &lt;code&gt;Cat&lt;/code&gt;&quot;. The reason this &quot;works&quot; is because &lt;code&gt;User&lt;/code&gt; and &lt;code&gt;Cat&lt;/code&gt; have a similar shape. If we swapped the order of &lt;code&gt;Cat&lt;/code&gt;&#39;s two fields, the code would almost certainly crash. Why? because &lt;code&gt;user.power&lt;/code&gt; would become &lt;code&gt;cat.breed.len&lt;/code&gt;, causing &lt;code&gt;std.debug.print&lt;/code&gt; to try to print a 9001 long string, reaching into memory it does not have access to.&lt;/p&gt;
+
+&lt;p&gt;It&#39;s possible that you&#39;ll never use &lt;code&gt;@ptrCast&lt;/code&gt;, but I find it a fascinating example of how the compiler works.&lt;/p&gt;
+
+&lt;h3 id=&quot;bitCast&quot;&gt;&lt;a href=&quot;https://www.openmymind.net/#bitCast&quot; aria-hidden=&quot;true&quot;&gt;@bitCast&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;As the name implies, &lt;code&gt;@ptrCast&lt;/code&gt; works with pointers, but what if we want to do something for no-pointers? Unfortunately, if we modify the above, removing the pointers and using &lt;code&gt;@bitCast&lt;/code&gt; instead of &lt;code&gt;@ptrCast&lt;/code&gt;, we get a compile-time error:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn main() !void {
+    const user = User{.power = 9001, .name = &quot;Goku&quot;};
+    const cat: Cat = @bitCast(user);
+    std.debug.print(&quot;{any}&#92;n&quot;, .{cat});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;cannot @bitCast to &#39;Cat&#39;; struct does not have a guaranteed in-memory layout&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;I don&#39;t think there&#39;s a technical reason the above doesn&#39;t work. It&#39;s just that, given Zig structures don&#39;t have a guaranteed memory layout, it isn&#39;t a good idea and thus is forbidden (although, I can&#39;t quite figure out why &lt;code&gt;@ptrCast&lt;/code&gt; allows it but &lt;code&gt;@bitCat&lt;/code&gt; doesn&#39;t!)&lt;/p&gt;
+
+&lt;p&gt;This &lt;em&gt;does&lt;/em&gt; work though:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn main() !void {
+    const n: i64 = 1234567890;
+    const f: f64 = @bitCast(n);
+    std.debug.print(&quot;{}&#92;n&quot;, .{f});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And prints &lt;code&gt;6.09957582e-315&lt;/code&gt;. If we try this between a boolean an integer, we&#39;ll get an error:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn main() !void {
+    const b = true;
+    const n: i64 = @bitCast(b);
+    std.debug.print(&quot;{d}&#92;n&quot;, .{n});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;@bitCast size mismatch: destination type &#39;i64&#39; has 64 bits but source type &#39;bool&#39; has 1 bits&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;If we change the type of &lt;code&gt;n&lt;/code&gt; from &lt;code&gt;i64&lt;/code&gt; to &lt;code&gt;u1&lt;/code&gt;, it works:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn main() !void {
+    const b = false;
+    const n: u1 = @bitCast(b);
+    std.debug.print(&quot;{d}&#92;n&quot;, .{n});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This prints &lt;code&gt;1&lt;/code&gt;. If we changed &lt;code&gt;true&lt;/code&gt; to &lt;code&gt;false&lt;/code&gt;, we&#39;d get &lt;code&gt;0&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;@bitCast&lt;/code&gt; tells the compiler to take a value and treat it as the given type. For example, say that we have the value &lt;code&gt;1000&lt;/code&gt; as &lt;code&gt;u16&lt;/code&gt;. The binary representation for that is &lt;code&gt;1111101000&lt;/code&gt;. If we &lt;code&gt;@bitCast&lt;/code&gt; this to an &lt;code&gt;f16&lt;/code&gt;, it&#39;s the same data, the same binary &lt;code&gt;1111101000&lt;/code&gt;, but interpreted as a float (which is, apparently, &lt;code&gt;5.96e-5&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;Obviously, you generally won&#39;t &lt;code&gt;@bitCast&lt;/code&gt; from ints to floats or booleans. But it is useful when dealing with binary data. For example, the 4-byte little-endian representation of the number 1000 is &lt;code&gt;[4]const u8{ 232, 3, 0, 0 }&lt;/code&gt;. We can use &lt;code&gt;@bitCast&lt;/code&gt; to take that binary representation and treat it as an integer:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;
+pub fn main() !void {
+    const data = [_]u8{232, 3, 0, 0};
+    const n: i32 = @bitCast(data);
+    std.debug.print(&quot;{}&#92;n&quot;, .{n});
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are two important things to keep in mind. The first is that this isn&#39;t a conversion. There isn&#39;t runtime code executing that takes &lt;code&gt;data&lt;/code&gt; and turns it into an integer. Rather, this is us telling the compiler to treat the data as an integer.&lt;/p&gt;
+
+&lt;p&gt;Secondly, there are various ways to represent any type of data. Above, we said that 1000 is represented as &lt;code&gt;[_]u8{232, 3, 0, 0}&lt;/code&gt;, but it could also be represented as &lt;code&gt;[_]u8{0, 0, 3, 232}&lt;/code&gt; (e.g. using big-endian) - and there are more than just these 2 ways. So &lt;code&gt;@bitCast&lt;/code&gt; only makes sense if you&#39;re sure about the bit-representation of the data. Generally, you only want to &lt;code&gt;@bitCast&lt;/code&gt; data that comes from your own running program. If you&#39;re parsing an external protocol, you should use &lt;code&gt;std.mem.readInt&lt;/code&gt; instead. &lt;code&gt;readInt&lt;/code&gt; lets you specify the endianness of the data and, interestingly, if the endianness of the data happens the be the same endianness of the platform, it ends up just being a call to &lt;code&gt;@bitCast&lt;/code&gt;.&lt;/p&gt;
+
+			&lt;p&gt;&lt;a href="#new_comment"&gt;Leave a comment&lt;/a&gt;&lt;/p&gt;
+		</content>
+	</entry>
+</feed>

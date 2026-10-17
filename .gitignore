@@ -15,11 +15,15 @@
 go.work
 
 # things
-**feed**
-**html
+feeds*.txt
+*.html
+!tests/snapshots/**/*.html
 !built-in
 tmp
 .dev
+
+# Build outputs
+builds/
 
 # Generated documentation site
 site/

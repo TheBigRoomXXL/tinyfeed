@@ -1,0 +1,1213 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Filippo Valsorda</title>
+    <link>https://words.filippo.io/</link>
+    <description></description>
+    <item>
+      <title>The NIST Elliptic Curves Seeds Bounty Has Been Claimed</title>
+      <link>https://words.filippo.io/seeds-solved/</link>
+      <description>We now know how the seeds of the NIST elliptic curves were generated: they’re not the hash of some saucy sentence, but the output of drand48() seeded with the time, which was indeed in 1997–98.</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>We now know how the seeds of the NIST elliptic curves were generated: they’re not the hash of some saucy sentence, but the output of <a href="https://man.archlinux.org/man/drand48.3.en">drand48</a> seeded with the time, which was indeed in 1997–98.</p>
+<p>John Wood, Henry de Valence, Ava Howell, Zack Voase, Lucy Sweet, Amir Omidi, Paul Crowley, Iain McGinniss, Nicholas Carlini, and Steve Weis from Anthropic <a href="https://www.anthropic.com/research/ecdsa-curve-origins">solved the riddle</a> and on October 15th, 2026, at 01:07:51 UTC, claimed <a href="https://words.filippo.io/seeds-bounty/">the full bounty I announced three years ago</a>. They chose to donate the prize to <a href="https://isrg.org/">ISRG</a>, the non-profit that operates Let’s Encrypt, tripling its value to $36,864 (36 Ki$). Thank you to Amir Omidi, Chris Palmer, Colm MacCárthaigh, David Adrian, David Anderson, Jeff Hodges, Matt Green, Matthew McPherrin, Paul Kehrer, Ryan Sleevi, and Soatok for contributing to the bounty.</p>
+<p>This helps fill out a page of cryptographic history, and reinforces our confidence in these critical cryptographic primitives.</p>
+<p>The NIST elliptic curves (P-192, P-224, P-256, P-384, and P-521) were published by NIST in FIPS 186-2 in 2000. They were generated at random according to ANSI X9.62 by taking an arbitrary seed, hashing it with SHA-1, and using the output to derive some of the parameters. Until this week, we had no idea how those arbitrary seeds were picked.</p>
+<p>The lore was that Dr. Jerry Solinas, who passed away in early 2023, generated them in 1997 by hashing some English sentences that he later forgot. You can read more in <a href="https://saweis.net/posts/nist-curve-seed-origins.html">this article by Steve Weis</a> or in <a href="https://words.filippo.io/seeds-bounty/">the original bounty announcement</a>.</p>
+<p>Turns out memory can play tricks on everyone: we now know they were instead generated with the POSIX-standard <a href="https://man.archlinux.org/man/drand48.3.en">drand48</a> random number generator.</p>
+<p>The algorithm is as simple as passing the then-current UNIX timestamp to <code>srand48()</code> and then producing one byte at a time with drand48. Each sequence of 20 bytes is tried as a seed following ANSI X9.62 and rejected if the resulting curve is not valid. Some timestamps are used to generate multiple curves, by continuing to try seeds after accepting the first one. I <a href="https://github.com/FiloSottile/mostly-harmless/blob/main/seeds/seeds.go">reimplemented the algorithm in Go</a> to verify the claim. Read more in <a href="https://www.anthropic.com/research/ecdsa-curve-origins">Anthropic&rsquo;s writeup</a>.</p>
+<p>There are two additional undocumented criteria beyond the ANSI X9.62 ones, one fairly clear and one that still escapes us.</p>
+<p>If the bit length of the order <em>n</em> of the resulting curve is more than the bit length of the base field <em>p</em> of the curve, the seed is rejected. (The condition is not the stricter <em>n</em> &lt; <em>p</em>, because prime239v2 has <em>p</em> &lt; <em>n</em> &lt; 2²³⁹.)</p>
+<p>This leaves us with roughly twice as many valid seeds as were published. We explored a number of explanations for this last bit, and found no good fit. Maybe the same RNG was used to validate seeds, consuming RNG output and skipping some potential candidates, although the “gaps” are not regular. Maybe there was just a bug in one of the algorithms that returned the wrong result half the time; these calculations, which we can now do with off-the-shelf software in minutes, were still very much state-of-the-art in 1997.</p>
+<pre><code>srand48(863711343) [1997-05-15 15:49:03 +0000 UTC]:
+  accepted   36th seed 25e5[...]: not published
+  accepted 1562nd seed d09b[...]: not published
+  accepted 2185th seed e43b[...]: prime239v1
+  accepted 2320th seed e8b4[...]: prime239v2
+  accepted 2491st seed 1256[...]: not published
+  accepted 2682nd seed d2c1[...]: not published
+  accepted 2863rd seed 3a70[...]: not published
+  accepted 3048th seed 7d73[...]: prime239v3
+srand48(863966734) [1997-05-18 14:45:34 +0000 UTC]:
+  accepted  139th seed 3045[...]: P-192 a.k.a. prime192v1
+  accepted 2198th seed 692d[...]: not published
+  accepted 5228th seed c469[...]: prime192v3
+  accepted 5405th seed 3ad1[...]: not published
+  accepted 6013th seed 31a9[...]: prime192v2
+srand48(871002724) [1997-08-08 01:12:04 +0000 UTC]:
+  accepted 1136th seed d09e[...]: P-521
+srand48(871696354) [1997-08-16 01:52:34 +0000 UTC]:
+  accepted  876th seed 50c7[...]: not published
+  accepted 1842nd seed c49d[...]: P-256 a.k.a. prime256v1
+srand48(872952608) [1997-08-30 14:50:08 +0000 UTC]:
+  accepted 2688th seed a335[...]: P-384
+srand48(891607927) [1998-04-03 12:52:07 +0000 UTC]:
+  accepted  777th seed d007[...]: not published
+  accepted 1485th seed 18cf[...]: not published
+  accepted 5736th seed 3c17[...]: not published
+  accepted 7026th seed bd71[...]: P-224
+</code></pre>
+<p>What does this mean for the security of elliptic curve cryptography based on the NIST curves? Well, even before this discovery there were no serious concerns among practitioners. In Section 3.1 of <a href="https://eprint.iacr.org/2015/1018">their 2015 paper “A riddle wrapped in an enigma,”</a> Koblitz and Menezes make a convincing argument that it’s implausible that the NSA could have selected a seed to exploit a weakness that escaped more than 15 (now 25) years of cryptanalysis.</p>
+<p>However, as reported in a later version of that paper, Daniel Bernstein and Tanja Lange described to Koblitz and Menezes in 2017 a technique that could have exploited 70 bits of freedom in selection of the seed to target a hypothetical class of 2⁶¹ weak prime-order curves. (Bernstein is the author of a competing elliptic curve design, Curve25519.) This contributed to enduring conspiracy theories, which had significant appeal among the non-specialist public (although many have since moved on to other, adjacent, conspiracy theories). All this speculation harmed confidence in robust cryptographic systems and was part of my motivation for the bounty.</p>
+<p>This week’s findings completely rule out the technique described by Bernstein and Lange. Even if the NSA had been free to pick any timestamp in 1997–98 and any of the first 16 prime-order candidates (which generously accounts for the unexplained rejections), they would have had barely 30 bits of freedom. Not enough to intentionally target a hypothetical small class of weak curves, not enough to embed any kind of <a href="https://en.wikipedia.org/wiki/NOBUS">NOBUS</a> backdoor.</p>
+<p>Along with <a href="https://www.rfc-editor.org/rfc/rfc6979">deterministic</a> and <a href="https://www.ietf.org/archive/id/draft-irtf-cfrg-det-sigs-with-noise-05.html">hedged</a> ECDSA signing algorithms, <a href="https://github.com/mit-plv/fiat-crypto">formally verified field implementations</a>, and <a href="https://eprint.iacr.org/2015/1060">the 2015 complete addition formulas by Renes, Costello, and Batina</a>, this nicely completes the “rehabilitation arc” of NIST elliptic curve cryptography, which I would now personally recommend over Curve25519/Ed25519/X25519.</p>
+<p>Just in time for them to be retired in favor of post-quantum signatures.</p>
+<p>P.S. The Anthropic team also figured out how the seeds of the NIST B-curves (the ones over binary fields) were generated, but no one uses those, so who cares.</p>
+<h2 id="the-picture">The picture</h2>
+<p>In a FamilyMart in Taiwan I found this delightful dice set. A full roll carries log₂(6²⁰) ≈ 51.7 bits of entropy. Rolling them twice can make a pretty robust cryptographic key!</p>
+<p>I thought it would be funny to label them as Geomys FIPS 140-3 Entropy Sources (which of course they are not, though we do have one of those) and hand them out as swag. However, I found no way to order them online, so I simply visited over a dozen FamilyMarts and brought home 50 packs.</p>
+<p><img alt="A set of 20 small dice in the evening light. They are white with red and black etchings. A small clear plastic box is next to them." src="https://assets.buttondown.email/images/fc811646-65b3-4c41-9a2c-ff68584f75b5.jpeg?w=960&amp;fit=max" /></p>
+<p>Speaking of swag, I am 100% making stickers with the <code>srand48()</code> seeds, and t-shirts for the Anthropic team and the contributors to the bounty. I accept suggestions for other seed-based swag. If you want to catch some, follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>.</p>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">bae3afac-15d1-47eb-ac6c-8551068b168b</guid>
+      <pubDate>Fri, 16 Oct 2026 18:57:20 +0000</pubDate>
+    </item>
+    <item>
+      <title>(Post-Quantum) Cryptographic Right Answers</title>
+      <link>https://words.filippo.io/right-answers/</link>
+      <description>In the tradition started by Colin Percival and Thomas Ptacek, a set of “Cryptographic Right Answers” updated for the accelerated post-quantum transition timeline.</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>Publishing “Cryptographic Right Answers” for developers is a tradition by now. <a href="https://www.daemonology.net/blog/2009-06-11-cryptographic-right-answers.html">Colin Percival started in 2009</a>, <a href="https://gist.github.com/tqbf/be58d2d39690c3b366ad">Thomas Ptacek followed up in 2015</a>, and then <a href="https://www.latacora.com/blog/cryptographic-right-answers/">Latacora carried on in 2018</a> and <a href="https://www.latacora.com/blog/post-quantum-cryptographic-right-answers/#pqc-right-answers">2024</a>.</p>
+<p>It might feel too soon for an update, but <em>so much has changed</em>. The timeline of the post-quantum transition <a href="https://words.filippo.io/crqc-timeline/">dramatically shifted in early 2026</a>, and there is now consensus that it needs to complete by 2029. 2029! We have three years!</p>
+<p>The good news is that, despite what you might have heard, <a href="https://words.filippo.io/128-bits/">symmetric cryptography is going to be fine, because Grover does not matter</a>. The bad news is that all asymmetric answers changed compared to 2018 and most even compared to 2024.</p>
+<p>The answers below assume you are not constrained by any specific compliance regime, although they are mostly compatible with FIPS 140.<sup id="fnref:fips140"><a class="footnote-ref" href="#fn:fips140">1</a></sup> If you need to follow something stricter like CNSA 2.0, you’ll know. Just substitute as appropriate.</p>
+<p>Finally, remember the other big change of 2026: LLMs are very good at finding bugs now. “Get a review from the best model you can afford” is now firmly a Cryptographic Right Answer, along with the long-time classic “use a memory-safe language.”</p>
+<p>If you’re in a rush, here’s the cheat sheet:</p>
+<ul>
+<li><strong>Encrypting data</strong>: If you’re in the cloud, KMS. Otherwise, XAES-256-GCM or XChaCha20Poly1305 with random nonces. If you’re encrypting more than a few MB, use Cobblestone-128.</li>
+<li><strong>Symmetric key length</strong>: Don’t stress it. 256-bit keys if you need to pick.</li>
+<li><strong>Symmetric “signatures”</strong>: HMAC-SHA-256.</li>
+<li><strong>Hash algorithm</strong>: SHA-2 is still fine, but use a real multihash (SequenceHash) if needed.</li>
+<li><strong>Random IDs</strong>: 32 random bytes, a.k.a. 256-bit random numbers.</li>
+<li><strong>Password handling</strong>: Argon2id or scrypt. But have you considered passkeys instead?</li>
+<li><strong>Key exchange</strong>: X25519+ML-KEM-768 in a secure, standard protocol.</li>
+<li><strong>Asymmetric encryption</strong>: HPKE with (MLKEM768-X25519 a.k.a. X-Wing, HKDF-SHA256, AES-128-GCM), or age with PQ keys.</li>
+<li><strong>Asymmetric signatures</strong>: ML-DSA-44.</li>
+<li><strong>Website or client-server application security</strong>: If you’re in the cloud, use its ALB/NLB. Otherwise, rustls, Go’s crypto/tls, BoringSSL, AWS-LC, or s2n-tls with a popular, updated ACME client.</li>
+<li><strong>Online backups</strong>: restic with a long random password.</li>
+</ul>
+<p>Now let’s dive in.</p>
+<h3 id="encrypting-data">Encrypting data</h3>
+<p>If you’re in the cloud, <strong>KMS</strong>. Otherwise, <strong>XAES-256-GCM</strong> or <strong>XChaCha20Poly1305</strong> with random nonces. If you’re encrypting more than a few MB, use <a href="https://c2sp.org/chunked-encryption"><strong>Cobblestone-128</strong></a>.</p>
+<p><em>Percival, 2009</em>: AES-CTR with HMAC.<br />
+<em>Ptacek, 2015</em>: NaCl/libsodium default, or ChaCha20Poly1305, or AES-GCM.<br />
+<em>Latacora, 2018</em>: KMS, or XSalsa20+Poly1305.<br />
+<em>Latacora, 2024</em>: KMS, or NaCl’s secretbox, or XChaCha20Poly1305.</p>
+<p><a href="https://www.latacora.com/blog/cryptographic-right-answers/#encrypting-data">Latacora’s reasoning for why and when you’d use your cloud’s KMS</a> is still solid, so start there.</p>
+<p>If you’re encrypting locally, you want an AEAD where you can avoid worrying about tracking nonces or how many messages you encrypted, so you want random nonces of at least 128 bits.<sup id="fnref:gcm128"><a class="footnote-ref" href="#fn:gcm128">2</a></sup></p>
+<p>NaCl/libsodium’s secretbox is just a <a href="https://words.filippo.io/nacl-api/">paper-thin wrapper</a> around a less common AE construction (XSalsa20+Poly1305), so instead I recommend <a href="https://words.filippo.io/xaes-256-gcm/">XAES-256-GCM</a> or XChaCha20Poly1305. The former is an efficient composition of a standard KDF and AES-GCM, packaged as an extended-nonce AEAD, so even if your library doesn’t provide it under that name you can assemble it from the KDF and AES-GCM APIs.<sup id="fnref:XAES-256-GCM"><a class="footnote-ref" href="#fn:XAES-256-GCM">3</a></sup></p>
+<p>Regular AES-GCM and ChaCha20Poly1305 with random nonces are only ok if you <em>know for certain</em> you won’t encrypt more than a billion messages with one key. AES-GCM-SIV is also a good AEAD choice if you happen to have it everywhere you need it, but that’s kinda unlikely. Some even newer options have nice properties like key commitment, but are not commonly available yet.</p>
+<p>Since you have an AEAD, consider putting context in the additional data, like the user ID you’re encrypting for, or the version of the protocol. Anything not secret that you will definitely still know at decrypt time. </p>
+<p>Very important is how you handle large messages, which KMS will not solve for you. <em>Do not</em> pass one large message to an AEAD, or you might be forced to process or store the plaintext before having authenticated it at decrypt time. <em>Absolutely do not</em> use unauthenticated stream ciphers. Instead, you should use STREAM (which is not a stream cipher but a way to use AEADs on a stream… I know, I know, terrible name). There are a lot of options—too many, in fact—and shamefully none are the consensus answer. <a href="https://developers.google.com/tink/encrypt-large-files-or-data-streams#streaming_aead">Tink has one</a>, <a href="https://libsodium.gitbook.io/doc/secret-key_cryptography/secretstream">libsodium has one</a>, <a href="https://github.com/aws/aws-encryption-sdk-python/blob/a6c0413bb0ddc9bccdefad9f1d2c031e0bc4db29/examples/src/file_streaming_example.py">the AWS Encryption SDK has one</a>, <a href="https://c2sp.org/FLOE">FLOE is one</a>, age has one, and the list goes on. I recommend <a href="https://c2sp.org/chunked-encryption">Cobblestone-128</a>, which is a STREAM variant derived from TLS, and is available in pyca/cryptography and soon in the Go standard library (and in the meantime at <a href="https://filippo.io/cobblestone">filippo.io/cobblestone</a>).<sup id="fnref:Cobblestone"><a class="footnote-ref" href="#fn:Cobblestone">4</a></sup></p>
+<p><em>Avoid</em>: unauthenticated modes (CBC, CTR, raw stream ciphers), random 96-bit nonces unless you spent a lot of time thinking about how many messages you encrypt, rolling your own AEAD construction.</p>
+<h3 id="symmetric-key-length">Symmetric key length</h3>
+<p><strong>Don’t stress it.</strong> 256-bit keys if you need to pick.</p>
+<p><em>Percival, 2009</em>: 256-bit AES keys.<br />
+<em>Ptacek, 2015</em>: 256-bit keys.<br />
+<em>Latacora, 2018</em>: 256-bit keys.<br />
+<em>Latacora, 2024</em>: 256-bit keys.</p>
+<p>Remember that Grover doesn’t actually matter and 128-bit brute-force attacks don’t exist. Still, 256-bit keys rule out multi-target attacks, which is nice.</p>
+<p>However, don’t make other decisions based on this. For example, the recommended Cobblestone suite uses 128-bit keys and that’s fine because it has a careful analysis of multi-target attacks. Likewise, don’t go changing the default cipher suite preferences of your TLS library to enforce 256-bit keys; there’s no need.</p>
+<p>AES-256 is slower than AES-128 because unfortunately Rijndael ties the number of rounds to the key size, but this probably won’t matter in practice.</p>
+<p><em>Avoid</em>: anything other than 128 or 256 bits, worrying too much about size, keys that are not uniform (e.g. using a password or ASCII hex string directly as a key).</p>
+<h3 id="symmetric-signatures">Symmetric “signatures”</h3>
+<p><strong>HMAC-SHA-256</strong>.</p>
+<p><em>Percival, 2009</em>: HMAC.<br />
+<em>Ptacek, 2015</em>: HMAC.<br />
+<em>Latacora, 2018</em>: HMAC.<br />
+<em>Latacora, 2024</em>: HMAC.</p>
+<p>Yay for HMAC.</p>
+<p>Just be careful to sidestep canonicalization and parser alignment bugs by always authenticating a verbatim string of bytes, not something you need to recompute.</p>
+<p><em>Good:</em></p>
+<pre><code>{
+    &quot;inner&quot;: &quot;{\&quot;foo\&quot;:123}&quot;,
+    &quot;hmac&quot;: &quot;MbPsZq7QGCllJgDnSSy/cyM10HjqiVu35UO7yyY5d3w=&quot;
+}
+</code></pre>
+<p>Check the HMAC and then process or store or forward just <code>{"foo":123}</code>.</p>
+<p><em>Bad:</em></p>
+<pre><code>{
+    &quot;foo&quot;: 123,
+    &quot;hmac&quot;: &quot;MbPsZq7QGCllJgDnSSy/cyM10HjqiVu35UO7yyY5d3w=&quot;
+}
+</code></pre>
+<p>You can use KMAC or keyed BLAKE3 if you already had a reason to use their underlying hashes. HMAC-SHA-512 is also fine.</p>
+<p>Remember to compare tags with dedicated constant-time functions.</p>
+<p><em>Avoid</em>: rolling your own <a href="https://blog.trailofbits.com/2024/08/21/yolo-is-not-a-valid-hash-construction/#yolomac">YoloMAC</a>, encrypted hashes, standalone one-time MACs like Poly1305 or GMAC.</p>
+<h3 id="hash-algorithm">Hash algorithm</h3>
+<p><strong>SHA-2</strong> is still fine, but use a real multihash if needed.</p>
+<p><em>Percival, 2009</em>: SHA-256 (SHA-2), plan on SHA-3.<br />
+<em>Ptacek, 2015</em>: SHA-2.<br />
+<em>Latacora, 2018</em>: SHA-2.<br />
+<em>Latacora, 2024</em>: SHA-2.</p>
+<p>The best option, if you have it available, is still SHA-512/256, which isn’t vulnerable to length-extension attacks. Otherwise, SHA-256 and SHA-512 are both fine.<sup id="fnref:sha2speed"><a class="footnote-ref" href="#fn:sha2speed">5</a></sup></p>
+<p>SHA-3 is unnecessary (because SHA-2 is fine) and slow,<sup id="fnref:sha3slow"><a class="footnote-ref" href="#fn:sha3slow">6</a></sup> but not <em>wrong</em>. If you already have Keccak (SHA-3) around for ML-KEM and ML-DSA, and you want to use it for hashing, draw 32 bytes from SHAKE128.</p>
+<p>BLAKE2 is a weird choice these days. BLAKE3 is very fast, but complex and uncommon enough that you want to have a good reason to use it and a good reason to trust your implementation.</p>
+<p>Multihashing is when you need to hash multiple <em>things</em> at once. For example, multiple columns of a row, or a filename along with the file contents. It’s subtler than it sounds, so use <strong><a href="https://blog.trailofbits.com/2026/10/02/sequencehash-multihashing-for-the-rest-of-us/">SequenceHash</a></strong> with SHA-2, or TupleHash (SP 800-185) with SHA-3.</p>
+<p><em>Avoid</em>: SHA-1, MD5, all other hash functions, <a href="https://blog.trailofbits.com/2024/08/21/yolo-is-not-a-valid-hash-construction/#yolomultihash">rolling your own multihash</a>, truncating to less than 256 bits unless a cryptographer told you collisions are not a concern.</p>
+<h3 id="random-ids">Random IDs</h3>
+<p><strong>32 random bytes</strong>, a.k.a. 256-bit random numbers.</p>
+<p><em>Percival, 2009</em>: 256-bit random numbers.<br />
+<em>Ptacek, 2015</em>: 256-bit random numbers.<br />
+<em>Latacora, 2018</em>: 256-bit random numbers.<br />
+<em>Latacora, 2024</em>: 256-bit random numbers.</p>
+<p>Note that UUIDv4 and APIs like <a href="https://pkg.go.dev/crypto/rand#Text">rand.Text</a> will give you ~128-bit values instead. That’s usually fine, unless you need more than 280 trillion (2⁴⁸) unique values. 256 bits is overkill, but why not.</p>
+<p>Use your operating system’s CSPRNG: <code>getrandom</code> on Linux, <code>ProcessPrng</code> on Windows, <code>arc4random_buf</code> on macOS and BSD, <code>getRandomValues</code> on the web. A good library will wrap these for you.</p>
+<p><em>Avoid</em>: non-cryptographic PRNGs, userspace random number generators like OpenSSL’s, haveged, CPU jitter entropy.<sup id="fnref:jitter"><a class="footnote-ref" href="#fn:jitter">7</a></sup></p>
+<h3 id="password-handling">Password handling</h3>
+<p><strong>Argon2id</strong> or <strong>scrypt</strong>. But have you considered <strong>passkeys</strong> instead?</p>
+<p><em>Percival, 2009</em>: scrypt or PBKDF2.<br />
+<em>Ptacek, 2015</em>: scrypt, then bcrypt, then PBKDF2 if you must.<br />
+<em>Latacora, 2018</em>: scrypt, then Argon2, then bcrypt, then PBKDF2 if you must.<br />
+<em>Latacora, 2024</em>: Argon2id, then scrypt, then bcrypt, then PBKDF2 if you must.</p>
+<p>Everything my predecessors said is still spot on: “you can throw a dart at a wall to pick one of these.” I dropped bcrypt because the 72-byte truncation <a href="https://josephscott.org/blog/2024/11/okta-bcrypt-and-52-character-usernames/">bites</a>. One tip: you could argue to your auditors that scrypt is FIPS 140 compliant because its actual KDF step is PBKDF2, which is what they want. I heard it works.</p>
+<p>For parameters, ignore RFC 9106 which apparently wants to murder your production system, and use <code>m=64 MiB, t=2, p=1</code> for Argon2id (libsodium’s INTERACTIVE preset) or <code>N=2^16, r=8, p=1</code> for scrypt. They use the same memory, but the scrypt ones will take ~1.5× the CPU time and ¼ the GPU time, which is why you should prefer Argon2id. If you’re doing non-interactive key derivation, feel free to crank up Argon2id’s <em>m</em>, and then <em>t</em> (or just <em>N</em><sup id="fnref:scrypt"><a class="footnote-ref" href="#fn:scrypt">8</a></sup> for scrypt) as far as tolerable.</p>
+<p>Much more importantly, do you really need passwords? If you only need them for logins, could you use phishing-proof passkeys instead? Maybe with <a href="https://rmondello.com/2025/01/02/magic-links-and-passkeys/">email magic links as a fallback</a>? Or just support SSO (as long as it’s OIDC and not SAML)?</p>
+<p>(Note that in 2026, passkeys are still not PQ. That’s mostly fine. They’re still phishing-proof and credential-stuffing-proof. All a quantum attacker can do is log in to a specific site if they obtain its database or intercept a login.)</p>
+<p><em>Avoid</em>: regular hashes, spending time thinking about password hashes instead of focusing on passkeys, phishable variants of email-based logins.<sup id="fnref:phish"><a class="footnote-ref" href="#fn:phish">9</a></sup></p>
+<h3 id="key-exchange">Key exchange</h3>
+<p><strong>X25519+ML-KEM-768</strong> in a secure, standard protocol.</p>
+<p><em>Percival, 2009</em>: 2048-bit Group #14 with a generator of 2.<br />
+<em>Ptacek, 2015</em>: Probably still DH-2048, or NaCl.<br />
+<em>Latacora, 2018</em>: Probably nothing. Or Curve25519.<br />
+<em>Latacora, 2024</em>: X25519+ML-KEM-768.</p>
+<p>The 2018 version of the Latacora answers is correct in asking “why are you as a developer thinking about this, and what does it even mean?!” Don’t roll your own key exchange protocol. Just pick X25519MLKEM768 in TLS, mlkem768x25519-sha256 in SSH, and/or MLKEM768-X25519 in HPKE and age. If you really need to obtain some keys and you know what you’re doing, both TLS and HPKE have “exporters” to derive them.</p>
+<p>Non-PQ solutions are an active, urgent liability due to harvest-now-decrypt-later attacks, and PQ alternatives range from impractical (HQC-KEM, FrodoKEM) to impractical and broken (<a href="https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/2kfyUnLObWQ">Classic McEliece</a>).</p>
+<p>For key exchange, using an ECC hybrid is cheap enough to be worth it, and indeed ML-KEM is usually deployed alongside ECDH. However, if picking or implementing the hybrid is going to make you stay even a single month longer on a classical, non-PQ key exchange, go straight to pure ML-KEM-768 now.</p>
+<p>P-256+ML-KEM-768 is also fine, just less common. NIST P curves got a bad rep for many years, but I think it’s 90% because they came out before we knew how to do cryptography engineering particularly well (and because of… let’s say non-<a href="https://en.wikipedia.org/wiki/Wikipedia:Neutral_point_of_view">NPOV</a> proselytizing). Almost none of the attacks against ECDH on NIST P curves even matter for ephemeral key exchanges.</p>
+<p><em>Avoid</em>: anything and everything without ML-KEM or X-Wing (a specific X25519+ML-KEM-768 combiner) in its name.</p>
+<h3 id="asymmetric-encryption">Asymmetric encryption</h3>
+<p><strong>HPKE with (MLKEM768-X25519 a.k.a. X-Wing, HKDF-SHA256, AES-128-GCM)</strong>, or <strong>age with PQ keys</strong>.</p>
+<p><em>Percival, 2009</em>: RSAES-OAEP with SHA-256, MGF1+SHA-256, and exponent 65537.<br />
+<em>Ptacek, 2015</em>: NaCl.<br />
+<em>Latacora, 2018</em>: NaCl/libsodium (box / crypto_box).<br />
+<em>Latacora, 2024</em>: Tricky, wait for established PQ solutions.</p>
+<p>This is one of the most improved answers in recent years, as we now have a standard to do hybrid encryption: HPKE. (“Hybrid” as in asymmetric + symmetric, not as in classical + post-quantum, yay for overloaded names.)</p>
+<p>MLKEM768-P256 is also ok as a choice of KEM, but less available. Pure ML-KEM-768 is fine if it’s all you have. All KDF and AEAD choices are fine, as well.</p>
+<p>If your message is large, do the same chunking Cobblestone does, with multiple sequential HPKE Seal/Open calls in place of the AEAD.</p>
+<p>Note that the PQ HPKE KEMs are maddeningly still a draft.<sup id="fnref:post-mortem"><a class="footnote-ref" href="#fn:post-mortem">10</a></sup> Worse, they are unnecessarily spread over four drafts, such that I had to write <a href="https://filippo.io/hpke-pq">filippo.io/hpke-pq</a>. However, I made the authors solemnly swear they will not change the wire format, and then we all shipped them in our cryptographic libraries, so you can and should use them.</p>
+<p>If you need something higher-level, with multiple recipients or a CLI, use age<sup id="fnref:age"><a class="footnote-ref" href="#fn:age">11</a></sup> with its new <code>age1pq</code>-prefixed keys, based on MLKEM768-X25519. PQ support is also rolling out for plugins like the YubiKey and the Secure Enclave ones.</p>
+<p><em>Avoid</em>: again anything not based on ML-KEM (RSA and NaCl’s box<sup id="fnref:box"><a class="footnote-ref" href="#fn:box">12</a></sup> in particular), OpenPGP, <a href="https://www.latacora.com/blog/2020/02/19/stop-using-encrypted-email/">encrypting emails</a>.</p>
+<h3 id="asymmetric-signatures">Asymmetric signatures</h3>
+<p><strong>ML-DSA-44</strong>.</p>
+<p><em>Percival, 2009</em>: RSASSA-PSS with SHA-256, MGF1+SHA-256, and exponent 65537.<br />
+<em>Ptacek, 2015</em>: NaCl, Ed25519, or RFC 6979.<br />
+<em>Latacora, 2018</em>: NaCl or Ed25519.<br />
+<em>Latacora, 2024</em>: Ed25519 if short-lived, otherwise Ed25519+ML-DSA-65.</p>
+<p>In January 2026, I would have told you to wait and see, and then <a href="https://words.filippo.io/crqc-timeline/">everything started moving a lot faster</a>. You need to move to PQ for auth, too.</p>
+<p>Just use ML-DSA-44. If your message needs pre-hashing, use “external-μ (Mu)” signing, not HashML-DSA. Store keys as 32-byte seeds exclusively.</p>
+<p>The two PQ alternatives are FN-DSA, which is stuck somewhere in the US Department of Commerce, and SLH-DSA, which is based on hash functions. The latter can make sense for some specialist use cases, but is slow, large, and not widely available in implementations.</p>
+<p>Why not a hybrid or “composites”? Hybrid auth is <a href="https://mailarchive.ietf.org/arch/msg/tls/CI9HgxA2UKBIyNj0xNSumH3Qogg/">more complex</a> and less useful than hybrid key exchange. I need to write a long-form post about this, but in short either you already have a key rotation strategy that you can use to rotate back to RSA/ECDSA/Ed25519 in the unlikely case of a cryptanalytic break, or you have such a long time horizon that you should assume quantum computers will break the classical half anyway.</p>
+<p>Also, ML-DSA is just such a better signature algorithm than its predecessors. It has hedged randomness (which is better than both random and deterministic nonces), built-in context, extra properties like SUF-CMA, and is relatively simple to implement and test.</p>
+<p>Why the -44 parameter set, when I’m recommending ML-KEM-768? Unlike ML-KEM-512 (NIST category 1), ML-DSA-44 sits at NIST category 2, with some margin above the 128-bit security level already.</p>
+<p>The one exception to the no-composites rule is SSH keys. OpenSSH 10.6 picked <code>ssh-mldsa44-ed25519</code>. I think they <a href="https://mailarchive.ietf.org/arch/msg/ssh/4sb0aPTWeX4KA3GgK77ns17UHrU/">made a mistake</a>, but it would be a mistake for you to go off the beaten path there.</p>
+<p>Note that asymmetric signatures are overused, and especially now that they are not cheap, you should try to avoid them. Consider whether you could use a simple HMAC. Maybe you can replace signed JWTs with random session tokens. If instead you do want to commit to something publicly, consider whether you should use <a href="https://github.com/transparency-dev/tessera">a transparency log</a>, and get a more practically useful notion of non-repudiability (and potentially smaller sizes, if you amortize the signature over multiple proofs).</p>
+<p><em>Avoid</em>: all non-PQ options like RSA/ECDSA/Ed25519, stateful signatures (LMS/XMSS), HashML-DSA, ML-DSA “<a href="https://cs.opensource.google/go/go/+/master:src/crypto/internal/fips140/mldsa/semiexpanded.go;l=13-22;drc=c888fd67f00f77446e563f90e3307de7b6b3a910">semi-expanded keys</a>,” composite signatures, OpenPGP.</p>
+<h3 id="website-or-client-server-application-security">Website or client-server application security</h3>
+<p>If you’re in the cloud, use its <strong>ALB/NLB</strong>. Otherwise, <strong>rustls</strong>, <strong>Go’s crypto/tls</strong>, <strong>BoringSSL</strong>, <strong>AWS-LC</strong>, or <strong>s2n-tls</strong> with a <strong>popular, updated ACME client</strong>.</p>
+<p><em>Percival, 2009</em>: OpenSSL for websites, custom RSA protocol for applications.<br />
+<em>Ptacek, 2015</em>: OpenSSL, or BoringSSL if you can. Or just AWS ELBs.<br />
+<em>Latacora, 2018</em>: AWS ALB/ELB or OpenSSL, with Let’s Encrypt.<br />
+<em>Latacora, 2024</em>: AWS ALB/ELB or OpenSSL, with Let’s Encrypt.</p>
+<p>Not recommending OpenSSL will probably be my least practical suggestion, but OpenSSL has been making consistently puzzling and problematic choices for years now. The pyca/cryptography authors, in <a href="https://cryptography.io/en/latest/statements/state-of-openssl/">a long post about OpenSSL’s issues</a>, summarize it as:</p>
+<blockquote>
+<p>Our experience with OpenSSL has been on a negative trajectory for several years.</p>
+</blockquote>
+<p>They even <a href="https://www.youtube.com/watch?v=RUIguklWwx0">presented at the 2025 OpenSSL Conference</a> (!?), apparently fruitlessly. They’re not alone in criticizing OpenSSL: here are <a href="https://cdn.haproxy.com/blog/state-of-ssl-stacks">HAProxy</a> from the server side, and <a href="https://daniel.haxx.se/blog/2025/06/23/a-family-of-forks/">curl</a> from the client side.</p>
+<p>I recommend rustls or Go’s crypto/tls,<sup id="fnref:go"><a class="footnote-ref" href="#fn:go">13</a></sup> which are memory safe. If you need to stick to C, both BoringSSL and AWS-LC are very competently maintained OpenSSL forks, and the latter, unlike BoringSSL, has versioned releases. s2n-tls and rustls-ffi are interesting options if you don’t need libssl compatibility.</p>
+<p>Whatever you use, make sure it prioritizes the X25519MLKEM768 key exchange, which requires TLS 1.3. Your cloud load balancer might require you to select a PQ security policy. On RHEL 9 and derivatives, <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/security_hardening/using-the-system-wide-cryptographic-policies_security-hardening#post_quantum_cryptography">you need to opt in</a>.</p>
+<p>Previous lists split websites and client-server applications. I merged them because these days you’ll just use the same TLS stack for both. What changes is the PKI. For applications where you control both ends, consider making your own ML-DSA-44 X.509 certificates, self-signed or from a private root. For websites, wire up a <em>popular</em>, well-supported ACME client and keep it up to date. Merkle Tree Certificates will roll out in 2027, and you want to be well positioned to be included in the transition.</p>
+<p><em>Avoid</em>: rolling your own transport protocol, TLS libraries that failed at their core job before (GnuTLS<sup id="fnref:CVE-2020-13777"><a class="footnote-ref" href="#fn:CVE-2020-13777">14</a></sup>, Mbed TLS<sup id="fnref:CVE-2023-45199"><a class="footnote-ref" href="#fn:CVE-2023-45199">15</a></sup> <sup id="fnref:CVE-2026-34873"><a class="footnote-ref" href="#fn:CVE-2026-34873">16</a></sup> <sup id="fnref:CVE-2026-25835"><a class="footnote-ref" href="#fn:CVE-2026-25835">17</a></sup>, wolfSSL<sup id="fnref:CVE-2026-5194"><a class="footnote-ref" href="#fn:CVE-2026-5194">18</a></sup> <sup id="fnref:CVE-2026-5501"><a class="footnote-ref" href="#fn:CVE-2026-5501">19</a></sup> <sup id="fnref:CVE-2026-11310"><a class="footnote-ref" href="#fn:CVE-2026-11310">20</a></sup> <sup id="fnref:CVE-2026-11999"><a class="footnote-ref" href="#fn:CVE-2026-11999">21</a></sup> <sup id="fnref:CVE-2026-55960"><a class="footnote-ref" href="#fn:CVE-2026-55960">22</a></sup> <sup id="fnref:CVE-2026-93302"><a class="footnote-ref" href="#fn:CVE-2026-93302">23</a></sup> <sup id="fnref:CVE-2026-89136"><a class="footnote-ref" href="#fn:CVE-2026-89136">24</a></sup> <sup id="fnref:CVE-2026-89135"><a class="footnote-ref" href="#fn:CVE-2026-89135">25</a></sup>, Botan<sup id="fnref:CVE-2026-34580"><a class="footnote-ref" href="#fn:CVE-2026-34580">26</a></sup> <sup id="fnref:CVE-2026-34582"><a class="footnote-ref" href="#fn:CVE-2026-34582">27</a></sup>), offbeat TLS libraries, OpenSSL before version 3.5 (the first with X25519MLKEM768), any OpenSSL if you can, TLS 1.0–1.1, TLS 1.2 if you can, rolling your own ACME client.</p>
+<h3 id="online-backups">Online backups</h3>
+<p><strong>restic</strong> with a long random password.</p>
+<p><em>Percival, 2009</em>: Tarsnap.<br />
+<em>Ptacek, 2015</em>: Tarsnap.<br />
+<em>Latacora, 2018</em>: Tarsnap.<br />
+<em>Latacora, 2024</em>: Tarsnap.</p>
+<p><a href="https://words.filippo.io/restic-cryptography/">I checked restic’s encryption a very long time ago</a> and it was slightly weird but good. Fully symmetric, so it’s not scared of quantum computers. Doesn’t look like anything changed since. If you need cloud storage, <a href="https://www.rsync.net/products/restic.html">rsync.net has a “secret” plan for restic users</a>, and they support <a href="https://www.rsync.net/resources/notes/2025-q4-rsync.net_technotes.html">an append-only mode</a>.</p>
+<p>We all love Tarsnap, and I feel like I am betraying my elders right now… but its asymmetric cryptography layer is all RSA. <em>Technically</em>, I think the only things that truly break are the lower-capability keys: a write-only key can decrypt archives and a read-only key can forge archives. Server authentication is HMAC, and the RSA public keys are never sent to the server. In that sense, Tarsnap is as secure as restic, which is an impressive feat for a 2008 design. However, this feels like a major footgun with impending quantum computers.</p>
+<h2 id="the-picture">The picture</h2>
+<p>Kinda incredible that you can just walk up to this thing.</p>
+<p><img alt="The Colosseum, at night, pictured from the ground looking up." src="https://assets.buttondown.email/images/cc14aaa4-8914-48a4-9b5d-83f0ed53dd7a.jpeg?w=960&amp;fit=max" /></p>
+<p>Follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:fips140">
+<p>FIPS 140 still has some very ugly bits around module validation (runtime self-tests, the integrity check, and the worsening RNG mess) but the actual cryptography algorithms these days are “good, actually.”&#160;<a class="footnote-backref" href="#fnref:fips140" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:gcm128">
+<p>You might read that GCM can take 128-bit nonces, but when you do that it doesn’t have a separate CTR counter anymore, and messages with different GCM nonces can end up sharing CTR keystream, which makes the analysis more complicated.&#160;<a class="footnote-backref" href="#fnref:gcm128" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:XAES-256-GCM">
+<p>Full disclosure: XAES-256-GCM is my design, but there are now multiple third-party implementations, including as part of Google’s Tink libraries, there’s <a href="https://eprint.iacr.org/2025/878.pdf">a security analysis by Amazon Web Services</a>, and it’s <a href="https://learn.microsoft.com/en-us/industry/healthcare/dragon-copilot/sdk/ambient/security-guidance#encryption-at-rest">used by Microsoft in an official SDK</a>.&#160;<a class="footnote-backref" href="#fnref:XAES-256-GCM" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:Cobblestone">
+<p>Again, full disclosure, this is my design, but it’s adopted externally enough that I feel comfortable recommending it.&#160;<a class="footnote-backref" href="#fnref:Cobblestone" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:sha2speed">
+<p>On 64-bit machines, SHA-512/256 and SHA-512 should be faster than SHA-256 thanks to their larger block size, except right now hardware support for SHA-256 is more widespread, so SHA-256 is faster in practice. They are both fast, so you probably don’t care.&#160;<a class="footnote-backref" href="#fnref:sha2speed" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:sha3slow">
+<p>Partially because of choices NIST made to make SHA3-256 strictly as secure as SHA-256, even where SHA-256 was overkill. SHA-256 and SHA3-256 have 128 bits of collision resistance and 256 bits of second preimage resistance. It’d be enough to have 128 bits of both, which is what you get from 256 bits of SHAKE128 output. Unfortunately, it doesn’t have a SHA name. TurboSHAKE128 (RFC 9861) would be even better, but it is neither FIPS 140 nor widespread.&#160;<a class="footnote-backref" href="#fnref:sha3slow" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:jitter">
+<p>People outside the FIPS 140 circle of hell don’t seem to have noticed, but new NIST rules require FIPS 140 modules to have an “internal” entropy source now. If your FIPS 140 “module” is a piece of software… what do you do? Everyone’s answer is “CPU jitter”: run a tight loop that accesses uncached memory and take high-resolution timestamps, hoping the frequency mismatch between CPU and main memory will make the measurements unpredictable. IMHO, this is the worst part of FIPS 140 since the module integrity hash, and it will hurt people. The one sane way to do it is to go through the motions, and then at the last moment mix the result with kernel entropy, like Go does. However, that’s <em>harder</em> to justify to the validation labs than doing just CPU jitter, so I’m afraid we’ll see pure CPU jitter in production a lot.&#160;<a class="footnote-backref" href="#fnref:jitter" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:scrypt">
+<p>Argon2id parameters mostly do what you’d imagine, <a href="https://words.filippo.io/the-scrypt-parameters/">scrypt parameters do not</a>.&#160;<a class="footnote-backref" href="#fnref:scrypt" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn:phish">
+<p>A link with an opaque random token that logs in the opening browser is very hard to phish. A link that logs in the browser that <em>started</em> the login is very easy to phish. Short numeric codes are moderately easy to phish. (You can get the best of both worlds by using the Broadcast Channel API to pass the token from the new tab to the original one.)&#160;<a class="footnote-backref" href="#fnref:phish" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn:post-mortem">
+<p>In a different venue I said a serious engineering community would have a post-mortem about having wasted two of the five years we had for the transition to post-quantum cryptography, only to produce specs that changed <em>nothing</em> compared to what we had in 2024. But that’s for another time.&#160;<a class="footnote-backref" href="#fnref:post-mortem" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+<li id="fn:age">
+<p>Again again, full disclosure: my design, but pretty uncontroversial pick.&#160;<a class="footnote-backref" href="#fnref:age" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+</li>
+<li id="fn:box">
+<p>I truly don’t understand why my predecessors recommended NaCl’s box. It’s an <a href="https://words.filippo.io/nacl-api/">incredibly sharp and low-level API</a>, pretending to be a high-level safe API.&#160;<a class="footnote-backref" href="#fnref:box" title="Jump back to footnote 12 in the text">&#8617;</a></p>
+</li>
+<li id="fn:go">
+<p>One last time, full disclosure: I am a crypto/tls maintainer.&#160;<a class="footnote-backref" href="#fnref:go" title="Jump back to footnote 13 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2020-13777">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2020-13777">CVE-2020-13777</a>, GnuTLS 3.6.4–3.6.13: the session ticket key is all zeroes, breaking confidentiality in TLS 1.2 and allowing authentication bypass in TLS 1.3.&#160;<a class="footnote-backref" href="#fnref:CVE-2020-13777" title="Jump back to footnote 14 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2023-45199">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2023-45199">CVE-2023-45199</a>, Mbed TLS 3.2–3.4: pre-auth remote code execution via an oversized key share in the TLS 1.3 handshake.&#160;<a class="footnote-backref" href="#fnref:CVE-2023-45199" title="Jump back to footnote 15 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-34873">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-34873">CVE-2026-34873</a>, Mbed TLS 3.5.0–4.0.0: TLS 1.3 session resumption allows client impersonation.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-34873" title="Jump back to footnote 16 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-25835">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-25835">CVE-2026-25835</a>, Mbed TLS 2.18.0–3.6.5 and 4.0.0: the RNG state is cloned across fork, so parent and child produce the same random values.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-25835" title="Jump back to footnote 17 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-5194">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-5194">CVE-2026-5194</a>, wolfSSL 3.12.0–5.9.0: signatures by ECDSA certificates can be forged by providing an ML-DSA or Ed25519 signature algorithm identifier and a trivial ECDSA signature over the zero-length digest.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-5194" title="Jump back to footnote 18 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-5501">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-5501">CVE-2026-5501</a>, wolfSSL through 5.9.0: the OpenSSL compatibility layer skips the leaf’s signature check when any valid end-entity cert is supplied as an “intermediate.”&#160;<a class="footnote-backref" href="#fnref:CVE-2026-5501" title="Jump back to footnote 19 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-11310">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-11310">CVE-2026-11310</a>, wolfSSL 5.8.4–5.9.1: the OpenSSL compatibility layer lets caller-supplied untrusted intermediates act as trust anchors.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-11310" title="Jump back to footnote 20 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-11999">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-11999">CVE-2026-11999</a>, wolfSSL 5.7.4–5.9.1: the OpenSSL compatibility layer accepts any chain longer than the maximum path depth of 100, without reaching a trust anchor.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-11999" title="Jump back to footnote 21 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-55960">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-55960">CVE-2026-55960</a>, wolfSSL 5.6.4–5.9.1: a raw public key is always accepted in place of a certificate, bypassing authentication.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-55960" title="Jump back to footnote 22 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-93302">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-93302">CVE-2026-93302</a>, wolfSSL 5.3.0–5.9.2: trusted-peer certificates are matched by name rather than public key.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-93302" title="Jump back to footnote 23 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-89136">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-89136">CVE-2026-89136</a>, wolfSSL 5.6.0–5.9.2: clients still accept an unsolicited raw public key from the server, bypassing authentication.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-89136" title="Jump back to footnote 24 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-89135">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-89135">CVE-2026-89135</a>, wolfSSL 5.8.4–5.9.2: a failed chain verification in the OpenSSL compatibility layer permanently adds the attacker’s CA to the trust store used by native TLS, OCSP, and CRL checks.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-89135" title="Jump back to footnote 25 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-34580">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-34580">CVE-2026-34580</a>, Botan 3.11.0: an end-entity certificate whose DN matches a trusted root is accepted as if it were that root.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-34580" title="Jump back to footnote 26 in the text">&#8617;</a></p>
+</li>
+<li id="fn:CVE-2026-34582">
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2026-34582">CVE-2026-34582</a>, Botan before 3.11.1: TLS 1.3 servers process application data before Finished, so a client can skip Certificate, CertificateVerify, and Finished entirely, a full client authentication bypass.&#160;<a class="footnote-backref" href="#fnref:CVE-2026-34582" title="Jump back to footnote 27 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">c4205310-974e-4ee3-8631-69262f76174d</guid>
+      <pubDate>Mon, 12 Oct 2026 12:00:27 +0000</pubDate>
+    </item>
+    <item>
+      <title>Production ML-DSA Verification in 350 Lines of Python</title>
+      <link>https://words.filippo.io/mldsa-py/</link>
+      <description>I am publishing a production, pure-Python ML-DSA verifier. It&#39;s just 350 lines, and pretty readable and robust.</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>I don’t do a lot of Python, at least not in my most recent life.<sup id="fnref:ytdl"><a class="footnote-ref" href="#fn:ytdl">1</a></sup> However, I happen to have just written <a href="https://github.com/FiloSottile/mldsa-py">a production ML-DSA verifier in pure Python</a>. It’s <a href="https://github.com/FiloSottile/mldsa-py/blob/main/src/mldsa/mldsa.py">350 lines of code</a> (plus many more of tests), it supports all parameter sets, and I am pretty satisfied with it.</p>
+<p>You can fetch it as <a href="https://pypi.org/project/mldsa/"><code>mldsa</code> from PyPI</a>, <a href="https://github.com/pypi/support/issues/9843">thanks to William Woodruff</a>, or you can copy-paste it: it’s a single file without dependencies and it’s dual-licensed CC0 and 0BSD. It works with Python 3.8 and later. The API is modeled after the excellent <a href="https://github.com/pyca/cryptography">pyca/cryptography</a>.</p>
+<pre><code class="language-python">import mldsa
+
+vk = mldsa.VerificationKey(verification_key_bytes)
+
+try:
+    vk.verify(signature, message)
+except mldsa.VerificationError:
+    print(&quot;invalid signature!&quot;)
+</code></pre>
+<p>I hope this will make it easier for some projects to migrate to post-quantum authentication, which <a href="https://words.filippo.io/crqc-timeline/">has suddenly become more urgent than we all anticipated</a>. In particular, I hope it will unblock some client applications that can’t use C extensions for portability reasons.</p>
+<p>Modern Python <a href="https://docs.astral.sh/uv/">package management</a>, <a href="https://docs.astral.sh/ty/">typing</a>, and <a href="https://docs.astral.sh/ruff/">linting</a> are also a lot more powerful<sup id="fnref:minigame"><a class="footnote-ref" href="#fn:minigame">2</a></sup> than in the early Python 3 days, and the result is a pretty readable ML-DSA verifier.</p>
+<p>ML-DSA is actually very simple to implement with its 23-bit base field: we use Python integers (without even needing Python’s big integer support) and SHA-3 from hashlib. There are 86 lines of throat clearing, 27 lines of base field (arithmetic, <code>centered_mod</code>, <code>decompose</code>), 28 lines of sampling (<code>sample_ntt</code>, <code>sample_in_ball</code>), 39 of polynomials (<code>Poly</code>, <code>NTTPoly</code>), 25 of NTT, 30 of parsing and packing (<code>pack</code>, <code>unpack</code>, <code>unpack_signed</code>), 35 of key expansion (<code>VerificationKey.__init__</code>, <code>public_key_hash</code>), and 80 of actual signature verification (<code>VerificationKey.verify</code>, <code>message_hash</code>, <code>use_hint</code>).</p>
+<p><img alt="A minimap showing the code layout with colorized areas" src="https://assets.buttondown.email/images/3f31264f-fd5c-4919-b109-7c727a5964bb.png" /></p>
+<p>Performance is… decent? 230 ML-DSA-44 verifications per second without precomputation. That’s 60x slower than Go, but not 1000x. The only optimization change I made was <a href="https://github.com/FiloSottile/mldsa-py/commit/954880c364cd99519964413aabe742a0197f91b1">using integers instead of field elements in the NTT hot loop</a>.</p>
+<pre><code>                             │   sec/op    │
+Verify/ML-DSA-44/Whole         4.296m ± 2%
+Verify/ML-DSA-65/Whole         6.509m ± 1%
+Verify/ML-DSA-87/Whole         9.885m ± 3%
+Verify/ML-DSA-44/Precomputed   2.635m ± 3%
+Verify/ML-DSA-65/Precomputed   3.712m ± 4%
+Verify/ML-DSA-87/Precomputed   5.363m ± 1%
+</code></pre>
+<p>The implementation is tested with the full reusable ML-DSA testing stack: <a href="https://github.com/C2SP/wycheproof/blob/main/doc/mldsa.md">Wycheproof test vectors</a> and <a href="https://github.com/C2SP/CCTV/tree/main/ML-DSA/accumulated">CCTV accumulated vectors</a>, using pytest and <a href="https://github.com/FiloSottile/mostly-harmless/tree/main/muzoo">muzoo</a> for mutation testing. It has 96% branch coverage, and more importantly it kills every mutation I (and Claude) could think of. (ML-DSA testing techniques deserve their own article.)</p>
+<h2 id="why-python">Why Python?</h2>
+<p>The project started as a way to double-check the tests <em>of the tests</em> of my Go crypto/mldsa implementation. How do you know your tests are good and comprehensive? You add bugs (“mutations”) and you check that the tests fail. What if you skipped a check though? There won’t be any code to introduce a bug in! The <em>obvious</em> solution is to write a different implementation from scratch, then introduce bugs there, check that the tests catch the bugs, and then port the tests back. Duh.</p>
+<p>Anyway, pure Python might not be particularly well-suited for cryptography that involves secrets because producing constant-time code could be difficult. However, a signature <em>verifier</em> involves no secrets, and Python is expressive and, most importantly, different from Go, making shared mistakes less likely.</p>
+<p>You might want to follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>, but I can’t promise any more Python.</p>
+<h2 id="the-picture">The picture</h2>
+<p>The <a href="https://centopassi.net/">CENTOPASSI</a> is not all smooth riding, that’s part of the point. However, I am <em>a little</em> annoyed at the local who I had called and who said this road was closed but totally doable on a motorcycle.</p>
+<p><img alt="A collapsed country road, its asphalt cracked and sliding down towards the valley. Green bushes line the very narrow and gravelly intact left edge. In the distance, rolling hills with wind turbines under a bright blue sky." src="https://assets.buttondown.email/images/e3cf617e-3ec0-4b63-b48b-171644262153.jpeg" /></p>
+<p>My work is made possible by <a href="https://geomys.org">Geomys</a>, an organization of professional Go maintainers, which is funded by <a href="https://www.avalabs.org/">Ava Labs</a>, <a href="https://goteleport.com/">Teleport</a>, <a href="https://www.datadoghq.com/">Datadog</a>, <a href="https://tailscale.com/">Tailscale</a>, and <a href="https://sentry.io/">Sentry</a>. Through our retainer contracts they ensure the sustainability and reliability of our open source maintenance work and get a direct line to my expertise and that of the other Geomys maintainers. (Learn more in the <a href="https://words.filippo.io/geomys">Geomys announcement</a>.)
+Here are a few words from some of them!</p>
+<p>Teleport — For the past five years, attacks and compromises have been shifting from traditional malware and security breaches to identifying and compromising valid user accounts and credentials with social engineering, credential theft, or phishing. <a href="https://goteleport.com/platform/identity/?utm=filippo">Teleport Identity</a> is designed to eliminate weak access patterns through access monitoring, minimize attack surface with access requests, and purge unused permissions via mandatory access reviews.</p>
+<p>Ava Labs — We at <a href="https://www.avalabs.org">Ava Labs</a>, maintainer of <a href="https://github.com/ava-labs/avalanchego">AvalancheGo</a> (the most widely used client for interacting with the <a href="https://www.avax.network">Avalanche Network</a>), believe the sustainable maintenance and development of open source cryptographic protocols is critical to the broad adoption of blockchain technology. We are proud to support this necessary and impactful work through our ongoing sponsorship of Filippo and his team.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:ytdl">
+<p>Fun fact, I got started in open source as a maintainer of youtube-dl.&#160;<a class="footnote-backref" href="#fnref:ytdl" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:minigame">
+<p>I feel the same about the TypeScript ecosystem. It’s fun for a week or two every once in a while, but I wouldn’t want to daily drive any of these ecosystems: it’s too easy to spend a whole day updating dev dependencies and fixing linter errors and get the mistaken impression of having gotten anything done.&#160;<a class="footnote-backref" href="#fnref:minigame" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">4ca8795c-d926-43c2-ad5d-7cf913edf18e</guid>
+      <pubDate>Sun, 26 Jul 2026 11:45:08 +0000</pubDate>
+    </item>
+    <item>
+      <title>Opaque, Interoperable Passkey Records (and a Go API)</title>
+      <link>https://words.filippo.io/passkey-record/</link>
+      <description>Passkey records are an interoperable format for WebAuthn credentials, similar to password hash strings. I propose a potential crypto/passkey Go API based on them.</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>Passkeys are the most important thing happening in information security right now because they are the only principled solution to the overwhelming effectiveness of phishing attacks. Just like memory safety is the only principled solution to memory corruption attacks.</p>
+<p>Unfortunately, implementing them on the server side can appear more complex than using password hashes. Part of this is unavoidable because passkeys require interaction with the browser to get their phishing resistance properties. Part of it, however, could be abstracted away a little more effectively by defining interoperable passkey record encodings.</p>
+<p>The WebAuthn specification <a href="https://www.w3.org/TR/webauthn-3/#reg-ceremony-create-credential-record">defines</a> a <em>credential record</em> as an abstract concept with a number of components such as <code>type</code>, <code>id</code>, <code>publicKey</code>, <code>backupState</code>, <code>transports</code>, and other flags. Google <a href="https://developers.google.com/identity/passkeys/developer-guides/server-registration#store_the_public_key">recommends</a> a database table with a Credential ID primary key, and <code>public_key</code>, <code>backed_up</code>, and <code>transports</code> columns. Adam Langley’s stellar <a href="https://www.imperialviolet.org/tourofwebauthn/tourofwebauthn.html#the-server-side">Tour of WebAuthn</a> similarly recommends a <code>cred_id</code> primary key, and separate <code>public_key_spki</code> and <code>backed_up</code> columns.</p>
+<p>All guidance recommends using libraries to handle WebAuthn authentication, but that still leaves applications with a potentially non-interoperable database schema. It might also be impractical to defer the whole authentication flow and database interaction to a library or framework.</p>
+<p>Interoperable, well-specified passkey records that the application can handle as opaque strings, like password hashes, can be a middle-ground abstraction layer.</p>
+<p><a href="https://github.com/C2SP/C2SP/blob/push-oxkkyrwpqxot/passkey-record.md">c2sp.org/passkey-record</a> is a specification proposal which borrows the syntax of <a href="https://c2sp.org/phc-strings">Password Hashing Competition (PHC) Strings</a> and reuses the existing authenticator data encoding for the bulk of the work. A record looks like this:</p>
+<pre><code>$webauthn$v=1$transports=hybrid+internal$&lt;base64 authenticator data&gt;
+</code></pre>
+<p>The payload is the authenticator data, a binary encoding of most of the credential record fields that is already <a href="https://www.w3.org/TR/webauthn-3/#sctn-authenticator-data">specified by WebAuthn</a> and included in the JSON encoding of an <a href="https://developer.mozilla.org/en-US/docs/Web/API/AuthenticatorAttestationResponse">AuthenticatorAttestationResponse</a> (which is the return type of <a href="https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create"><code>navigator.credentials.create()</code></a> even if attestation is not in use). Transports are the only missing field, and they are stored as PHC parameters.</p>
+<p>The application is then only in charge of keeping track of what passkey records are associated with a user account, which is a task that is familiar to web developers because it is not dissimilar to implementing password authentication (except there are multiple passkeys per account). These opaque strings can be passed to a library to verify the login assertion (or to generate a registration request with the appropriate <code>excludedCredentials</code>).</p>
+<p>With a well-specified interoperable storage format, it will hopefully be possible to switch passkey library (or even backend language) while preserving a credentials database.</p>
+<h2 id="other-fields-you-might-want-to-store">Other fields you might want to store</h2>
+<p>Along with the passkey record, applications might still wish to store metadata fields like a user-selected nickname and creation and last use timestamps, to provide pretty passkey management UIs. None of these require any special treatment by the WebAuthn library.</p>
+<p>The one exception is the backed up state flag. Passkeys report to the server whether they are backed up (e.g. to iCloud Keychain or a Google account), and servers can use that signal to suggest removing a password from an account. This flag can change across logins, while the passkey record is immutable, so it would have to be stored separately and updated on every login. I think this logic is overrated for the average website, which will keep supporting email password resets anyway.</p>
+<h2 id="a-potential-cryptopasskey-api">A potential crypto/passkey API</h2>
+<p>Building on top of these passkey records, I drafted <a href="https://godoc-play.exe.xyz/chibklhpf6nn">a potential <code>crypto/passkey</code> stateless Go package API</a>.</p>
+<p>The registration flow is</p>
+<ol>
+<li>call <a href="https://godoc-play.exe.xyz/chibklhpf6nn#RelyingParty.NewRegistration"><code>RelyingParty.NewRegistration</code></a> with the logged-in (or otherwise identified) user details and any existing passkey records</li>
+<li>pass the returned JSON to <code>parseCreationOptionsFromJSON()</code> and then to <code>navigator.credentials.create()</code></li>
+<li>pass the returned JSON-encoded PublicKeyCredential to <a href="https://godoc-play.exe.xyz/chibklhpf6nn#RelyingParty.Register"><code>RelyingParty.Register</code></a></li>
+<li>store the returned passkey record in the database</li>
+</ol>
+<p>The login flow is</p>
+<ol>
+<li>call <a href="https://godoc-play.exe.xyz/chibklhpf6nn#RelyingParty.NewLogin"><code>RelyingParty.NewLogin</code></a> while generating the log-in page</li>
+<li>store the returned request in a key-value cache with a short TTL, under <a href="https://godoc-play.exe.xyz/chibklhpf6nn#RequestID"><code>RequestID(request)</code></a>, and pass the returned JSON to <code>parseRequestOptionsFromJSON()</code> and then to <code>navigator.credentials.get()</code></li>
+<li>pass the returned JSON-encoded PublicKeyCredential to <a href="https://godoc-play.exe.xyz/chibklhpf6nn#Inspect"><code>Inspect</code></a>, and use the returned requestID to retrieve the request from the key-value cache and use the returned userID to retrieve the passkey records from the database</li>
+<li>pass the JSON PublicKeyCredential, the request, and the passkey records to <a href="https://godoc-play.exe.xyz/chibklhpf6nn#RelyingParty.Login"><code>RelyingParty.Login</code></a></li>
+</ol>
+<p>The application is in charge of</p>
+<ul>
+<li>associating an opaque, permanent, privacy-preserving user ID with each user;</li>
+<li>storing passkey records associated with a user; and</li>
+<li>caching request challenges produced by <code>RelyingParty.NewLogin</code>.</li>
+</ul>
+<p>The library provides JSON values that can be passed straight to <a href="https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredential/parseCreationOptionsFromJSON_static"><code>parseCreationOptionsFromJSON()</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredential/parseRequestOptionsFromJSON_static"><code>parseRequestOptionsFromJSON()</code></a>, and accepts JSON values returned by <a href="https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredential/toJSON">calling <code>JSON.stringify()</code> on a PublicKeyCredential</a>.</p>
+<p>This is optimized for the discoverable credential flow (a.k.a. passkeys, where the authenticator stores and provides to the server the user ID) but the <a href="https://godoc-play.exe.xyz/chibklhpf6nn#RelyingParty.NewLoginForUser"><code>RelyingParty.NewLoginForUser</code></a> method can also be used for second-factor flows or re-authentication prompts. The API works for both modal and conditional UI (autofill) flows.</p>
+<p>There are a few helpers to extract information from the passkey record (<a href="https://godoc-play.exe.xyz/chibklhpf6nn#AAGUID"><code>AAGUID</code></a>, <a href="https://godoc-play.exe.xyz/chibklhpf6nn#BackedUp"><code>BackedUp</code></a>) and from the JSON-encoded PublicKeyCredential (<a href="https://godoc-play.exe.xyz/chibklhpf6nn#ResponseBackedUp"><code>ResponseBackedUp</code></a>).</p>
+<p>Currently, there is no implementation; I would like to get feedback on the <a href="https://github.com/C2SP/C2SP/blob/push-oxkkyrwpqxot/passkey-record.md">passkey record format</a> and on <a href="https://godoc-play.exe.xyz/chibklhpf6nn">the Go API</a>, before potentially making a proposal for Go 1.28.</p>
+<h2 id="on-duplicate-credential-ids">On duplicate Credential IDs</h2>
+<p>One thing you can’t do with this storage model is ensure that different accounts don’t share passkeys with the same Credential ID, which the spec says you SHOULD do.</p>
+<p>The reason for that check is avoiding attacks where you look up a credential by its ID and land at the wrong public key or user ID because the attacker intentionally injected a colliding Credential ID through their own account.</p>
+<p>This attack simply can’t happen if you don’t have a Credential ID index in the first place! The index is only needed to mitigate an attack introduced by the existence of the index.</p>
+<p>Login attempts carry the user ID, and if you use that to look up the user’s passkey records to verify the login against, it doesn’t matter if some <em>other</em> user has a passkey with the same Credential ID, just like it doesn’t matter if two users share a password.</p>
+<p>Don’t let the attacker dictate your PRIMARY KEY and you won’t have PRIMARY KEY collision attacks.</p>
+<p>For more Go API previews, follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>.</p>
+<h2 id="the-picture">The picture</h2>
+<p>More from this year&rsquo;s <a href="https://www.centopassi.net/">CENTOPASSI</a> (a GPS-tracked motorcycle competition involving careful planning, 100 coordinates, and 1700 km of secondary roads over three and a half days). Here&rsquo;s a glimpse of Castel del Monte (AQ), after climbing down from a deserted and still snowy Campo Imperatore.</p>
+<p><img alt="A medieval town is seen from above, framed by trees. In the distance, woods, hills, and then a snow-streaked peak. The sky is grey and overcast." src="https://assets.buttondown.email/images/15df3c3e-98e0-486d-97e4-7542a638e7f4.jpeg?w=960&amp;fit=max" /></p>
+<p>My work is made possible by <a href="https://geomys.org">Geomys</a>, an organization of professional Go maintainers, which is funded by <a href="https://www.avalabs.org/">Ava Labs</a>, <a href="https://goteleport.com/">Teleport</a>, <a href="https://www.datadoghq.com/">Datadog</a>, <a href="https://tailscale.com/">Tailscale</a>, and <a href="https://sentry.io/">Sentry</a>. Through our retainer contracts they ensure the sustainability and reliability of our open source maintenance work and get a direct line to my expertise and that of the other Geomys maintainers. (Learn more in the <a href="https://words.filippo.io/geomys">Geomys announcement</a>.)
+Here are a few words from some of them!</p>
+<p>Teleport — For the past five years, attacks and compromises have been shifting from traditional malware and security breaches to identifying and compromising valid user accounts and credentials with social engineering, credential theft, or phishing. <a href="https://goteleport.com/platform/identity/?utm=filippo">Teleport Identity</a> is designed to eliminate weak access patterns through access monitoring, minimize attack surface with access requests, and purge unused permissions via mandatory access reviews.</p>
+<p>Ava Labs — We at <a href="https://www.avalabs.org">Ava Labs</a>, maintainer of <a href="https://github.com/ava-labs/avalanchego">AvalancheGo</a> (the most widely used client for interacting with the <a href="https://www.avax.network">Avalanche Network</a>), believe the sustainable maintenance and development of open source cryptographic protocols is critical to the broad adoption of blockchain technology. We are proud to support this necessary and impactful work through our ongoing sponsorship of Filippo and his team.</p>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">934ab302-3024-430f-856d-f850cdbedbb4</guid>
+      <pubDate>Mon, 20 Jul 2026 22:33:32 +0000</pubDate>
+    </item>
+    <item>
+      <title>Vulnerability Reports Are Not Special Anymore</title>
+      <link>https://words.filippo.io/vuln-reports/</link>
+      <description>We needed the insight and confidentiality to protect our users, but now that anyone can get the same results from LLM?</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>A requirement for staying sane while working in public as an open source maintainer is realizing that every issue, PR, and piece of feedback is a present, not an obligation. You can accept it, ignore it, and use it partially or not at all.</p>
+<p>Except…</p>
+<p>For years, as lead of the Go Security team at the time,<sup id="fnref:lead"><a class="footnote-ref" href="#fn:lead">1</a></sup> I&rsquo;ve told new team members that it doesn’t apply to vulnerability reports. No, vulnerability reports are special. Security researchers are doing us a favor by reporting things confidentially instead of doing full disclosure, so we owe them something, which is not true of regular issues opened on the issue tracker.<sup id="fnref:coc"><a class="footnote-ref" href="#fn:coc">2</a></sup></p>
+<p>Different projects have different policies, but the general expectations are responsiveness and attribution. We’re supposed to acknowledge reports quickly, investigate them, keep the reporter posted, and eventually credit them with the discovery.</p>
+<p>Why? Well, because the reporter is providing <em>us</em> a service, not asking us to provide one (such as a bug fix or a feature implementation). In exchange for responsiveness and attribution, they are offering precious insight and the confidentiality we need to ship a fix before attackers ship an exploit.<sup id="fnref:discl"><a class="footnote-ref" href="#fn:discl">3</a></sup></p>
+<p>Ultimately, it all stems from our responsibility to our users. The security researchers are not special, the insight and confidentiality are, and we need them to keep our users safe. Ignoring a security report communicates you don’t care about users’ security, and it’s rightly a reason for shame.</p>
+<p>Except…</p>
+<p>It’s 2026 and none of the premises are true anymore.</p>
+<p>LLMs are as good as almost any security researcher, and anyone<sup id="fnref:ymmv"><a class="footnote-ref" href="#fn:ymmv">4</a></sup> can run them. The maintainers can run them. The attackers can run them.</p>
+<p>The insight is not scarce and precious anymore. The bottleneck now is not finding potential issues but assessing which ones are real. Unless there’s already a trust relationship, external researchers can’t meaningfully contribute to that triage process, and picking through an LLM’s output or through a <code>security@</code> inbox has approximately the same signal-to-noise ratio.</p>
+<p>Confidentiality, embargoes, and coordination also don’t matter nearly as much as they used to. The attackers don’t need to read the full disclosure post to learn about the vulnerability: they can ask their own LLM and, in fact, they also probably have the same triage bottleneck as the defenders do.</p>
+<p>The years of vulnerability reports being special might be over, as weird and uncomfortable<sup id="fnref:uncomfy"><a class="footnote-ref" href="#fn:uncomfy">5</a></sup> as that feels. Triage, rapid remediation, and—as ever—prevention are the job now. And we should all figure out how to run LLM analysis in CI, I suppose.</p>
+<h2 id="a-couple-comments">A couple comments</h2>
+<p>This post rapidly generated some interesting discussion, which gives me the opportunity to add some nuance.</p>
+<p>On Bluesky, <a href="https://bsky.app/profile/apenwarr.ca/post/3moylfvoyi22y">Avery Pennarun points out things will change again</a>.</p>
+<blockquote>
+<p>I’m not sure I agree. There’s been a step change in ability to find vulns, but the only stable outcome (once we get there) is fewer vulns getting released. When that happens there will be a new higher bar and finding them will be hard again. Unclear we should optimize for the short term dynamics.</p>
+</blockquote>
+<p>The current dynamic will persist at least for as long as the models keep getting better. I honestly have no idea how the profession will look after that, so this whole post is more of a current observation than a long-term prediction.</p>
+<p>On Lobsters, <a href="https://lobste.rs/s/bcjwwn/vulnerability_reports_are_not_special#c_h1bnk0">Frederik Braun calls out how there are still some vulnerability reports that are special</a>.</p>
+<blockquote>
+<p>Special vulnerability reports should be treated as special and it is on the defender to work on better verification and published threat models such that people can meet (and verify) a new, higher bar for what constitutes a great report.</p>
+</blockquote>
+<p>I agree, whether officially or unofficially there will need to be a process for special reports: the extremely high severity ones, the ones from highly trusted sources. Maybe the next task of security teams is getting good at classifying reports rapidly into special and not special buckets.</p>
+<p>On Hacker News, <a href="https://news.ycombinator.com/item?id=48653907">William Woodruff confirms most reports are real, and not special anymore</a>.</p>
+<blockquote>
+<p>I agree with this. One of the consequences of the &ldquo;vulnpocalpyse&rdquo; is that it&rsquo;s become even harder to sift through the noise: I triage well over a dozen reports a week, many of which are &ldquo;real&rdquo; in the sense that they reflect a genuine defect but otherwise have an unclear impact on a typical user. This has always been true of the median vulnerability report, but the volume means that I now lean much more heavily away from coordinated disclosure.</p>
+<p>One flipside to this is that, because many of these bugs are &ldquo;shallow&rdquo; to LLMs, it&rsquo;s actually easier than ever to moderate the worst participants in your vulnerability program &ndash; if someone sends you slop, you can just ban them and wait for the next, better orchestrated LLM to send you a better report for the same vulnerability.</p>
+</blockquote>
+<p>Imagine being able to freely ban researchers just one year ago!</p>
+<p>Still on Hacker News, Juho Forsén, one of the most prolific reporters of Go security issues, wrote <a href="https://news.ycombinator.com/item?id=48656038">a long interesting comment</a> that makes the argument that instead we should lean harder into trust relationships with individual researchers. It&rsquo;d certainly be worth it with Juho, in retrospect, but it&rsquo;s unclear if it would pay off often enough, in the same way that training new contributors who might leave the project in a month or two is not always worth it.</p>
+<p>For more, subscribe or follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>.</p>
+<h2 id="the-picture">The picture</h2>
+<p>A few weeks ago, like every year, I ran the <a href="https://centopassi.net">CENTOPASSI</a>, a GPS-tracked motorcycle competition involving careful planning, 100 coordinates, and 1700 km of secondary roads over three days and a half. It always takes me to incredible places, like this abandoned bauxite mine in Puglia.</p>
+<p><img alt="A tower and a crane, both brown rusted metal structures, against a bright blue sky, with a golden field in the foreground." src="https://assets.buttondown.email/images/1ec4ddf5-598f-4d72-8d55-10dc1328aa76.jpeg?w=960&amp;fit=max" /></p>
+<p>My work is made possible by <a href="https://geomys.org">Geomys</a>, an organization of professional Go maintainers, which is funded by <a href="https://www.avalabs.org/">Ava Labs</a>, <a href="https://goteleport.com/">Teleport</a>, <a href="https://www.datadoghq.com/">Datadog</a>, <a href="https://tailscale.com/">Tailscale</a>, and <a href="https://sentry.io/">Sentry</a>. Through our retainer contracts they ensure the sustainability and reliability of our open source maintenance work and get a direct line to my expertise and that of the other Geomys maintainers. (Learn more in the <a href="https://words.filippo.io/geomys">Geomys announcement</a>.)
+Here are a few words from some of them!</p>
+<p>Teleport — For the past five years, attacks and compromises have been shifting from traditional malware and security breaches to identifying and compromising valid user accounts and credentials with social engineering, credential theft, or phishing. <a href="https://goteleport.com/platform/identity/?utm=filippo">Teleport Identity</a> is designed to eliminate weak access patterns through access monitoring, minimize attack surface with access requests, and purge unused permissions via mandatory access reviews.</p>
+<p>Ava Labs — We at <a href="https://www.avalabs.org">Ava Labs</a>, maintainer of <a href="https://github.com/ava-labs/avalanchego">AvalancheGo</a> (the most widely used client for interacting with the <a href="https://www.avax.network">Avalanche Network</a>), believe the sustainable maintenance and development of open source cryptographic protocols is critical to the broad adoption of blockchain technology. We are proud to support this necessary and impactful work through our ongoing sponsorship of Filippo and his team.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:lead">
+<p>A role I passed on to capable hands when I left Google, so despite still being involved in the maintenance of the Go project, none of this is the official position of the Go Security team.&#160;<a class="footnote-backref" href="#fnref:lead" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:coc">
+<p>This gets messy quickly at the intersection of vulnerability report handling and Code of Conduct enforcement. If a security vulnerability is reported by someone who is also violating the CoC, what do you do? Do you ignore it? Fix it silently? Realistically, there’s no squaring the circle. It comes down to a judgment call based on how egregious the behavior is, on whether it is private or affecting the community, and on the resources available to the team members servicing <code>security@</code>. It’s an interesting job.&#160;<a class="footnote-backref" href="#fnref:coc" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:discl">
+<p>There’s actually a lot of complex history to disclosure practices, and in a different era it was genuinely dangerous to report security issues: well-intentioned researchers were frequently met with legal threats or prosecution. It took the full disclosure movement to make the industry internalize how counterproductive and unreasonable that was. Part of the coordinated disclosure (or “responsible” disclosure, a morally loaded term I dislike) trade was a promise, implicit or otherwise, not to go after researchers. Thankfully, that angle is mostly irrelevant to the reality of open source in 2026: no researcher fears prosecution in reporting a security vulnerability, and no project should even imply prosecution is on the table as the alternative to its documented reporting policy.&#160;<a class="footnote-backref" href="#fnref:discl" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:ymmv">
+<p>Welp. Sort of. But give it 1-3 months and the open models will catch up.&#160;<a class="footnote-backref" href="#fnref:ymmv" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:uncomfy">
+<p>Just a few days ago, at the Geomys retreat, I was arguing that <a href="https://daniel.haxx.se/blog/2026/06/15/curl-summer-of-bliss/">curl’s month-long suspension of vulnerability reporting channels</a> was going too far, because it feels viscerally wrong to drop a security report on the floor. And yet, as I write this, I have no argument for servicing vulnerability reports being the best way to spend time to protect users. Gotta change to keep up with what the job actually is.&#160;<a class="footnote-backref" href="#fnref:uncomfy" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">04ee47ca-b3fa-404c-8341-59ac01e74387</guid>
+      <pubDate>Tue, 23 Jun 2026 13:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Quantum Computers Are Not a Threat to 128-bit Symmetric Keys</title>
+      <link>https://words.filippo.io/128-bits/</link>
+      <description>There is no need to update symmetric key sizes as part of the post-quantum transition, due to the details of how Grover&#39;s algorithm scales. Most authorities agree.</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>The <a href="https://words.filippo.io/crqc-timeline/">advancing threat of cryptographically-relevant quantum computers</a> has made it urgent to replace currently-deployed asymmetric cryptography primitives—key exchange (ECDH) and digital signatures (RSA, ECDSA, EdDSA)—which are vulnerable to <a href="https://en.wikipedia.org/wiki/Shor's_algorithm">Shor’s quantum algorithm</a>. It does not, however, impact existing symmetric cryptography algorithms (AES, SHA-2, SHA-3) or their key sizes.</p>
+<p>There’s a common misconception that quantum computers will “halve” the security of symmetric keys, requiring 256-bit keys for 128 bits of security. That is not an accurate interpretation of the speedup offered by quantum algorithms, it’s not reflected in any compliance mandate, and risks diverting energy and attention from actually necessary post-quantum transition work. The misconception is usually based on a misunderstanding of the applicability of a different quantum algorithm, <a href="https://en.wikipedia.org/wiki/Grover%27s_algorithm">Grover’s</a>.</p>
+<p><strong>AES-128 is safe against quantum computers. SHA-256 is safe against quantum computers. No symmetric key sizes have to change as part of the post-quantum transition.</strong> This is a near-consensus opinion amongst experts and standardization bodies and it needs to propagate to the rest of the IT community. The rest of this article backs up this claim both technically and with references to relevant authorities.</p>
+<h2 id="the-grover-speedup">The Grover speedup</h2>
+<p>Grover’s is a quantum algorithm that allows searching an input space of size <em>N</em> of an unstructured function <em>f</em> for the “right answer” in <math alttext="pi over 4 times the square root of N"><semantics><mrow><mi>π</mi><mo>/</mo><mn>4</mn><mo>×</mo><msqrt><mpadded depth="0"><mi>N</mi></mpadded></msqrt></mrow><annotation encoding="application/x-tex">\pi / 4 \times \sqrt{N}</annotation></semantics></math> invocations of <em>f</em>.</p>
+<p>This is commonly interpreted to mean that Grover’s algorithm can find an AES-128 key in <math alttext="2 to the 64"><semantics><mrow><msup><mn>2</mn><mn>64</mn></msup></mrow><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math> “time.” That is not the case in practice, because running such an attack as a single sequential thread would take hundreds of thousands of years, and parallelizing it makes its total cost grow.</p>
+<p>A few important things to understand about Grover’s algorithm:</p>
+<ul>
+<li>the function oracle <em>f</em> must be implemented as part of the quantum circuit;</li>
+<li>the oracle invocations have to happen one after the other in series;</li>
+<li>importantly, there is no better way to parallelize the attack than to partition the search space (<a href="https://arxiv.org/abs/quant-ph/9711070">Zalka, 1997</a>).</li>
+</ul>
+<p>Why does the last point matter? Because unlike regular bruteforce attacks, which are “embarrassingly parallel,” partitioning the search space degrades the Grover quadratic speedup.</p>
+<p>Consider a classical bruteforce of a 64-bit key, where each attempt takes 5 ns (~ 16 cycles at 3 GHz). Running that on a single CPU would take nearly</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="2 to the 64 times 5 nanoseconds is approximately 3,000 years">
+  <semantics>
+    <mrow>
+      <msup><mn>2</mn><mn>64</mn></msup><mo>×</mo><mn>5</mn><mtext>&#xA0;ns</mtext><mo>≈</mo><mn>3,000</mn><mtext>&#xA0;years.</mtext>
+    </mrow>
+    <annotation encoding="application/x-tex">2^{64} \times 5 \text{ ns} \approx 3{,}000 \text{ years}.</annotation>
+  </semantics>
+</math>
+
+<p>So we parallelize it across </p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="2 to the 16 equals 65,536 CPUs">
+  <semantics>
+    <mrow>
+      <msup><mn>2</mn><mn>16</mn></msup><mo>=</mo><mn>65,536</mn><mtext>&#xA0;CPUs</mtext>
+    </mrow>
+    <annotation encoding="application/x-tex">2^{16} = 65{,}536 \text{ CPUs}</annotation>
+  </semantics>
+</math>
+
+<p>each exploring</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="2 to the quantity 64 minus 16 equals 2 to the 48 keys">
+  <semantics>
+    <mrow>
+      <msup><mn>2</mn><mrow><mo>(</mo><mn>64</mn><mo>−</mo><mn>16</mn><mo>)</mo></mrow></msup><mo>=</mo><msup><mn>2</mn><mn>48</mn></msup><mtext>&#xA0;keys</mtext>
+    </mrow>
+    <annotation encoding="application/x-tex">2^{(64 - 16)} = 2^{48} \text{ keys}</annotation>
+  </semantics>
+</math>
+
+<p>in a little over </p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="2 to the 48 times 5 nanoseconds is approximately 16 days">
+  <semantics>
+    <mrow>
+      <msup><mn>2</mn><mn>48</mn></msup><mo>×</mo><mn>5</mn><mtext>&#xA0;ns</mtext><mo>≈</mo><mn>16</mn><mtext>&#xA0;days.</mtext>
+    </mrow>
+    <annotation encoding="application/x-tex">2^{48} \times 5 \text{ ns} \approx 16 \text{ days}.</annotation>
+  </semantics>
+</math>
+
+<p>Note how the total amount of work done across the system</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="2 to the 16 times 2 to the 48 equals 2 to the 64">
+  <semantics>
+    <mrow>
+      <msup><mn>2</mn><mn>16</mn></msup><mo>×</mo><msup><mn>2</mn><mn>48</mn></msup><mo>=</mo><msup><mn>2</mn><mn>64</mn></msup>
+    </mrow>
+    <annotation encoding="application/x-tex">2^{16} \times 2^{48} = 2^{64}</annotation>
+  </semantics>
+</math>
+
+<p>has not changed.</p>
+<p>This is why we consider 64-bit keys weak: because they can be searched in parallel efficiently. If the attack had to be sequential, there would be no risk.<sup id="fnref:dhoracle"><a class="footnote-ref" href="#fn:dhoracle">1</a></sup></p>
+<p>Let’s try the same with a Grover attack on 128-bit keys. Again, running</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="square root of 2 to the 128 equals 2 to the 64">
+  <semantics>
+    <mrow>
+      <msqrt><msup><mn>2</mn><mn>128</mn></msup></msqrt><mo>=</mo><msup><mn>2</mn><mn>64</mn></msup>
+    </mrow>
+    <annotation encoding="application/x-tex">\sqrt{2^{128}} = 2^{64}</annotation>
+  </semantics>
+</math>
+
+<p>operations in a row is infeasible, so we again parallelize the attack across <math alttext="2 to the 16"><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math> quantum computers, each exploring</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="2 to the quantity 128 minus 16 equals 2 to the 112 keys">
+  <semantics>
+    <mrow>
+      <msup><mn>2</mn><mrow><mo>(</mo><mn>128</mn><mo>−</mo><mn>16</mn><mo>)</mo></mrow></msup><mo>=</mo><msup><mn>2</mn><mn>112</mn></msup><mtext>&#xA0;keys.</mtext>
+    </mrow>
+    <annotation encoding="application/x-tex">2^{(128 - 16)} = 2^{112} \text{ keys}.</annotation>
+  </semantics>
+</math>
+
+<p>Each instance will need to do</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="square root of 2 to the 128 divided by 2 to the 16 equals 2 to the 56 work">
+  <semantics>
+    <mrow>
+      <msqrt><msup><mn>2</mn><mn>128</mn></msup><mpadded depth="0"><mo>/</mo></mpadded><msup><mn>2</mn><mn>16</mn></msup></msqrt><mo>=</mo><msup><mn>2</mn><mn>56</mn></msup><mtext>&#xA0;work.</mtext>
+    </mrow>
+    <annotation encoding="application/x-tex">\sqrt{2^{128} / 2^{16}} = 2^{56} \text{ work}.</annotation>
+  </semantics>
+</math>
+
+<p>Notice how that’s not <math alttext="2 to the 48"><semantics><mrow><msup><mn>2</mn><mn>48</mn></msup></mrow><annotation encoding="application/x-tex">2^{48}</annotation></semantics></math>!</p>
+<p>A <math alttext="2 to the 16"><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math> search space reduction factor inside a square root only saves <math alttext="2 to the 8"><semantics><mrow><msup><mn>2</mn><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">2^{8}</annotation></semantics></math> of work per instance, whereas classically it saves the full <math alttext="2 to the 16"><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math>.</p>
+<p>The total amount of work across the system went <em>up</em> from <math alttext="2 to the 64"><semantics><mrow><msup><mn>2</mn><mn>64</mn></msup></mrow><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math> to</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="2 to the 56 times 2 to the 16 equals 2 to the 72">
+  <semantics>
+    <mrow>
+      <msup><mn>2</mn><mn>56</mn></msup><mo>×</mo><msup><mn>2</mn><mn>16</mn></msup><mo>=</mo><msup><mn>2</mn><mn>72</mn></msup>
+    </mrow>
+    <annotation encoding="application/x-tex">2^{56} \times 2^{16} = 2^{72}</annotation>
+  </semantics>
+</math>
+
+<p>because we parallelized the attack, diluting the quadratic speedup in the process.</p>
+<h3 id="running-the-numbers">Running the numbers</h3>
+<p>That gives us the intuition for why Grover’s algorithm doesn’t parallelize. To decide if it’s still a threat we need to run the numbers with concrete orders of magnitude.</p>
+<p>First, we need to establish how many operations, or gates, in a row we can perform. To be conservative, let’s say that we have a fast-clock quantum architecture like superconducting qubits, and that a gate takes 1 µs.<sup id="fnref:speed"><a class="footnote-ref" href="#fn:speed">2</a></sup> If we are willing to keep the attack running (with no power outage or loss of fidelity!) for a decade, that gives us a maximum sequence of gates or “depth” of</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="10 years divided by 1 microsecond is approximately 2 to the 48">
+  <semantics>
+    <mrow>
+      <mn>10</mn><mtext>&#xA0;years</mtext><mo>/</mo><mn>1</mn><mtext>&#xA0;µs</mtext><mo>≈</mo><msup><mn>2</mn><mn>48</mn></msup>
+    </mrow>
+    <annotation encoding="application/x-tex">10 \text{ years} / 1 \text{ µs} \approx 2^{48}</annotation>
+  </semantics>
+</math>
+
+<p>Next, we need to know how many sequential gates it takes to compute AES-128 inside the quantum circuit. <a href="https://eprint.iacr.org/2025/1494">Liao and Luo (2025)</a> provide a highly optimized Grover oracle for AES-128 with a depth of 232 T-gates (and a circuit “width” of 724, which is roughly speaking the number of logical qubits operating in parallel).</p>
+<p>Now we can solve for the lowest parallelization factor that will keep each instance within a maximum depth of <math alttext="2 to the 48"><semantics><mrow><msup><mn>2</mn><mn>48</mn></msup></mrow><annotation encoding="application/x-tex">2^{48}</annotation></semantics></math> (i.e. completing in a decade on these hypothetical fast and perfect quantum computers).</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="pi over 4 times the square root of 2 to the 128 divided by x, times 232, equals 2 to the 48">
+  <semantics>
+    <mrow>
+      <mi>π</mi><mo>/</mo><mn>4</mn><mo>×</mo><msqrt><msup><mn>2</mn><mn>128</mn></msup><mpadded depth="0"><mo>/</mo></mpadded><mi>x</mi></msqrt><mo>×</mo><mn>232</mn><mo>=</mo><msup><mn>2</mn><mn>48</mn></msup>
+    </mrow>
+    <annotation encoding="application/x-tex">\pi / 4 \times \sqrt{2^{128} / x} \times 232 = 2^{48}</annotation>
+  </semantics>
+</math>
+
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="x is approximately 2 to the 47">
+  <semantics>
+    <mrow>
+      <mi>x</mi><mo>≈</mo><msup><mn>2</mn><mn>47</mn></msup>
+    </mrow>
+    <annotation encoding="application/x-tex">x \approx 2^{47}</annotation>
+  </semantics>
+</math>
+
+<p><strong>This means we’ll need 140 trillion quantum circuits of 724 logical qubits each operating in parallel for 10 years to break AES-128 with Grover’s.</strong></p>
+<p>Another way to measure the cost of that attack is its <em>DW</em> cost, the depth × width product, roughly equivalent to discussing the product of cycles and cores for classical computation.</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="pi over 4 times the square root of 2 to the 128 divided by 2 to the 47, times 232, times 724, times 2 to the 47, is approximately 2 to the 104.5">
+  <semantics>
+    <mrow>
+      <mi>π</mi><mo>/</mo><mn>4</mn><mo>×</mo><msqrt><msup><mn>2</mn><mn>128</mn></msup><mpadded depth="0"><mo>/</mo></mpadded><msup><mn>2</mn><mn>47</mn></msup></msqrt><mo>×</mo><mn>232</mn><mo>×</mo><mn>724</mn><mo>×</mo><msup><mn>2</mn><mn>47</mn></msup><mo>≈</mo><msup><mn>2</mn><mn>104.5</mn></msup>
+    </mrow>
+    <annotation encoding="application/x-tex">\pi / 4 \times \sqrt{2^{128} / 2^{47}} \times 232 \times 724 \times 2^{47} \approx 2^{104.5}</annotation>
+  </semantics>
+</math>
+
+<p>Note that unlike Shor’s algorithm instantiations (and quantum error correction) which have been getting drastically better over the years, there aren’t many terms in that formula that can improve. The only two that are open to optimization are the AES-128 Grover oracle depth (232) and width (724), but they contribute only 17 bits to the total cost, and there is probably little space left for improvement. <a href="https://eprint.iacr.org/2025/1494">Liao and Luo (2025)</a> shaved 7.5 bits off the very first estimate by <a href="https://arxiv.org/abs/1512.04965">Grassl et al. (2015)</a> and 1.5 bits off the earliest Grover-specific estimate of <a href="https://eprint.iacr.org/2019/1146">Jaques et al. (2019)</a>.</p>
+<h2 id="a-comparison-with-shors">A comparison with Shor’s</h2>
+<p>Speaking of Shor’s, how does this compare with the recently discussed quantum attacks against 256-bit elliptic curves? After all, there are people who believe or believed those to be infeasible, too, but <a href="https://words.filippo.io/crqc-timeline/">I’ve been arguing to take them seriously</a>.</p>
+<p><a href="https://arxiv.org/abs/2603.28846">Babbush et al. (2026)</a> claim a Shor’s execution in</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="70 million is approximately 2 to the 26 gates">
+  <semantics>
+    <mrow>
+      <mn>70M</mn><mo>≈</mo><msup><mn>2</mn><mn>26</mn></msup><mtext>&#xA0;gates</mtext>
+    </mrow>
+    <annotation encoding="application/x-tex">70\text{M} \approx 2^{26} \text{ gates}</annotation>
+  </semantics>
+</math>
+
+<p>which would take minutes on an architecture with “fast” gate time of 10 µs (which is 10 times slower than what we conservatively assumed above).</p>
+<math display="block" class="tml-display" style="display:block math; margin: 1em 0;" alttext="2 to the 104.5 divided by 2 to the 26 equals 2 to the 78.5">
+  <semantics>
+    <mrow>
+      <msup><mn>2</mn><mn>104.5</mn></msup><mo>/</mo><msup><mn>2</mn><mn>26</mn></msup><mo>=</mo><msup><mn>2</mn><mn>78.5</mn></msup>
+    </mrow>
+    <annotation encoding="application/x-tex">2^{104.5} / 2^{26} = 2^{78.5}</annotation>
+  </semantics>
+</math>
+
+<p><strong>Breaking AES-128 with Grover is 430,000,000,000,000,000,000,000 times more expensive than breaking 256-bit elliptic curves with Shor’s.</strong></p>
+<h2 id="nist-agrees">NIST agrees</h2>
+<p>The U.S. National Institute of Standards and Technology (NIST) is the standardization body that ran the international competition for post-quantum cryptography and wrote the ML-KEM and ML-DSA specification documents.</p>
+<p>NIST not only considers AES-128 to be safe, but <a href="https://csrc.nist.gov/Projects/Post-Quantum-Cryptography/Post-Quantum-Cryptography-Standardization/Evaluation-Criteria/Security-(Evaluation-Criteria)">made it <em>the benchmark</em> for the security of post-quantum primitives</a>. AES-128 is by definition a Category 1<sup id="fnref:cat1"><a class="footnote-ref" href="#fn:cat1">3</a></sup> post-quantum algorithm.</p>
+<p>In justifying the use of AES-128, NIST refers to the same observations we explained above, and introduces the concept of <em>MAXDEPTH</em> which is exactly the maximum serial computation that forces parallelization and limits Grover’s quadratic speedup.</p>
+<blockquote>
+<p>It is worth noting that the security categories based on these reference primitives provide substantially more quantum security than a naïve analysis might suggest. For example, categories 1, 3 and 5 are defined in terms of block ciphers, which can be broken using Grover’s algorithm, with a quadratic quantum speedup. But Grover’s algorithm requires a long-running serial computation, which is difficult to implement in practice. In a realistic attack, one has to run many smaller instances of the algorithm in parallel, which makes the quantum speedup less dramati[c].</p>
+</blockquote>
+<p>NIST’s calculation uses less optimized (and hence less conservative) AES quantum circuits (from <a href="https://arxiv.org/abs/1512.04965">Grassl et al. (2015)</a> instead of <a href="https://eprint.iacr.org/2025/1494">Liao and Luo (2025)</a>), but faster (and hence more conservative) logical gate speed. Nonetheless, it lands in the same ballpark and comes to the same conclusion.</p>
+<p>Further proof, <a href="https://nvlpubs.nist.gov/nistpubs/ir/2024/NIST.IR.8547.ipd.pdf">NIST IR 8547 ipd</a>, <em>Transition to Post-Quantum Cryptography Standards</em>, disallows all quantum-vulnerable algorithms from 2035. However, it reiterates that all AES key sizes remain allowed in Section 4.1.3.</p>
+<blockquote>
+<p>NIST’s existing standards in symmetric cryptography — including hash functions, XOFs, block ciphers, KDFs, and DRBGs — are significantly less vulnerable to known quantum attacks than the public-key cryptography standards in SP 800-56A, SP 800-56B, and FIPS 186. In particular, all NIST-approved symmetric primitives that provide at least 128 bits of classical security are believed to meet the requirements of at least Category 1 security within the system of five security strength categories for evaluating parameter sets in the NIST PQC standardization process (see Table 1). </p>
+</blockquote>
+<p>Finally, in the <a href="https://csrc.nist.gov/Projects/post-quantum-cryptography/faqs">Post-Quantum Cryptography FAQs</a>, there is an explicit answer to “should we double AES key sizes.” (Emphasis mine.)</p>
+<blockquote>
+<p>To protect against the threat of quantum computers, should we double the key length for AES now? (added 11/18/18)</p>
+<p>Grover’s algorithm allows a quantum computer to perform a brute force key search using quadratically fewer steps than would be required classically. Taken at face value, this suggests that an attacker with access to a quantum computer might be able to attack a symmetric cipher with a key up to twice as long as could be attacked by an attacker with access only to classical computers. However there are a number of mitigating factors suggesting that Grover’s algorithm will not speed up brute force key search as dramatically as one might suspect from this result. First of all, quantum computing hardware will likely be more expensive to build and use than classical hardware. Additionally, it was proven by Zalka in 1997 that in order to obtain the full quadratic speedup, all the steps of Grover’s algorithm must be performed in series. In the real world, where attacks on cryptography use massively parallel processing, the advantage of Grover’s algorithm will be smaller.</p>
+<p>Taking these mitigating factors into account, <strong>it is quite likely that Grover’s algorithm will provide little or no advantage in attacking AES, and AES 128 will remain secure for decades to come</strong>. Furthermore, even if quantum computers turn out to be much less expensive than anticipated, the known difficulty of parallelizing Grover’s algorithm suggests that both AES 192 and AES 256 will still be safe for a very long time. This of course assumes that no new cryptographic weaknesses, either with respect to classical or quantum cryptanalysis, are found in AES.</p>
+<p>Based on such understanding, <strong>current applications can continue to use AES with key sizes 128, 192, or 256 bits</strong>. NIST will issue guidance regarding any transitions of symmetric key algorithms and hash functions to protect against threats from quantum computers when we can foresee a transition need. Until then, users should follow the recommendations and guidelines NIST has already issued. In particular, anything with less than 112 bits of classical security should not be used.</p>
+</blockquote>
+<p>NIST is not equivocating about this at all: 128-bit keys are fine.</p>
+<h2 id="bsi-agrees">BSI agrees</h2>
+<p>What about other standards bodies? The German Federal Office for Information Security recently published <a href="https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/TechGuidelines/TG02102/BSI-TR-02102-1.pdf?__blob=publicationFile&amp;v=14">BSI TR-02102-1</a> <em>Cryptographic Mechanisms: Recommendations and Key Lengths</em> with “updates in the area of PQ cryptography.”</p>
+<p>In it, they mention Grover’s in passing and with less conclusiveness than NIST, but come to the same conclusion:</p>
+<blockquote>
+<p>The following block ciphers are recommended for use in new cryptographic systems:</p>
+<p>AES-128, AES-192, AES-256</p>
+</blockquote>
+<p>In the same publication, they recommend transitioning off quantum-vulnerable primitives (which notably does not include AES-128) even sooner than NIST:</p>
+<blockquote>
+<p>The sole use of classic key agreement mechanisms is only recommended until the end of 2031, see also Section 2.3. </p>
+</blockquote>
+<h2 id="samuel-jaques-agrees">Samuel Jaques agrees</h2>
+<p>Samuel Jaques is an assistant professor in the Department of Combinatorics and Optimization at the University of Waterloo, specializing in cryptography and quantum computing. You might be familiar with his <a href="https://sam-jaques.appspot.com/quantum_landscape">Landscape of Quantum Computing</a>.</p>
+<p>I found <a href="https://ches.iacr.org/2024/Jaques_CHES_2024.pdf">this 2024 slide deck</a> after having run all the numbers above, and I felt a bit silly having essentially re-done the same work two years later and with less domain expertise, but it’s actually encouraging how closely the conclusions match: the margin is wide enough and the relevance of guessing and optimization small enough, that we’re all repeatedly coming to equivalent conclusions.</p>
+<p><img alt="A slide saying &quot;Misconception: Because of the square-root speed-up, we should double key sizes&quot;" src="https://assets.buttondown.email/images/0f86b37f-5bdb-4151-928e-5e3812a29dc9.png?w=960&amp;fit=max" /></p>
+<p><img alt="A slide saying &quot;A surface-code based Grover search on AES-128 will never succeed.&quot;" src="https://assets.buttondown.email/images/a5958383-d8ea-4550-b00c-e97f052f6f1a.png?w=960&amp;fit=max" /></p>
+<p>He talks about how hard it is to build even a single logical qubit, which I am ignoring above because we are assuming a world where scalable quantum error correction <em>does</em> happen, or we wouldn’t be worried about asymmetric cryptography either.</p>
+<p>He also talks about decoherence, which I only hinted at by mentioning how unlikely it is that a quantum computer can <em>actually</em> operate for a decade uninterrupted, like we are conservatively assuming.</p>
+<p>He makes the excellent point that the right metric to optimize Grover oracle circuits against is depth² × width, because depth contributes both to cost and to hitting the maximum depth. This suggests the <a href="https://eprint.iacr.org/2025/1494">Liao and Luo (2025)</a> circuit might not be optimal, and he uses one from <a href="https://eprint.iacr.org/2022/683">Jang et al. (2022)</a> instead, but again comes to a very similar result.</p>
+<p>Finally, he points out that each logical T-gate in a surface code architecture requires <math alttext="2 to the 16"><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math> physical operations, so there are still terms missing in the formula before reaching a practical resource estimate.</p>
+<h2 id="why-not-switch-anyway-you-know-to-be-safe">Why not switch anyway, you know, to be safe?</h2>
+<p>The whole post-quantum transition is about mitigating speculative risk, so why not be “safe” with symmetric keys, too? Because resources are finite, churn has a cost, and coordination is important.</p>
+<p>The field is rushing to deploy post-quantum cryptography because experts are telling us <a href="https://words.filippo.io/crqc-timeline/">there is a concrete danger</a> to asymmetric cryptography. Conversely, <em>the same experts</em> are telling us that there is <em>not</em> any danger to symmetric cryptography.</p>
+<p>Symmetric encryption is separate enough from asymmetric encryption that we usually don’t get to switch both at the same time for minimal marginal cost. For example, changing the negotiated TLS key exchange and PKI signature algorithms has little to do with changing supported cipher suites.</p>
+<p><strong>Conflating necessary and unnecessary changes will cause needless churn and take resources away from the urgent updates.</strong> We’re lucky we can leave the symmetric cryptography (sub-)systems untouched; we should take that blessing and focus on the work that actually needs doing, <em>which is plenty</em>.</p>
+<p>There is also a complexity and coordination angle: transitioning any open ecosystem like TLS or anything that’s implemented across different libraries and programming languages requires agreeing on the target. It’s a lot easier to agree on something that’s technically accurate: we can either converge spontaneously or convince each other with technical arguments. Aiming for unnecessary and underspecified targets, instead, breeds interoperability issues and requires supporting multiple different idiosyncratic opinions, which introduces complexity.</p>
+<h2 id="what-about-cnsa-20">What about CNSA 2.0?</h2>
+<p>There is admittedly one compliance regime which requires 256-bit symmetric keys: <a href="https://media.defense.gov/2022/Sep/07/2003071836/-1/-1/0/CSI_CNSA_2.0_FAQ_.PDF">CNSA 2.0</a>.</p>
+<p>That’s not a quantum computing adjustment, though: CNSA 2.0 requires a 256-bit “security level” for everything, like its predecessor Suite B always did for the Top Secret classification, and indeed mandates ML-KEM-1024 and ML-DSA-87. As far as I can tell, its intention is to avoid the very same fragmentation introduced by “security levels” by picking one oversized primitive for all settings.</p>
+<p>By accepting AES-256 (instead of a non-existing AES-512) at the 256-bit security level, CNSA 2.0 also acknowledges that Grover’s algorithm doesn’t halve the security of AES.</p>
+<p>It’s likely Go will implement CNSA 2.0 profiles, if nothing else because “256-bit everything” is a well-defined target that’s unlikely to move. It’s not the “secure and reasonable” target I tend to prefer, but it’s something we can commit to, unlike “secure and reasonable but with a partial misunderstanding of the security of some primitives” which can mean different things to different people.</p>
+<h2 id="are-256-bit-keys-always-useless">Are 256-bit keys always useless?</h2>
+<p>I generally believe that 256-bit “security levels” are somewhere between a comfort blanket and numerology, because as a colleague put it recently “we don’t believe in counting to <math alttext="2 to the 128"><semantics><mrow><msup><mn>2</mn><mn>128</mn></msup></mrow><annotation encoding="application/x-tex">2^{128}</annotation></semantics></math>,” but that doesn’t mean 256-bit keys (or block sizes) are always useless to achieve the 128-bit security level.</p>
+<p>When collisions are a concern and <a href="https://en.wikipedia.org/wiki/Birthday_attack">birthday bounds</a> are in play, the security in bits really is halved, so you need e.g. a 256-bit hash output for 128 bits of collision security. (This is why SHA-128 doesn’t exist.) Similarly, multi-target attacks, where the adversary’s advantage is measured as the chance of breaking one of many messages/keys, can require additional margin depending on how nonces are used.</p>
+<p>These are concerns that are deep within the purview of the cryptography engineers designing the protocols, though, and not in scope for the policy-making or system administration choices. Well-designed protocols already account for all this. For example, TLS with AES-128 meets the 128-bit security level with large multi-target margins, thanks to its nonce design.</p>
+<p>As a cryptography engineer, I <em>do</em> wish all ciphers took 256-bit keys, as it would make my life easier, but</p>
+<ol>
+<li>we’ve already done the work of handling the 128-bit keys properly and switching now is going to be wasted effort we could instead put toward the actually urgent post-quantum transition; and</li>
+<li>AES-256 was unfortunately defined to perform more rounds than AES-128, making it needlessly slower.</li>
+</ol>
+<p>For more wishful-vs-real PQ migration, follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>.</p>
+<h2 id="the-picture">The picture</h2>
+<p>Last month I attended <a href="https://atmosphereconf.org/">AtmosphereConf 2026</a>, which was held at <a href="https://www.ubc.ca/">UBC</a>. The campus is so beautiful, and there’s a spectacular path through the forest to the beach, where you can watch the sun setting over the water.</p>
+<p><img alt="A wooden staircase through the green woods leads to a beach. Behind the foliage, a sunset." src="https://assets.buttondown.email/images/4de912cf-5147-4672-9800-4510d734d5ec.jpeg?w=960&amp;fit=max" /></p>
+<p>My work is made possible by <a href="https://geomys.org">Geomys</a>, an organization of professional Go maintainers, which is funded by <a href="https://www.avalabs.org/">Ava Labs</a>, <a href="https://goteleport.com/">Teleport</a>, <a href="https://tailscale.com/">Tailscale</a>, and <a href="https://sentry.io/">Sentry</a>. Through our retainer contracts they ensure the sustainability and reliability of our open source maintenance work and get a direct line to my expertise and that of the other Geomys maintainers. (Learn more in the <a href="https://words.filippo.io/geomys">Geomys announcement</a>.)
+Here are a few words from some of them!</p>
+<p>Teleport — For the past five years, attacks and compromises have been shifting from traditional malware and security breaches to identifying and compromising valid user accounts and credentials with social engineering, credential theft, or phishing. <a href="https://goteleport.com/platform/identity/?utm=filippo">Teleport Identity</a> is designed to eliminate weak access patterns through access monitoring, minimize attack surface with access requests, and purge unused permissions via mandatory access reviews.</p>
+<p>Ava Labs — We at <a href="https://www.avalabs.org">Ava Labs</a>, maintainer of <a href="https://github.com/ava-labs/avalanchego">AvalancheGo</a> (the most widely used client for interacting with the <a href="https://www.avax.network">Avalanche Network</a>), believe the sustainable maintenance and development of open source cryptographic protocols is critical to the broad adoption of blockchain technology. We are proud to support this necessary and impactful work through our ongoing sponsorship of Filippo and his team.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:dhoracle">
+<p>There are sequential attacks which indeed were misinterpreted as more practical than they are. For example, a <a href="https://mailarchive.ietf.org/arch/msg/cfrg/YDVS5Trpr6suig_VCFEOH6SOn8Q/">static Diffie-Hellman oracle attack against Curve25519 or ristretto255 requires <math alttext="2 to the 63.5"><semantics><mrow><msup><mn>2</mn><mn>63.5</mn></msup></mrow><annotation encoding="application/x-tex">2^{63.5}</annotation></semantics></math> oracle invocations</a>, which sound practical, except they need to be sequential, <a href="https://mailarchive.ietf.org/arch/msg/cfrg/1hlUJvXgPGHCBpy4vUGuenmHncY/">making the attack take two centuries in extremely optimal circumstances</a>.&#160;<a class="footnote-backref" href="#fnref:dhoracle" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:speed">
+<p>“Gate” here means <em>logical</em> T-gate, not physical gate. Superconducting qubits execute physical gates in ~100 ns, but a logical T-gate on an error-corrected surface-code machine is much slower. Published estimates for logical T-gate latency fall in the single-to-tens-of-microseconds range, so 1 µs sits at the conservative (for us) end.&#160;<a class="footnote-backref" href="#fnref:speed" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:cat1">
+<p>Is Category 1 enough? Don’t we use ML-KEM-768 and ML-DSA-44 because they are Category 3 and Category 2, respectively? We do that not because Category 1 is insufficient, but because there’s concern that lattice cryptanalysis might advance slightly, and move ML-KEM-768 or ML-DSA-44 down to Category 1. There is no equivalent worry around AES, which indeed was picked as the very <em>bar</em> for Category 1.&#160;<a class="footnote-backref" href="#fnref:cat1" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">0f203933-57c1-4b1b-a314-945d565dfe57</guid>
+      <pubDate>Mon, 20 Apr 2026 15:21:12 +0000</pubDate>
+    </item>
+    <item>
+      <title>A Cryptography Engineer’s Perspective on Quantum Computing Timelines</title>
+      <link>https://words.filippo.io/crqc-timeline/</link>
+      <description>The risk that cryptographically-relevant quantum computers materialize within the next few years is now high enough to be dispositive, unfortunately.</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>My position on the urgency of rolling out quantum-resistant cryptography has changed compared to just a few months ago. You might have heard this privately from me in the past weeks, but it’s time to signal and justify this change of mind publicly.</p>
+<p>There had been rumors for a while of expected and unexpected progress towards cryptographically-relevant quantum computers, but over the last week we got two public instances of it.</p>
+<p>First, <a href="https://research.google/blog/safeguarding-cryptocurrency-by-disclosing-quantum-vulnerabilities-responsibly/">Google published a paper revising down dramatically the estimated number of logical qubits and gates required to break 256-bit elliptic curves</a> like NIST P-256 and secp256k1, which makes the attack doable in minutes on fast-clock architectures like superconducting qubits. They weirdly<sup id="fnref:goofy"><a class="footnote-ref" href="#fn:goofy">1</a></sup> frame it around cryptocurrencies and mempools and salvaged goods or something, but the far more important implication are practical WebPKI MitM attacks.</p>
+<p>Shortly after, <a href="https://arxiv.org/abs/2603.28627">a different paper came out from Oratomic showing 256-bit elliptic curves can be broken in as few as 10,000 physical qubits if you have non-local connectivity</a>, like neutral atoms seem to offer, thanks to better error correction. This attack would be slower, but even a single broken key per month can be catastrophic.</p>
+<p>They have this excellent graph on page 2 (<em>Babbush et al.</em> is the Google paper, which they presumably had preview access to):</p>
+<p><img alt="graph of physical qubit cost over time" src="https://assets.buttondown.email/images/c768727d-01a9-4f44-919b-bab3c84cb81d.png?w=960&amp;fit=max" /></p>
+<p>Overall, it looks like everything is moving: the hardware is getting better, the algorithms are getting cheaper, the requirements for error correction are getting lower.</p>
+<p>I’ll be honest, I don’t actually know what all the physics in those papers means. That’s not my job and not my expertise. My job includes risk assessment on behalf of the users that entrusted me with their safety. What I know is what at least some actual experts are telling us.</p>
+<p>Heather Adkins and Sophie Schmieg <a href="https://blog.google/innovation-and-ai/technology/safety-security/cryptography-migration-timeline/">are telling us</a> that “quantum frontiers may be closer than they appear” and that <strong>2029</strong> is their deadline. That’s in 33 months, and no one had set such an aggressive timeline until this month.</p>
+<p>Scott Aaronson <a href="https://scottaaronson.blog/?p=9425">tells us</a> that the “clearest warning that [he] can offer in public right now about the urgency of migrating to post-quantum cryptosystems” is a vague parallel with how nuclear fission research stopped happening in public between 1939 and 1940.</p>
+<p>The timelines presented at RWPQC 2026, just a few weeks ago, were much tighter than a couple years ago, and are already partially obsolete. The joke used to be that quantum computers have been 10 years out for 30 years now. Well, not true anymore, the timelines have started progressing.</p>
+<p>If you are thinking “well, this could be bad, or it could be nothing!” I need you to recognize how <strong>immediately dispositive</strong> that is. The bet is not “are you 100% sure a CRQC will exist in 2030?”, the bet is “are you 100% sure a CRQC will NOT exist in 2030?” I simply don’t see how a non-expert can look at what the experts are saying, and decide “I know better, there is in fact &lt; 1% chance.” Remember that you are betting with your users’ lives.<sup id="fnref:audience"><a class="footnote-ref" href="#fn:audience">2</a></sup></p>
+<p>Put another way, even if the most likely outcome was no CRQC in our lifetimes, that would be completely irrelevant, because our users don’t want just better-than-even odds<sup id="fnref:odds"><a class="footnote-ref" href="#fn:odds">3</a></sup> of being secure.</p>
+<p>Sure, papers about an abacus and a dog are funny and can make you look smart and contrarian on forums. But that&rsquo;s not the job, and those arguments <a href="https://bas.westerbaan.name/notes/2026/04/02/factoring.html">betray a lack of expertise</a>. As Scott Aaronson <a href="https://scottaaronson.blog/?p=9665#comment-2029013">said</a>:</p>
+<blockquote>
+<p>Once you understand quantum fault-tolerance, asking “so when are you going to factor 35 with Shor’s algorithm?” becomes sort of like asking the Manhattan Project physicists in 1943, “so when are you going to produce at least a small nuclear explosion?”</p>
+</blockquote>
+<p>The job is not to be skeptical of things we’re not experts in, the job is to mitigate credible threats, and there are credible experts that are telling us about an imminent threat.</p>
+<p>In summary, it might be that in 10 years the predictions will turn out to be wrong, but at this point they might also be right soon, and that risk is now unacceptable.</p>
+<h2 id="now-what">Now what</h2>
+<p>Concretely, what does this mean? It means we need to ship.</p>
+<p>Regrettably, we’ve got to roll out what we have.<sup id="fnref:lattices"><a class="footnote-ref" href="#fn:lattices">4</a></sup> That means <strong>large ML-DSA signatures</strong> shoved in places designed for small ECDSA signatures, like X.509, with the exception of Merkle Tree Certificates for the WebPKI, which is thankfully <a href="https://security.googleblog.com/2026/02/cultivating-robust-and-efficient.html">far enough along</a>.</p>
+<p>This is <em>not</em> the article I wanted to write. I’ve had a pending draft for months now explaining we should ship PQ key exchange now, but take the time we still have to adapt protocols to larger signatures, because they were all designed with the assumption that signatures are cheap. That other article is now wrong, alas: we don’t have the time if we need to be finished by 2029 instead of 2035.</p>
+<p>For key exchange, the migration to ML-KEM is going well enough but:</p>
+<ol>
+<li>
+<p>Any <strong>non-PQ key exchange</strong> should now be considered a potential active compromise, worthy of warning the user <a href="https://www.openssh.org/pq.html">like OpenSSH does</a>, because it’s very hard to make sure all secrets transmitted over the connection or encrypted in the file have a shorter shelf life than three years.</p>
+</li>
+<li>
+<p>We need to forget about <strong>non-interactive key exchanges (NIKEs)</strong> for a while; we only have KEMs (which are only unidirectionally authenticated without interactivity) in the PQ toolkit.</p>
+</li>
+</ol>
+<p>It makes no more sense to deploy <strong>new schemes that are not post-quantum</strong>. I know, pairings were nice. I know, everything PQ is annoyingly large. I know, we had basically <em>just</em> figured out how to do ECDSA over P-256 safely. I know, there might not be practical PQ equivalents for threshold signatures or identity-based encryption. Trust me, I know it stings. But it is what it is.</p>
+<p><strong>Hybrid classic + post-quantum authentication makes no sense</strong> to me anymore and will only slow us down; we should go straight to pure ML-DSA-44.<sup id="fnref:44"><a class="footnote-ref" href="#fn:44">6</a></sup> Hybrid key exchange is reasonably easy, with ephemeral keys that don’t even need a type or wire format for the composite private key, and a couple years ago it made sense to take the hedge. Authentication is not like that, and even with <a href="https://www.ietf.org/archive/id/draft-ietf-lamps-pq-composite-sigs-15.html">draft-ietf-lamps-pq-composite-sigs-15</a> with its 18 composite key types nearing publication, we’d waste precious time collectively figuring out how to treat these composite keys and how to expose them to users. It’s also been two years since Kyber hybrids and we’ve gained significant confidence in the Module-Lattice schemes. Hybrid signatures cost time and complexity budget,<sup id="fnref:poor"><a class="footnote-ref" href="#fn:poor">5</a></sup> and the only benefit is protection if ML-DSA is classically broken <em>before the CRQCs come</em>, which looks like the wrong tradeoff at this point.</p>
+<p>In <strong>symmetric encryption</strong>, we don’t need to do anything, thankfully. There is a common misconception that protection from Grover requires 256-bit keys, but <a href="https://words.filippo.io/post-quantum-age/#128-bits-are-enough">that is based on an exceedingly simplified understanding of the algorithm</a>. A more accurate characterization is that with a circuit depth of 2⁶⁴ logical gates (the approximate number of gates that current classical computing architectures can perform serially in a decade) running Grover on a 128-bit key space would require a circuit size of 2¹⁰⁶. There’s been no progress on this that I am aware of, and indeed there are old proofs that <a href="https://arxiv.org/abs/quant-ph/9711070">Grover is optimal and its quantum speedup doesn’t parallelize</a>. Unnecessary 256-bit key requirements are harmful when bundled with the actually urgent PQ requirements, because they muddle the interoperability targets and they risk slowing down the rollout of asymmetric PQ cryptography.</p>
+<p>In my corner of the world, we’ll have to start thinking about what it means for half the <strong>cryptography packages in the Go standard library</strong> to be suddenly insecure, and how to balance the risk of downgrade attacks and backwards compatibility. It’s the first time in our careers we’ve faced anything like this: SHA-1 to SHA-256 was not nearly this disruptive,<sup id="fnref:sha1"><a class="footnote-ref" href="#fn:sha1">7</a></sup> and even that took forever with the occasional unexpected downgrade attack.</p>
+<p><strong>Trusted Execution Environments (TEEs)</strong> like Intel SGX and AMD SEV-SNP and in general hardware attestation are just f***d. All their keys and roots are not PQ and I heard of no progress in rolling out PQ ones, which at hardware speeds means we are forced to accept they might not make it, and can’t be relied upon. I had to reassess a whole project because of this, and I will probably downgrade them to barely &ldquo;defense in depth&rdquo; in my toolkit.</p>
+<p><strong>Ecosystems with cryptographic identities</strong> (like <a href="https://atproto.com">atproto</a> and, yes, cryptocurrencies) need to start migrating very soon, because if the CRQCs come before they are <em>done</em>, they will have to make extremely hard decisions, picking between letting users be compromised and bricking them.</p>
+<p>File encryption is especially vulnerable to store-now-decrypt-later attacks, so we’ll probably have to start warning and then erroring out on non-PQ <strong>age recipient types</strong> soon. It’s unfortunately only been a few months since we even added PQ recipients, in <a href="https://github.com/FiloSottile/age/releases/tag/v1.3.0">version 1.3.0</a>.<sup id="fnref:ietf"><a class="footnote-ref" href="#fn:ietf">8</a></sup></p>
+<p>Finally, this week I started <strong>teaching</strong> a PhD course in cryptography at the University of Bologna, and I&rsquo;m going to mention RSA, ECDSA, and ECDH only as legacy algorithms, because that’s how those students will encounter them in their careers. I know, it feels weird. But it is what it is.</p>
+<p>For more willing-or-not PQ migration, follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>.</p>
+<h2 id="the-picture">The picture</h2>
+<p>Traveling back from an excellent <a href="https://atmosphereconf.org/">AtmosphereConf 2026</a>, I saw my first aurora, from the north-facing window of a Boeing 747.</p>
+<p><img alt="Aurora borealis seen from an airplane window, with green vertical columns and curtains of light above a cloud layer, stars visible in the dark sky above." src="https://assets.buttondown.email/images/e29aa9d6-cb9e-40ee-9340-a2d128ddaabf.jpeg?w=960&amp;fit=max" /></p>
+<p>My work is made possible by <a href="https://geomys.org">Geomys</a>, an organization of professional Go maintainers, which is funded by <a href="https://www.avalabs.org/">Ava Labs</a>, <a href="https://goteleport.com/">Teleport</a>, <a href="https://tailscale.com/">Tailscale</a>, and <a href="https://sentry.io/">Sentry</a>. Through our retainer contracts they ensure the sustainability and reliability of our open source maintenance work and get a direct line to my expertise and that of the other Geomys maintainers. (Learn more in the <a href="https://words.filippo.io/geomys">Geomys announcement</a>.)
+Here are a few words from some of them!</p>
+<p>Teleport — For the past five years, attacks and compromises have been shifting from traditional malware and security breaches to identifying and compromising valid user accounts and credentials with social engineering, credential theft, or phishing. <a href="https://goteleport.com/platform/identity/?utm=filippo">Teleport Identity</a> is designed to eliminate weak access patterns through access monitoring, minimize attack surface with access requests, and purge unused permissions via mandatory access reviews.</p>
+<p>Ava Labs — We at <a href="https://www.avalabs.org">Ava Labs</a>, maintainer of <a href="https://github.com/ava-labs/avalanchego">AvalancheGo</a> (the most widely used client for interacting with the <a href="https://www.avax.network">Avalanche Network</a>), believe the sustainable maintenance and development of open source cryptographic protocols is critical to the broad adoption of blockchain technology. We are proud to support this necessary and impactful work through our ongoing sponsorship of Filippo and his team.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:goofy">
+<p>The whole paper is a bit goofy: it has a zero-knowledge proof for a quantum circuit that will certainly be rederived and improved upon before the actual hardware to run it on will exist. They seem to believe this is about responsible disclosure, so I assume this is just physicists not being experts in our field in the same way we are not experts in theirs.&#160;<a class="footnote-backref" href="#fnref:goofy" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:audience">
+<p>“You” is doing a lot of work in this sentence, but the audience for this post is a bit unusual for me: I’m addressing my colleagues and the decision-makers that gate action on deployment of post-quantum cryptography.&#160;<a class="footnote-backref" href="#fnref:audience" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:odds">
+<p>I had a reviewer object to an attacker probability of success of 1/536,870,912 (0.0000002%, 2⁻²⁹) after 2⁶⁴ work, correctly so, because in cryptography we usually target 2⁻³².&#160;<a class="footnote-backref" href="#fnref:odds" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:lattices">
+<p>Why trust the new stuff, though? There are two parts to it: the math and the implementation. The math is also not my job, so I again defer to experts like Sophie Schmieg, who <a href="https://keymaterial.net/2025/12/13/a-very-unscientific-guide-to-the-security-of-various-pqc-algorithms/">tells us that she is very confident in lattices</a>, and the NSA, who approved ML-KEM and ML-DSA at the Top Secret level for all national security purposes. It is also older than elliptic curve cryptography was when it first got deployed. (&ldquo;Doesn&rsquo;t the NSA lie to break our encryption?&rdquo; No, the NSA has never intentionally jeopardized US national security with a non-<a href="https://en.wikipedia.org/wiki/NOBUS">NOBUS</a> backdoor, and <a href="https://keymaterial.net/2025/11/27/ml-kem-mythbusting/">there is no way for ML-KEM and ML-DSA to hide a NOBUS backdoor</a>.) On the implementation side, I am actually very qualified to have an opinion, having made cryptography implementation and testing my niche. ML-KEM and ML-DSA are a lot easier to implement securely than their classical alternatives, and with the <a href="https://github.com/C2SP/wycheproof">better testing infrastructure</a> we have now I expect to see exceedingly few bugs in their implementations.&#160;<a class="footnote-backref" href="#fnref:lattices" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:poor">
+<p>One small exception in that if you <em>already</em> have the ability to convey multiple signatures from multiple public keys in your protocol, it can make sense to to &ldquo;poor man&rsquo;s hybrid signatures&rdquo; by just requiring 2-of-2 signatures from one classical public key and one pure PQ key. Some of the tlog ecosystem might pick this route, but that&rsquo;s <em>only</em> because the cost is significantly lowered by the existing support for nested n-of-m signing groups.&#160;<a class="footnote-backref" href="#fnref:poor" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:44">
+<p>Why ML-DSA-44 when we usually use ML-KEM-768 instead of ML-KEM-512? Because ML-KEM-512 is Level 1, while ML-DSA-44 is Level 2, so it already has a bit of margin against minor cryptanalytic improvements.&#160;<a class="footnote-backref" href="#fnref:44" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:sha1">
+<p>Because SHA-256 is a better plug-in replacement for SHA-1, because SHA-1 was a much smaller surface than all of RSA and ECC, and because SHA-1 was not <em>that</em> broken: it still retained preimage resistance and could still be used in HMAC and HKDF.&#160;<a class="footnote-backref" href="#fnref:sha1" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:ietf">
+<p>The delay was in large part due to my unfortunate decision of blocking on the availability of HPKE hybrid recipients, which blocked on the CFRG, which took <em>almost two years</em> to select a stable label string for X-Wing (January 2024) with ML-KEM (August 2024), despite making precisely no changes to the designs. The IETF should have an internal post-mortem on this, but I doubt we’ll see one.&#160;<a class="footnote-backref" href="#fnref:ietf" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">ef208827-6e2d-4fee-b876-bbbdc92c71d1</guid>
+      <pubDate>Mon, 06 Apr 2026 15:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Turn Dependabot Off</title>
+      <link>https://words.filippo.io/dependabot/</link>
+      <description>I recommend turning Dependabot off and replacing it with a pair of scheduled GitHub Actions, one running govulncheck, and the other running CI against the latest version of your dependencies.</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>Dependabot is a noise machine. It makes you feel like you’re doing work, but you’re actually discouraging more useful work. This is <em>especially</em> true for security alerts in the Go ecosystem.</p>
+<p>I recommend turning it off and replacing it with a pair of scheduled GitHub Actions, one running govulncheck, and the other running your test suite against the latest version of your dependencies.</p>
+<h2 id="a-little-case-study">A little case study</h2>
+<p>On Tuesday, I <a href="https://github.com/FiloSottile/edwards25519/security/advisories/GHSA-fw7p-63qq-7hpr">published a security fix</a> for <a href="https://filippo.io/edwards25519">filippo.io/edwards25519</a>. The <code>(*Point).MultiScalarMult</code> method would produce invalid results if the receiver was not the identity point.</p>
+<p>A lot of the Go ecosystem depends on filippo.io/edwards25519, mostly through <a href="https://github.com/go-sql-driver/mysql">github.com/go-sql-driver/mysql</a> (228k dependents only on GitHub). <a href="https://github.com/search?q=%22filippo.io%2Fedwards25519%22+%2F%5C.MultiScalarMult%2F+language%3AGo+-path%3A*_test.go&amp;type=code">Essentially no one uses <code>(*Point).MultiScalarMult</code>.</a></p>
+<p>Yesterday, Dependabot opened <a href="https://github.com/search?q=%22d1c650a+extra%3A+initialize+receiver+in+MultiScalarMult%22&amp;type=pullrequests">thousands of PRs</a> against unaffected repositories to update filippo.io/edwards25519. These PRs were accompanied by a security alert with <a href="https://github.com/advisories/GHSA-fw7p-63qq-7hpr">a nonsensical, made up CVSS v4 score</a> and by a worrying <a href="https://github.com/C2SP/wycheproof/pull/220">73% compatibility score</a>, allegedly based on the breakage the update is causing in the ecosystem. Note that the diff between v1.1.0 and v1.1.1 is <a href="https://github.com/FiloSottile/edwards25519/compare/v1.1.0...v1.1.1#diff-0d9d6ab39182b0d5344623ba5d70c2db0e05607b28b9f77067a7120d1ccdeb49">one line in the method no one uses</a>.</p>
+<p><img alt="the Dependabot alert" src="https://assets.buttondown.email/images/e10daca1-9504-4b3e-bbf5-71b3262b55a1.png?w=960&amp;fit=max" /></p>
+<p>We even got <a href="https://github.com/C2SP/wycheproof/pull/220">one of these alerts</a> for the Wycheproof repository, which <em>does not import the affected filippo.io/edwards25519 package at all</em>. Instead, it only imports the unaffected filippo.io/edwards25519/field package.</p>
+<pre><code>$ go mod why -m filippo.io/edwards25519
+# filippo.io/edwards25519
+github.com/c2sp/wycheproof/tools/twistcheck
+filippo.io/edwards25519/field
+</code></pre>
+<p>We have turned Dependabot off.</p>
+<h2 id="use-a-serious-vulnerability-scanner-instead">Use a serious vulnerability scanner instead</h2>
+<p>But isn’t this toil unavoidable, to prevent attackers from exploiting old vulnerabilities in your dependencies? Absolutely not!</p>
+<p>Computers are perfectly capable of doing the work of filtering out these irrelevant alerts for you. The <a href="https://go.dev/doc/security/vuln/">Go Vulnerability Database</a> has rich version, package, <em>and symbol</em> metadata for all Go vulnerabilities.</p>
+<p>Here’s <a href="https://pkg.go.dev/vuln/GO-2026-4503">the entry for the filippo.io/edwards25519 vulnerability</a>, also available in <a href="https://vuln.go.dev/ID/GO-2026-4503.json">standard OSV format</a>.</p>
+<pre><code>modules:
+    - module: filippo.io/edwards25519
+      versions:
+        - fixed: 1.1.1
+      vulnerable_at: 1.1.0
+      packages:
+        - package: filippo.io/edwards25519
+          symbols:
+            - Point.MultiScalarMult
+summary: Invalid result or undefined behavior in filippo.io/edwards25519
+description: |-
+    Previously, if MultiScalarMult was invoked on an
+    initialized point who was not the identity point, MultiScalarMult
+    produced an incorrect result. If called on an
+    uninitialized point, MultiScalarMult exhibited undefined behavior.
+cves:
+    - CVE-2026-26958
+credits:
+    - shaharcohen1
+    - WeebDataHoarder
+references:
+    - advisory: https://github.com/FiloSottile/edwards25519/security/advisories/GHSA-fw7p-63qq-7hpr
+    - fix: https://github.com/FiloSottile/edwards25519/commit/d1c650afb95fad0742b98d95f2eb2cf031393abb
+source:
+    id: go-security-team
+    created: 2026-02-17T14:45:04.271552-05:00
+review_status: REVIEWED
+</code></pre>
+<p>Any decent vulnerability scanner will <em>at the very least</em> filter based on the package, which requires a simple <code>go list -deps ./...</code>. This already silences a lot of noise, because it’s common and good practice for modules to separate functionality relevant to different dependents into different sub-packages.<sup id="fnref:pkgdeps"><a class="footnote-ref" href="#fn:pkgdeps">1</a></sup> For example, it would have avoided the false alert against the Wycheproof repository.</p>
+<p>If you use a third-party vulnerability scanner, you should demand at least package-level filtering.</p>
+<p><em>Good</em> vulnerability scanners will go further, though, and filter based on the reachability of the vulnerable <em>symbol</em> using static analysis. That’s what <a href="https://go.dev/doc/tutorial/govulncheck">govulncheck</a> does!</p>
+<pre><code>$ go mod why -m filippo.io/edwards25519
+# filippo.io/edwards25519
+filippo.io/sunlight/internal/ctlog
+github.com/google/certificate-transparency-go/trillian/ctfe
+github.com/go-sql-driver/mysql
+filippo.io/edwards25519
+
+$ govulncheck ./...
+=== Symbol Results ===
+
+No vulnerabilities found.
+
+Your code is affected by 0 vulnerabilities.
+This scan also found 1 vulnerability in packages you import and 2
+vulnerabilities in modules you require, but your code doesn't appear to call
+these vulnerabilities.
+Use '-show verbose' for more details.
+</code></pre>
+<p>govulncheck noticed that my project indirectly depends on filippo.io/edwards25519 through github.com/go-sql-driver/mysql, which does not make the vulnerable symbol reachable, so it chose not to notify me.</p>
+<p>If you want, you can tell it to show the package- and module-level matches.</p>
+<pre><code>$ govulncheck -show verbose,color ./...
+Fetching vulnerabilities from the database...
+
+Checking the code against the vulnerabilities...
+
+The package pattern matched the following 16 root packages:
+  filippo.io/sunlight
+  filippo.io/sunlight/internal/stdlog
+  [...]
+Govulncheck scanned the following 54 modules and the go1.26.0 standard library:
+  filippo.io/sunlight
+  crawshaw.io/sqlite@v0.3.3-0.20220618202545-d1964889ea3c
+  filippo.io/bigmod@v0.0.3
+  filippo.io/edwards25519@v1.1.0
+  filippo.io/keygen@v0.0.0-20240718133620-7f162efbbd87
+  filippo.io/torchwood@v0.8.0
+  [...]
+
+=== Symbol Results ===
+
+No vulnerabilities found.
+
+=== Package Results ===
+
+Vulnerability #1: GO-2026-4503
+    Invalid result or undefined behavior in filippo.io/edwards25519
+  More info: https://pkg.go.dev/vuln/GO-2026-4503
+  Module: filippo.io/edwards25519
+    Found in: filippo.io/edwards25519@v1.1.0
+    Fixed in: filippo.io/edwards25519@v1.1.1
+
+=== Module Results ===
+
+Vulnerability #1: GO-2025-4135
+    Malformed constraint may cause denial of service in
+    golang.org/x/crypto/ssh/agent
+  More info: https://pkg.go.dev/vuln/GO-2025-4135
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.44.0
+    Fixed in: golang.org/x/crypto@v0.45.0
+
+Vulnerability #2: GO-2025-4134
+    Unbounded memory consumption in golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2025-4134
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.44.0
+    Fixed in: golang.org/x/crypto@v0.45.0
+
+Your code is affected by 0 vulnerabilities.
+This scan also found 1 vulnerability in packages you import and 2
+vulnerabilities in modules you require, but your code doesn't appear to call
+these vulnerabilities.
+</code></pre>
+<p>It’s easy to integrate govulncheck into your processes or scanners, either using the <code>govulncheck -json</code> CLI or the <a href="https://pkg.go.dev/golang.org/x/vuln/scan">golang.org/x/vuln/scan</a> Go API.</p>
+<h3 id="replace-dependabot-with-a-govulncheck-github-action">Replace Dependabot with a govulncheck GitHub Action</h3>
+<p>You can replace Dependabot security alerts with this GitHub Action.</p>
+<pre><code>name: govulncheck
+on:
+  push:
+  pull_request:
+  schedule: # daily at 10:22 UTC
+    - cron: '22 10 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  govulncheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - run: |
+          go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+</code></pre>
+<p>It will run every day and only notify you if there is an actual vulnerability you should pay attention to.</p>
+<h3 id="the-cost-of-alert-fatigue">The cost of alert fatigue</h3>
+<p>False positive alerts are not only a waste of time, they also reduce security by causing alert fatigue and making proper triage impractical.</p>
+<p>A security vulnerability should be assessed for its impact: production might need to be updated, secrets rotated, users notified! A business-as-usual dependency bump is a woefully insufficient remediation for an actual vulnerability, but it’s the only practical response to the constant stream of low-value Dependabot alerts.</p>
+<p>This is why as Go Security Team lead back in 2020–2021 I insisted the team invest in staffing the Go Vulnerability Database and implement a vulnerability scanner with static analysis filtering.</p>
+<p>The govulncheck Action will not automatically open a PR for you, and that’s a good thing! Now that security alerts are not mostly noise, you can afford to actually look at them and take them seriously, including any required remediation.</p>
+<p>Noisy vulnerability scanners also impact the open source ecosystem. I often get issues and PRs demanding I update the dependencies of my projects due to vulnerabilities that don’t affect them, because someone’s scanner is failing to filter them. That’s extra toil dropped at the feet of open source maintainers, which is unsustainable. The maintainer’s <a href="https://geomys.org/standard-of-care">responsibility</a> is making sure projects are not affected by security vulnerabilities. The responsibility of scanning tools is making sure they don&rsquo;t disturb their users with false positives.</p>
+<h2 id="test-against-latest-instead-of-updating">Test against latest instead of updating</h2>
+<p>The other purpose of Dependabot is to keep dependencies up to date, regardless of security vulnerabilities. Your practices and requirements will vary, but I find this misguided, too.</p>
+<p>Dependencies should be updated according to <em>your</em> development cycle, not the cycle of each of your dependencies. For example you might want to update dependencies all at once when you begin a release development cycle, as opposed to when each dependency completes theirs.</p>
+<p>There are two benefits to quick updates, though: first, you can notice and report (or fix) breakage more rapidly, instead of being stalled by an incompatibility that could have been addressed a year prior; second, you reduce your patch delta <em>in case</em> you need to update due to a security vulnerability, reducing the risk of having to rush through a refactor or unrelated fixes.</p>
+<p>You can capture both of those benefits without actually updating the dependencies by simply running CI against the latest versions of your dependencies every day. You just need to run <code>go get -u -t ./...</code> before your test suite. In the npm ecosystem, you just run <code>npm update</code> instead of <code>npm ci</code>.</p>
+<p>This way, you will still be alerted quickly of any potential issues, without having to pay attention to unproblematic updates, which you can defer to whenever fits your project best.</p>
+<p>This is a lot safer, too, because malicious code recently added to a dependency will not rapidly reach users or production, but only CI. Supply chain attacks have a short half-life! You can further mitigate the risk by using a CI sandboxing mechanism like <a href="https://github.com/geomys/sandboxed-step">geomys/sandboxed-step</a>, which uses gVisor to remove <a href="https://words.filippo.io/compromise-survey/#readwrite-ci-permissions-0-root-2-contributing">the ambient authority that GitHub Actions grants every workflow, including supposedly read-only ones</a>.</p>
+<pre><code>name: Go tests
+on:
+  push:
+  pull_request:
+  schedule: # daily at 10:22 UTC
+    - cron: '22 10 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go:
+          - { go-version: stable }
+          - { go-version-file: go.mod }
+        deps:
+          - locked
+          - latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ matrix.go.go-version }}
+          go-version-file: ${{ matrix.go.go-version-file }}
+      - uses: geomys/sandboxed-step@v1.2.1
+        with:
+          run: |
+            if [ &quot;${{ matrix.deps }}&quot; = &quot;latest&quot; ]; then
+              go get -u -t ./...
+            fi
+            go test -v ./...
+</code></pre>
+<p>For more spicy open source opinions, follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>.</p>
+<h2 id="the-picture">The picture</h2>
+<p>The Tevere has overflowed its lower banks, so a lot of previously familiar landscapes have changed slightly, almost eerily. This is the first picture I took after being able to somewhat safely descend onto (part of) the river&rsquo;s banks.</p>
+<p><img alt="A tall embankment wall rises on the left, a river on the right, and a cobblestone road in the middle. Trees are partially submerged on the edge of the river. In the distance, Roman bridge ruins." src="https://assets.buttondown.email/images/9bea93bf-77e5-44cf-9ae5-ada68918cf6a.jpeg?w=960&amp;fit=max" /></p>
+<p>My work is made possible by <a href="https://geomys.org">Geomys</a>, an organization of professional Go maintainers, which is funded by <a href="https://www.avalabs.org/">Ava Labs</a>, <a href="https://goteleport.com/">Teleport</a>, <a href="https://tailscale.com/">Tailscale</a>, and <a href="https://sentry.io/">Sentry</a>. Through our retainer contracts they ensure the sustainability and reliability of our open source maintenance work and get a direct line to my expertise and that of the other Geomys maintainers. (Learn more in the <a href="https://words.filippo.io/geomys">Geomys announcement</a>.)
+Here are a few words from some of them!</p>
+<p>Teleport — For the past five years, attacks and compromises have been shifting from traditional malware and security breaches to identifying and compromising valid user accounts and credentials with social engineering, credential theft, or phishing. <a href="https://goteleport.com/platform/identity/?utm=filippo">Teleport Identity</a> is designed to eliminate weak access patterns through access monitoring, minimize attack surface with access requests, and purge unused permissions via mandatory access reviews.</p>
+<p>Ava Labs — We at <a href="https://www.avalabs.org">Ava Labs</a>, maintainer of <a href="https://github.com/ava-labs/avalanchego">AvalancheGo</a> (the most widely used client for interacting with the <a href="https://www.avax.network">Avalanche Network</a>), believe the sustainable maintenance and development of open source cryptographic protocols is critical to the broad adoption of blockchain technology. We are proud to support this necessary and impactful work through our ongoing sponsorship of Filippo and his team.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:pkgdeps">
+<p>This also makes it possible to prune the tree of dependencies only imported by packages that are not relevant to a specific dependent, which has a large security benefit.&#160;<a class="footnote-backref" href="#fnref:pkgdeps" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">78167567-16ac-421c-87ea-c8632d59cb62</guid>
+      <pubDate>Fri, 20 Feb 2026 19:48:08 +0000</pubDate>
+    </item>
+    <item>
+      <title>Inspecting the Source of Go Modules</title>
+      <link>https://words.filippo.io/go-source/</link>
+      <description>Code hosts like GitHub don&#39;t necessarily show the correct source of Go modules. pkg.geomys.dev is a new convenient viewer for module source.</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>Go has indisputably the best package integrity story of any programming language ecosystem. The <a href="https://golang.org/design/25530-sumdb">Go Checksum Database</a> guarantees that every Go client in the world is using the same source for a given Go module and version, forever.</p>
+<p>It works despite the decentralized nature of Go modules, which can be fetched directly from their origin based on the import path. (For example, you can fetch v1.2.3 of <code>github.com/example/mod</code> by cloning the git repository and exporting the v1.2.3 tag. <code>GOPROXY=direct</code> forces this.<sup id="fnref:direct"><a class="footnote-ref" href="#fn:direct">1</a></sup>)</p>
+<p>The Checksum Database stores the cryptographic hash of a module version the first time it is used across the ecosystem, and then provides that same checksum to every Go client going forward. If e.g. a git tag were force-pushed or a code host were to try to serve targeted versions to some clients, the <code>go</code> tool would notice the mismatch and fail the fetch.</p>
+<p>This is vastly more practical than requiring module authors to manage keys, but provides comparable security, because the author themselves can verify the checksum in the Checksum Database matches the one they developed. Moreover, the Checksum Database is a <a href="https://research.swtch.com/tlog">transparency log</a>, which prevents even the database operator (i.e. Google) from falsifying or hiding entries.</p>
+<p>However, any time we <strong>read code directly from the code host</strong> we introduce a weak link in this chain. For example, there is no guarantee that the code displayed at <code>https://github.com/example/mod/blob/v1.2.3/exp.go</code> is the actual contents of <code>exp.go</code> from v1.2.3 of module <code>github.com/example/mod</code>: GitHub allows force-pushing git tags and even built its recommended GitHub Actions workflows on top of mutable tags.</p>
+<p>Last year this was taken advantage of to make a classic <a href="https://en.wikipedia.org/wiki/Typosquatting">typosquatting</a> attack harder to identify. <a href="https://www.heise.de/en/news/Typosquatting-in-the-Go-ecosystem-Fake-BoltDB-package-discovered-10270367.html">A fake BoltDB module was published with malicious code</a>, and then innocent code was force-pushed to GitHub. Some commenters described this as exploiting the Go Modules Mirror’s cache, but it is better understood as exploiting the natural lack of verification in the GitHub web interface, which doesn’t show the authentic (and in this case malicious) source of a module version, as used by actual Go tooling.<sup id="fnref:github"><a class="footnote-ref" href="#fn:github">2</a></sup> This is similar to how sometimes malicious packages are published to npm and then linked to GitHub repositories with innocent code.</p>
+<p>The solution when reviewing modules locally is to use a command like</p>
+<pre><code>cd $(go mod download -json filippo.io/age@v1.3.1 | jq -r .Dir)
+</code></pre>
+<p>to fetch the correct source.<sup id="fnref:agent"><a class="footnote-ref" href="#fn:agent">3</a></sup> We are also <a href="https://github.com/golang/go/issues/68669#issuecomment-2755906892">working on a <code>go mod verify -tag</code> command</a> to verify the contents of a local git repository against the Go Checksum Database, which can also be used by module authors to check that the contents of the Checksum Database are correct.</p>
+<p>However, pkg.go.dev still links to unverified code hosts, and clicking on pkg.go.dev source links is very convenient.</p>
+<p>Russ Cox made a simple service to view the source of a Go module at <a href="https://go-mod-viewer.appspot.com/">go-mod-viewer.appspot.com</a>.</p>
+<p><a href="https://pkg.geomys.dev">pkg.geomys.dev</a> is a new similar service with optional syntax highlighting, line and <a href="https://pkg.geomys.dev/filippo.io/age@v1.3.1/tag/tag.go#L105-L109">line range linking</a>, multiple fonts, automatic dark mode, and a <a href="https://pkg.geomys.dev/filippo.io/age@v1.3.1">file tree</a> and <a href="https://pkg.geomys.dev/filippo.io/age">module versions</a> browser.</p>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/VYWLGzbZKSE?si=PjOXiLEzx-umyogs&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<p>You can use it manually by replacing <code>go.dev</code> with <code>geomys.dev</code> in any pkg.go.dev URL, or you can install the companion browser extension for Chrome and Firefox, which replaces links to code hosts in pkg.go.dev pages with links to pkg.geomys.dev.</p>
+<style>
+    .extension-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+        margin: 1em 0;
+    }
+    .extension-buttons a {
+        display: inline-block;
+    }
+    .extension-buttons img {
+        height: 48px;
+    }
+</style>
+<div class="extension-buttons">
+    <a href="https://chromewebstore.google.com/detail/pkggeomysdev-source-links/kehcbeihpiighnghampfaiapahlbjlgl"><picture>
+        <source srcset="https://pkg.geomys.dev/assets/chrome-web-store-badge-border.png" media="(prefers-color-scheme: dark)">
+        <img src="https://pkg.geomys.dev/assets/chrome-web-store-badge.png" alt="Available in the Chrome Web Store">
+    </picture></a>
+    <a href="https://addons.mozilla.org/en-US/firefox/addon/geomys-source-links/"><img src="https://pkg.geomys.dev/assets/firefox-addon-badge.svg" alt="Get the Add-on for Firefox"></a>
+</div>
+
+<p>The service works by making <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests">HTTP Range requests</a> directly to the module version’s zip file, and decompressing the file in the browser, without having to fetch the whole archive. Once <a href="https://github.com/golang/go/issues/77496">proxy.golang.org fixes their CORS configuration</a> it will work without any Geomys backend.</p>
+<p>Currently, it trusts the Google Modules Proxy to serve the correct zip files, without checking the transparency log proof. I plan to implement optional proof checking once proxy.golang.org CORS is fixed, including <a href="https://sourcespotter.com/sumdb/">third-party gossip</a>. Unfortunately, checking the proof does require fetching the whole module version’s zip archive to compute the dirhash, which is included in the Checksum Database (and in go.sum).</p>
+<p>For updates, follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>.</p>
+<h2 id="the-picture">The picture</h2>
+<p>I recently went to Paris and found the Tour Eiffel elevator to be more fascinating than the tower itself. Whatever that says about me.</p>
+<p><img alt="A shot of the Tour Eiffel from the inside, looking up. A web of metal with the yellow elevator and its rails in the middle." src="https://assets.buttondown.email/images/0c2a763b-ba3a-4d2c-8ecf-263871d7b4b6.jpeg?w=960&amp;fit=max" /></p>
+<p>My work is made possible by <a href="https://geomys.org">Geomys</a>, an organization of professional Go maintainers, which is funded by <a href="https://www.avalabs.org/">Ava Labs</a>, <a href="https://goteleport.com/">Teleport</a>, <a href="https://tailscale.com/">Tailscale</a>, and <a href="https://sentry.io/">Sentry</a>. Through our retainer contracts they ensure the sustainability and reliability of our open source maintenance work and get a direct line to my expertise and that of the other Geomys maintainers. (Learn more in the <a href="https://words.filippo.io/geomys">Geomys announcement</a>.)
+Here are a few words from some of them!</p>
+<p>Teleport — For the past five years, attacks and compromises have been shifting from traditional malware and security breaches to identifying and compromising valid user accounts and credentials with social engineering, credential theft, or phishing. <a href="https://goteleport.com/platform/identity/?utm=filippo">Teleport Identity</a> is designed to eliminate weak access patterns through access monitoring, minimize attack surface with access requests, and purge unused permissions via mandatory access reviews.</p>
+<p>Ava Labs — We at <a href="https://www.avalabs.org">Ava Labs</a>, maintainer of <a href="https://github.com/ava-labs/avalanchego">AvalancheGo</a> (the most widely used client for interacting with the <a href="https://www.avax.network">Avalanche Network</a>), believe the sustainable maintenance and development of open source cryptographic protocols is critical to the broad adoption of blockchain technology. We are proud to support this necessary and impactful work through our ongoing sponsorship of Filippo and his team.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:direct">
+<p>I generally recommend against <code>GOPROXY=direct</code> and actually configure <code>GOPROXY=proxy.golang.org</code> to remove the direct fallback and reduce the attack surface of running git clone on potentially adversarial repositories. That’s besides the point of this article, though: whether you fetch direct or through a proxy, you will still always get the same contents authenticated by the sumdb (or an error).&#160;<a class="footnote-backref" href="#fnref:direct" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:github">
+<p>Since this is getting misinterpreted, the solution is not for GitHub to implement ecosystem-specific validation (although immutable git tags would be nice to have for various reasons). Go supports many code hosts, including other VCS and even straight zip files. The solution is to use ecosystem-aware tooling to inspect source code, as detailed in the rest of the post. This applies to other ecosystems, as well: npmjs.com has na experimental code browser for packages.&#160;<a class="footnote-backref" href="#fnref:github" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:agent">
+<p>If you use a code agent, you can add the following line to your AGENTS.md or CLAUDE.md: 
+  <code>To see source files from a dependency, or to answer questions about a dependency, run `go mod download -json MODULE` and use the returned `Dir` path to read the files.</code>&#160;<a class="footnote-backref" href="#fnref:agent" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">821d2995-cb55-4b5e-a984-1d04f17180d7</guid>
+      <pubDate>Thu, 12 Feb 2026 13:48:03 +0000</pubDate>
+    </item>
+    <item>
+      <title>go.sum Is Not a Lockfile</title>
+      <link>https://words.filippo.io/gosum/</link>
+      <description>In Go, go.mod acts as both manifest and lockfile. There is never a reason to look at go.sum.</description>
+      <content:encoded><![CDATA[<!-- buttondown-editor-mode: plaintext -->
+<p>I need everyone to stop looking at <code>go.sum</code>, <em>especially</em> to analyze dependency graphs. It is not a “lockfile,”<sup id="fnref:lockfile"><a class="footnote-ref" href="#fn:lockfile">1</a></sup> and it has zero semantic effects on version resolution. There is truly no use case for ever parsing it outside of cmd/go.</p>
+<p><code>go.sum</code> is only a local cache for the <a href="https://go.dev/ref/mod#checksum-database">Go Checksum Database</a>. It’s a map of module versions to their cryptographic hashes. Those versions may or may not be in use; it doesn’t matter to package resolution.</p>
+<p><code>go.sum</code> was not even enabled by default in the original modules design, precisely because it has no observable effect on builds!<sup id="fnref:default"><a class="footnote-ref" href="#fn:default">2</a></sup> Its (important) purpose is exclusively tightening the security story: the Checksum Database ensures the whole ecosystem shares the same contents for a given module version, regardless of how it is downloaded, and <code>go.sum</code> makes that guarantee local and self-contained.</p>
+<p>Instead, just look at <code>go.mod</code>. It lists the precise version at which all dependencies are built. <a href="https://go.dev/ref/mod#go-mod-file-go">Since Go 1.17</a> (released August 2021), it includes all transitive dependencies needed to build the main module and its tests.<sup id="fnref:other"><a class="footnote-ref" href="#fn:other">3</a></sup></p>
+<p>You can either parse <code>go.mod</code> with <a href="https://golang.org/x/mod/modfile">golang.org/x/mod/modfile</a>, run <code>go mod edit -json</code> to get its JSON representation,<sup id="fnref:all"><a class="footnote-ref" href="#fn:all">4</a></sup> or parse it according to <a href="https://go.dev/ref/mod#go-mod-file">its specification</a>.</p>
+<p>This is the end of the Public Service Announcement. Read on for some <code>go.mod</code> nerdery.</p>
+<h2 id="manifests-and-lockfiles">Manifests and lockfiles</h2>
+<p>The enduring confusion around <code>go.mod</code> and <code>go.sum</code> is due to the fact that most other languages also have two package-related files, but theirs <em>both</em> matter to version resolution. These two files are usually called manifest and lockfile.</p>
+<p>The manifest (e.g. <code>pyproject.toml</code>, <code>package.json</code>, <code>Cargo.toml</code>) usually lists <em>some</em> dependencies along with potentially complex rules for which versions are supported. These rules usually apply transitively to dependents, making version resolution extremely hard and/or slow in the general case, and sometimes unsolvable. The manifest is not always<sup id="fnref:direct"><a class="footnote-ref" href="#fn:direct">5</a></sup> guaranteed to list all direct dependencies, and no automated mechanism ensures your code actually works with e.g. the minimum allowed manifest version of its dependencies.<sup id="fnref:cargomin"><a class="footnote-ref" href="#fn:cargomin">6</a></sup></p>
+<p>The lockfile (e.g. <code>uv.lock</code>, <code>package-lock.json</code>, <code>Cargo.lock</code>) is a relatively recent innovation in some ecosystems, and it lists the actual versions used in the most recent build. It is not really human-readable, and is <a href="https://research.swtch.com/cargo-newest.html">ignored by dependents</a>, allowing <a href="https://research.swtch.com/npm-colors">the rapid spread of supply-chain attacks</a>.</p>
+<p>I honestly find the manifest version ranges essentially useless (because the lower bounds are not normally tested and hence largely incorrect, while I never had a use case for complex upper bounds). I also get endlessly confused trying to remember which commands modify the lockfile (and when/why) and which ones respect it.</p>
+<p>In Go, <code>go.mod</code> serves as both manifest and lockfile, and more: it lists all dependencies, direct and transitive, and their exact version to be used when the module is the main module. Semantic versioning is assumed, and those versions are also the <a href="https://go.dev/ref/mod#minimal-version-selection">minimum versions</a> applied to dependents’ module graphs. Different major versions of the same module are considered essentially separate modules.</p>
+<p>Notice how there is no way to accidentally use a feature introduced in a version that your dependents won’t have. Also, when adding a dependency, you don’t automatically get the latest—potentially untested/compromised—version of all <em>its</em> dependencies. Finally, there can’t be diamond dependency conflicts.</p>
+<p>All that with a single, human-readable file: <code>go.mod</code>.</p>
+<p>All <code>go</code> commands take a <code>-mod</code> flag. If set to <code>mod</code>, missing dependencies can be added to <code>go.mod</code> automatically if necessary, and partial manual changes are reconciled. If set to <code>readonly</code>, those are errors. <code>go mod tidy</code> and (effectively) <code>go get</code> default to <code>mod</code>; all other commands default to <code>readonly</code>.</p>
+<p>Go modules truly don’t get enough credit for how much simpler they are compared to the alternatives. In other ecosystems, package resolution time going down below 1s is celebrated (and is indeed an impressive technical achievement given the design’s requirements!). In Go, no one ever noticed package resolution happening, so there is nothing to celebrate.</p>
+<p>For more ecosystem feature appreciation posts, follow me on Bluesky at <a href="https://bsky.app/profile/filippo.abyssdomain.expert">@filippo.abyssdomain.expert</a> or on Mastodon at <a href="https://abyssdomain.expert/@filippo">@filippo@abyssdomain.expert</a>.</p>
+<h2 id="the-picture">The picture</h2>
+<p>I had a great time at <a href="https://events.ccc.de/congress/2025/infos/startpage.html">39c3</a> during the holidays. The Chaos Communication Congress is a magical place with a very strict photo policy, so it&rsquo;s pretty hard to convey its atmosphere. This is the best I could do without recognizable humans in the frame. <em>In Fairy Dust we trust!</em></p>
+<p><img alt="The &quot;Fairy Dust&quot; rocket installation at the Chaos Communication Congress (39C3), showing a large black rocket sculpture with disco &quot;rings&quot; behind its tip emitting dramatic light beams in all directions. The main hall of the convention center surrounds it with banners including &quot;CHAOS&quot;, &quot;ALL CREATURES WELCOME&quot;, &quot;OpenWrt&quot;, and &quot;TRANS RIGHTS ARE HUMAN RIGHTS&quot;." src="https://assets.buttondown.email/images/9dee32df-d645-4828-a59b-63c73524e3af.jpg" /></p>
+<p>My work is made possible by <a href="https://geomys.org">Geomys</a>, an organization of professional Go maintainers, which is funded by <a href="https://smallstep.com/">Smallstep</a>, <a href="https://www.avalabs.org/">Ava Labs</a>, <a href="https://goteleport.com/">Teleport</a>, <a href="https://tailscale.com/">Tailscale</a>, and <a href="https://sentry.io/">Sentry</a>. Through our retainer contracts, they ensure the sustainability and reliability of our open source maintenance work and get a direct line to my expertise and that of the other Geomys maintainers. (Learn more in the <a href="https://words.filippo.io/geomys">Geomys announcement</a>.)
+Here are a few words from some of them!</p>
+<p>Teleport — For the past five years, attacks and compromises have been shifting from traditional malware and security breaches to identifying and compromising valid user accounts and credentials with social engineering, credential theft, or phishing. <a href="https://goteleport.com/platform/identity/?utm=filippo">Teleport Identity</a> is designed to eliminate weak access patterns through access monitoring, minimize attack surface with access requests, and purge unused permissions via mandatory access reviews.</p>
+<p>Ava Labs — We at <a href="https://www.avalabs.org">Ava Labs</a>, maintainer of <a href="https://github.com/ava-labs/avalanchego">AvalancheGo</a> (the most widely used client for interacting with the <a href="https://www.avax.network">Avalanche Network</a>), believe the sustainable maintenance and development of open source cryptographic protocols is critical to the broad adoption of blockchain technology. We are proud to support this necessary and impactful work through our ongoing sponsorship of Filippo and his team.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:lockfile">
+<p>In the sense of the word as introduced by the original <code>Gemfile.lock</code>, which only locked the selected versions. Most lockfiles these days <em>also</em> include the cryptographic checksums of version contents, which in Go is instead handled by the Go Checksum Database and <code>go.sum</code>.&#160;<a class="footnote-backref" href="#fnref:lockfile" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:default">
+<p>I still think it’s important and it was the first thing I remember advocating for when I joined the Go team, because it makes the module cryptographically self-contained, and because the Go Checksum Database transparency story is not great in ephemeral environments like CI. These are security effects, though, not semantic ones.&#160;<a class="footnote-backref" href="#fnref:default" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:other">
+<p>These are the only dependencies you care about, even for security. If the main module imports <code>example.com/mod1/pkg1</code> and a separate <code>example.com/mod1/pkg2</code> imports <code>example.com/mod2</code>, there is no way for <code>example.com/mod2</code> to affect the build or run code on the developer’s machine, so you don’t need to consider it a dependency. This is actually very powerful, allowing libraries to segregate dependencies (e.g. the AWS SDK) in optional packages, reducing the transitive trust tree of dependents that don’t use that feature.&#160;<a class="footnote-backref" href="#fnref:other" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:other" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:all">
+<p>Why not <code>go list -m all</code>, you ask? Because that prints the whole module graph, which includes modules that don’t contribute to the build<sup id="fnref2:other"><a class="footnote-ref" href="#fn:other">3</a></sup> and are not included in <code>go.mod</code>. A closer approximation would be <code>go list -f '{{.Module}}' all</code>, but this command applies the local build constraints, like GOOS/GOARCH. There is <a href="https://github.com/golang/go/issues/42504">an open proposal</a> for a flag to do <code>go.mod</code>-like resolution in <code>go list</code>.&#160;<a class="footnote-backref" href="#fnref:all" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:direct">
+<p>I am told that Cargo enforces it, and some other package managers have a warning.&#160;<a class="footnote-backref" href="#fnref:direct" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:cargomin">
+<p>Cargo has an <a href="https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#minimal-versions">opt-in, unstable, not recommended mode</a> for it.&#160;<a class="footnote-backref" href="#fnref:cargomin" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>]]></content:encoded>
+      <author>Filippo Valsorda &lt;feed@filippo.io&gt;</author>
+      <guid isPermaLink="false">b53ef7fa-3cfc-4ade-8e44-879d21fb1242</guid>
+      <pubDate>Mon, 05 Jan 2026 20:06:30 +0000</pubDate>
+    </item>
+  </channel>
+</rss>

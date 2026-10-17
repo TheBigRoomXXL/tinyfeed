@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-eHRsKViMXnSNu3HZGuu11sUe6ol1J5ar3e-Vv3FJoCV-Zmzp6U8GGKOrRAwe_MaWrlYPS_CXHH1_XwEwrGjV_W0U7MZaHb4oi1mFf9GDyVanPjiQDTXNKJXVHia69PmqlIMwNRw-Y9WVmxqfrwryBT3yWZgDQeKTX-yGrGwhMxEhsI7iVpTdS2f8DXJ_T0k-37O9_dAGwyyzE9BkeAj2LxR5ugUE7VM6dylJRrr4eDSybpRS9uQoZaE3ofHzzLqn1-n1r7s8kcSBhH7QLm-vbwuN_k0w2Lq9XgY9FUGLMlHYYRARRlflS5q-o11vNyx8RVmwSf3FfYlg-mIPuAeJGg==' ;
+		script-src 'nonce-eHRsKViMXnSNu3HZGuu11sUe6ol1J5ar3e-Vv3FJoCV-Zmzp6U8GGKOrRAwe_MaWrlYPS_CXHH1_XwEwrGjV_W0U7MZaHb4oi1mFf9GDyVanPjiQDTXNKJXVHia69PmqlIMwNRw-Y9WVmxqfrwryBT3yWZgDQeKTX-yGrGwhMxEhsI7iVpTdS2f8DXJ_T0k-37O9_dAGwyyzE9BkeAj2LxR5ugUE7VM6dylJRrr4eDSybpRS9uQoZaE3ofHzzLqn1-n1r7s8kcSBhH7QLm-vbwuN_k0w2Lq9XgY9FUGLMlHYYRARRlflS5q-o11vNyx8RVmwSf3FfYlg-mIPuAeJGg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="eHRsKViMXnSNu3HZGuu11sUe6ol1J5ar3e-Vv3FJoCV-Zmzp6U8GGKOrRAwe_MaWrlYPS_CXHH1_XwEwrGjV_W0U7MZaHb4oi1mFf9GDyVanPjiQDTXNKJXVHia69PmqlIMwNRw-Y9WVmxqfrwryBT3yWZgDQeKTX-yGrGwhMxEhsI7iVpTdS2f8DXJ_T0k-37O9_dAGwyyzE9BkeAj2LxR5ugUE7VM6dylJRrr4eDSybpRS9uQoZaE3ofHzzLqn1-n1r7s8kcSBhH7QLm-vbwuN_k0w2Lq9XgY9FUGLMlHYYRARRlflS5q-o11vNyx8RVmwSf3FfYlg-mIPuAeJGg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/take-control-of-photos-fifth-edition/ target="_blank">
+					<h2>‘Take Control of Photos, Fifth Edition’ ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/10/this-week-in-apple-the-pre-order-thrill-is-gone/ target="_blank">
+					<h2>This Week in Apple: The pre-order thrill is gone (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/a-299-apple-tv-is-that-all-there-is/ target="_blank">
+					<h2>A $299 Apple TV: Is that all there is?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/fun-with-preorders/ target="_blank">
+					<h2>Fun! With! Preorders! ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/homeview-is-simple-and-thats-a-good-thing/ target="_blank">
+					<h2>HomeView is simple, and that’s a good thing ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/clockwise-678-sliced-by-the-bleeding-edge/ target="_blank">
+					<h2>(Podcast) Clockwise 678: Sliced by the Bleeding Edge</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/share-your-location-in-messages-now-for-a-custom-period/ target="_blank">
+					<h2>Share your location in Messages, now for a custom period</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/new-siri-remotes-find-my-feature-limited-to-n1-equipped-iphones/ target="_blank">
+					<h2>New Siri Remote’s Find My feature limited to N1-equipped iPhones ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/designed-in-california-13-the-mp3-revolution-part-1-origin-of-the-ipod/ target="_blank">
+					<h2>(Podcast) Designed in California 13: The MP3 Revolution (Part 1, Origin of the iPod)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/the-rebound-620-giant-honkin-things-in-the-back/ target="_blank">
+					<h2>(Podcast) The Rebound 620: Giant Honkin’ Things in the Back</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/third-party-homeview-apps-think-carplay/ target="_blank">
+					<h2>Third-party HomeView apps? Think CarPlay</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/upgrade-641-a-fashion-chimney/ target="_blank">
+					<h2>(Podcast) Upgrade 641: A Fashion Chimney</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/airtag-silencer-silenced/ target="_blank">
+					<h2>AirTag Silencer, Silenced ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/new-home-collection-banner-offers-apple-influenced-accessories/ target="_blank">
+					<h2>New Home Collection banner offers Apple-influenced accessories</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/new-apple-tv-4k-adds-siri-ai-support/ target="_blank">
+					<h2>New Apple TV 4K adds Siri AI support</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/new-homepod-mini-2-offers-siri-ai-but-not-yet/ target="_blank">
+					<h2>New HomePod mini 2 offers Siri AI–but not yet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/apple-announces-homeview-smart-display/ target="_blank">
+					<h2>Apple announces HomeView smart display</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/app-report-apps-worth-grabbing/ target="_blank">
+					<h2>App Report: Apps worth grabbing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/apples-new-home-hub-is-homeview/ target="_blank">
+					<h2>Apple’s new home hub is ‘HomeView’ ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/is-apple-coming-home-to-stay/ target="_blank">
+					<h2>Is Apple coming home to stay?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/10/this-week-in-apple-spooky-season-is-upon-us/ target="_blank">
+					<h2>This Week in Apple: Spooky season is upon us (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/designed-in-california-12-ron-johnson-and-the-genius-of-the-apple-store/ target="_blank">
+					<h2>(Podcast) Designed in California 12: Ron Johnson and the Genius of the Apple Store</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/openai-silences-familiar-voices/ target="_blank">
+					<h2>OpenAI silences familiar voices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/apple-sets-homecoming-for-oct-13/ target="_blank">
+					<h2>Apple sets homecoming for Oct. 13 ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/clockwise-677-a-nice-cave-somewhere/ target="_blank">
+					<h2>(Podcast) Clockwise 677: A Nice Cave Somewhere</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/app-report-all-that-jazz/ target="_blank">
+					<h2>App Report: All that Jazz</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/fcc-filings-for-lg-apple-smart-home-devices-uncovered/ target="_blank">
+					<h2>FCC filings for LG/Apple smart home devices uncovered ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/designed-in-california-11-apples-mac-os-crisis-advisor-to-the-chairman-part-7/ target="_blank">
+					<h2>(Podcast) Designed in California 11: Apple’s Mac OS Crisis: Advisor to the Chairman (Part 7)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/spotify-opens-new-front-in-war-on-fair-use/ target="_blank">
+					<h2>Spotify opens new front in war on fair use</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/lex-authors-the-apps-but-claude-writes-the-code/ target="_blank">
+					<h2>Lex authors the apps, but Claude writes the code ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/is-your-secure-imessage-conversation-actually-secure/ target="_blank">
+					<h2>Is your secure iMessage conversation actually secure?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/apples-new-parental-controls-are-having-a-messy-roll-out/ target="_blank">
+					<h2>Apple’s new parental controls are having a messy roll out ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/the-rebound-619-how-am-i-supposed-to-launder-this-money/ target="_blank">
+					<h2>(Podcast) The Rebound 619: How Am I Supposed To Launder This Money?!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/upgrade-640-moving-through-space/ target="_blank">
+					<h2>(Podcast) Upgrade 640: Moving Through Space</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/secretive-helps-you-keep-your-ssh-keys-secret-keep-them-safe/ target="_blank">
+					<h2>Secretive helps you keep your SSH keys secret, keep them safe</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/apple-is-changing-full-disk-access-in-macos/ target="_blank">
+					<h2>Apple is changing Full Disk Access in macOS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/10/this-week-in-apple-feeding-the-rumor-monster/ target="_blank">
+					<h2>This Week in Apple: Feeding the rumor monster (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/support-st-jude-and-watch-the-2026-relay-podcastathon-2/ target="_blank">
+					<h2>Support St. Jude and watch the 2026 Relay Podcastathon ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/amazon-introduces-new-kindles-and-accessories/ target="_blank">
+					<h2>Amazon introduces new Kindles and accessories ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/silencing-airtags-enables-stalkers-and-domestic-violence/ target="_blank">
+					<h2>Silencing AirTags enables stalkers and domestic violence</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.wsj.com/business/retail/shop-different-review-the-genius-of-retail-e66f192b target="_blank">
+					<h2>‘Shop Different’ Review: The Genius of Retail (The Wall Street Journal/Jason Snell)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://wsj.com" target="_blank">wsj.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/09/the-back-page-know-when-to-fold-em/ target="_blank">
+					<h2>The Back Page: Know when to fold ’em (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/clockwise-676-mad-at-a-supermarket/ target="_blank">
+					<h2>(Podcast) Clockwise 676: Mad at a Supermarket</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/numbers-update-get-statistical-and-trigonometry-functions-and-apple-tells-you-what-they-all-are/ target="_blank">
+					<h2>Numbers update get statistical and trigonometry functions, and Apple tells you what they all are ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/designed-in-california-10-apples-mac-os-crisis-the-bake-off-part-6/ target="_blank">
+					<h2>(Podcast) Designed in California 10: Apple’s Mac OS Crisis: The Bake-Off (Part 6)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/the-rebound-618-green-man-and-the-lime/ target="_blank">
+					<h2>(Podcast) The Rebound 618: Green Man and The Lime</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/upgrade-639-i-know-how-to-go-to-sleep/ target="_blank">
+					<h2>(Podcast) Upgrade 639: I Know How to Go to Sleep</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/stolen-device-protection-passwords-glenn/ target="_blank">
+					<h2>Why Stolen Device Protection makes Passwords safer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/09/this-week-in-apple-siri-ous-money/ target="_blank">
+					<h2>This Week in Apple: Siri-ous money (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/imagining-the-next-macbook-neo/ target="_blank">
+					<h2>Imagining the next MacBook Neo</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/sponsor/2026/09/coherence-x6/ target="_blank">
+					<h2>(Sponsor) Coherence X6</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/one-week-with-apple-watch-series-12-and-just-getting-started/ target="_blank">
+					<h2>One week with Apple Watch Series 12 (and just getting started)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/the-history-of-apple-cards/ target="_blank">
+					<h2>The history of Apple Cards ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/apple-renews-qualcomm-patent-deal/ target="_blank">
+					<h2>Apple renews Qualcomm patent deal ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/support-st-jude-and-watch-the-2026-relay-podcastathon/ target="_blank">
+					<h2>Support St. Jude and watch the 2026 Relay Podcastathon ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/app-report-tiny-delights/ target="_blank">
+					<h2>App Report: Tiny delights</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/clockwise-675-im-very-used-to-suffering/ target="_blank">
+					<h2>(Podcast) Clockwise 675: I’m Very Used to Suffering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/the-rebound-617-hairtag/ target="_blank">
+					<h2>(Podcast) The Rebound 617: HairTag</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/designed-in-california-9-apples-mac-os-crisis-whos-next-part-5/ target="_blank">
+					<h2>(Podcast) Designed in California 9: Apple’s Mac OS Crisis: Who’s NeXT? (Part 5)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/when-your-mac-just-wont-let-go-of-the-wi-fi-connection/ target="_blank">
+					<h2>When your Mac just won’t let go of the Wi-Fi connection</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-22">2026-09-22</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/upgrade-638-i-stared-directly-into-the-m6/ target="_blank">
+					<h2>(Podcast) Upgrade 638: I Stared Directly into the M6</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/feed-only/2026/09/coherence-x6-turn-websites-into-chromium-powered-mac-apps-that-behave-like-mac-apps/ target="_blank">
+					<h2>(Sponsor) COHERENCE X6: Turn websites into Chromium-powered Mac apps that behave like Mac apps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/apple-adds-mode-to-temporarily-limit-the-iphone-18-pro-max-battery-for-shipping/ target="_blank">
+					<h2>Apple adds mode to temporarily limit the iPhone 18 Pro Max battery for shipping ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/m6-mac-mini-review-tiny-pricey-and-powerful/ target="_blank">
+					<h2>M6 Mac mini review: Tiny, pricey, and powerful</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/09/this-week-in-apple-with-beta-ed-breath/ target="_blank">
+					<h2>This Week in Apple: With beta-ed breath (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/sponsor/2026/09/soundsource-by-rogue-amoeba/ target="_blank">
+					<h2>(Sponsor) SoundSource by Rogue Amoeba</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/unsealed-documents-show-microsoft-openai-executives-all-too-aware-of-ethical-concerns/ target="_blank">
+					<h2>Unsealed documents show Microsoft, OpenAI executives all too aware of ethical concerns ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/david-pogue-tests-siri-ai/ target="_blank">
+					<h2>David Pogue tests Siri AI ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-17">2026-09-17</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/apple-showing-off-iphone-18-pro-at-final-friday-night-baseball-game-of-season/ target="_blank">
+					<h2>Apple showing off iPhone 18 Pro at final ‘Friday Night Baseball’ game of season ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-17">2026-09-17</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/clockwise-674-the-eyes-will-be-pretzels/ target="_blank">
+					<h2>(Podcast) Clockwise 674: The Eyes Will Be Pretzels</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/the-rebound-616-im-down-with-a-p-p/ target="_blank">
+					<h2>(Podcast) The Rebound 616: I’m Down With A P P</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/designed-in-california-8-apples-mac-os-crisis-to-be-or-not-part-4/ target="_blank">
+					<h2>(Podcast) Designed in California 8: Apple’s Mac OS Crisis: To Be, or Not? (Part 4)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/app-report-the-apps-that-go-with-you/ target="_blank">
+					<h2>App Report: The apps that go with you</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/apple-ties-icloud-pricing-to-video-summaries/ target="_blank">
+					<h2>Apple ties iCloud&#43; pricing to video summaries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/upgrade-637-my-job-is-to-eat-the-marshmallow/ target="_blank">
+					<h2>(Podcast) Upgrade 637: My Job Is to Eat the Marshmallow</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://sixcolors.com/?feed=json" target="_blank">Six Colors</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="eHRsKViMXnSNu3HZGuu11sUe6ol1J5ar3e-Vv3FJoCV-Zmzp6U8GGKOrRAwe_MaWrlYPS_CXHH1_XwEwrGjV_W0U7MZaHb4oi1mFf9GDyVanPjiQDTXNKJXVHia69PmqlIMwNRw-Y9WVmxqfrwryBT3yWZgDQeKTX-yGrGwhMxEhsI7iVpTdS2f8DXJ_T0k-37O9_dAGwyyzE9BkeAj2LxR5ugUE7VM6dylJRrr4eDSybpRS9uQoZaE3ofHzzLqn1-n1r7s8kcSBhH7QLm-vbwuN_k0w2Lq9XgY9FUGLMlHYYRARRlflS5q-o11vNyx8RVmwSf3FfYlg-mIPuAeJGg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

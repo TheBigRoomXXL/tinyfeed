@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+ <link rel="self" href="http://www.youtube.com/feeds/videos.xml?channel_id=UCgy9FjzTQ3wJ32JlkqcLU1g"/>
+ <id>yt:channel:gy9FjzTQ3wJ32JlkqcLU1g</id>
+ <yt:channelId>gy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+ <title>Cup O' Go</title>
+ <link rel="alternate" href="https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g"/>
+ <author>
+  <name>Cup O' Go</name>
+  <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+ </author>
+ <published>2023-01-17T16:07:48+00:00</published>
+ <entry>
+  <id>yt:video:kl1qohqDw1k</id>
+  <yt:videoId>kl1qohqDw1k</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>How many engineers does it take to deprecate a struct?</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=kl1qohqDw1k"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-10-10T14:23:44+00:00</published>
+  <updated>2026-10-14T03:50:06+00:00</updated>
+  <media:group>
+   <media:title>How many engineers does it take to deprecate a struct?</media:title>
+   <media:content url="https://www.youtube.com/v/kl1qohqDw1k?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/kl1qohqDw1k/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Seems like more than one!
+Visit cupogo.dev (https://cupogo.dev/) for all the things.
+
+This week:
+Go 1.27.2 and Go 1.26.9 are released (https://groups.google.com/g/golang-announce/c/U2fTuyDJznI)
+Accepted: add cgo without a C toolchain as a GOEXPERIMENT (and the original one) (https://github.com/golang/go/issues/81662)
+Accepted: deprecate DNSConfigError (https://github.com/golang/go/issues/63118)
+
+Lightning round:
+Job with Dave! (https://lnkd.in/p/gtsCwdak)
+Update on past news: &quot;proposal: spec: allow explicit conversion from function to 1-method interface&quot; Declined (https://github.com/golang/go/issues/47487#issuecomment-4746144126)</media:description>
+   <media:community>
+    <media:starRating count="2" average="5.00" min="1" max="5"/>
+    <media:statistics views="209"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:ikSV27xQ_7Q</id>
+  <yt:videoId>ikSV27xQ_7Q</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>How many engineers does it take to deprecate a struct?</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=ikSV27xQ_7Q"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-10-10T20:09:13+00:00</published>
+  <updated>2026-10-10T20:56:18+00:00</updated>
+  <media:group>
+   <media:title>How many engineers does it take to deprecate a struct?</media:title>
+   <media:content url="https://www.youtube.com/v/ikSV27xQ_7Q?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/ikSV27xQ_7Q/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Seems like more than one!
+Visit cupogo.dev (https://cupogo.dev/)  for all the things.
+
+
+This week:
+
+  •  Go 1.27.2 and Go 1.26.9 are released (https://groups.google.com/g/golang-announce/c/U2fTuyDJznI) 
+  •  Accepted: add cgo without a C toolchain as a GOEXPERIMENT (https://github.com/golang/go/issues/81662)  (and the original one (https://github.com/golang/go/issues/81450) )
+  •  Accepted: deprecate DNSConfigError (https://github.com/golang/go/issues/63118) 
+  •  Lightning round:
+       •  Job with Dave! (https://lnkd.in/p/gtsCwdak)  
+       •  Update on past news: &quot;proposal: spec: allow explicit conversion from function to 1-method interface&quot; Declined  (https://github.com/golang/go/issues/47487#issuecomment-4746144126) 
+
+  ★ Support this podcast on Patreon ★ (https://www.patreon.com/user?u=52571196)</media:description>
+   <media:community>
+    <media:starRating count="1" average="5.00" min="1" max="5"/>
+    <media:statistics views="132"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:fOJQ0MNPZjI</id>
+  <yt:videoId>fOJQ0MNPZjI</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>🌁 Cup o' Go LIVE in SF with Bill Kennedy! Hosted by Antithesis</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=fOJQ0MNPZjI"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-10-09T19:17:37+00:00</published>
+  <updated>2026-10-09T19:43:25+00:00</updated>
+  <media:group>
+   <media:title>🌁 Cup o' Go LIVE in SF with Bill Kennedy! Hosted by Antithesis</media:title>
+   <media:content url="https://www.youtube.com/v/fOJQ0MNPZjI?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/fOJQ0MNPZjI/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Recorded as part of GoSF (https://www.golangsf.com/) . Thanks Bill for co-hosting, and Antithesis (https://antithesis.com/)  for hosting!
+
+  •  🇯🇵 GopherCon Japan (https://gophercon.jp/2027/) 
+  •  🪝 Guest Posts: Hooking into the Go Toolchain (https://internals-for-interns.com/posts/hooking-into-the-go-toolchain/) 
+  •  🦙 go-llama (https://x.com/goccy54/status/2092156440786186315) 
+
+
+
+
+
+
+
+
+
+  ★ Support this podcast on Patreon ★ (https://www.patreon.com/user?u=52571196)</media:description>
+   <media:community>
+    <media:starRating count="0" average="0.00" min="1" max="5"/>
+    <media:statistics views="29"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:kiQh0zl2feM</id>
+  <yt:videoId>kiQh0zl2feM</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>🌁 Cup o' Go LIVE in SF with Bill Kennedy! Hosted by Antithesis</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=kiQh0zl2feM"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-10-09T17:19:21+00:00</published>
+  <updated>2026-10-14T03:52:03+00:00</updated>
+  <media:group>
+   <media:title>🌁 Cup o' Go LIVE in SF with Bill Kennedy! Hosted by Antithesis</media:title>
+   <media:content url="https://www.youtube.com/v/kiQh0zl2feM?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/kiQh0zl2feM/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Recorded as part of GoSF(https://www.golangsf.com/). Thanks Bill for co-hosting, and Antithesis (https://antithesis.com/) for hosting!
+🇯🇵 GopherCon Japan (https://gophercon.jp/2027/)
+🪝 Guest Posts: Hooking into the Go Toolchain (https://internals-for-interns.com/posts/hooking-into-the-go-toolchain/)
+🦙 go-llama (https://x.com/goccy54/status/2092156440786186315)</media:description>
+   <media:community>
+    <media:starRating count="3" average="5.00" min="1" max="5"/>
+    <media:statistics views="71"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:y81FKR840kg</id>
+  <yt:videoId>y81FKR840kg</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>We're taking a fall break</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=y81FKR840kg"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-26T14:00:50+00:00</published>
+  <updated>2026-10-02T08:23:41+00:00</updated>
+  <media:group>
+   <media:title>We're taking a fall break</media:title>
+   <media:content url="https://www.youtube.com/v/y81FKR840kg?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/y81FKR840kg/hqdefault.jpg" width="480" height="360"/>
+   <media:description></media:description>
+   <media:community>
+    <media:starRating count="4" average="5.00" min="1" max="5"/>
+    <media:statistics views="214"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:YhdAKwhFaXU</id>
+  <yt:videoId>YhdAKwhFaXU</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>We're taking a fall break</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=YhdAKwhFaXU"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-26T14:28:38+00:00</published>
+  <updated>2026-10-07T18:01:24+00:00</updated>
+  <media:group>
+   <media:title>We're taking a fall break</media:title>
+   <media:content url="https://www.youtube.com/v/YhdAKwhFaXU?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/YhdAKwhFaXU/hqdefault.jpg" width="480" height="360"/>
+   <media:description></media:description>
+   <media:community>
+    <media:starRating count="0" average="0.00" min="1" max="5"/>
+    <media:statistics views="49"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:mUnk-H0mpLY</id>
+  <yt:videoId>mUnk-H0mpLY</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>A totally racist episode so cache(sh) me outside how bout dah?!</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=mUnk-H0mpLY"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-19T10:22:49+00:00</published>
+  <updated>2026-09-26T22:27:33+00:00</updated>
+  <media:group>
+   <media:title>A totally racist episode so cache(sh) me outside how bout dah?!</media:title>
+   <media:content url="https://www.youtube.com/v/mUnk-H0mpLY?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/mUnk-H0mpLY/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Thanks for listening! Find all the things at cupogo.dev (https://cupogo.dev/) .
+
+  •  Meetups roundup:
+       •  🇮🇹 GoLab (https://golab.io/) 
+       •  🇺🇸🌁 GoSF (https://www.meetup.com/golangsf/) 
+       •  🇯🇵 TinyGo 2026 (https://conf.tinygo-keeb.org/2026/) 
+       •  🇮🇱 Gophercon Israel Cancelled :( (https://x.com/gopherconil/status/2099048465405714570) 
+  •  Blogoverse deep dives
+       •  Data races and the limits of ThreadSanitizer in C and Go (https://theconsensus.dev/p/2026/09/06/data-races-and-the-limits-of-threadsanitizer-in-c-and-go.html) 
+       •  cloudx-io/setup-go (https://www.linkedin.com/posts/weve-found-a-new-way-to-speed-up-parallel-share-7505978468791275520-xfXE/) 
+  •  Lightning round
+       •  Ebitengine v2.10.0 Released (https://ebitengine.org/en/blog/v2.10.0.html) 
+       •  Zeno Rocha on X on Render's Go re-write (https://x.com/zenorocha/status/2097705558564384944) 
+       •  Fyne Conf 2026:1b When Applications Design Themslves (https://www.youtube.com/watch?v=yFaLbbAMDL0) 
+
+  ★ Support this podcast on Patreon ★ (https://www.patreon.com/user?u=52571196)</media:description>
+   <media:community>
+    <media:starRating count="1" average="5.00" min="1" max="5"/>
+    <media:statistics views="87"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:KwE2wq2JkmQ</id>
+  <yt:videoId>KwE2wq2JkmQ</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>A totally racist episode so cache(sh) me outside how bout dah?!</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=KwE2wq2JkmQ"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-19T10:04:26+00:00</published>
+  <updated>2026-09-27T14:07:12+00:00</updated>
+  <media:group>
+   <media:title>A totally racist episode so cache(sh) me outside how bout dah?!</media:title>
+   <media:content url="https://www.youtube.com/v/KwE2wq2JkmQ?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/KwE2wq2JkmQ/hqdefault.jpg" width="480" height="360"/>
+   <media:description>Thanks for listening! Find all the things at cupogo.dev. (https://cupogo.dev/)
+
+Meetups roundup:
+🇮🇹 GoLab (https://golab.io/)
+🇺🇸🌁 GoSF (https://www.meetup.com/golangsf/)
+🇯🇵 TinyGo 2026 (https://conf.tinygo-keeb.org/2026/)
+🇮🇱 Gophercon Israel Cancelled :( (https://x.com/gopherconil/status/2099048465405714570)
+
+Blogoverse deep dives
+Data races and the limits of ThreadSanitizer in C and Go (https://theconsensus.dev/p/2026/09/06/data-races-and-the-limits-of-threadsanitizer-in-c-and-go.html)
+cloudx-io/setup-go(https://www.linkedin.com/posts/weve-found-a-new-way-to-speed-up-parallel-share-7505978468791275520-xfXE/)
+
+Lightning round
+Ebitengine v2.10.0 Released (https://ebitengine.org/en/blog/v2.10.0.html)
+Zeno Rocha on X on Render's Go re-write (https://x.com/zenorocha/status/2097705558564384944)
+Fyne Conf 2026:1b When Applications Design Themslves (https://www.youtube.com/watch?v=yFaLbbAMDL0)</media:description>
+   <media:community>
+    <media:starRating count="2" average="5.00" min="1" max="5"/>
+    <media:statistics views="146"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:iFaNAQh-q_A</id>
+  <yt:videoId>iFaNAQh-q_A</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>Modern Go Guidelines - Cup o' Go E172</title>
+  <link rel="alternate" href="https://www.youtube.com/shorts/iFaNAQh-q_A"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-15T07:00:08+00:00</published>
+  <updated>2026-10-13T20:29:36+00:00</updated>
+  <media:group>
+   <media:title>Modern Go Guidelines - Cup o' Go E172</media:title>
+   <media:content url="https://www.youtube.com/v/iFaNAQh-q_A?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i2.ytimg.com/vi/iFaNAQh-q_A/hqdefault.jpg" width="480" height="360"/>
+   <media:description></media:description>
+   <media:community>
+    <media:starRating count="0" average="0.00" min="1" max="5"/>
+    <media:statistics views="43"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:GHuYloKnwFI</id>
+  <yt:videoId>GHuYloKnwFI</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>Better than Vibes - Cup o' Go E172</title>
+  <link rel="alternate" href="https://www.youtube.com/shorts/GHuYloKnwFI"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-12T17:43:46+00:00</published>
+  <updated>2026-10-13T20:32:42+00:00</updated>
+  <media:group>
+   <media:title>Better than Vibes - Cup o' Go E172</media:title>
+   <media:content url="https://www.youtube.com/v/GHuYloKnwFI?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i4.ytimg.com/vi/GHuYloKnwFI/hqdefault.jpg" width="480" height="360"/>
+   <media:description></media:description>
+   <media:community>
+    <media:starRating count="0" average="0.00" min="1" max="5"/>
+    <media:statistics views="10"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:LTPleLI43VQ</id>
+  <yt:videoId>LTPleLI43VQ</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>A big episode about tiny things</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=LTPleLI43VQ"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-12T15:46:52+00:00</published>
+  <updated>2026-10-13T20:30:35+00:00</updated>
+  <media:group>
+   <media:title>A big episode about tiny things</media:title>
+   <media:content url="https://www.youtube.com/v/LTPleLI43VQ?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/LTPleLI43VQ/hqdefault.jpg" width="480" height="360"/>
+   <media:description>golang.org/x/tools v0.50.0 released (https://pkg.go.dev/golang.org/x/tools@v0.50.0))
+Blog: Finding unreachable functions with deadcode by Alan Donovan (https://go.dev/blog/deadcode)
+Russ Cox leaves google, and opines on LLMs for debugging (https://bsky.app/profile/swtch.com/post/3mtwnosklvk2v)
+Coding agent guidelines for modern Go (https://github.com/JetBrains/go-modern-guidelines)
+Jonathan's new podcast: Better Than Vibes (https://betterthanvibes.transistor.fm/)
+Interview with Ron Evans 
+TinyGo (https://tinygo.org/)
+Yzma (https://yzma.ai/)
+Oxide (https://oxide.computer/)
+The Citizen Developer (https://www.massdriver.cloud/blogs/the-citizen-developer)
+awesome-tinygo (https://github.com/tinygo-org/awesome-tinygo)
+kronk (https://github.com/ardanlabs/kronk)
+TinyGo Conference 2026 (https://conf.tinygo-keeb.org/2026/)
+GoLab (https://golab.io/)
+Go Education Project (https://goeducation.net/)
+Charm (https://charm.land/)</media:description>
+   <media:community>
+    <media:starRating count="3" average="5.00" min="1" max="5"/>
+    <media:statistics views="241"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:LthrAaBByX4</id>
+  <yt:videoId>LthrAaBByX4</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>A big episode about tiny things</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=LthrAaBByX4"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-12T15:36:14+00:00</published>
+  <updated>2026-10-13T20:29:11+00:00</updated>
+  <media:group>
+   <media:title>A big episode about tiny things</media:title>
+   <media:content url="https://www.youtube.com/v/LthrAaBByX4?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/LthrAaBByX4/hqdefault.jpg" width="480" height="360"/>
+   <media:description>•  golang.org/x/tools v0.50.0 released (https://pkg.go.dev/golang.org/x/tools@v0.50.0) 
+       •  Blog: Finding unreachable functions with deadcode (https://go.dev/blog/deadcode)  by Alan Donovan
+  •  Russ Cox leaves google, and opines on LLMs for debugging (https://bsky.app/profile/swtch.com/post/3mtwnosklvk2v) 
+  •  Coding agent guidelines for modern Go (https://github.com/JetBrains/go-modern-guidelines) 
+  •  Jonathan's new podcast: Better Than Vibes (https://betterthanvibes.transistor.fm/) 
+  •  Interview with Ron Evans
+       •  TinyGo (https://tinygo.org/) 
+       •  Yzma (https://yzma.ai/) 
+       •  Oxide (https://oxide.computer/) 
+       •  The Citizen Developer (https://www.massdriver.cloud/blogs/the-citizen-developer) 
+       •  awesome-tinygo (https://github.com/tinygo-org/awesome-tinygo) 
+       •  kronk (https://github.com/ardanlabs/kronk) 
+       •  TinyGo Conference 2026 (https://conf.tinygo-keeb.org/2026/) 
+       •  GoLab (https://golab.io/) 
+       •  Go Education Project (https://goeducation.net/) 
+       •  Charm (https://charm.land/) 
+
+  ★ Support this podcast on Patreon ★ (https://www.patreon.com/user?u=52571196)</media:description>
+   <media:community>
+    <media:starRating count="0" average="0.00" min="1" max="5"/>
+    <media:statistics views="110"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:V2coWY3IyCE</id>
+  <yt:videoId>V2coWY3IyCE</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>Go releases and events from EMEA and around the world</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=V2coWY3IyCE"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-05T13:29:43+00:00</published>
+  <updated>2026-10-07T13:20:55+00:00</updated>
+  <media:group>
+   <media:title>Go releases and events from EMEA and around the world</media:title>
+   <media:content url="https://www.youtube.com/v/V2coWY3IyCE?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/V2coWY3IyCE/hqdefault.jpg" width="480" height="360"/>
+   <media:description>- Conferences and Meetups
+Fyne Conf 2026 @ Eindhoven, NL, Sept 11 (https://conf.fyne.io/)
+West/Central African Gophers Meetup, Sept 31 Online (https://www.linkedin.com/posts/namkatcedrick_go-meetup-share-7501234828961271808-F06b/)
+GopherCon Africa 2026 @ Nairobi, Kenya, Oct 15-17 (https://gophercon.africa/)
+
+- Releases
+Go 1.27.1 and Go 1.26.8 (https://groups.google.com/g/golang-nuts/c/hZGtItqO-mQ)
+Reddit discussion (https://www.reddit.com/r/golang/comments/1vss99v/go_1270_released/)
+golang.org/x/crypto v0.56.0 (https://groups.google.com/g/golang-announce/c/1y3fb2np35U)
+TinyGo 0.42 (https://tinygo.org/blog/2026/tinygo-0.42-recover-is-real/)
+gopherlint 1.27.1 (https://github.com/flimzy/gopherlint/releases/tag/v1.27.1)
+
+- Accepted proposal: net/http.MethodQuery constant (https://github.com/golang/go/issues/80058)
+- Blog: twice as fast or 1.5x slower? Go 1.27 encoding/json/v2 (https://lemire.me/blog/2026/08/29/the-new-go-json-api-twice-as-fast-or-1-5x-slower/)</media:description>
+   <media:community>
+    <media:starRating count="4" average="5.00" min="1" max="5"/>
+    <media:statistics views="150"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:vnfhDqTsiLc</id>
+  <yt:videoId>vnfhDqTsiLc</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>Go releases and events from EMEA and around the world</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=vnfhDqTsiLc"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-09-05T13:44:57+00:00</published>
+  <updated>2026-10-07T13:21:56+00:00</updated>
+  <media:group>
+   <media:title>Go releases and events from EMEA and around the world</media:title>
+   <media:content url="https://www.youtube.com/v/vnfhDqTsiLc?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i3.ytimg.com/vi/vnfhDqTsiLc/hqdefault.jpg" width="480" height="360"/>
+   <media:description>•  Conferences and Meetups
+       •  Fyne Conf 2026 (https://conf.fyne.io/)  @ Eindhoven, NL, Sept 11
+       •  West/Central African Gophers Meetup (https://www.linkedin.com/posts/namkatcedrick_go-meetup-share-7501234828961271808-F06b/) , Sept 31 Online
+       •  GopherCon Africa 2026 (https://gophercon.africa/)  @ Nairobi, Kenya, Oct 15-17
+  •  Releases
+       •  Go 1.27.1 and Go 1.26.8 (https://groups.google.com/g/golang-nuts/c/hZGtItqO-mQ) 
+            •  Reddit discussion (https://www.reddit.com/r/golang/comments/1vss99v/go_1270_released/) 
+       •  golang.org/x/crypto v0.56.0 (https://groups.google.com/g/golang-announce/c/1y3fb2np35U) 
+       •  TinyGo 0.42 (https://tinygo.org/blog/2026/tinygo-0.42-recover-is-real/) 
+       •  gopherlint 1.27.1 (https://github.com/flimzy/gopherlint/releases/tag/v1.27.1) 
+  •  Accepted proposal: net/http.MethodQuery constant (https://github.com/golang/go/issues/80058) 
+  •  Blog: twice as fast or 1.5x slower? Go 1.27 encoding/json/v2 (https://lemire.me/blog/2026/08/29/the-new-go-json-api-twice-as-fast-or-1-5x-slower/) 
+
+  ★ Support this podcast on Patreon ★ (https://www.patreon.com/user?u=52571196)</media:description>
+   <media:community>
+    <media:starRating count="3" average="5.00" min="1" max="5"/>
+    <media:statistics views="117"/>
+   </media:community>
+  </media:group>
+ </entry>
+ <entry>
+  <id>yt:video:XPy7gRuSgug</id>
+  <yt:videoId>XPy7gRuSgug</yt:videoId>
+  <yt:channelId>UCgy9FjzTQ3wJ32JlkqcLU1g</yt:channelId>
+  <title>Everything You Always Wanted to Know About Go 1.27 But Were Afraid to Ask</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=XPy7gRuSgug"/>
+  <author>
+   <name>Cup O' Go</name>
+   <uri>https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g</uri>
+  </author>
+  <published>2026-08-30T10:11:58+00:00</published>
+  <updated>2026-10-01T08:31:59+00:00</updated>
+  <media:group>
+   <media:title>Everything You Always Wanted to Know About Go 1.27 But Were Afraid to Ask</media:title>
+   <media:content url="https://www.youtube.com/v/XPy7gRuSgug?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+   <media:thumbnail url="https://i1.ytimg.com/vi/XPy7gRuSgug/hqdefault.jpg" width="480" height="360"/>
+   <media:description>In which Jonathan and Shay dig through the top highlights of Go's new release, Go 1.27!
+
+  •  Release notes (https://go.dev/doc/go1.27) 
+  •  Interactive release notes (https://victoriametrics.com/blog/go-1-27/) 
+  •  &quot;If you use this package, you will go straight to hell.&quot; (https://pkg.go.dev/github.com/davecheney/junk/id) 
+
+Visit cupogo.dev (https://cupogo.dev/)  for our website which has various hyperlinks to other websites and is made of mostly 1s and 0s.
+
+
+  ★ Support this podcast on Patreon ★ (https://www.patreon.com/user?u=52571196)</media:description>
+   <media:community>
+    <media:starRating count="6" average="5.00" min="1" max="5"/>
+    <media:statistics views="300"/>
+   </media:community>
+  </media:group>
+ </entry>
+</feed>

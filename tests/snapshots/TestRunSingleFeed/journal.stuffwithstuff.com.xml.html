@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-1ID-neCHPH52rmPzVj2T56BK8-eO_nsUDWoCzEA_S-DFQ33k2Pa-7C7LC2EXL_QFVRjr5BgFM8ptV-MJSbexeVRE2zgF9P1eL_dYVKzgO8oi88144_WATD0RA9WkV7ZfXETi024Ngm-S8xhR2bkjBwouT2fW1dXpj5KfaGylHsuW2P7qQdZ5CHT4LxIDJJVXVcTG1C5AaXlLT0IbjTNWOUmMkFP23H2BHXi5OF3FTJoTyB0yWQbE-rMizg_WgNOdQYeLaxvy9TkIxDniYYUcmSXTbg9TX2uPjksVfaKUfsy8qy5sC6PLZVObZxS0y73kdOyL8CTohGh_J-bALmB5mw==' ;
+		script-src 'nonce-1ID-neCHPH52rmPzVj2T56BK8-eO_nsUDWoCzEA_S-DFQ33k2Pa-7C7LC2EXL_QFVRjr5BgFM8ptV-MJSbexeVRE2zgF9P1eL_dYVKzgO8oi88144_WATD0RA9WkV7ZfXETi024Ngm-S8xhR2bkjBwouT2fW1dXpj5KfaGylHsuW2P7qQdZ5CHT4LxIDJJVXVcTG1C5AaXlLT0IbjTNWOUmMkFP23H2BHXi5OF3FTJoTyB0yWQbE-rMizg_WgNOdQYeLaxvy9TkIxDniYYUcmSXTbg9TX2uPjksVfaKUfsy8qy5sC6PLZVObZxS0y73kdOyL8CTohGh_J-bALmB5mw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="1ID-neCHPH52rmPzVj2T56BK8-eO_nsUDWoCzEA_S-DFQ33k2Pa-7C7LC2EXL_QFVRjr5BgFM8ptV-MJSbexeVRE2zgF9P1eL_dYVKzgO8oi88144_WATD0RA9WkV7ZfXETi024Ngm-S8xhR2bkjBwouT2fW1dXpj5KfaGylHsuW2P7qQdZ5CHT4LxIDJJVXVcTG1C5AaXlLT0IbjTNWOUmMkFP23H2BHXi5OF3FTJoTyB0yWQbE-rMizg_WgNOdQYeLaxvy9TkIxDniYYUcmSXTbg9TX2uPjksVfaKUfsy8qy5sC6PLZVObZxS0y73kdOyL8CTohGh_J-bALmB5mw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2026/01/24/the-value-of-things/ target="_blank">
+					<h2>The Value of Things</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-24">2026-01-24</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2025/07/13/setting-up-an-sdl3-mac-app-in-xcode-16/ target="_blank">
+					<h2>Setting Up an SDL3 Mac App in XCode 16</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-13">2025-07-13</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2025/05/30/consider-knitting/ target="_blank">
+					<h2>Consider Knitting</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-30">2025-05-30</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2025/05/26/access-control-syntax/ target="_blank">
+					<h2>Access Control Syntax</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-26">2025-05-26</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2023/10/19/does-go-have-subtyping/ target="_blank">
+					<h2>Does Go Have Subtyping?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-19">2023-10-19</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2023/08/04/representing-heterogeneous-data/ target="_blank">
+					<h2>Representing Heterogeneous Data</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-04">2023-08-04</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2023/01/03/type-checking-if-expressions/ target="_blank">
+					<h2>Type Checking If Expressions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-03">2023-01-03</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2022/02/13/stupid-dog/ target="_blank">
+					<h2>Stupid Dog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-13">2022-02-13</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2021/07/29/640-pages-in-15-months/ target="_blank">
+					<h2>640 Pages in 15 Months</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-29">2021-07-29</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://journal.stuffwithstuff.com/2020/04/05/crafting-crafting-interpreters/ target="_blank">
+					<h2>Crafting “Crafting Interpreters”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-05">2020-04-05</time>
+					|
+					<a href="https://journal.stuffwithstuff.com" target="_blank">journal.stuffwithstuff.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="http://journal.stuffwithstuff.com/" target="_blank">journal.stuffwithstuff.com</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="1ID-neCHPH52rmPzVj2T56BK8-eO_nsUDWoCzEA_S-DFQ33k2Pa-7C7LC2EXL_QFVRjr5BgFM8ptV-MJSbexeVRE2zgF9P1eL_dYVKzgO8oi88144_WATD0RA9WkV7ZfXETi024Ngm-S8xhR2bkjBwouT2fW1dXpj5KfaGylHsuW2P7qQdZ5CHT4LxIDJJVXVcTG1C5AaXlLT0IbjTNWOUmMkFP23H2BHXi5OF3FTJoTyB0yWQbE-rMizg_WgNOdQYeLaxvy9TkIxDniYYUcmSXTbg9TX2uPjksVfaKUfsy8qy5sC6PLZVObZxS0y73kdOyL8CTohGh_J-bALmB5mw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

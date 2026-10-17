@@ -1,0 +1,1649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<channel>
+		<title>Jane Street Blog</title>
+		<description>OCaml and Systems rolled into one</description>
+		<link>https://blog.janestreet.com</link>
+		<atom:link href="" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Flex Model: an event-driven feature engineering system</title>
+			
+			
+			<description>&lt;p&gt;Neural networks are a tool we use heavily in many trading strategies. But raw market data
+can’t be fed to a neural net as-is. It’s an unstructured input that needs normalization
+and feature extraction first.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 13 Oct 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/flex-model-an-event-driven-feature-engineering-system/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/flex-model-an-event-driven-feature-engineering-system/</guid>
+		</item>
+		
+		<item>
+			<title>Building and testing a config management orchestrator for Windows</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;The following is part of a series of posts about 2026 summer intern projects—for more, see &lt;a href=&quot;https://blog.janestreet.com/wrought-2026/&quot;&gt;“What the interns have wrought, special jumbo 2026 edition”&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 06 Oct 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/config-management-orchestrator-for-windows/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/config-management-orchestrator-for-windows/</guid>
+		</item>
+		
+		<item>
+			<title>Scaling and benchmarking a critical message bus using a new indexing strategy</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;The following is part of a series of posts about 2026 summer intern projects—for more,
+see &lt;a href=&quot;https://blog.janestreet.com/wrought-2026/&quot;&gt;“What the interns have wrought, special jumbo 2026
+edition”&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 05 Oct 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/scaling-and-benchmarking-a-critical-message-bus/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/scaling-and-benchmarking-a-critical-message-bus/</guid>
+		</item>
+		
+		<item>
+			<title>How recurring network maintenance exposed 6 bugs</title>
+			
+			
+			<description>&lt;p&gt;Jane Street does a lot of network maintenance over the weekends. In each maintenance, a
+cabinet may lose connectivity for 15 to 25 minutes. Our internal Kafka infrastructure is
+supposed to be resilient to these partitions, and reconnect when connectivity resumes. For
+several months this year, it didn’t: processes segfaulted, leaked hundreds of thousands of
+sockets, or crashed in a surge of half a million TCP connections.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/how-recurring-network-maintenance-exposed-6-bugs/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/how-recurring-network-maintenance-exposed-6-bugs/</guid>
+		</item>
+		
+		<item>
+			<title>Results from the ASIC puzzle</title>
+			
+			
+			<description>&lt;p&gt;&lt;a href=&quot;/asic-puzzle-results/puzzle-to-stars.png&quot;&gt;&lt;img src=&quot;/asic-puzzle-results/puzzle-to-stars.png&quot; alt=&quot;Physical layout of the puzzle ASIC beside the solved 11-by-11 Star Battle grid, with 22 stars and regions spelling JSC&quot; style=&quot;display: block; width: 100%; height: auto; margin: 2em auto;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 02 Oct 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/asic-puzzle-results/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/asic-puzzle-results/</guid>
+		</item>
+		
+		<item>
+			<title>A resilient kernel log reporter</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;The following is part of a series of posts about 2026 summer intern projects—for more, see &lt;a href=&quot;https://blog.janestreet.com/wrought-2026/&quot;&gt;“What the interns have wrought, special jumbo 2026 edition”&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/linux-engineering-kernel-reporter-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/linux-engineering-kernel-reporter-index/</guid>
+		</item>
+		
+		<item>
+			<title>A FUSE server for our in-house storage backend</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;The following is part of a series of posts about 2026 summer intern projects—for more, see &lt;a href=&quot;https://blog.janestreet.com/wrought-2026/&quot;&gt;“What the interns have wrought, special jumbo 2026 edition”&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/linux-engineering-depot-fuse-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/linux-engineering-depot-fuse-index/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, special jumbo 2026 edition</title>
+			
+			
+			<description>&lt;p&gt;It’s time again to review some of what Jane Street’s interns built over the summer, though
+this year we’re going to try to cover more projects and in more depth. In particular we’re
+including projects from teams and roles whose work has historically been hard to talk
+about publicly—like ML research and trading desk operations. There’s just been too much
+exciting work in these areas to leave them out.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/wrought-2026/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/wrought-2026/</guid>
+		</item>
+		
+		<item>
+			<title>What the SP interns have wrought, 2026 edition</title>
+			
+			
+			<description>&lt;video autoplay=&quot;&quot; loop=&quot;&quot; muted=&quot;&quot; playsinline=&quot;&quot; poster=&quot;sp-still.jpg&quot; style=&quot;display: block; margin: 2em auto; width: 100%;&quot;&gt;
+  &lt;source src=&quot;sp-video.mp4&quot; type=&quot;video/mp4&quot; /&gt;
+&lt;/video&gt;
+
+</description>
+			
+			<pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/wrought-2026-sp/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/wrought-2026-sp/</guid>
+		</item>
+		
+		<item>
+			<title>Trading off compute for memory with activation checkpointing</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;The following is part of a series of posts about 2026 summer intern projects—for more, see &lt;a href=&quot;https://blog.janestreet.com/wrought-2026/&quot;&gt;“What the interns have wrought, special jumbo 2026 edition”&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/trading-off-compute-for-memory-with-activation-checkpointing/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/trading-off-compute-for-memory-with-activation-checkpointing/</guid>
+		</item>
+		
+		<item>
+			<title>What the TDOE interns have wrought, 2026 edition</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;The following is part of a series of posts about 2026 summer intern projects—for more, see &lt;a href=&quot;https://blog.janestreet.com/wrought-2026/&quot;&gt;“What the interns have wrought, special jumbo 2026 edition”&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/tdoe-intern-projects-2026/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/tdoe-intern-projects-2026/</guid>
+		</item>
+		
+		<item>
+			<title>Mitigating memorization in LLMs</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;The following is part of a series of posts about 2026 summer intern projects – for more, see &lt;a href=&quot;https://blog.janestreet.com/wrought-2026/&quot;&gt;“What the interns have wrought, special jumbo 2026 edition”&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/mitigating-memorization-in-llms/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/mitigating-memorization-in-llms/</guid>
+		</item>
+		
+		<item>
+			<title>Can you use autoregressive diffusion to generate market data?</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;The following is part of a series of posts about 2026 summer intern projects – for more, see &lt;a href=&quot;https://blog.janestreet.com/wrought-2026/&quot;&gt;“What the interns have wrought, special jumbo 2026 edition”&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 30 Sep 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/can-you-use-autoregressive-diffusion-to-generate-market-data/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/can-you-use-autoregressive-diffusion-to-generate-market-data/</guid>
+		</item>
+		
+		<item>
+			<title>A study of sequence weighting at scale</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;TL;DR: We study the scaling laws of data weighting across in-house and open-weight LMs, finding non-monotonic behavior across scales.&lt;/em&gt;
+&lt;em&gt;We vary the weight assigned to sequences during training and measure how strongly the model’s loss reduction on a sequence depends on the sequence’s weight.&lt;/em&gt;
+&lt;em&gt;Taken together, our results are consistent with a general trend: as models transition from small to medium scale, they transition from learning general patterns independent of data weight to learning data-specific patterns proportional to the data weights.&lt;/em&gt;
+&lt;em&gt;As models then transition from medium to large scale they are able to learn all patterns present in the data, once again independent of data weight.&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 14 Sep 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/a-study-of-sequence-weighting-at-scale/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/a-study-of-sequence-weighting-at-scale/</guid>
+		</item>
+		
+		<item>
+			<title>Can you design a chip? Announcing the protocol emulator ASIC competition</title>
+			
+			
+			<description>&lt;p&gt;&lt;a href=&quot;/protocol-emulator-asic-competition/oscilloscope-clean.png&quot;&gt;&lt;img src=&quot;/protocol-emulator-asic-competition/oscilloscope-clean.png&quot; alt=&quot;Vintage oscilloscope illustration with UART, SPI, I2C, USB and 10BASE-T traces; independent time scales, not a real acquisition&quot; style=&quot;display: block; width: 100%; height: auto;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 10 Sep 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/protocol-emulator-asic-competition/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/protocol-emulator-asic-competition/</guid>
+		</item>
+		
+		<item>
+			<title>Can you reverse engineer an ASIC?</title>
+			
+			
+			<description>&lt;video autoplay=&quot;&quot; loop=&quot;&quot; muted=&quot;&quot; playsinline=&quot;&quot; style=&quot;display: block; margin: 2em auto; max-width: 640px; width: 100%;&quot;&gt;
+  &lt;source src=&quot;warmup_gds_3d.mp4&quot; type=&quot;video/mp4&quot; /&gt;
+&lt;/video&gt;
+
+</description>
+			
+			<pubDate>Wed, 05 Aug 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/can-you-reverse-engineer-an-asic/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/can-you-reverse-engineer-an-asic/</guid>
+		</item>
+		
+		<item>
+			<title>Using OxCaml to implement type-safe reference counting between OCaml and Python</title>
+			
+			
+			<description>&lt;p&gt;Jane Street is known for being an OCaml shop, but for years now Python has been our second
+major programming language, acting as the primary tool for data analysis and (especially
+importantly these days) machine learning. Most of our traders and researchers think and
+write in Python, even as the majority of our infrastructure is written in OCaml.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 15 Jun 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/oxcaml-typesafe-reference-counting-python/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/oxcaml-typesafe-reference-counting-python/</guid>
+		</item>
+		
+		<item>
+			<title>Formal methods and the future of programming</title>
+			
+			
+			<description>&lt;p&gt;I’ve been telling people for the last 25 years that Jane Street as an organization was
+just not interested in formal methods.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Sun, 07 Jun 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/formal-methods-at-jane-street-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/formal-methods-at-jane-street-index/</guid>
+		</item>
+		
+		<item>
+			<title>strace-ui, Bonsai_term, and the TUI renaissance</title>
+			
+			
+			<description>&lt;p&gt;We’ve always found strace useful but somewhat hard to work with. Its output is often
+inscrutable, it’s hard to follow subprocesses or threads, and if you want to filter
+syscalls you have to rerun the trace with a flag for each one. What you want in debugging
+is a tool for exploring, refining, etc., but strace can make this difficult.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 26 May 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/strace-ui-bonsai-term-and-the-tui-renaissance/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/strace-ui-bonsai-term-and-the-tui-renaissance/</guid>
+		</item>
+		
+		<item>
+			<title>Using group theory to explore the space of positional encodings for attention</title>
+			
+			
+			<description>&lt;p&gt;Attention is a computational primitive at the core of modern language models, allowing
+internal representations to reference and influence each other. It’s how these models
+handle sequential data in the first place.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 22 Apr 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/using-group-theory-to-explore-positional-encodings-attention/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/using-group-theory-to-explore-positional-encodings-attention/</guid>
+		</item>
+		
+		<item>
+			<title>Can you reverse engineer our neural network?</title>
+			
+			
+			<description>&lt;p&gt;A lot of “capture-the-flag” style ML puzzles give you a black box neural net, and your job
+is to figure out what it does. When we were thinking of creating our &lt;a href=&quot;https://huggingface.co/spaces/jane-street/puzzle&quot;&gt;own ML
+puzzle&lt;/a&gt; early last year, we wanted to do
+something a little different. We thought it’d be neat to give users a complete
+specification of the neural net, weights and all. They would then be forced to use the
+tools of mechanistic interpretability to reverse engineer the network—which is a
+situation we sometimes find ourselves facing in our own research, when trying to interpret
+features of complex models.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 24 Feb 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/can-you-reverse-engineer-our-neural-network/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/can-you-reverse-engineer-our-neural-network/</guid>
+		</item>
+		
+		<item>
+			<title>Results from the Advent of FPGA Challenge</title>
+			
+			
+			<description>&lt;p&gt;At the end of last year, we decided to try something new: a
+&lt;a href=&quot;https://blog.janestreet.com/advent-of-fpga-challenge-2025/&quot;&gt;challenge&lt;/a&gt; that would run
+alongside &lt;a href=&quot;https://adventofcode.com/&quot;&gt;Advent of Code&lt;/a&gt;, where we asked the community to
+show us how they could design hardware to solve the same problems. We had no idea what
+level of participation to expect, but we received a huge number of submissions, many of
+which were incredibly creative!&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 11 Feb 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/advent-of-fpga-challenge-2025-results/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/advent-of-fpga-challenge-2025-results/</guid>
+		</item>
+		
+		<item>
+			<title>I design with Claude more than Figma now</title>
+			
+			
+			<description>&lt;p&gt;For a long time I was skeptical of LLMs—whenever I reached for them I was disappointed by
+the results. Last year I tried Copilot and Cursor to tweak a game I’d built, and neither
+generated working changes. At a previous job I tried Gemini to outline product briefs and
+generate wireframes, but ended up throwing them all away. Every time I tried LLMs it was
+for something I was already good at, and they did a worse job than I would have.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 05 Feb 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/i-design-with-claude-code-more-than-figma-now-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/i-design-with-claude-code-more-than-figma-now-index/</guid>
+		</item>
+		
+		<item>
+			<title>Fun with Algebraic Effects - from Toy Examples to Hardcaml Simulations</title>
+			
+			
+			<description>&lt;p&gt;I recently ported the &lt;a href=&quot;https://github.com/janestreet/hardcaml_step_testbench&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Hardcaml_step_testbench&lt;/code&gt;
+library&lt;/a&gt;, one of the libraries that
+we use at Jane Street for Hardcaml simulations, from using monads to using algebraic
+effects, a new OCaml 5 feature. This blog post walks through what algebraic effects are,
+why you should consider using them in lieu of monads, and how to actually work with them
+using the &lt;a href=&quot;https://github.com/janestreet/handled_effect&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Handled_effect&lt;/code&gt; library&lt;/a&gt;. One
+thing I’ve come to believe is that most of what can be done with monads can be done with
+algebraic effects in a much more elegant way.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 06 Jan 2026 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/fun-with-algebraic-effects-hardcaml/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/fun-with-algebraic-effects-hardcaml/</guid>
+		</item>
+		
+		<item>
+			<title>Getting from tested to battle-tested</title>
+			
+			
+			<description>&lt;p&gt;Testing is an essential part of building reliable software. It’s a form of documentation,
+a reminder of mistakes of the past, and a boost of confidence when you want to
+refactor. But mostly, testing is a way of showing that your code is correct and
+resilient. Because it’s so important, we’ve invested a lot of effort at Jane Street to
+develop techniques that make tests clearer, more effective, and more pleasant to write.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 03 Dec 2025 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/getting-from-tested-to-battle-tested/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/getting-from-tested-to-battle-tested/</guid>
+		</item>
+		
+		<item>
+			<title>Advent of FPGA — A Jane Street Challenge</title>
+			
+			
+			<description>&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; We got over 200 submissions to this challenge, spanning a wide variety of HDL
+languages and hardware platforms! We featured our favorite submissions in the results blog
+post, &lt;a href=&quot;/advent-of-fpga-challenge-2025-results&quot;&gt;check it out here&lt;/a&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 24 Nov 2025 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/advent-of-fpga-challenge-2025/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/advent-of-fpga-challenge-2025/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, 2025 edition</title>
+			
+			
+			<description>&lt;p&gt;Yet again, we’re at the end of our internship season, and so it’s time to summarize what
+the interns were up to!&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 27 Aug 2025 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/wrought-2025/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/wrought-2025/</guid>
+		</item>
+		
+		<item>
+			<title>A Higgs-bugson in the Linux Kernel</title>
+			
+			
+			<description>&lt;p&gt;We recently ran across a strange higgs-bugson that manifested itself in a critical system that stores and distributes the firm’s trading activity data, called Gord. (A &lt;a href=&quot;https://en.wikipedia.org/wiki/Heisenbug#Related_terms&quot;&gt;higgs-bugson&lt;/a&gt; is a bug that is reported in practice but difficult to reproduce, named for the &lt;a href=&quot;https://en.wikipedia.org/wiki/Search_for_the_Higgs_boson&quot;&gt;Higgs boson&lt;/a&gt;, a particle which was theorized in the 1960s but only found in 2013.) In this post I’ll walk you through the process I took to debug it. I tried to write down relevant details as they came up, so see if you can guess what the bug is while reading along.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 02 Jul 2025 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/a-higgs-bugson-in-the-linux-kernel/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/a-higgs-bugson-in-the-linux-kernel/</guid>
+		</item>
+		
+		<item>
+			<title>Introducing OxCaml</title>
+			
+			
+			<description>&lt;p&gt;At Jane Street, we’ve been actively making improvements to OCaml for a long time. Over the
+last few years, we’ve started to build some fairly ambitious extensions to the
+language. Our aim is to make OCaml a &lt;strong&gt;great language for performance engineering&lt;/strong&gt;. This
+work has always been open source, and our hope is to &lt;strong&gt;contribute these extensions to
+upstream OCaml&lt;/strong&gt;, but we’re still iterating on their design as we gain experience using
+them. As such, we think the time has come to make it easier for people to &lt;strong&gt;use our
+extensions in the outside world&lt;/strong&gt;. That starts with giving our branch of the compiler the
+three most important components of a modern programming language: a cool name, a cute logo
+and a snazzy website. So, without further ado, we are excited to announce &lt;strong&gt;OxCaml&lt;/strong&gt;.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Sat, 14 Jun 2025 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/introducing-oxcaml/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/introducing-oxcaml/</guid>
+		</item>
+		
+		<item>
+			<title>Advent of Hardcaml</title>
+			
+			
+			<description>&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; For the 2025 Advent of Code, we ran an Advent of FPGA Challenge where we
+invited the community to implement their own synthesizable solutions to this year’s
+puzzles! We got over 200 submissions spanning a wide variety of HDL languages and hardware
+platforms, check out our favorite solutions in the &lt;a href=&quot;/advent-of-fpga-challenge-2025-results&quot;&gt;results blog
+post&lt;/a&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Sat, 22 Mar 2025 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/advent-of-hardcaml-2024/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/advent-of-hardcaml-2024/</guid>
+		</item>
+		
+		<item>
+			<title>How we accidentally built a better build system for OCaml</title>
+			
+			
+			<description>&lt;p&gt;A “build system” is one of the most important tools in a developer’s
+toolbox. Roughly, it figures out how to create runnable programs from
+a bunch of different source files by calling out to the compiler,
+setting up and executing test suites, and so on. Because you interact
+with it daily, above all it has to be &lt;a href=&quot;https://xkcd.com/303/&quot;&gt;fast&lt;/a&gt; –
+but it also has to be flexible.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 24 Jan 2025 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/how-we-accidentally-built-a-better-build-system-for-ocaml-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/how-we-accidentally-built-a-better-build-system-for-ocaml-index/</guid>
+		</item>
+		
+		<item>
+			<title>Developer education at Jane Street</title>
+			
+			
+			<description>&lt;p&gt;Like most places, Jane Street largely teaches developers through a kind of apprenticeship
+model. A team matching process tries to thoughtfully match new devs to a team that suits
+them; and from there carefully chosen projects, one-on-one mentorship, code review, and
+close collaboration with people “on the row” – teammates sitting near you – does most of
+the rest.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 04 Oct 2024 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/developer-education-at-jane-street-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/developer-education-at-jane-street-index/</guid>
+		</item>
+		
+		<item>
+			<title>ICFP 2024</title>
+			
+			
+			<description>&lt;p&gt;It’s no secret that Jane Street is an active participant in the programming language
+community, and we’re excited to be attending &lt;a href=&quot;https://icfp24.sigplan.org/&quot;&gt;ICFP 2024&lt;/a&gt;, the
+International Conference on Functional Programming, in Milan next week! Most members of
+our OCaml Language team will be there, and as usual, we look forward to sharing our work
+with the wider community. Please see below for a full list of papers and talks that Jane
+Street folk are involved in.  Note that a lot of these are collaborations of one kind or
+another with researchers outside of Jane Street.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 29 Aug 2024 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/icfp-2024-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/icfp-2024-index/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, 2024 edition</title>
+			
+			
+			<description>&lt;p&gt;We’re once again at the end of our internship season, and it’s time do our annual review
+of what the interns achieved while they were here.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 26 Aug 2024 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/what-the-interns-have-wrought-2024-edition-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/what-the-interns-have-wrought-2024-edition-index/</guid>
+		</item>
+		
+		<item>
+			<title>Visualizing piecewise linear neural networks</title>
+			
+			
+			<description>&lt;p&gt;Neural networks are often thought of as opaque, black-box function approximators, but theoretical tools let us describe and visualize their behavior. In particular, let’s study piecewise-linearity, a property many neural networks share. This property has &lt;a href=&quot;https://arxiv.org/abs/1312.6098&quot;&gt;been&lt;/a&gt; &lt;a href=&quot;https://arxiv.org/abs/1711.02114&quot;&gt;studied&lt;/a&gt; &lt;a href=&quot;https://arxiv.org/abs/1903.08778&quot;&gt;before&lt;/a&gt;, but we’ll try to visualize it in more detail than has been previously done. &lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 22 Jul 2024 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/visualizing-piecewise-linear-neural-networks/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/visualizing-piecewise-linear-neural-networks/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, 2023 edition</title>
+			
+			
+			<description>&lt;p&gt;We’re once again at the end of our internship season, and it’s my task 
+to provide a few highlights of what the dev interns accomplished while
+they were here.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 12 Sep 2023 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/what-the-interns-have-wrought-2023/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/what-the-interns-have-wrought-2023/</guid>
+		</item>
+		
+		<item>
+			<title>Oxidizing OCaml: Data Race Freedom</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;OCaml with Jane Street extensions is available from our public &lt;a href=&quot;https://github.com/janestreet/opam-repository/tree/with-extensions&quot;&gt;opam repo&lt;/a&gt;. Only a slice of the features described in this series are currently implemented.&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 01 Sep 2023 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/oxidizing-ocaml-parallelism/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/oxidizing-ocaml-parallelism/</guid>
+		</item>
+		
+		<item>
+			<title>We're sponsoring SoME3</title>
+			
+			
+			<description>&lt;p&gt;Jane Street is excited to announce our sponsorship of
+&lt;a href=&quot;https://some.3b1b.co/&quot;&gt;SoME3&lt;/a&gt;, Grant Sanderson and James Schloss’s
+third Summer of Math Exposition. SoME is a contest that Grant and
+James created to encourage the development of fun and interesting
+mathematics education videos.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 06 Jul 2023 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/were-sponsoring-some3/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/were-sponsoring-some3/</guid>
+		</item>
+		
+		<item>
+			<title>Oxidizing OCaml: Rust-Style Ownership</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;OCaml with Jane Street extensions is available from our public &lt;a href=&quot;https://github.com/janestreet/opam-repository/tree/with-extensions&quot;&gt;opam repo&lt;/a&gt;. Only a slice of the features described in this series are currently implemented.&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 21 Jun 2023 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/oxidizing-ocaml-ownership/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/oxidizing-ocaml-ownership/</guid>
+		</item>
+		
+		<item>
+			<title>Oxidizing OCaml: Locality</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;OCaml with Jane Street extensions is available from our public &lt;a href=&quot;https://github.com/janestreet/opam-repository/tree/with-extensions&quot;&gt;opam repo&lt;/a&gt;. Only a slice of the features described in this series are currently implemented.&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 26 May 2023 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/oxidizing-ocaml-locality/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/oxidizing-ocaml-locality/</guid>
+		</item>
+		
+		<item>
+			<title>Building reproducible Python environments with XARs</title>
+			
+			
+			<description>&lt;p&gt;Our traders and researchers love Python for its agility and for its huge
+open-source ecosystem, especially when it comes to machine learning. But
+the heavy use of notebooks can make it difficult to support. Notebooks
+have a very different lifecycle than regular code, and aren’t always
+rigorously version controlled. And while most of our code (much of it
+written in OCaml) lives in a monorepo, putting all notebooks there is
+difficult; many notebooks end up being stored all over the place.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 14 Apr 2023 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/building-reproducible-python-environments-with-xars/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/building-reproducible-python-environments-with-xars/</guid>
+		</item>
+		
+		<item>
+			<title>What if writing tests was a joyful experience?</title>
+			
+			
+			<description>&lt;p&gt;At Jane Street we use a pattern/library called “expect tests” that
+makes test-writing feel like a REPL session, or like exploratory
+programming in a Jupyter notebook—with feedback cycles so fast and
+joyful that it feels almost tactile. Having used them for some time now
+this is the only way I’d ever want to write tests.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 09 Jan 2023 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/the-joy-of-expect-tests/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/the-joy-of-expect-tests/</guid>
+		</item>
+		
+		<item>
+			<title>Accelerating zk-SNARKs - MSM and NTT algorithms on FPGAs with Hardcaml</title>
+			
+			
+			<description>&lt;p&gt;In 2022 a consortium of companies ran an international competition,
+called the &lt;a href=&quot;https://www.zprize.io/&quot;&gt;ZPrize&lt;/a&gt;, to advance the state of
+the art in “zero-knowledge” cryptography. We decided to have a go in
+our free time at submitting solutions to both the Multi-Scalar
+Multiplication (MSM) and Number Theoretic Transform (NTT) tracks,
+using the same open source &lt;a href=&quot;https://hardcaml.com/&quot;&gt;Hardcaml&lt;/a&gt; libraries
+that Jane Street uses for our own FPGA development. We believe by
+using Hardcaml we were able to more efficiently and robustly come up
+with designs in the short competition period. These designs also
+interact with the standard vendor RTL flow and so we hope they will be
+useful to others.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 07 Dec 2022 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/zero-knowledge-fpgas-hardcaml/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/zero-knowledge-fpgas-hardcaml/</guid>
+		</item>
+		
+		<item>
+			<title>Visualizing information propagation in markets</title>
+			
+			
+			<description>&lt;p&gt;The Dojima rice market, established around 1716, is widely considered to
+be the world’s first organized futures exchange. Instead of directly
+exchanging money for rice on the spot, merchants would agree on a price
+and future date at which rice and money would be exchanged. This allowed
+farmers and consumers to hedge their risk. As a result, information
+about the abundance or lack of rice would travel across the country as
+fast as rice merchants carried it.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 23 Nov 2022 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/visualizing-information-propagation-in-markets-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/visualizing-information-propagation-in-markets-index/</guid>
+		</item>
+		
+		<item>
+			<title>Computations that differentiate, debug, and document themselves</title>
+			
+			
+			<description>&lt;p&gt;One of the problems we wrestle with at Jane Street is how to
+understand and manage the costs associated with the positions we hold:
+things like margin, financing costs, market risk, regulatory capital
+requirements, and so on.  To that end, we’ve built systems that
+estimate these costs and propose ways to reduce them. Essentially,
+this is a numerical optimization problem.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 17 Nov 2022 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/computations-that-differentiate-debug-and-document-themselves/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/computations-that-differentiate-debug-and-document-themselves/</guid>
+		</item>
+		
+		<item>
+			<title>Introducing the Jane Street Graduate Research Fellowship</title>
+			
+			
+			<description>&lt;p&gt;We are excited to announce the launch of the Jane Street Graduate Research Fellowship!&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 30 Aug 2022 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/graduate-research-fellowship/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/graduate-research-fellowship/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, 2022 edition</title>
+			
+			
+			<description>&lt;p&gt;We’re once again at the end of our internship season, and it’s my task
+to provide a few highlights of what the interns accomplished while
+they were here.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 25 Aug 2022 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/what-the-interns-have-wrought-2022/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/what-the-interns-have-wrought-2022/</guid>
+		</item>
+		
+		<item>
+			<title>Research internships in our Tools and Compilers group</title>
+			
+			
+			<description>&lt;p&gt;We are excited to announce research internships in our Tools and
+Compilers group.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 04 Mar 2022 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/research-internships-tnc/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/research-internships-tnc/</guid>
+		</item>
+		
+		<item>
+			<title>How Jane Street Pairs Interns to Projects and Teams During the Software Engineering Internship</title>
+			
+			
+			<description>&lt;p&gt;Software engineering intern candidates often ask how team placement
+works and how much input incoming interns have over their teams and
+projects. We know team placement is an important factor for many
+students when deciding which internship to accept. We’ve spent
+considerable time and thought on this process in recent years and hope
+to demystify the experience with this post.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 14 Jan 2022 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/project-pairing/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/project-pairing/</guid>
+		</item>
+		
+		<item>
+			<title>Magic-trace: Diagnosing tricky performance issues easily with Intel Processor Trace</title>
+			
+			
+			<description>&lt;p&gt;Intel Processor Trace is a hardware technology that can record all
+program execution flow along with timing information accurate to
+around 30ns. As far as I can tell &lt;a href=&quot;https://engineering.fb.com/2021/04/27/developer-tools/reverse-debugging/&quot;&gt;a&lt;/a&gt;&lt;a href=&quot;https://easyperf.net/blog/2019/08/23/Intel-Processor-Trace&quot;&gt;l&lt;/a&gt;&lt;a href=&quot;https://github.com/nyx-fuzz/libxdc&quot;&gt;m&lt;/a&gt;&lt;a href=&quot;https://blog.trailofbits.com/2021/03/19/un-bee-lievable-performance-fast-coverage-guided-fuzzing-with-honeybee-and-intel-processor-trace/&quot;&gt;o&lt;/a&gt;&lt;a href=&quot;http://halobates.de/blog/p/410&quot;&gt;s&lt;/a&gt;&lt;a href=&quot;https://dl.acm.org/doi/10.1145/3029806.3029830&quot;&gt;t&lt;/a&gt;
+nobody uses it, seemingly because capturing the data is tricky and,
+without any visualization tools, you’re forced to read enormous text
+dumps.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 11 Jan 2022 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/magic-trace/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/magic-trace/</guid>
+		</item>
+		
+		<item>
+			<title>Hiring a Developer Educator</title>
+			
+			
+			<description>&lt;p&gt;We spend a lot of time on education at Jane Street.  Like, really a
+lot.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 21 Oct 2021 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/hiring-a-developer-educator/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/hiring-a-developer-educator/</guid>
+		</item>
+		
+		<item>
+			<title>Goodbye Core_kernel</title>
+			
+			
+			<description>&lt;p&gt;We recently restructured our standard libraries at Jane Street in a
+way that eliminates the difference between &lt;code class=&quot;highlighter-rouge&quot;&gt;Core_kernel&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Core&lt;/code&gt;
+and we’re happy with the result. The new layout should reach the open
+source world before the end of the year.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 26 Aug 2021 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/goodbye-Core_kernel/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/goodbye-Core_kernel/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, 2021 edition</title>
+			
+			
+			<description>&lt;p&gt;It’s the end of another dev internship season, and this one marked
+something of a transition, since halfway through the season, NY-based
+interns were invited back to the recently reinvigorated office.  Which
+means that many more of us got the chance to meet and hang out with
+the interns in person than we did last year.  And hopefully the
+interns were able to get a better sense of Jane Street and how it
+operates.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 09 Aug 2021 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/what-the-interns-have-wrought-2021/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/what-the-interns-have-wrought-2021/</guid>
+		</item>
+		
+		<item>
+			<title>Looking for a developer experience engineer</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;&lt;strong&gt;This role has been filled&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 15 Jun 2021 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/looking-for-a-developer-experience-engineer-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/looking-for-a-developer-experience-engineer-index/</guid>
+		</item>
+		
+		<item>
+			<title>Growing the Hardcaml toolset</title>
+			
+			
+			<description>&lt;p&gt;I am pleased to announce that we have recently released a slew of new
+Hardcaml libraries!&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 01 Dec 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/growing-the-hardcaml-toolset-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/growing-the-hardcaml-toolset-index/</guid>
+		</item>
+		
+		<item>
+			<title>Announcing Our Market Prediction Kaggle Competition</title>
+			
+			
+			<description>&lt;p&gt;Jane Street is running a Kaggle contest based on a real problem with
+real financial data. If you like ML projects, or think you might,
+&lt;a href=&quot;https://www.kaggle.com/c/jane-street-market-prediction&quot; target=&quot;_blank&quot;&gt;head over and check it
+out&lt;/a&gt;.
+We think it’s a pretty fun one. The prizes are pretty good too, with a
+total $100K being paid out.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 24 Nov 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/announcing-our-market-prediction-kaggle-competition-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/announcing-our-market-prediction-kaggle-competition-index/</guid>
+		</item>
+		
+		<item>
+			<title>Finding memory leaks with Memtrace</title>
+			
+			
+			<description>&lt;p&gt;Memory issues can be hard to track down. A function that only
+allocates a few small objects can cause a space leak if it’s called
+often enough and those objects are never collected. Even then, many
+objects are &lt;em&gt;supposed&lt;/em&gt; to be long-lived. How can a tool, armed with data
+on allocations and their lifetimes,
+help sort out the expected from the suspicious?&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/finding-memory-leaks-with-memtrace/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/finding-memory-leaks-with-memtrace/</guid>
+		</item>
+		
+		<item>
+			<title>Memory allocator showdown</title>
+			
+			
+			<description>Since version 4.10, OCaml offers a new best-fit memory allocator
+alongside its existing default, the next-fit allocator. At Jane
+Street, we've seen a big improvement after switching over to the new
+allocator.
+
+This post isn't about how the new allocator works. For that, the best
+source is these notes from a talk by its
+author.  Instead, this post is about just how tricky it is to compare two
+allocators in a reasonable way, especially for a garbage-collected
+system.
+  
+</description>
+			
+			<pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/memory-allocator-showdown/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/memory-allocator-showdown/</guid>
+		</item>
+		
+		<item>
+			<title>Announcing Signals and Threads, a new podcast from Jane Street</title>
+			
+			
+			<description>&lt;p&gt;I’m excited (and slightly terrified) to announce that Jane Street is
+releasing a new podcast, called &lt;a href=&quot;https://signalsandthreads.com/&quot;&gt;Signals and
+Threads&lt;/a&gt;, and I’m going to be the
+host.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 31 Aug 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/announcing-signals-and-threads-index/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/announcing-signals-and-threads-index/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, 2020 edition</title>
+			
+			
+			<description>&lt;p&gt;It’s been an unusual internship season.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 17 Aug 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/what-the-interns-have-wrought-2020/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/what-the-interns-have-wrought-2020/</guid>
+		</item>
+		
+		<item>
+			<title>The Jane Street Interview Process &amp;mdash; 2020 Edition</title>
+			
+			
+			<description>&lt;p&gt;We’re busy preparing for our software engineering &lt;a href=&quot;https://blog.janestreet.com/unraveling/&quot;&gt;fall hiring
+season&lt;/a&gt;. Over the years we’ve
+done our best to make our interview process more transparent to
+candidates. While many candidates show up knowing something about what
+our interviews look like, much of the information floating around on
+the internet is outdated or wrong. These past few months have also
+changed a lot about the process as we’ve adapted to working from home
+and other effects of COVID-19.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/jane-street-interview-process-2020/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/jane-street-interview-process-2020/</guid>
+		</item>
+		
+		<item>
+			<title>Really low latency multipliers and cryptographic puzzles</title>
+			
+			
+			<description>&lt;p&gt;At Jane Street, we have some experience using FPGAs for low-latency
+systems–FPGAs are programmable hardware where you get the speed of an
+application-specific integrated circuit (ASIC) but without being
+committed to a design that’s burned into the chip. It wasn’t so long
+ago that FPGAs were expensive and rare, but these days, you can rent a
+$5,000 card on the Amazon AWS cloud for less than $3 an hour.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 22 Jun 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/really-low-latency-multipliers-and-cryptographic-puzzles/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/really-low-latency-multipliers-and-cryptographic-puzzles/</guid>
+		</item>
+		
+		<item>
+			<title>Using ASCII waveforms to test hardware designs</title>
+			
+			
+			<description>&lt;p&gt;At Jane Street, an &lt;a href=&quot;https://blog.janestreet.com/testing-with-expectations&quot;&gt;“expect
+test”&lt;/a&gt; is a
+test where you don’t manually write the output you’d like to check
+your code against – instead, this output is captured automatically
+and inserted by a tool into the testing code itself. If further runs
+produce different output, the test fails, and you’re presented with
+the diff.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/using-ascii-waveforms-to-test-hardware-designs/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/using-ascii-waveforms-to-test-hardware-designs/</guid>
+		</item>
+		
+		<item>
+			<title>Chrome extensions: Finding the missing proof</title>
+			
+			
+			<description>&lt;p&gt;Web browsers have supported custom
+&lt;a href=&quot;https://en.wikipedia.org/wiki/NPAPI&quot;&gt;plug-ins&lt;/a&gt; and
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Browser_extension&quot;&gt;extensions&lt;/a&gt; since
+the 1990s, giving users the ability to add their own features and
+tools for improving workflow or building closer integration with
+applications or databases running on back-end servers.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 17 Apr 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/chrome-extensions-finding-the-missing-proof/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/chrome-extensions-finding-the-missing-proof/</guid>
+		</item>
+		
+		<item>
+			<title>Watch all of Jane Street's tech talks</title>
+			
+			
+			<description>&lt;p&gt;Jane Street has been posting tech talks from internal speakers and
+invited guests for years—and they’re all available on our YouTube
+channel:&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 20 Feb 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/watch-all-of-jane-streets-tech-talks/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/watch-all-of-jane-streets-tech-talks/</guid>
+		</item>
+		
+		<item>
+			<title>Troubleshooting systemd with SystemTap</title>
+			
+			
+			<description>&lt;p&gt;When we set up a schedule on a computer, such as a list of commands to
+run every day at particular times via Linux &lt;a href=&quot;https://www.ostechnix.com/a-beginners-guide-to-cron-jobs&quot;&gt;cron
+jobs&lt;/a&gt;, we
+expect that schedule to execute reliably.  Of course we’ll check the
+logs to see whether the job has failed, but we never question whether
+the cron daemon itself will function.  We always assume that it will,
+as it always has done; we are not expecting mutiny in the ranks of the
+operating system.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 03 Feb 2020 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/troubleshooting-systemd-with-systemtap/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/troubleshooting-systemd-with-systemtap/</guid>
+		</item>
+		
+		<item>
+			<title>Using Python and OCaml in the same Jupyter notebook</title>
+			
+			
+			<description>&lt;div style=&quot;width: 75%; margin: auto; text-align: center; font-style: italic; font-size: 75%&quot;&gt;
+The cover image is based on &lt;a href=&quot;https://commons.wikimedia.org/wiki/File:Jupiter_family.jpg&quot;&gt;Jupiter family&lt;/a&gt; by NASA/JPL.
+&lt;/div&gt;
+
+</description>
+			
+			<pubDate>Mon, 16 Dec 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/using-python-and-ocaml-in-the-same-jupyter-notebook/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/using-python-and-ocaml-in-the-same-jupyter-notebook/</guid>
+		</item>
+		
+		<item>
+			<title>Deep-Learning the Hardest Go Problem in the World</title>
+			
+			
+			<description>&lt;h2 id=&quot;updates-and-a-new-run&quot;&gt;Updates and a New Run&lt;/h2&gt;
+
+</description>
+			
+			<pubDate>Fri, 06 Dec 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/deep-learning-the-hardest-go-problem-in-the-world/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/deep-learning-the-hardest-go-problem-in-the-world/</guid>
+		</item>
+		
+		<item>
+			<title>Commas in big numbers everywhere: An OpenType adventure</title>
+			
+			
+			<description>&lt;p&gt;My job involves a lot of staring at large numbers, mostly latencies in
+nanoseconds, and picking out magnitudes like microseconds. I noticed
+myself constantly counting digits in my text editor, in my terminal,
+and in &lt;a href=&quot;https://jupyter.org/&quot;&gt;Jupyter&lt;/a&gt; notebooks in my browser.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 14 Oct 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/commas-in-big-numbers-everywhere/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/commas-in-big-numbers-everywhere/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, 2019 edition</title>
+			
+			
+			<description>&lt;p&gt;Jane Street’s intern program yet again is coming to an end, which is a
+nice opportunity to look back over the summer and see what they’ve
+accomplished.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 30 Aug 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/what-the-interns-have-wrought-2019/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/what-the-interns-have-wrought-2019/</guid>
+		</item>
+		
+		<item>
+			<title>Using OCaml to drive a Raspberry Pi robot car</title>
+			
+			
+			<description>&lt;p&gt;Back when the Raspberry Pi was first released in 2012 Michael Bacarella wrote
+a &lt;a href=&quot;https://blog.janestreet.com/bootstrapping-ocamlasync-on-the-raspberry-pi/&quot;&gt;blog post&lt;/a&gt;
+on using OCaml and Async on this little device.
+Since then installing OCaml via opam has become a pretty smooth experience
+and everything works out of the box when using Raspbian – the default Raspberry Pi
+distribution.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 19 Aug 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/using-ocaml-to-drive-a-raspberry-pi-robot-car/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/using-ocaml-to-drive-a-raspberry-pi-robot-car/</guid>
+		</item>
+		
+		<item>
+			<title>Do applied programming languages research at Jane Street!</title>
+			
+			
+			<description>&lt;p&gt;As our Tools &amp;amp; Compilers team has grown, the kinds of projects we work
+on has become more ambitious. Here are some of the major things we’re
+currently working on:&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 16 Aug 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/applied-PL-research/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/applied-PL-research/</guid>
+		</item>
+		
+		<item>
+			<title>A look at OCaml 4.08</title>
+			
+			
+			<description>&lt;p&gt;Now that OCaml 4.08 has been released, let’s have a look at what was
+accomplished, with a particular focus on how &lt;a href=&quot;../plans-for-ocaml-408/&quot;&gt;our plans for
+4.08&lt;/a&gt; fared. I’ll mostly focus on work that we
+in the Jane Street Tools &amp;amp; Compilers team were involved with, but we are
+just some of the contributors to the OCaml compiler, and I’ll have a
+quick look at the end of the post at some of the other work that went
+into 4.08.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 12 Jul 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/a-look-at-ocaml-4.08/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/a-look-at-ocaml-4.08/</guid>
+		</item>
+		
+		<item>
+			<title>Of Pythons and Camels</title>
+			
+			
+			<description>&lt;p&gt;Welcome to another post in our series of how to use OCaml for machine learning.
+In previous posts we’ve discussed &lt;a href=&quot;https://blog.janestreet.com/deep-learning-experiments-in-ocaml/&quot;&gt;artistic style-transfer&lt;/a&gt; and
+&lt;a href=&quot;https://blog.janestreet.com/playing-atari-games-with-ocaml-and-deep-rl/&quot;&gt;reinforcement learning&lt;/a&gt;. If you haven’t read these feel
+free to do so now, we’ll wait right here until you’re done. Ready? Ok, let’s
+continue …&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 09 Jul 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/of-pythons-and-camels/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/of-pythons-and-camels/</guid>
+		</item>
+		
+		<item>
+			<title>Thoughts from AAAI 2019</title>
+			
+			
+			<description>&lt;p&gt;At Jane Street, for the last several years, we have been increasingly interested
+in machine learning and its many use cases. This is why it was exciting when
+earlier this year myself and a few of my colleagues had the opportunity to
+attend the AAAI 2019 conference. We’d like to take this space to share with you
+some of the interesting projects and themes we saw at the conference.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/thoughts-from-aaai-19/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/thoughts-from-aaai-19/</guid>
+		</item>
+		
+		<item>
+			<title>Learning ML Depth-First</title>
+			
+			
+			<description>&lt;p&gt;If you haven’t heard of it, &lt;a href=&quot;https://www.depthfirstlearning.com/2018/DFL-Fellowship&quot;&gt;Depth First
+Learning&lt;/a&gt; is a
+wonderful resource for learning about machine learning.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 17 Apr 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/learning-ml-depth-first/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/learning-ml-depth-first/</guid>
+		</item>
+		
+		<item>
+			<title>Machining the ultimate hackathon prize</title>
+			
+			
+			<description>&lt;p&gt;Jane Street is sponsoring this year’s &lt;a href=&quot;https://makemit.org&quot;&gt;MakeMIT
+hackathon&lt;/a&gt;, and we wanted to create a prize for
+the winners that would do justice to the maker spirit of the
+competition. As makers ourselves – it’s not unusual to find a
+“software” engineer here who hacks on FPGAs or who has a CNC machine
+at home – it felt natural to get our hands dirty.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/hackathon-keyboards/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/hackathon-keyboards/</guid>
+		</item>
+		
+		<item>
+			<title>Accelerating Self-Play Learning in Go</title>
+			
+			
+			<description>&lt;p&gt;At Jane Street, over the last few years, we’ve been increasingly exploring machine learning to improve our models. Many of us are fascinated by the rapid improvement we see in a wide variety of applications due to developments in deep learning and reinforcement learning, both for its exciting potential for our own problems, and also on a personal level of pure interest and curiosity outside of work.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/accelerating-self-play-learning-in-go/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/accelerating-self-play-learning-in-go/</guid>
+		</item>
+		
+		<item>
+			<title>L2 Regularization and Batch Norm</title>
+			
+			
+			<description>&lt;p&gt;This blog post is about an interesting detail about machine learning
+that I came across as a researcher at Jane Street - that of the 
+interaction between L2 regularization, also known as
+weight decay, and batch normalization.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 29 Jan 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/l2-regularization-and-batch-norm/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/l2-regularization-and-batch-norm/</guid>
+		</item>
+		
+		<item>
+			<title>A tutorial for building web applications with Incr_dom</title>
+			
+			
+			<description>&lt;p&gt;At Jane Street, our web UIs are built on top of an in-house framework
+called &lt;a href=&quot;https://github.com/janestreet/incr_dom&quot;&gt;Incr_dom&lt;/a&gt;, modeled in
+part on &lt;a href=&quot;https://reactjs.org/docs/faq-internals.html&quot;&gt;React’s virtual
+DOM&lt;/a&gt;. Rendering different
+views efficiently in response to changes made to a shared model is a
+quintessentially incremental computation—so it should be no surprise
+that Incr_dom is built on top of
+&lt;a href=&quot;https://blog.janestreet.com/introducing-incremental/&quot;&gt;Incremental&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 15 Jan 2019 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/a-tutorial-for-building-web-applications-with-incrdom/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/a-tutorial-for-building-web-applications-with-incrdom/</guid>
+		</item>
+		
+		<item>
+			<title>How to shuffle a big dataset</title>
+			
+			
+			<description>&lt;p&gt;At Jane Street, we often work with data that has a very low
+signal-to-noise ratio, but fortunately we also have a &lt;em&gt;lot&lt;/em&gt; of data.
+Where practitioners in many fields might be accustomed to
+having tens or hundreds of thousands of correctly labeled
+examples, some of our problems are more like having a billion training
+examples whose labels have only a slight tendency to be correct.
+These large datasets present a number of interesting engineering
+challenges.  The one we address here: &lt;em&gt;How do you shuffle a really
+large dataset?&lt;/em&gt;  (If you’re not familiar with why one might need this,
+jump to the section &lt;a href=&quot;#whyshuffle&quot;&gt;Why shuffle&lt;/a&gt; below.)&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 26 Sep 2018 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/how-to-shuffle-a-big-dataset/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/how-to-shuffle-a-big-dataset/</guid>
+		</item>
+		
+		<item>
+			<title>Deep learning experiments in OCaml</title>
+			
+			
+			<description>&lt;p&gt;Last year we held a machine learning seminar in our London office,
+which was an opportunity to reproduce some classical deep learning
+results with a nice twist: we used OCaml as a programming language
+rather than Python. This allowed us to train models defined in a
+functional way in OCaml on a GPU using TensorFlow.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 20 Sep 2018 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/deep-learning-experiments-in-ocaml/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/deep-learning-experiments-in-ocaml/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, 2018 edition</title>
+			
+			
+			<description>&lt;p&gt;Yet again, intern season is coming to a close, and so it’s time to
+look back at what the interns have achieved in their short time with
+us.  I’m always impressed by what our interns manage to squeeze into
+the summer, and this year is no different.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/what-the-interns-have-wrought-2018/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/what-the-interns-have-wrought-2018/</guid>
+		</item>
+		
+		<item>
+			<title>Plans for OCaml 4.08</title>
+			
+			
+			<description>&lt;p&gt;With the external release of OCaml 4.07.0 imminent, we in Jane Street’s
+Tools &amp;amp; Compilers group have been planning what we want to work on for
+inclusion in OCaml 4.08. These days OCaml uses (or at least attempts) a
+time-based release process with releases scheduled every 6 months. We’re
+trying to avoid rushing in changes at the last minute – as we’ve been
+prone to do in the past – so this list is restricted to things we could
+conceivably finish in the next 4-5 months.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 29 Jun 2018 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/plans-for-ocaml-408/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/plans-for-ocaml-408/</guid>
+		</item>
+		
+		<item>
+			<title>Repeatable exploratory programming</title>
+			
+			
+			<description>&lt;p&gt;Expect tests are a technique I’ve written about
+&lt;a href=&quot;/testing-with-expectations&quot;&gt;before&lt;/a&gt;, but until recently, it’s been a
+little on the theoretical side. That’s because it’s been hard to take
+these ideas out for a spin due to lack of tooling outside of Jane
+Street’s walls.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Sun, 22 Apr 2018 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/repeatable-exploratory-programming/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/repeatable-exploratory-programming/</guid>
+		</item>
+		
+		<item>
+			<title>OCaml all the way down</title>
+			
+			
+			<description>&lt;p&gt;One of the joys of working at Jane Street for the last 15 or so years
+has been seeing how our software stack has grown in scope. When I
+started, I was building pretty narrowly focused systems for doing
+statistical research on trading strategies, and then building systems
+for executing those same strategies.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 04 Apr 2018 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/ocaml-all-the-way-down/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/ocaml-all-the-way-down/</guid>
+		</item>
+		
+		<item>
+			<title>Putting the I back in IDE: Towards a Github Explorer</title>
+			
+			
+			<description>&lt;p&gt;Imagine a system for editing and reviewing code where:&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 27 Mar 2018 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/putting-the-i-back-in-ide-towards-a-github-explorer/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/putting-the-i-back-in-ide-towards-a-github-explorer/</guid>
+		</item>
+		
+		<item>
+			<title>Learn OCaml in NYC</title>
+			
+			
+			<description>&lt;p&gt;Interested in learning OCaml? In the NYC area? Then this might
+be for you!&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Fri, 16 Feb 2018 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/learn-ocaml-nyc/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/learn-ocaml-nyc/</guid>
+		</item>
+		
+		<item>
+			<title>Proofs (and Refutations) using Z3</title>
+			
+			
+			<description>&lt;p&gt;People often think of formal methods and theorem provers as forbidding
+tools, cool in theory but with a steep learning curve that makes them
+hard to use in real life. In this post, we’re going to describe a case
+we ran into recently where we were able to leverage theorem proving
+technology, Z3 in particular, to validate some real world engineering
+we were doing on the OCaml compiler. This post is aimed at readers
+interested in compilers, but assumes no familiarity with actual
+compiler development.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 15 Feb 2018 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/proofs-and-refutations-using-z3/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/proofs-and-refutations-using-z3/</guid>
+		</item>
+		
+		<item>
+			<title>Work on the OCaml compiler at Jane Street!</title>
+			
+			
+			<description>&lt;p&gt;As Jane Street grows, the quality of the development tools we use
+matters more and more.  We increasingly work on the OCaml compiler
+itself: adding useful language features, fine-tuning the type system
+and improving the performance of the generated code. Alongside this,
+we also work on the surrounding toolchain, developing new tools for
+profiling, debugging, documentation and build automation.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 20 Dec 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/work-on-the-ocaml-compiler-at-jane-street/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/work-on-the-ocaml-compiler-at-jane-street/</guid>
+		</item>
+		
+		<item>
+			<title>Does batch size matter?</title>
+			
+			
+			<description>&lt;p&gt;&lt;i&gt;This post is aimed at readers who are already familiar with
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Stochastic_gradient_descent&quot;&gt;stochastic gradient descent&lt;/a&gt;
+(SGD) and terms like “batch size”.  For an introduction to these
+ideas, I recommend Goodfellow et al.’s
+&lt;a href=&quot;http://www.deeplearningbook.org/&quot;&gt;Deep Learning&lt;/a&gt;, in particular the
+introduction and, for more about SGD, Chapter 8.  The relevance of SGD
+is that it has made it feasible to work with much more complex models
+than was formerly possible.&lt;/i&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 31 Oct 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/does-batch-size-matter/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/does-batch-size-matter/</guid>
+		</item>
+		
+		<item>
+			<title>How Jane Street Does Code Review (Jane Street Tech Talk)</title>
+			
+			
+			<description>&lt;p&gt;It’s time for our next
+&lt;a href=&quot;https://www.janestreet.com/tech-talks/&quot;&gt;Jane Street Tech Talk&lt;/a&gt;. When
+we’ve solicited suggestions for topics, one common request has been to
+talk about our internal development process. Our next talk,
+&lt;a href=&quot;https://www.janestreet.com/tech-talks/janestreet-code-review/&quot;&gt;How Jane Street Does Code Review&lt;/a&gt;,
+should fit the bill. The talk is being given by our own Ian Henry, and
+discusses how we approach code review, and in particular how Iron, the
+code review system we’ve been using and improving for some years now,
+fits in to that process.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Sun, 29 Oct 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/jane-street-tech-talk-how-jane-street-does-code-review/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/jane-street-tech-talk-how-jane-street-does-code-review/</guid>
+		</item>
+		
+		<item>
+			<title>Jane Street Tech Talk, Verifying Network Data Planes</title>
+			
+			
+			<description>&lt;p&gt;After a summer hiatus, the Jane Street Tech Talks series is back on
+for the fall! Last we left it, our very own Dominick LoBraico
+presented on the evolution of our internal configuration methodology
+and the systems that support it. For anybody that missed it, you can
+check out a recording of the talk &lt;a href=&quot;https://www.youtube.com/watch?v=0pX7-AG52BU&quot;&gt;on YouTube&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Tue, 26 Sep 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/jane-street-tech-talk-verifying-network-data-planes/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/jane-street-tech-talk-verifying-network-data-planes/</guid>
+		</item>
+		
+		<item>
+			<title>Real world machine learning (part 1)</title>
+			
+			
+			<description>&lt;p&gt;Trading is a competitive business. You need great people and great
+technology, of course, but also trading strategies that make money.
+Where do those strategies come from? In this post we’ll discuss how
+the interplay of data, math and technology informs how we develop and
+run strategies.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 28 Aug 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/real-world-machine-learning-part-1/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/real-world-machine-learning-part-1/</guid>
+		</item>
+		
+		<item>
+			<title>How to design a tree diffing algorithm</title>
+			
+			
+			<description>&lt;p&gt;For those of you interested in what
+&lt;a href=&quot;/what-the-interns-have-wrought-rpc_parallel-and-core_profiler&quot;&gt;what&lt;/a&gt;
+&lt;a href=&quot;/what-the-interns-have-wrought-2016&quot;&gt;interns&lt;/a&gt;
+&lt;a href=&quot;/what-the-interns-have-wrought-2017&quot;&gt;do&lt;/a&gt; at Jane Street, here’s a
+&lt;a href=&quot;http://thume.ca/2017/06/17/tree-diffing/&quot;&gt;post&lt;/a&gt; from former intern
+Tristan Hume, on his work developing tree-diffing algorithms last
+summer at Jane Street. It’s a fun (and very detailed!) read.&lt;/p&gt;
+</description>
+			
+			<pubDate>Fri, 25 Aug 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/how-to-design-a-tree-diffing-algorithm/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/how-to-design-a-tree-diffing-algorithm/</guid>
+		</item>
+		
+		<item>
+			<title>Ironing out your development style</title>
+			
+			
+			<description>&lt;p&gt;People seem to enjoy talking about programming methodologies. They
+give them cute names, like
+&lt;a href=&quot;http://www.extremeprogramming.org/&quot;&gt;eXtreme programming&lt;/a&gt;,
+&lt;a href=&quot;https://www.agilealliance.org/&quot;&gt;Agile&lt;/a&gt;, and
+&lt;a href=&quot;https://www.scrum.org/resources/what-is-scrum&quot;&gt;Scrum&lt;/a&gt;; run
+&lt;a href=&quot;https://www.scrumalliance.org/sgcal&quot;&gt;conferences&lt;/a&gt; and build
+&lt;a href=&quot;https://www.scrumalliance.org/community&quot;&gt;communities&lt;/a&gt; around them;
+write
+&lt;a href=&quot;https://www.amazon.com/Extreme-Programming-Explained-Embrace-Change/dp/0321278658/ref=sr_1_1?ie=UTF8&amp;amp;qid=1503346126&amp;amp;sr=8-1&amp;amp;keywords=extreme+programming&quot;&gt;books&lt;/a&gt;
+that describe how to use them in excruciating detail; and
+&lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;manifestos&lt;/a&gt; that lay out their
+philosophy.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 24 Aug 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/ironing-out-your-development-style/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/ironing-out-your-development-style/</guid>
+		</item>
+		
+		<item>
+			<title>Hiring an FPGA engineer</title>
+			
+			
+			<description>&lt;p&gt;Jane Street is looking to hire an engineer with experience in both
+software and hardware design to work on FPGA-based applications, and
+on tools for creating such applications.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Wed, 16 Aug 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/hiring-an-fpga-engineer/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/hiring-an-fpga-engineer/</guid>
+		</item>
+		
+		<item>
+			<title>What the interns have wrought, 2017 edition</title>
+			
+			
+			<description>&lt;p&gt;Intern season is coming to a close, and it’s a nice time to look back
+(as I’ve done in
+&lt;a href=&quot;/what-the-interns-have-wrought-rpc_parallel-and-core_profiler&quot;&gt;previous&lt;/a&gt;
+&lt;a href=&quot;/what-the-interns-have-wrought-2016&quot;&gt;years&lt;/a&gt;) and review some of what
+the interns did while they were here. The dev intern program has grown
+considerably, with almost 40 dev interns between our NY, London, and
+Hong Kong offices.&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 14 Aug 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/what-the-interns-have-wrought-2017/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/what-the-interns-have-wrought-2017/</guid>
+		</item>
+		
+		<item>
+			<title>When Bash Scripts Bite</title>
+			
+			
+			<description>&lt;p&gt;There are abundant resources online trying to scare programmers away from using
+shell scripts. Most of them, if anything, succeed in convincing the reader to
+blindly put something that resembles&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Thu, 11 May 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/when-bash-scripts-bite/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/when-bash-scripts-bite/</guid>
+		</item>
+		
+		<item>
+			<title>Looking for a technical writer</title>
+			
+			
+			<description>&lt;p&gt;&lt;em&gt;Update: I’m excited to say that we’ve now hired a (great!) technical
+writer, so the position is closed.&lt;/em&gt;&lt;/p&gt;
+
+</description>
+			
+			<pubDate>Mon, 01 May 2017 00:00:00 +0000</pubDate>
+			<link>https://blog.janestreet.com/looking-for-a-technical-writer/</link>
+			<guid isPermaLink="true">https://blog.janestreet.com/looking-for-a-technical-writer/</guid>
+		</item>
+		
+	</channel>
+</rss>

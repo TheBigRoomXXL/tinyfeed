@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-CYvQWLUSsfoEbyQu1fNI0wKW10uPyQhBKvsyaj72oh2MJxnuK7BytA7Nbx0izDj2hGIzTeBM4odJmZYI2uoe1wisMtGMab57cXuF45rj5lfUilNiMf5OIaUvfM1RbqShNIu34WvcPfMDZ-mqDJQbo8UeWegkea--ZbFDYyZMKMouL7YqC1GXV68dvj1oc-kzo8KoHzYTByjOmL-YFTbVVf1Tik9Ue07fMPF2WnKvbcwl945M8_kr-MNk11zt0O171PO553RQCN4o-W5D_7M5yf6FCghBrgiFX1v6e6Tnn5W58L6BZx_01LQ7vZEFKuWqmSbCwktoQZpsQab2vPHZHA==' ;
+		script-src 'nonce-CYvQWLUSsfoEbyQu1fNI0wKW10uPyQhBKvsyaj72oh2MJxnuK7BytA7Nbx0izDj2hGIzTeBM4odJmZYI2uoe1wisMtGMab57cXuF45rj5lfUilNiMf5OIaUvfM1RbqShNIu34WvcPfMDZ-mqDJQbo8UeWegkea--ZbFDYyZMKMouL7YqC1GXV68dvj1oc-kzo8KoHzYTByjOmL-YFTbVVf1Tik9Ue07fMPF2WnKvbcwl945M8_kr-MNk11zt0O171PO553RQCN4o-W5D_7M5yf6FCghBrgiFX1v6e6Tnn5W58L6BZx_01LQ7vZEFKuWqmSbCwktoQZpsQab2vPHZHA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="CYvQWLUSsfoEbyQu1fNI0wKW10uPyQhBKvsyaj72oh2MJxnuK7BytA7Nbx0izDj2hGIzTeBM4odJmZYI2uoe1wisMtGMab57cXuF45rj5lfUilNiMf5OIaUvfM1RbqShNIu34WvcPfMDZ-mqDJQbo8UeWegkea--ZbFDYyZMKMouL7YqC1GXV68dvj1oc-kzo8KoHzYTByjOmL-YFTbVVf1Tik9Ue07fMPF2WnKvbcwl945M8_kr-MNk11zt0O171PO553RQCN4o-W5D_7M5yf6FCghBrgiFX1v6e6Tnn5W58L6BZx_01LQ7vZEFKuWqmSbCwktoQZpsQab2vPHZHA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/10/04/encoders.html target="_blank">
+					<h2>Strands Decider: Why Not an Encoder?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-04">2026-10-04</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/09/28/engineering-system-one.html target="_blank">
+					<h2>Small Decisions: Engineering a Leading Model</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/07/29/lorenz-and-little.html target="_blank">
+					<h2>Lorenz and Little: How Much Does Your Tail Cost?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-29">2026-07-29</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/07/19/dsql-paper.html target="_blank">
+					<h2>Aurora DSQL: Scalable, Multi-Region OLTP</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-19">2026-07-19</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/06/19/waiting.html target="_blank">
+					<h2>Meet Alice. Alice is impatient.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-19">2026-06-19</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/06/18/my-blog-and-ai.html target="_blank">
+					<h2>Is this blog written by AI?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-18">2026-06-18</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/05/20/hypothesis.html target="_blank">
+					<h2>Agentic software development hypothesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-20">2026-05-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/05/18/whats-easy-whats-hard.html target="_blank">
+					<h2>What&#39;s Easy Now? What&#39;s Hard Now?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-18">2026-05-18</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/04/30/be-right.html target="_blank">
+					<h2>It&#39;s time to be right.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-30">2026-04-30</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/04/09/waterfall-vs-spec.html target="_blank">
+					<h2>Spec Driven Development isn&#39;t Waterfall</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-09">2026-04-09</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/03/25/ic-junior.html target="_blank">
+					<h2>What about juniors?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-25">2026-03-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/03/20/ic-leadership.html target="_blank">
+					<h2>My heuristics are wrong. What now?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-20">2026-03-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/03/18/apprentice.html target="_blank">
+					<h2>Music To Build Agents By</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-18">2026-03-18</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/02/25/sfq.html target="_blank">
+					<h2>SFQ: Simple, Stateless, Stochastic Fairness</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-25">2026-02-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/02/07/you-are-here.html target="_blank">
+					<h2>You Are Here</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-07">2026-02-07</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/01/21/pass-k.html target="_blank">
+					<h2>Pass@k is Mostly Bunk</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-21">2026-01-21</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/01/12/agent-box.html target="_blank">
+					<h2>Agent Safety is a Box</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-12">2026-01-12</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/12/16/natural-language.html target="_blank">
+					<h2>On the success of &#39;natural language programming&#39;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-16">2025-12-16</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/12/15/database-for-ssd.html target="_blank">
+					<h2>What Does a Database for SSDs Look Like?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-15">2025-12-15</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/11/20/what-now.html target="_blank">
+					<h2>What Now? Handling Errors in Large Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-20">2025-11-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/11/18/consistency.html target="_blank">
+					<h2>Why Strong Consistency?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-18">2025-11-18</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/11/02/thinking-dsql.html target="_blank">
+					<h2>DSQL: Simplifying Architectures</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-02">2025-11-02</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/10/22/uuidv7.html target="_blank">
+					<h2>Fixing UUIDv7 (for database use-cases)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-22">2025-10-22</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/10/12/barbarians.html target="_blank">
+					<h2>Is Systems Research Really Just About Making Numbers Bigger?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-12">2025-10-12</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/10/05/locality.html target="_blank">
+					<h2>Locality, and Temporal-Spatial Hypothesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-05">2025-10-05</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/09/18/firecracker.html target="_blank">
+					<h2>Seven Years of Firecracker</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-18">2025-09-18</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/08/15/dynamo-dynamodb-dsql.html target="_blank">
+					<h2>Dynamo, DynamoDB, and Aurora DSQL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-15">2025-08-15</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/08/12/llms-as-components.html target="_blank">
+					<h2>LLMs as Parts of Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-12">2025-08-12</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/06/20/career.html target="_blank">
+					<h2>Career advice, or something like it</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-20">2025-06-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/06/02/hotos.html target="_blank">
+					<h2>Systems Fun at HotOS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-02">2025-06-02</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/05/20/icpe.html target="_blank">
+					<h2>Good Performance for Bad Days</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-20">2025-05-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/04/17/decomposing.html target="_blank">
+					<h2>Decomposing Aurora DSQL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-17">2025-04-17</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/03/25/two-queues.html target="_blank">
+					<h2>One or Two? How Many Queues?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-25">2025-03-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/02/05/feketes.html target="_blank">
+					<h2>What Fekete&#39;s Anomaly Can Teach Us About Isolation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-05">2025-02-05</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2025/02/04/versioning.html target="_blank">
+					<h2>Versioning versus Coordination</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-04">2025-02-04</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/12/17/occ-and-isolation.html target="_blank">
+					<h2>Snapshot Isolation vs Serializability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-17">2024-12-17</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/12/06/inside-dsql-cap.html target="_blank">
+					<h2>DSQL Vignette: Wait! Isn&#39;t That Impossible?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-06">2024-12-06</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/12/05/inside-dsql-writes.html target="_blank">
+					<h2>DSQL Vignette: Transactions and Durability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-05">2024-12-05</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/12/04/inside-dsql.html target="_blank">
+					<h2>DSQL Vignette: Reads and Compute</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-04">2024-12-04</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/12/03/aurora-dsql.html target="_blank">
+					<h2>DSQL Vignette: Aurora DSQL, and A Personal Story</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-03">2024-12-03</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/11/14/lambda-ten-years.html target="_blank">
+					<h2>Ten Years of AWS Lambda</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-14">2024-11-14</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/08/14/gc-metastable.html target="_blank">
+					<h2>Garbage Collection and Metastability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-14">2024-08-14</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/07/29/aurora-serverless.html target="_blank">
+					<h2>Resource Management in Aurora Serverless</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-29">2024-07-29</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/07/25/cap-again.html target="_blank">
+					<h2>Let&#39;s Consign CAP to the Cabinet of Curiosities</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-25">2024-07-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/06/04/scale.html target="_blank">
+					<h2>Not Just Scale</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-04">2024-06-04</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/05/09/nagle.html target="_blank">
+					<h2>It&#39;s always TCP_NODELAY. Every damn time.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-09">2024-05-09</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/04/25/memorydb.html target="_blank">
+					<h2>MemoryDB: Speed, Durability, and Composition.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-25">2024-04-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/04/17/formal.html target="_blank">
+					<h2>Formal Methods: Just Good Engineering Practice?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-17">2024-04-17</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/03/25/needles.html target="_blank">
+					<h2>Finding Needles in a Haystack with Best-of-K</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-25">2024-03-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/03/04/mousetrap.html target="_blank">
+					<h2>The Builder&#39;s Guide to Better Mousetraps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-04">2024-03-04</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/02/12/parameters.html target="_blank">
+					<h2>Better Benchmarks Through Graphs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-12">2024-02-12</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/02/06/time.html target="_blank">
+					<h2>How Do You Spend Your Time?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-06">2024-02-06</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/01/23/big-deal.html target="_blank">
+					<h2>Pat&#39;s Big Deal, and Transaction Coordination</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-23">2024-01-23</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2024/01/18/scalability.html target="_blank">
+					<h2>What is Scalability Anyway?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-18">2024-01-18</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/12/15/sieve.html target="_blank">
+					<h2>Why Aren&#39;t We SIEVE-ing?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-15">2023-12-15</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/11/27/about-time.html target="_blank">
+					<h2>It&#39;s About Time!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-27">2023-11-27</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/10/18/optimism.html target="_blank">
+					<h2>Optimism vs Pessimism in Distributed Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-18">2023-10-18</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/09/21/audience.html target="_blank">
+					<h2>Writing For Somebody</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-21">2023-09-21</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/09/08/exponential.html target="_blank">
+					<h2>Exponential Value at Linear Cost</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-08">2023-09-08</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/08/25/party-time.html target="_blank">
+					<h2>On The Acoustics of Cocktail Parties</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-25">2023-08-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/07/28/ds-testing.html target="_blank">
+					<h2>Invariants: A Better Debugger?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-28">2023-07-28</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/07/13/osdi.html target="_blank">
+					<h2>My Favorite Bits of OSDI/ATC&#39;23</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-13">2023-07-13</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/06/23/belady.html target="_blank">
+					<h2>Bélády&#39;s Anomaly Doesn&#39;t Happen Often</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-23">2023-06-23</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/06/19/container.html target="_blank">
+					<h2>What is a container?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-19">2023-06-19</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/05/23/snapshot-loading.html target="_blank">
+					<h2>Container Loading in AWS Lambda</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-23">2023-05-23</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/05/10/open-closed.html target="_blank">
+					<h2>Open and Closed, Omission and Collapse</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-10">2023-05-10</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/04/20/hobbies.html target="_blank">
+					<h2>The Four Hobbies, and Apparent Expertise</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-20">2023-04-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/03/23/economics.html target="_blank">
+					<h2>Surprising Scalability of Multitenancy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-23">2023-03-23</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/03/07/false-sharing.html target="_blank">
+					<h2>False Sharing versus Perfect Placement</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-07">2023-03-07</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/02/07/hot-keys.html target="_blank">
+					<h2>Hot Keys, Scalability, and the Zipf Distribution</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-07">2023-02-07</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/01/30/nosql.html target="_blank">
+					<h2>NoSQL: The Baby and the Bathwater</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-30">2023-01-30</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2023/01/06/erasure.html target="_blank">
+					<h2>Erasure Coding versus Tail Latency</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-06">2023-01-06</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/12/15/thumb.html target="_blank">
+					<h2>Under My Thumb: Insight Behind the Rules</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-15">2022-12-15</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/11/29/snapstart.html target="_blank">
+					<h2>Lambda Snapstart, and snapshots as a tool for system builders</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-29">2022-11-29</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/11/22/manifesto.html target="_blank">
+					<h2>Amazon&#39;s Distributed Computing Manifesto</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-22">2022-11-22</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/11/08/writing.html target="_blank">
+					<h2>Writing Is Magic</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-08">2022-11-08</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/10/21/nudge.html target="_blank">
+					<h2>Give Your Tail a Nudge</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-21">2022-10-21</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/10/04/commitment.html target="_blank">
+					<h2>Atomic Commitment: The Unscalability Protocol</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-04">2022-10-04</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/09/02/ecdf.html target="_blank">
+					<h2>Histogram vs eCDF</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-09-02">2022-09-02</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/08/11/backoff.html target="_blank">
+					<h2>What is Backoff For?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-11">2022-08-11</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/07/29/getting-into-tla.html target="_blank">
+					<h2>Getting into formal specification, and getting my team into it too</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-29">2022-07-29</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/07/12/dynamodb.html target="_blank">
+					<h2>The DynamoDB paper</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-12">2022-07-12</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/06/02/formal.html target="_blank">
+					<h2>Formal Methods Only Solve Half My Problems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-02">2022-06-02</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/05/03/simplicity.html target="_blank">
+					<h2>What is a simple system?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-03">2022-05-03</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/04/11/simulation.html target="_blank">
+					<h2>Simple Simulations for System Builders</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-11">2022-04-11</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/02/28/retries.html target="_blank">
+					<h2>Fixing retries with token buckets and circuit breakers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-28">2022-02-28</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/02/16/circuit-breakers.html target="_blank">
+					<h2>Will circuit breakers solve my problems?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-16">2022-02-16</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/01/31/deployments.html target="_blank">
+					<h2>Software Deployment, Speed, and Safety</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-31">2022-01-31</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2022/01/19/predictability.html target="_blank">
+					<h2>DynamoDB&#39;s Best Feature: Predictability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-19">2022-01-19</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/11/16/paxos.html target="_blank">
+					<h2>The Bug in Paxos Made Simple</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-16">2021-11-16</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/10/20/simulation.html target="_blank">
+					<h2>Serial, Parallel, and Quorum Latencies</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-20">2021-10-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/08/27/caches.html target="_blank">
+					<h2>Caches, Modes, and Unstable Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-27">2021-08-27</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/08/11/arecibo.html target="_blank">
+					<h2>My Proposal for Arecibo: Drones</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-11">2021-08-11</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/08/05/utilization.html target="_blank">
+					<h2>Latency Sneaks Up On You</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-05">2021-08-05</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/05/24/metastable.html target="_blank">
+					<h2>Metastability and Distributed Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-05-24">2021-05-24</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/04/19/latency.html target="_blank">
+					<h2>Tail Latency Might Matter More Than You Think</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-04-19">2021-04-19</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/04/14/redundancy.html target="_blank">
+					<h2>Redundant against what?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-04-14">2021-04-14</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/03/25/latency-bandwidth.html target="_blank">
+					<h2>What You Can Learn From Old Hard Drive Adverts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-25">2021-03-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/02/22/postmortem.html target="_blank">
+					<h2>Incident Response Isn&#39;t Enough</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-22">2021-02-22</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/01/22/cloud-scale.html target="_blank">
+					<h2>The Fundamental Mechanism of Scaling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-22">2021-01-22</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2021/01/06/quorum-availability.html target="_blank">
+					<h2>Quorum Availability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-06">2021-01-06</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/10/19/big-changes.html target="_blank">
+					<h2>Getting Big Things Done</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-19">2020-10-19</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/10/05/consensus.html target="_blank">
+					<h2>Consensus is Harder Than It Looks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-05">2020-10-05</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/09/02/learning.html target="_blank">
+					<h2>Focus on the Good Parts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-02">2020-09-02</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/08/06/erlang.html target="_blank">
+					<h2>Surprising Economics of Load-Balanced Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-08-06">2020-08-06</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/07/28/fish.html target="_blank">
+					<h2>A Story About a Fish</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-28">2020-07-28</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/06/23/code.html target="_blank">
+					<h2>Code Only Says What it Does</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-23">2020-06-23</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/06/08/virtualization.html target="_blank">
+					<h2>Some Virtualization Papers Worth Reading</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-08">2020-06-08</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/05/25/reading.html target="_blank">
+					<h2>Reading Research: A Guide for Software Engineers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-25">2020-05-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/03/22/rust.html target="_blank">
+					<h2>Two Years With Rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-03-22">2020-03-22</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/02/19/firecracker.html target="_blank">
+					<h2>Firecracker: Lightweight Virtualization for Serverless Applications</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-19">2020-02-19</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/02/17/physalia.html target="_blank">
+					<h2>Physalia: Millions of Tiny Databases</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-17">2020-02-17</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2020/01/02/why-distributed.html target="_blank">
+					<h2>Why do we need distributed systems?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-01-02">2020-01-02</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2019/08/12/kind-wicked.html target="_blank">
+					<h2>Kindness, Wickedness and Safety</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-08-12">2019-08-12</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2019/06/20/redundancy.html target="_blank">
+					<h2>When Redundancy Actually Helps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-06-20">2019-06-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2019/06/17/chernobyl.html target="_blank">
+					<h2>Is Anatoly Dyatlov to blame?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-06-17">2019-06-17</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2019/05/01/emergent.html target="_blank">
+					<h2>Some risks of coordinating only sometimes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-05-01">2019-05-01</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2019/04/03/learning.html target="_blank">
+					<h2>Learning to build distributed systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-04-03">2019-04-03</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2019/03/17/control.html target="_blank">
+					<h2>Control Planes vs Data Planes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-03-17">2019-03-17</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2018/06/20/littles-law.html target="_blank">
+					<h2>Telling Stories About Little&#39;s Law</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-06-20">2018-06-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2018/02/25/availability-liveness.html target="_blank">
+					<h2>Availability and availability</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-02-25">2018-02-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2018/01/01/balls-into-bins.html target="_blank">
+					<h2>Balls Into Bins In Distributed Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-01-01">2018-01-01</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2017/12/28/mean.html target="_blank">
+					<h2>Is the Mean Really Useless?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-12-28">2017-12-28</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2016/01/03/correlation.html target="_blank">
+					<h2>Why Must Systems Be Operated?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-01-03">2016-01-03</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/11/05/heuristics.html target="_blank">
+					<h2>Heuristic Traps for Systems Operators</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-11-05">2015-11-05</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/09/26/cap-durability.html target="_blank">
+					<h2>Is there a CAP theorem for Durability?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-09-26">2015-09-26</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/06/20/calisto.html target="_blank">
+					<h2>CALISDO: Threat Modeling for Distributed Designs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-06-20">2015-06-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/05/24/sodium-carbonate.html target="_blank">
+					<h2>Sodium Carbonate, and Ramenized Pasta</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-05-24">2015-05-24</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/04/11/zero-one.html target="_blank">
+					<h2>The Zero, One, Infinity Disease</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-04-11">2015-04-11</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/03/29/formal.html target="_blank">
+					<h2>How Amazon Web Services Uses Formal Methods</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-03-29">2015-03-29</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/03/21/backoff.html target="_blank">
+					<h2>Jitter: Making Things Better With Randomness</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-03-21">2015-03-21</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/03/03/sybil.html target="_blank">
+					<h2>Electoral Trouble in Sybilania</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-03-03">2015-03-03</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/02/28/bitcoin.html target="_blank">
+					<h2>Does Bitcoin Solve Byzantine Consensus?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-02-28">2015-02-28</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2015/01/25/patterns.html target="_blank">
+					<h2>A Quiet Defense of Patterns</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-01-25">2015-01-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/12/06/random.html target="_blank">
+					<h2>Make Your Program Slower With Threads</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-12-06">2014-12-06</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/11/30/two-farmers.html target="_blank">
+					<h2>Two Farmers and Common Knowledge</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-11-30">2014-11-30</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/11/15/exactly-once.html target="_blank">
+					<h2>Exactly-Once Delivery May Not Be What You Want</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-11-15">2014-11-15</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/10/25/ice-cream.html target="_blank">
+					<h2>Ice Cream and Distributed Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-10-25">2014-10-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/10/12/harvest-yield.html target="_blank">
+					<h2>Harvest and Yield: Not A Natural Cure for Tradeoff Confusion</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-10-12">2014-10-12</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/09/21/liskov-pub.html target="_blank">
+					<h2>The Essential Barbara Liskov</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-09-21">2014-09-21</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/08/10/the-space-between.html target="_blank">
+					<h2>The Space Between Theory and Practice in Distributed Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-08-10">2014-08-10</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/08/09/formal-methods.html target="_blank">
+					<h2>Use of Formal Methods at Amazon Web Services</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-08-09">2014-08-09</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/07/16/pacelc.html target="_blank">
+					<h2>CAP and PACELC: Thinking More Clearly About Consistency</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-07-16">2014-07-16</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/07/04/iostat-pct.html target="_blank">
+					<h2>Two traps in iostat: %util and svctm</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-07-04">2014-07-04</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/06/29/rasmussen.html target="_blank">
+					<h2>The Operations Gradient: Improving Safety in Complex Systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-06-29">2014-06-29</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/05/19/vr.html target="_blank">
+					<h2>Viewstamped Replication: The Less-Famous Consensus Protocol</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-05-19">2014-05-19</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/05/10/lynch-pub.html target="_blank">
+					<h2>The Essential Nancy Lynch</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-05-10">2014-05-10</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/04/14/failure-detectors.html target="_blank">
+					<h2>Failure Detectors, and Non-Blocking Atomic Commit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-04-14">2014-04-14</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/03/30/lamport-pub.html target="_blank">
+					<h2>The Essential Leslie Lamport</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-03-30">2014-03-30</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/03/08/model-checking.html target="_blank">
+					<h2>Snark, Chord, and Trust in Algorithms</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-03-08">2014-03-08</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2014/01/12/ben-or.html target="_blank">
+					<h2>Distributed Consensus: Beating Impossibility with Probability One</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-01-12">2014-01-12</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2013/12/16/intel-rtm.html target="_blank">
+					<h2>Restricted Transactional Memory on Haswell</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-12-16">2013-12-16</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2013/12/14/intel-hle.html target="_blank">
+					<h2>Hardware Lock Elision on Haswell</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-12-14">2013-12-14</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2013/07/14/io-performance.html target="_blank">
+					<h2>Beyond iostat: Storage performance analysis with blktrace</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-07-14">2013-07-14</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2013/05/25/patterns-of-design.html target="_blank">
+					<h2>Some Patterns of Engineering Design Meetings</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-05-25">2013-05-25</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2013/01/20/two-phase.html target="_blank">
+					<h2>Exploring TLA&#43; with two-phase commit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-01-20">2013-01-20</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2013/01/06/volatile.html target="_blank">
+					<h2>C&#43;&#43;11&#39;s atomic and volatile, under the hood on x86</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-01-06">2013-01-06</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2012/11/13/increment.html target="_blank">
+					<h2>Java&#39;s Atomic and volatile, under the hood on x86</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-11-13">2012-11-13</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2012/09/10/volatile.html target="_blank">
+					<h2>Are volatile reads really free?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-09-10">2012-09-10</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2012/09/10/locking.html target="_blank">
+					<h2>Highly contended and fair locking in Java</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-09-10">2012-09-10</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2012/09/02/expect-less.html target="_blank">
+					<h2>Expect Less, Get More?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-09-02">2012-09-02</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2012/02/11/latency-lags-bandwidth.html target="_blank">
+					<h2>Latency lags bandwidth</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-02-11">2012-02-11</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2012/01/22/crash-only.html target="_blank">
+					<h2>The properties of crash-only software</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-01-22">2012-01-22</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2012/01/17/two-random.html target="_blank">
+					<h2>The power of two random choices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-01-17">2012-01-17</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2012/01/10/drive-failure.html target="_blank">
+					<h2>The benefits of having data</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-01-10">2012-01-10</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="http://brooker.co.za/blog/" target="_blank">Marc Brooker&#39;s Blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="CYvQWLUSsfoEbyQu1fNI0wKW10uPyQhBKvsyaj72oh2MJxnuK7BytA7Nbx0izDj2hGIzTeBM4odJmZYI2uoe1wisMtGMab57cXuF45rj5lfUilNiMf5OIaUvfM1RbqShNIu34WvcPfMDZ-mqDJQbo8UeWegkea--ZbFDYyZMKMouL7YqC1GXV68dvj1oc-kzo8KoHzYTByjOmL-YFTbVVf1Tik9Ue07fMPF2WnKvbcwl945M8_kr-MNk11zt0O171PO553RQCN4o-W5D_7M5yf6FCghBrgiFX1v6e6Tnn5W58L6BZx_01LQ7vZEFKuWqmSbCwktoQZpsQab2vPHZHA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

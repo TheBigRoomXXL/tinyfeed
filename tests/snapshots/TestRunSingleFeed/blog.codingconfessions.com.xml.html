@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-0cZ66DTRvciLudVKBSmHA5IqQcwSZ28F1P9Lzvb4nKQJnxtF5wF1KR6rOYkrWgx8RVhITYPhEoZr8uY__PPCeiA5CiBiHudQejvKXgFMp_1aFRRHXitwABELAuG_51vMVoYVzA0nKxnJT2oNONdzGjKsKuFTBvG6oicfI_2hFQUvH2IHdD4Olz_2_CCYehK9rlPgLYwRn8VMpcyqxMhsJiKEHzDJwlRyOSV2N0jPKilRFn4dB2nDXp_Y04ciu2y_eTGPWICmnyE3QleaALqPmVac1jhMqBocK6pro6Qn70IX2ngsKI678yNxqSJL5KjQWk4XduS0OzaowCBptG6PbQ==' ;
+		script-src 'nonce-0cZ66DTRvciLudVKBSmHA5IqQcwSZ28F1P9Lzvb4nKQJnxtF5wF1KR6rOYkrWgx8RVhITYPhEoZr8uY__PPCeiA5CiBiHudQejvKXgFMp_1aFRRHXitwABELAuG_51vMVoYVzA0nKxnJT2oNONdzGjKsKuFTBvG6oicfI_2hFQUvH2IHdD4Olz_2_CCYehK9rlPgLYwRn8VMpcyqxMhsJiKEHzDJwlRyOSV2N0jPKilRFn4dB2nDXp_Y04ciu2y_eTGPWICmnyE3QleaALqPmVac1jhMqBocK6pro6Qn70IX2ngsKI678yNxqSJL5KjQWk4XduS0OzaowCBptG6PbQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="0cZ66DTRvciLudVKBSmHA5IqQcwSZ28F1P9Lzvb4nKQJnxtF5wF1KR6rOYkrWgx8RVhITYPhEoZr8uY__PPCeiA5CiBiHudQejvKXgFMp_1aFRRHXitwABELAuG_51vMVoYVzA0nKxnJT2oNONdzGjKsKuFTBvG6oicfI_2hFQUvH2IHdD4Olz_2_CCYehK9rlPgLYwRn8VMpcyqxMhsJiKEHzDJwlRyOSV2N0jPKilRFn4dB2nDXp_Y04ciu2y_eTGPWICmnyE3QleaALqPmVac1jhMqBocK6pro6Qn70IX2ngsKI678yNxqSJL5KjQWk4XduS0OzaowCBptG6PbQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/how-and-why-fork-uses-copy-on-write target="_blank">
+					<h2>How and Why fork() Uses Copy-on-Write</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/how-copy-on-write-works-with-memory target="_blank">
+					<h2>How Copy-on-Write Works with Memory-Mapped Files</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/demand-paging-in-action target="_blank">
+					<h2>Demand Paging in Action: mmap, Page Faults, and RSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-29">2026-08-29</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/demand-paging-what-happens-when-linux target="_blank">
+					<h2>Demand Paging: What Happens When Linux Handles a Page Fault</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-23">2026-08-23</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/x86-addressing-modes-part-2-indirect target="_blank">
+					<h2>x86 Addressing Modes, Part 2: Indirect, Indexed, and Offset-based Modes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-09">2026-08-09</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/how-big-is-a-physical-address target="_blank">
+					<h2>How Big Is a Physical Address?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-22">2026-06-22</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/what-does-a-page-table-entry-actually target="_blank">
+					<h2>What Does a Page Table Entry Actually Store?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-21">2026-06-21</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/page-tables-from-first-principles target="_blank">
+					<h2>Page Tables from First Principles</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-16">2026-06-16</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/understanding-a-processs-address target="_blank">
+					<h2>Understanding a Process’s Address Space Layout</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-06">2026-06-06</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/false-but-the-compiler-does-not-know-it target="_blank">
+					<h2>Why Git Has a Variable Named false_but_the_compiler_does_not_know_it</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-03">2026-06-03</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/how-large-is-the-virtual-address target="_blank">
+					<h2>How Large Is the Virtual Address Space?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-31">2026-05-31</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/why-do-we-need-virtual-memory target="_blank">
+					<h2>Why do we need virtual memory?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-24">2026-05-24</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/virtual-memory target="_blank">
+					<h2>Virtual Memory From First Principles</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-10">2026-05-10</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/how-pytorch-generates-random-numbers target="_blank">
+					<h2>How PyTorch Generates Random Numbers in Parallel on the GPU</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-18">2025-12-18</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/x86-addressing-modes-part-1-immediate target="_blank">
+					<h2>x86 Addressing Modes, Part 1 — Immediate and Direct Access</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-12">2025-11-12</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/rdtsc target="_blank">
+					<h2>A Systems Engineer’s Guide to Benchmarking with RDTSC</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-23">2025-10-23</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/python-3-14-whats-new target="_blank">
+					<h2>My Top 5 Favourite Features in Python 3.14</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-11">2025-10-11</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/a-strong-reference-to-weak-references target="_blank">
+					<h2>Understanding Weak References in Python</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-30">2025-09-30</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/compiling-python-to-run-anywhere target="_blank">
+					<h2>Compiling Python to Run Anywhere</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-23">2025-09-23</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/what-makes-system-calls-expensive target="_blank">
+					<h2>What Makes System Calls Expensive</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-16">2025-09-16</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://blog.codingconfessions.com" target="_blank">Confessions of a Code Addict</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="0cZ66DTRvciLudVKBSmHA5IqQcwSZ28F1P9Lzvb4nKQJnxtF5wF1KR6rOYkrWgx8RVhITYPhEoZr8uY__PPCeiA5CiBiHudQejvKXgFMp_1aFRRHXitwABELAuG_51vMVoYVzA0nKxnJT2oNONdzGjKsKuFTBvG6oicfI_2hFQUvH2IHdD4Olz_2_CCYehK9rlPgLYwRn8VMpcyqxMhsJiKEHzDJwlRyOSV2N0jPKilRFn4dB2nDXp_Y04ciu2y_eTGPWICmnyE3QleaALqPmVac1jhMqBocK6pro6Qn70IX2ngsKI678yNxqSJL5KjQWk4XduS0OzaowCBptG6PbQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

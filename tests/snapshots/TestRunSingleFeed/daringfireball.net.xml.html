@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-anIac1XHxXSnmcmL0KOS-A7YQwIucSEOiMYJspZdVQF60C7zjcwiJzMNEFzu1gg59jCge5j6MnxmsGBNb5JRhZm1vLcBvAjaiNmusMT7UqWlFHj9R2r3QdSNsIPi89tdHOkluJ_qgytF7hkykVMCoonq3wlnaQeTpUS2JWaQlpCIiMTykToVkaWTWYT1yB1cJmnPnqbM8I2eLm-maRU5IsuADRqaedMvid886ofXd5lnbDLKLgtTOpXGguM9r2G8_nboObb6lqwUkxnriXjfFQSe5SMFelYed79jzxFRePZ1gp0M3Ppxj-n4B8MZ8Vo1Hxc5VAh0Dln0WmWJsf_BCw==' ;
+		script-src 'nonce-anIac1XHxXSnmcmL0KOS-A7YQwIucSEOiMYJspZdVQF60C7zjcwiJzMNEFzu1gg59jCge5j6MnxmsGBNb5JRhZm1vLcBvAjaiNmusMT7UqWlFHj9R2r3QdSNsIPi89tdHOkluJ_qgytF7hkykVMCoonq3wlnaQeTpUS2JWaQlpCIiMTykToVkaWTWYT1yB1cJmnPnqbM8I2eLm-maRU5IsuADRqaedMvid886ofXd5lnbDLKLgtTOpXGguM9r2G8_nboObb6lqwUkxnriXjfFQSe5SMFelYed79jzxFRePZ1gp0M3Ppxj-n4B8MZ8Vo1Hxc5VAh0Dln0WmWJsf_BCw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="anIac1XHxXSnmcmL0KOS-A7YQwIucSEOiMYJspZdVQF60C7zjcwiJzMNEFzu1gg59jCge5j6MnxmsGBNb5JRhZm1vLcBvAjaiNmusMT7UqWlFHj9R2r3QdSNsIPi89tdHOkluJ_qgytF7hkykVMCoonq3wlnaQeTpUS2JWaQlpCIiMTykToVkaWTWYT1yB1cJmnPnqbM8I2eLm-maRU5IsuADRqaedMvid886ofXd5lnbDLKLgtTOpXGguM9r2G8_nboObb6lqwUkxnriXjfFQSe5SMFelYed79jzxFRePZ1gp0M3Ppxj-n4B8MZ8Vo1Hxc5VAh0Dln0WmWJsf_BCw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/munger-on-musk target="_blank">
+					<h2>The Late Charlie Munger on Elon Musk and Tesla</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-17">2026-10-17</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/app-store-guidelines-nudification target="_blank">
+					<h2>Apple: ‘Strengthening App Review Guidelines Against Nonconsensual Intimate Imagery and Bait-And-Switch Apps’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-17">2026-10-17</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/apple-tv-69 target="_blank">
+					<h2>Apple TV Started at $69 in 2015</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-17">2026-10-17</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/strange-times-make-for-strange-bedfellows target="_blank">
+					<h2>Strange Times Make for Strange Bedfellows</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/how-they-got-duo-support-in-netnewswire target="_blank">
+					<h2>How They Got Duo Support in NetNewsWire</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/10/real_artists_ship_tesla_edition target="_blank">
+					<h2>★ Real Artists Ship, Tesla Edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/sankar-ai-researchers-smoking target="_blank">
+					<h2>Shyam Sankar, CTO of Palantir, Says AI Researchers Have Started Smoking Because They’re Convinced AI (Claude, Probably) Is Going to Cure Cancer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/duo-preorders-sellout target="_blank">
+					<h2>iPhone Duo Pre-Orders Launched, and Three Hours Later It’s Sold Out Through the End of January</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/10/thoughts_on_new_apple_tv_4k_and_homepod_mini_2 target="_blank">
+					<h2>★ Initial Thoughts on This Week’s New Apple TV 4K (4th Generation) and HomePod Mini 2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/15/trump-ballroom-donor-list target="_blank">
+					<h2>Secret Documents Reveal Donors Behind $330 Million for Trump’s Ballroom — Apple and Nvidia Top the List at $25 Million Each</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-15">2026-10-15</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/feeds/sponsors/2026/10/workos_authkit_auth_for_your_a target="_blank">
+					<h2>[Sponsor] WorkOS AuthKit: Auth for Your App, Free Up to 1M Monthly Active Users</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/14/fbi-saudi-arrested-openai target="_blank">
+					<h2>The FBI Arrested a Saudi National OpenAI Employee for Planting a Recording Device in the Company’s Executive Conference Room</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/13/homeview target="_blank">
+					<h2>Apple HomeView</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/12/cringely-rip target="_blank">
+					<h2>Mark Stephens, a.k.a. Robert X. Cringely, Died at 73</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/10/x_once_again_marks_the_spot target="_blank">
+					<h2>★ X Once Again Marks the Spot</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/11/apple-only-started-suggesting-ios-26-users-upgrade-to-27-three-days-ago target="_blank">
+					<h2>Apple Only Started Suggesting iOS 26 Users Upgrade to 27 Three Days Ago</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/10/sunnny target="_blank">
+					<h2>Sunnny</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/10/proof-of-human target="_blank">
+					<h2>‘Proof-of-Human’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/08/lets-check-in-on-trumps-blog target="_blank">
+					<h2>Let’s Check In on Trump’s Blog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/08/apple-is-slow-rolling-ios-27-adoption-so-far target="_blank">
+					<h2>Apple Is Slow-Rolling iOS 27 Adoption, So Far</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/08/joz-welcome-home target="_blank">
+					<h2>Joz Announces ‘Welcome Home’ Keynote Coming Tuesday, 13 October</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/07/jaguar-type-01 target="_blank">
+					<h2>Jaguar Type 01</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/07/gurman-apple-lg-smart-home target="_blank">
+					<h2>Gurman Strikes Again: ‘Apple’s Smart Home Push Includes Doorbell, Lock, Thermostat Codeveloped With LG’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/06/cli-tool-removes-apple-intelligence-from-macos-27 target="_blank">
+					<h2>Unofficial Command-Line Tool Removes Apple Intelligence From MacOS 27</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/05/jobs-walking-through-mockup target="_blank">
+					<h2>Steve Jobs, Walking Through a Mockup for Apple Park in 2010</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/feeds/sponsors/2026/10/sunnny target="_blank">
+					<h2>[Sponsor] Sunnny</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/05/openai-announces-their-text-watermarking-plans target="_blank">
+					<h2>OpenAI Announces Their Text Watermarking Plans</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/05/ternus-cook-jobs-15th-anniversary target="_blank">
+					<h2>Ternus and Cook Tweet Brief Remembrances on the 15th Anniversary of Steve Jobs’s Death</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/03/workos-sso target="_blank">
+					<h2>WorkOS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-03">2026-10-03</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/03/iphone-18-pro-max-att-issues target="_blank">
+					<h2>Apple Confirms iPhone 18 Pro Max AT&amp;T Cellular Issues, Affected Devices Require Hardware Replacement</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-03">2026-10-03</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/10/apple_full_disk_access target="_blank">
+					<h2>★ Apple Is Going to Further Tighten the Screws on Full Disk Access on MacOS, in Response to Agentic AI Apps Running Amok</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/01/yankees-sweep-sox target="_blank">
+					<h2>Yankees Sweep Boston in Two Games, by Combined Score of 18-2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/30/gurman-october-13-smart-home target="_blank">
+					<h2>Gurman Reports Apple Is Launching New ‘Smart Home’ Products on October 13</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/30/reuters-anthropic-ipo-prospectus target="_blank">
+					<h2>Anthropic’s IPO Prospectus Is a Fucking Doozy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/29/fu-october-spitball target="_blank">
+					<h2>Follow-Up on my Spitballed Predictions for Apple’s October</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/29/destroy-any-website target="_blank">
+					<h2>Destroy Any Website</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/bastardic target="_blank">
+					<h2>Bastardica</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/google-is-fing-weird target="_blank">
+					<h2>‘When Did Google Get So F-Ing Weird?’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/stern-pickle-poke target="_blank">
+					<h2>Joanna Stern Pokes the Pickle</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/donald-decodes-federighi target="_blank">
+					<h2>‘Donald Decodes’ Interview Craig Federighi Regarding the iPhone Duo</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/stolen-device-protection-fleishman target="_blank">
+					<h2>Why Stolen Device Protection Makes Passwords Safer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/stern-zuck-colossus target="_blank">
+					<h2>Jeremy Stern’s Profile of Mark Zuckerberg for Colossus</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/lookalike-ripoffs-mac-app-store target="_blank">
+					<h2>Muse, Instagram, and VLC Lookalike Rip-Offs in the Mac App Store</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/09/spitballing_predictions_for_apples_october target="_blank">
+					<h2>★ Spitballing Predictions for Apple’s October</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/duo-man target="_blank">
+					<h2>Duo-Man</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/27/mux target="_blank">
+					<h2>Mux: Turn Your Video Into Context</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/27/notopoulos-wang target="_blank">
+					<h2>Katie Notopoulos on Alexandr Wang’s ‘Faux-Hallmark Pap’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/09/ill_wait target="_blank">
+					<h2>★ I’ll Wait</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://daringfireball.net/" target="_blank">Daring Fireball</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="anIac1XHxXSnmcmL0KOS-A7YQwIucSEOiMYJspZdVQF60C7zjcwiJzMNEFzu1gg59jCge5j6MnxmsGBNb5JRhZm1vLcBvAjaiNmusMT7UqWlFHj9R2r3QdSNsIPi89tdHOkluJ_qgytF7hkykVMCoonq3wlnaQeTpUS2JWaQlpCIiMTykToVkaWTWYT1yB1cJmnPnqbM8I2eLm-maRU5IsuADRqaedMvid886ofXd5lnbDLKLgtTOpXGguM9r2G8_nboObb6lqwUkxnriXjfFQSe5SMFelYed79jzxFRePZ1gp0M3Ppxj-n4B8MZ8Vo1Hxc5VAh0Dln0WmWJsf_BCw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

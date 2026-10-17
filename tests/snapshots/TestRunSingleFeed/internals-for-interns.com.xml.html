@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-frSVwFtQTIdL5aorym-s2DwTeROrS9ml5b5TdCMDIr06JHktc7MlJg67MpRsKC1ijecBFDc3rhdhBG49iRdAD1ZGJ84q8bsQkOAWJDcMZyxQZSvXR9gvqtnZWlU94sse7D9zvIKehVw3sEf2yNVvbyF155__o25S5ossO9PuOeY_mgdTtESedSashhKd2NOEa9hXfaPtnnKONZvqscRk5i2ztJlIDB2kQtvZERNL9DasDBfT7jIBe0ZIAfbT0d-yUPEhL-K_YzgaCG3azWh3cWRPl0f7MWG3VjqD005hMS1dqcnbaXMf_VVxuJ202w_OpuuvdvVPjxxn75vQHng1oQ==' ;
+		script-src 'nonce-frSVwFtQTIdL5aorym-s2DwTeROrS9ml5b5TdCMDIr06JHktc7MlJg67MpRsKC1ijecBFDc3rhdhBG49iRdAD1ZGJ84q8bsQkOAWJDcMZyxQZSvXR9gvqtnZWlU94sse7D9zvIKehVw3sEf2yNVvbyF155__o25S5ossO9PuOeY_mgdTtESedSashhKd2NOEa9hXfaPtnnKONZvqscRk5i2ztJlIDB2kQtvZERNL9DasDBfT7jIBe0ZIAfbT0d-yUPEhL-K_YzgaCG3azWh3cWRPl0f7MWG3VjqD005hMS1dqcnbaXMf_VVxuJ202w_OpuuvdvVPjxxn75vQHng1oQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="frSVwFtQTIdL5aorym-s2DwTeROrS9ml5b5TdCMDIr06JHktc7MlJg67MpRsKC1ijecBFDc3rhdhBG49iRdAD1ZGJ84q8bsQkOAWJDcMZyxQZSvXR9gvqtnZWlU94sse7D9zvIKehVw3sEf2yNVvbyF155__o25S5ossO9PuOeY_mgdTtESedSashhKd2NOEa9hXfaPtnnKONZvqscRk5i2ztJlIDB2kQtvZERNL9DasDBfT7jIBe0ZIAfbT0d-yUPEhL-K_YzgaCG3azWh3cWRPl0f7MWG3VjqD005hMS1dqcnbaXMf_VVxuJ202w_OpuuvdvVPjxxn75vQHng1oQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-namespaces/ target="_blank">
+					<h2>Namespaces</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/hooking-into-the-go-toolchain/ target="_blank">
+					<h2>Hooking into the Go Toolchain</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/kronk-model-server/ target="_blank">
+					<h2>The Model Server</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-numa/ target="_blank">
+					<h2>NUMA</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/kronk-model-management/ target="_blank">
+					<h2>Model Management</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/testcontainers-ryuk-reaper/ target="_blank">
+					<h2>Understanding Testcontainers: The Ryuk Reaper</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-07">2026-09-07</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-network-subsystem/ target="_blank">
+					<h2>Network Subsystem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-31">2026-08-31</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/kronk-sdk/ target="_blank">
+					<h2>The Kronk SDK</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-24">2026-08-24</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-module-system/ target="_blank">
+					<h2>Kernel Modules</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-17">2026-08-17</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/yzma/ target="_blank">
+					<h2>Yzma</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-10">2026-08-10</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/inside-go-synctest/ target="_blank">
+					<h2>Fake Clocks, Real Guarantees: Inside Go&#39;s synctest</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-03">2026-08-03</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-block-layer/ target="_blank">
+					<h2>The Block Layer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-27">2026-07-27</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-ai-inference-what-is-inference/ target="_blank">
+					<h2>What is Inference?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-20">2026-07-20</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-vfs/ target="_blank">
+					<h2>The VFS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-13">2026-07-13</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/mmap-vs-pread-go-storage-engine/ target="_blank">
+					<h2>mmap vs pread in a real Go storage engine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-06">2026-07-06</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-runtime-profiling/ target="_blank">
+					<h2>Profiling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-29">2026-06-29</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-scheduler/ target="_blank">
+					<h2>The Scheduler</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-22">2026-06-22</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-runtime-reflect/ target="_blank">
+					<h2>The Reflect Package</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-15">2026-06-15</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-memory-manager/ target="_blank">
+					<h2>Memory Manager</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-08">2026-06-08</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-runtime-stacktraces/ target="_blank">
+					<h2>Stacktraces</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-01">2026-06-01</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-syscalls/ target="_blank">
+					<h2>System Calls</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-25">2026-05-25</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-runtime-select/ target="_blank">
+					<h2>The select Statement</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-18">2026-05-18</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-startup/ target="_blank">
+					<h2>The Linux Kernel Startup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-11">2026-05-11</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-runtime-slices-maps-channels/ target="_blank">
+					<h2>Slices, Maps, and Channels</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-04">2026-05-04</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/zfs-filesystem/ target="_blank">
+					<h2>ZFS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-27">2026-04-27</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-netpoller/ target="_blank">
+					<h2>The Network Poller</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-20">2026-04-20</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/btrfs-filesystem/ target="_blank">
+					<h2>Btrfs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-13">2026-04-13</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-sysmon/ target="_blank">
+					<h2>The System Monitor</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-06">2026-04-06</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/xfs-filesystem/ target="_blank">
+					<h2>XFS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-30">2026-03-30</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-garbage-collector/ target="_blank">
+					<h2>The Garbage Collector</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-23">2026-03-23</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/ntfs-filesystem/ target="_blank">
+					<h2>NTFS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-16">2026-03-16</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-runtime-scheduler/ target="_blank">
+					<h2>The Scheduler</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-09">2026-03-09</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/ext4-filesystem/ target="_blank">
+					<h2>Ext4</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-02">2026-03-02</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-memory-allocator/ target="_blank">
+					<h2>The Memory Allocator</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-23">2026-02-23</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/fat32-filesystem/ target="_blank">
+					<h2>FAT32</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-16">2026-02-16</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/understanding-go-runtime/ target="_blank">
+					<h2>The Bootstrap</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-09">2026-02-09</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/filesystems-introduction/ target="_blank">
+					<h2>Introduction</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-02">2026-02-02</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/the-go-linker/ target="_blank">
+					<h2>The Linker</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-26">2026-01-26</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/postgres-indexes/ target="_blank">
+					<h2>The Indexes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-19">2026-01-19</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/the-go-machine-code/ target="_blank">
+					<h2>From SSA to Machine Code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-12">2026-01-12</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/postgres-executor/ target="_blank">
+					<h2>The Execution Engine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-05">2026-01-05</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/the-go-ssa/ target="_blank">
+					<h2>The SSA Phase</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-29">2025-12-29</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/postgres-query-planner/ target="_blank">
+					<h2>The Query Planner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-22">2025-12-22</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/the-go-ir/ target="_blank">
+					<h2>The IR</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-15">2025-12-15</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/postgres-query-rewriting/ target="_blank">
+					<h2>Query Rewriting</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-08">2025-12-08</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/go-compiler-unified-ir/ target="_blank">
+					<h2>The Unified IR Format</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-01">2025-12-01</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/postgresql-sql-parsing/ target="_blank">
+					<h2>Parsing and Analysis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-24">2025-11-24</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/the-go-type-checker/ target="_blank">
+					<h2>The Type Checker</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-17">2025-11-17</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/postgres-connections-and-communication/ target="_blank">
+					<h2>Connections and Communication</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-09">2025-11-09</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/the-go-parser/ target="_blank">
+					<h2>The Parser</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-02">2025-11-02</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/sql-query-roadtrip-in-postgres/ target="_blank">
+					<h2>Overview</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-25">2025-10-25</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/the-go-lexer/ target="_blank">
+					<h2>The Scanner</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-19">2025-10-19</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/about/ target="_blank">
+					<h2>About Me</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-18">2025-10-18</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/privacy/ target="_blank">
+					<h2>Privacy Policy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-18">2025-10-18</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/newsletter/ target="_blank">
+					<h2>Subscribe to the Newsletter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-18">2025-10-18</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/welcome/ target="_blank">
+					<h2>Welcome to Internals for Interns</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-11">2025-10-11</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/books/deep-dive-in-a-sql-query/ target="_blank">
+					<h2>Deep Dive into a SQL Query</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/books/modern-rest-api-development-in-go/ target="_blank">
+					<h2>Modern REST API Development in Go</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="0001-01-01">0001-01-01</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://internals-for-interns.com/" target="_blank">Internals for Interns</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="frSVwFtQTIdL5aorym-s2DwTeROrS9ml5b5TdCMDIr06JHktc7MlJg67MpRsKC1ijecBFDc3rhdhBG49iRdAD1ZGJ84q8bsQkOAWJDcMZyxQZSvXR9gvqtnZWlU94sse7D9zvIKehVw3sEf2yNVvbyF155__o25S5ossO9PuOeY_mgdTtESedSashhKd2NOEa9hXfaPtnnKONZvqscRk5i2ztJlIDB2kQtvZERNL9DasDBfT7jIBe0ZIAfbT0d-yUPEhL-K_YzgaCG3azWh3cWRPl0f7MWG3VjqD005hMS1dqcnbaXMf_VVxuJ202w_OpuuvdvVPjxxn75vQHng1oQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-US" xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/">
+  <title>tonsky.me</title>
+  <subtitle>Nikita Prokopov’s blog</subtitle>
+  <link rel="self" href="https://tonsky.me/atom.xml" type="application/atom+xml" />
+  <link rel="alternate" href="https://tonsky.me/" type="text/html" />
+  <link rel="next" href="https://tonsky.me/atom.xml?page=38" />
+  <id>https://tonsky.me/</id>
+  <updated>2026-10-16T00:03:56Z</updated>
+  <author>
+    <name>Nikita Prokopov</name>
+    <email>niki@tonsky.me</email>
+  </author>
+  <entry>
+    <title>Logo: Squawkbox</title>
+    <link rel="alternate" type="text/html" href="https://tonsky.me/design/#2026-07-squawkbox" />
+    <id>https://tonsky.me/design/#2026-07-squawkbox</id>
+    <published>2026-07-14T00:00:00Z</published>
+    <updated>2026-07-14T00:00:00Z</updated>
+    <content type="html"><![CDATA[
+<img src="https://tonsky.me/design/images/2026-07-squawkbox.svg" style="aspect-ratio: 560/315; " width="1000" height="562"><br>
+<a href='https://squawkboxalarms.com/'>Squawkbox</a> is a boiler fleet monitor.
+]]></content>
+    <author>
+      <name>Nikita Prokopov</name>
+      <email>niki@tonsky.me</email>
+    </author>
+  </entry>
+  <entry>
+    <title>Every Frame Perfect</title>
+    <link rel="alternate" type="text/html" href="https://tonsky.me/blog/every-frame-perfect/" />
+    <id>https://tonsky.me/blog/every-frame-perfect/</id>
+    <published>2026-06-13T00:00:00Z</published>
+    <updated>2026-10-16T00:03:56Z</updated>
+    <summary type="html"><![CDATA[
+How imprecise UI animations erode trust in product
+]]></summary>
+    <content type="html"><![CDATA[
+<p><em>Translations: <a href="https://habr.com/ru/articles/1051492/">Russian</a></em></p>
+<p>A while ago I was reading about Wayland and this quote stuck with me:</p>
+<blockquote>
+  <p>A stated goal of Wayland is “<a href="https://wayland-book.com/protocol-design/design-patterns.html">every frame is perfect</a>”.</p>
+</blockquote>
+<p>And I think this is a goal we should all aspire to. Wayland is talking about the technical side of things (modern GPU stacks are very complex and Wayland is trying to take control back) but it could be applied to UI too.</p>
+<p>The rule of thumb is:</p>
+<p class="loud">If I take a screenshot of your app at any moment, you should be able to explain what I see</p>
+<p class="note">EDIT: This used to say “..., it must make sense” but that doesn’t account for advanced animation techniques such as smear frames etc.</p>
+<p>Why care about every frame? It builds trust. Users can’t see the code, so UI is the only way for them to judge the quality of the app. If UI looks good, that means developers had time to polish it, which means that they probably spent a comparable amount of time to iron out the code. It’s a heuristic, but a reasonable one.</p>
+<p>Now, what does it mean in practice? I can think of a few things:</p>
+<ul>
+  <li>No white flashes between screens.</li>
+  <li>No partially loaded content.</li>
+  <li>No relayout while content loads.</li>
+  <li>Internally consistent. If one part of the UI says “1 update available”, another part should not say “Checking for updates...”</li>
+  <li>Precise animations.</li>
+</ul>
+<p>Animations often end up being forgotten. A UI might look great in both start and end states but very janky in between. Like this:</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/toolbar@2x.mp4" type="video/mp4">
+  </video>
+</figure>
+<p>If you feel like there are weird things going on there, there are! Look at slowed down version:</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/toolbar_slow_reencode@2x.mp4" type="video/mp4">
+  </video>
+</figure>
+<p>Now let’s apply our rule and take screenshots in the middle of the animation. This doesn’t look right:</p>
+<figure>
+<img src="https://tonsky.me/blog/every-frame-perfect/toolbar_still_2@2x.png" loading="lazy"></figure>
+<p>Neither does this:</p>
+<figure>
+<img src="https://tonsky.me/blog/every-frame-perfect/toolbar_still_1@2x.png" loading="lazy"></figure>
+<p>Both of these frames are not perfect.</p>
+<p>Let’s look at another example. Safari:</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/safari@2x.mp4" type="video/mp4">
+  </video>
+</figure>
+<p>Placeholder text here moves from the center but cursor animates from the left position:</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/safari_slow_reencode@2x.mp4" type="video/mp4">
+  </video>
+</figure>
+<p>Not the end of the world by any means, but it does create a feeling that these two components are not in sync with each other. Next thought: maybe they weren’t designed together? If so, then they might not work well together. That’s how trust is lost.</p>
+<p>This desynchronization can lead to a lot of confusion. For example, in Photos, when switching between Crop and Adjust mode, picture snaps into place immediately but the crop border is animated:</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/photos@1x.mp4" type="video/mp4">
+  </video>
+</figure>
+<p>This creates a <em>false</em> feeling that something subtly changes when you switch between modes. And you know what? I don’t want my UI to give me false feelings. I want it to be a precise instrument, not an animated toy.</p>
+<p>Sometimes animations are supposed to help you understand a transition, so it’s doubly sad when they make it harder. Follow the magnifying glass:</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/search_slow_reencode@2x.mp4" type="video/mp4">
+  </video>
+</figure>
+<p>Same with Youtube. They had the simplest task in the world: move a rectangle from one position to another! Yet they decided to do something very strange:</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/youtube@1x.mp4" type="video/mp4">
+  </video>
+</figure>
+<p>Can you explain this? Does it make sense?</p>
+<figure>
+<img src="https://tonsky.me/blog/every-frame-perfect/youtube@1x.png" loading="lazy"></figure>
+<p>Probably a technical limitation of the DOM architecture they decided earlier on. I call these situations “The technology has outsmarted the programmer”. But no matter the reason, the result is an imperfect frame.</p>
+<p>Sometimes animations are left out as an afterthought. Whatever happens, happens. Then we get this:</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/save@1x.mp4" type="video/mp4">
+  </video>
+</figure>
+<p>The details are fascinating to watch:</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/save_slow_reencode@1x.mp4" type="video/mp4">
+  </video>
+</figure>
+<p>So yeah. Please pay attention not only to the start and end states, but also to everything in between. <em>Every frame matters.</em></p>
+<p>I’ll leave you with this unprovoked zoom animation from Preview app. Take care!</p>
+<figure>
+  <video autoplay="" muted="" loop="" preload="auto" playsinline="" controls="">
+    <source src="https://tonsky.me/blog/every-frame-perfect/preview@1x.mp4" type="video/mp4">
+  </video>
+</figure>
+
+]]></content>
+    <author>
+      <name>Nikita Prokopov</name>
+      <email>niki@tonsky.me</email>
+    </author>
+  </entry>
+  <entry>
+    <title>Claude is an Electron App because we’ve lost native</title>
+    <link rel="alternate" type="text/html" href="https://tonsky.me/blog/fall-of-native/" />
+    <id>https://tonsky.me/blog/fall-of-native/</id>
+    <published>2026-03-03T00:00:00Z</published>
+    <updated>2026-10-16T00:03:56Z</updated>
+    <summary type="html"><![CDATA[
+Article argues that Claude is not an Electron app not because LLMs can’t do it, but because there are no advantages left for native
+]]></summary>
+    <content type="html"><![CDATA[
+<p>In <a href="https://www.dbreunig.com/2026/02/21/why-is-claude-an-electron-app.html">“Why is Claude an Electron App?”</a> Drew Breunig wonders:</p>
+<blockquote>
+  <p>Claude spent $20k on an agent swarm implementing (kinda) a C-compiler in Rust, but desktop Claude is an Electron app.</p>
+  <p>If code is free, why aren’t all apps native?</p>
+</blockquote>
+<p>And then argues that the answer is that LLMs are not good enough yet. They can do 90% of the work, so there’s still a substantial amount of manual polish, and thus, increased costs.</p>
+<p>But I think that’s not the real reason. The real reason is: native has nothing to offer.</p>
+<p>API-wise, native apps lost to web apps a long time ago. Native APIs are terrible to use, and OS vendors use everything in their power to make you not want to develop native apps for their platform. That explains the rise of Electron before LLM times, but it’s also a problem that LLMs solve now: if that was a real barrier to developing native apps, it doesn’t exist anymore.</p>
+<p>Then there’re looks and consistency. Some time ago, maybe in the late 90s and 2000s, native was ahead. It used to look good, it was consistent, and it all actually worked: the more apps used native look and feel, the better user experience was across apps (which we used to call programs). </p>
+<p>These days, though, native is as bad as the web, if not worse. Consistency is basically out the window. Anything can look like anything, buttons have no borders, contrast doesn’t exist, and neither do conventions. Apple, for example, seems to place traffic lights and corner radius by vibes rather than by any measurable guidelines.</p>
+<figure>
+<img src="https://tonsky.me/blog/fall-of-native/radii@2x.webp" loading="lazy"><figcaption><a href="https://x.com/vaxryy/status/1977175437382930662">Maybe the server should round the corners?</a></figcaption></figure>
+<p>Looks could be good, but they also can be bad, and then you are stuck with platform-consistent, but generally bad UI (Liquid Glass ahem). It changes too often, too: the app you made today will look out of place next year, when Apple decides to change look and feel yet again. There’s no native look anymore.</p>
+<figure>
+<img src="https://tonsky.me/blog/fall-of-native/run@2x.webp" loading="lazy"><figcaption><a href="https://grumpy.website/1723">Computer UIs also degrade over time</a></figcaption></figure>
+<p>Theoretically, native apps can integrate with OS on a deeper level. This sounds nice, but what does that mean in practice? There are almost no good interoperable file formats; everything is locked inside individual apps, most services moved to the web, and OSes dropped the ball for making a good shared baseline. You can integrate with OS-provided calendar, but you can’t do it with web calendar. Well, you can, of course, but it’s easier on the web; native doesn’t help with it at all.</p>
+<figure>
+<img src="https://tonsky.me/blog/fall-of-native/calendar@2x.webp" loading="lazy"><figcaption><a href="https://grumpy.website/1747">Web pages only lead to more web pages</a></figcaption></figure>
+<p>Finally, the last hope of people longing for native is performance. They feel that native apps will be faster. Well, they can, but it doesn’t mean they will. Web apps can be faster, too, but in practice, nobody cares. There’s no technical reason why <a href="https://tonsky.me/blog/js-bloat/">Slack needs to load 80 MiB</a> just to show 10 channel names and 3 messages on a screen. The web is not the problem here! It’s a choice to be bad. What makes you think it’ll be different once the company decides to move to native?</p>
+<p>Don’t get me wrong: writing this brings me no joy. I don’t think web is a solution either. I just remember good times when native did a better-than-average job, and we were all better for using it, and it saddens me that these times have passed.</p>
+<p>I just don’t think that kidding ourselves that the only problem with software is Electron and it all will be butterflies and unicorns once we rewrite Slack in SwiftUI is not productive. The real problem is a lack of care. And the slop; you can build it with any stack.</p>
+
+]]></content>
+    <author>
+      <name>Nikita Prokopov</name>
+      <email>niki@tonsky.me</email>
+    </author>
+  </entry>
+  <entry>
+    <title>Podcast: На Маке нет никаких шкафов @ Думаем дальше</title>
+    <link rel="alternate" type="text/html" href="https://tonsky.me/talks/#2026-01-15" />
+    <id>https://tonsky.me/talks/#2026-01-15</id>
+    <published>2026-01-15T00:00:00Z</published>
+    <updated>2026-01-15T00:00:00Z</updated>
+    <content type="html"><![CDATA[
+<p><img src="https://tonsky.me/talks/covers/Думаем дальше.png">    <audio controls="" preload="none">
+      <source src="https://tonsky.me/talks/content/2026-01-15 Думаем дальше.mp3" type="audio/mpeg">
+    </audio>
+</img></p>
+<p>С Ильей Бирманом провожаем Алана Дая, вспоминая, в чём состоят достижения Мака, Джобса и ХИГа (но и Винду добрым словом тоже вспоминаем).</p>
+
+]]></content>
+    <author>
+      <name>Nikita Prokopov</name>
+      <email>niki@tonsky.me</email>
+    </author>
+  </entry>
+  <entry>
+    <title>It’s hard to justify Tahoe icons</title>
+    <link rel="alternate" type="text/html" href="https://tonsky.me/blog/tahoe-icons/" />
+    <id>https://tonsky.me/blog/tahoe-icons/</id>
+    <published>2026-01-05T00:00:00Z</published>
+    <updated>2026-10-16T00:03:56Z</updated>
+    <summary type="html"><![CDATA[
+Looking at the first principles of icon design—and how Apple failed to apply all of them in macOS Tahoe
+]]></summary>
+    <content type="html"><![CDATA[
+<p><em>Translations: <a href="https://nptr.cc/posts/2026-01/tonsky-tahoe/">Chinese 1</a> <a href="https://sspai.com/post/105394">Chinese 2</a> <a href="https://habr.com/ru/companies/ruvds/articles/985818/">Russian</a></em></p>
+<p>I was reading Macintosh Human Interface Guidelines <a href="https://dn721903.ca.archive.org/0/items/apple-hig/Macintosh_HIG_1992.pdf">from 1992</a> and found this nice illustration:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/hig_icons@2x.webp" loading="lazy"></figure>
+<p>accompanied by explanation:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/hig_quote@2x.webp" loading="lazy"></figure>
+<p>Fast forward to 2025. Apple releases macOS Tahoe. Main attraction? Adding unpleasant, distracting, illegible, messy, cluttered, confusing, frustrating icons (their words, not mine!) to every menu item:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/sequoia_tahoe_textedit@2x.webp" loading="lazy"><figcaption>Sequoia → Tahoe</figcaption></figure>
+<p>It’s bad. But why exactly is it bad? Let’s delve into it!</p>
+<p>Disclaimer: screenshots are a mix from macOS 26.1 and 26.2, taken   from stock Apple apps only that come pre-installed with the system. No system settings were modified.</p>
+<h1 id="icons-should-differentiate">Icons should differentiate</h1>
+<p>The main function of an icon is to help you find what you are looking for faster.</p>
+<p>Perhaps counter-intuitively, adding an icon to everything is exactly the wrong thing to do. To stand out, things need to be different. But if everything has an icon, nothing stands out.</p>
+<p>The same applies to color: black-and-white icons look clean, but they don’t help you find things faster!</p>
+<p>Microsoft used to know this:</p>
+<figure>
+<a href="https://tonsky.me"><img src="https://tonsky.me/blog/tahoe-icons/word@2x.webp" class="noround" loading="lazy"></a></figure>
+<p>Look how much faster you can find Save or Share in the right variant:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_cleanup@2x.webp" loading="lazy"></figure>
+<p>It also looks cleaner. Less cluttered.</p>
+<p>A colored version would be even better (clearer separation of text from icon, faster to find):</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_cleanup_color@2x.webp" loading="lazy"></figure>
+<p>I know you won’t like how it looks. I don’t like it either. These icons are hard to work with. You’ll have to actually design for color to look nice. But the principle stands: it is way easier to use.</p>
+<h1 id="consistency-between-apps">Consistency between apps</h1>
+<p>If you want icons to work, they need to be <em>consistent</em>. I need to be able to learn what to look for.</p>
+<p>For example, I see a “Cut” command and <img class="inline" src="https://tonsky.me/blog/tahoe-icons/scissors.svg"> next to it. Okay, I think. Next time I’m looking for “Cut,” I might save some time and start looking for <img class="inline" src="https://tonsky.me/blog/tahoe-icons/scissors.svg"> instead.</p>
+<p>How is Tahoe doing on that front? I present to you: Fifty Shades of “New”:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_new@2x.webp" loading="lazy"></figure>
+<p>I even collected them all together, so the absurdity of the situation is more obvious.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/icons_new@2x.webp" loading="lazy"></figure>
+<p>Granted, some of them are different operations, so they have different icons. I guess creating a smart folder is different from creating a journal entry. But this?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_new_object@2x.webp" loading="lazy"></figure>
+<p>Or this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/icons_new_smart_folder@2x.webp" loading="lazy"></figure>
+<p>Or this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/icons_new_window@2x.webp" loading="lazy"></figure>
+<p>There is no excuse.</p>
+<p>Same deal with open:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_open@2x.webp" loading="lazy"></figure>
+<p>Save:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_save@2x.webp" loading="lazy"></figure>
+<p>Yes. One of them is a checkmark. And they can’t even agree on the direction of an arrow!</p>
+<p>Close:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_close@2x.webp" loading="lazy"></figure>
+<p>Find (which is sometimes called Search, and sometimes Filter):</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_find@2x.webp" loading="lazy"></figure>
+<p>Delete (from Cut-Copy-Paste-Delete fame):</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_delete@2x.webp" loading="lazy"></figure>
+<p>Minimize window.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/menu_minimize@2x.webp" loading="lazy"></figure>
+<p>These are not some obscure, unique operations. These are OS basics, these are foundational. Every app has them, and they are always in the same place. They shouldn’t look different!</p>
+<h1 id="consistency-inside-the-same-app">Consistency inside the same app</h1>
+<p>Icons are also used in toolbars. Conceptually, operations in a toolbar are identical to operations called through the menu, and thus should use the same icons. That’s the simplest case to implement: inside the same app, often on the same screen. How hard can it be to stay consistent?</p>
+<p>Preview:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/preview@2x.webp" loading="lazy"></figure>
+<p>Photos: same <img class="inline" src="https://tonsky.me/blog/tahoe-icons/info_circle.svg"> and <img class="inline" src="https://tonsky.me/blog/tahoe-icons/info.svg"> mismatch, but reversed ¯\_(ツ)_/¯</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/photos@2x.webp" loading="lazy"></figure>
+<p>Maps and others often use different symbols for zoom:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/consistency_maps@2x.webp" loading="lazy"></figure>
+<h1 id="icon-reuse">Icon reuse</h1>
+<p>Another cardinal sin is to use the same icon for different actions. Imagine: I have learned that <img class="inline" src="https://tonsky.me/blog/tahoe-icons/square_and_pencil.svg"> means “New”:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/new_note@2x.webp" loading="lazy"></figure>
+<p>Then I open an app and see <img class="inline" src="https://tonsky.me/blog/tahoe-icons/square_and_pencil.svg">. “Cool”, I think, “I already know what it means”:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/edit_address@2x.webp" loading="lazy"></figure>
+<p>Gotcha!</p>
+<p>You’d think: okay, <img class="inline" src="https://tonsky.me/blog/tahoe-icons/eye.svg"> means quick look:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/quick_look@2x.webp" loading="lazy"></figure>
+<p>Sometimes, sure. Some other times, <img class="inline" src="https://tonsky.me/blog/tahoe-icons/eye.svg"> means “Show completed”:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/show_completed@2x.webp" loading="lazy"></figure>
+<p>Sometimes <img class="inline" src="https://tonsky.me/blog/tahoe-icons/square_and_arrow_down.svg"> is “Import”:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/import@2x.webp" loading="lazy"></figure>
+<p>Sometimes <img class="inline" src="https://tonsky.me/blog/tahoe-icons/square_and_arrow_down.svg"> is “Updates”:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/update@2x.webp" loading="lazy"></figure>
+<p>Same as with consistency, icon reuse doesn’t only happen between apps. Sometimes you see <img class="inline" src="https://tonsky.me/blog/tahoe-icons/rectangle_pencil_ellipsis.svg"> in a toolbar:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/form_filling_toolbar@2x.webp" loading="lazy"></figure>
+<p>Then go to the menu <em>in the same app</em> and see <img class="inline" src="https://tonsky.me/blog/tahoe-icons/rectangle_pencil_ellipsis.svg"> means something else:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/autofill@2x.webp" loading="lazy"></figure>
+<p>Sometimes identical icons meet in the same menu.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/save_export@2x.webp" loading="lazy"></figure>
+<p>Sometimes next to each other.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/passwords@2x.webp" loading="lazy"></figure>
+<p>Sometimes they put an entire barrage of identical icons in a row:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/photos_export@2x.webp" loading="lazy"></figure>
+<p>This doesn’t help anyone. No user will find a menu item faster or will understand the function better if all icons are the same.</p>
+<p>The worst case of icon reuse so far has been the Photos app:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/photos_copy@2x.webp" loading="lazy"></figure>
+<p>It feels like the person tasked with choosing a unique icon for every menu item just ran out of ideas.</p>
+<p>Understandable.</p>
+<h1 id="too-much-nuance">Too much nuance</h1>
+<p>When looking at icons, we usually allow for slight differences in execution. That lets us, for example, understand that these <em>technically different</em> road signs mean the same thing:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/pedestrians.webp" loading="lazy"></figure>
+<p>Same applies for icons: if you draw an arrow going out of the box in one place and also an arrow and the box but at a slightly different angle, or with different stroke width, or make one filled, we will understand them as meaning the same thing.</p>
+<p>Like, <img class="inline" src="https://tonsky.me/blog/tahoe-icons/info_circle.svg"> is supposed to mean something else from <img class="inline" src="https://tonsky.me/blog/tahoe-icons/info_circle_fill.svg">? Come on!</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/similar_i@2x.webp" loading="lazy"></figure>
+<p>Or two letters A that only slightly differ in the font size:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/similar_font_size@2x.webp" loading="lazy"></figure>
+<p>A pencil is “Rename” but a slightly thicker pencil is “Highlight”?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/similar_pencil@2x.webp" loading="lazy"></figure>
+<p>Arrows that use different diagonals?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/similar_actual_size@2x.webp" loading="lazy"></figure>
+<p>Three dots occupying ⅔ of space vs three dots occupying everything. Seriously?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/similar_sidebar@2x.webp" loading="lazy"></figure>
+<p>Slightly darker dots?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/similar_quality@2x.webp" loading="lazy"></figure>
+<p>The sheet of paper that changes meaning depending on if its corner is folded or if there are lines inside?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/similar_sheet@2x.webp" loading="lazy"></figure>
+<p>But the final boss are arrows. They are all different:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/similar_arrows@2x.webp" loading="lazy"></figure>
+<p>Supposedly, a user must become an expert at noticing how squished the circle is, if it starts top to right or bottom to right, and how far the arrow’s end goes.</p>
+<p>Do I care? Honestly, no. I could’ve given it a shot, maybe, if Apple applied these consistently. But Apple considers <img class="inline" src="https://tonsky.me/blog/tahoe-icons/square_and_pencil.svg"> and <img class="inline" src="https://tonsky.me/blog/tahoe-icons/plus.svg"> to mean the same thing in one place, and expects me to notice minute details like this in another?</p>
+<p>Sorry, I can’t trust you. Not after everything I’ve seen.</p>
+<h1 id="detalization">Detalization</h1>
+<p>Icons are supposed to be easily recognizable from a distance. Every icon designer knows: small details are no-go. You can have them sometimes, maybe, for aesthetic purposes, but you can’t <em>rely</em> on them.</p>
+<p>And icons in Tahoe menus are <em>tiny</em>. Most of them fit in a 12×12 pixel square (actual resolution is 24×24 because of Retina), and because many of them are not square, one dimension is usually even less than 12.</p>
+<p>It’s not a lot of space to work with! Even Windows 95 had 16×16 icons. If we take the typical DPI of that era at 72 dots per inch, we get a physical icon size of 0.22 inches (5.6 mm). On a modern MacBook Pro with 254 DPI, Tahoe’s 24×24 icons are 0.09 inches (2.4 mm). Sure, 24 is bigger than 16, but in reality, these icons’ area is 4 times as small!</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/dpi_comparison@2x.webp" loading="lazy"><figcaption>Simulated physical size comparison between 16×16 at 72 DPI (left) and 24×24 at 254 DPI (right)</figcaption></figure>
+<p>So when I see this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_zoom@2x.webp" loading="lazy"></figure>
+<p>I struggle. I can tell they are different. But I definitely struggle to tell what’s being drawn.</p>
+<p>Even zoomed in 20×, it’s still a mess:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_zoomed@2x.webp" loading="lazy"></figure>
+<p>Or here. These are three different icons:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_lists@2x.webp" loading="lazy"></figure>
+<p>Am I supposed to tell plus sign from sparkle here?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_sparkle@2x.webp" loading="lazy"></figure>
+<p>Some of these lines are half the pixel thicker than the other lines, and that’s supposed to be the main point:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_redact@2x.webp" loading="lazy"></figure>
+<p>Is this supposed to be an arrow?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_original@2x.webp" loading="lazy"></figure>
+<p>A paintbrush?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_paste@2x.webp" loading="lazy"></figure>
+<p>Look, a tiny camera.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_screenshot@2x.webp" loading="lazy"></figure>
+<p>It even got an even tinier viewfinder, which you can almost see if you zoom in 20×:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_screenshot_zoomed@2x.webp" loading="lazy"></figure>
+<p>Or here. There is a box, inside that box is a circle, and inside it is a tiny letter <code>i</code> with a total height of 2 pixels:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_properties@2x.webp" loading="lazy"></figure>
+<p>Don’t see it?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_properties_zoomed@2x.webp" loading="lazy"></figure>
+<p>I don’t. But it’s there...</p>
+<p>And this is a window! It even has traffic lights! How adorable:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_window@2x.webp" loading="lazy"></figure>
+<p>Remember: these are retina pixels, ¼ of a real pixel. Steve Jobs himself claimed they were invisible.</p>
+<blockquote>
+  <p>It turns out there’s a magic number right around 300 pixels per inch, that when you hold something around to 10 to 12 inches away from your eyes, is the limit of the human retina to differentiate the pixels.</p>
+</blockquote>
+<p>And yet, Tahoe icons rely on you being able to see them.</p>
+<h1 id="pixel-grid">Pixel grid</h1>
+<p>When you have so little space to work with, every pixel matters. You can make a good icon, but you have to choose your pixels very carefully.</p>
+<p>For Tahoe icons, Apple decided to use vector fonts instead of good old-fashioned bitmaps. It saves Apple resources—draw once, use everywhere. Any size, any display resolution, any font width.</p>
+<p>But there’re downsides: fonts are hard to position vertically, their size <a href="https://tonsky.me/blog/font-size/">doesn’t map directly to pixels</a>, stroke width doesn’t map 1-to-1 to pixel grid, etc. So, they work everywhere, but they also look blurry and mediocre everywhere:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/details_clean_up@2x.webp" loading="lazy"><figcaption>Tahoe icon (left) and its pixel-aligned version (right).</figcaption></figure>
+<p>They certainly start to work better once you give them more pixels.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/ipad_comparison@2x.webp" loading="lazy"><figcaption>iPad OS 26 vs macOS 26</figcaption></figure>
+<p>or make graphics simpler. But the combination of small details and tiny icon size is deadly. So, until Apple releases MacBooks with 380+ DPI, unfortunately, we still have to care about the pixel grid.</p>
+<h1 id="confusing-metaphors">Confusing metaphors</h1>
+<p>Icons might serve another function: to help users understand the meaning of the command.</p>
+<p>For example, once you know the context (move window), these icons explain what’s going on faster than words:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/window@2x.webp" loading="lazy"></figure>
+<p>But for this to work, the user must understand what’s drawn on the icon. It must be a familiar object with a clear translation to computer action (like Trash can → Delete), a widely used symbol, or an easy-to-understand diagram. HIG:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/hig_metaphor@2x.webp" loading="lazy"></figure>
+<p>A rookie mistake would be to misrepresent the object. For example, this is how selection looks like:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_selection@2x.webp" loading="lazy"></figure>
+<p>But its icon looks like this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_select@2x.webp" loading="lazy"></figure>
+<p>Honestly, I’ve been writing this essay for a week, and I still have zero ideas why it looks like that. There’s an object that looks like this, but it’s a text block in Freeform/Preview:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_text_block@2x.webp" loading="lazy"></figure>
+<p>It’s called <code>character.textbox</code> in SF Symbols:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/character_textbox@2x.webp" loading="lazy"></figure>
+<p>Why did it become a metaphor for “Select all”? My best guess is it’s a mistake.</p>
+<p>Another place uses text selection from iOS as a metaphor. On a Mac!</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_text_selection@2x.webp" loading="lazy"></figure>
+<p>Some concepts have obvious or well-established metaphors. In that case, it’s a mistake not to use them. For example, bookmarks: <img class="inline" src="https://tonsky.me/blog/tahoe-icons/bookmark.svg">. Apple, for some reason, went with a book:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_bookmarks@2x.webp" loading="lazy"></figure>
+<p>Sometimes you already have an interface element and can use it for an icon. However, try not to confuse your users. Dots in a rectangle look like password input, not permissions:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_permissions@2x.webp" loading="lazy"></figure>
+<p>Icon here says “Check” but the action is “Uncheck”.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_mark_incomplete@2x.webp" loading="lazy"></figure>
+<p>Terrible mistake: icon doesn’t help, it actively confuses the user.</p>
+<p>It’s also tempting to construct a two-level icon: an object and some sort of indicator. Like, a checkbox and a cross, meaning “Delete checkbox”:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_mark_unchecked@2x.webp" loading="lazy"></figure>
+<p>Or a user and a checkmark, like “Check the user”:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_manage@2x.webp" loading="lazy"></figure>
+<p>Unfortunately, constructs like this rarely work. Users don’t build sentences from building blocks you provide; they have no desire to solve these puzzles.</p>
+<p>Finding metaphors is hard. Nouns are easier than verbs, and menu items are mostly verbs. How does open look? Like an arrow pointing to the top right? Why?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_open@2x.webp" loading="lazy"></figure>
+<p>I’m not saying there’s an obvious metaphor for “Open” Apple missed. There isn’t. But that’s the point: if you can’t find a good metaphor, using no icon is better than using a bad, confusing, or nonsensical icon.</p>
+<p>There’s a game I like to play to test the quality of the metaphor. Remove the labels and try to guess the meaning. Give it a try:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_guess@2x.webp" loading="lazy"></figure>
+<p>It’s delusional to think that there’s a good icon for every action if you think hard enough. There isn’t. It’s a lost battle from the start. No amount of money or “management decisions” is going to change that. The problems are 100% self-inflicted.</p>
+<p>All this being said, I gotta give Apple credit where credit is due. When they are good at choosing metaphors, they are good:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_up_down@2x.webp" loading="lazy"></figure>
+<h1 id="symmetrical-actions">Symmetrical actions</h1>
+<p>A special case of a confusing metaphor is using different metaphors for actions that are direct opposites of one another. Like Undo/Redo, Open/Close, Left/Right.</p>
+<p>It’s good when their icons use the same metaphor:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/symmetry_import_export_right@2x.webp" loading="lazy"></figure>
+<p>Because it saves you time and cognitive resources. Learn one, get another one for free.</p>
+<p>Because of that, it’s a mistake not to use common metaphors for related actions:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/symmetry_select@2x.webp" loading="lazy"></figure>
+<p>Or here:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/symmetry_clipboard@2x.webp" loading="lazy"></figure>
+<p>Another mistake is to create symmetry where there is none. “Back” and “See all”?</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/symmetry_app_store@2x.webp" loading="lazy"></figure>
+<p>Some menus in Tahoe make both mistakes. E.g. lack of symmetry between Show/Hide and false symmetry between completed/subtasks:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/symmetry_eye@2x.webp" loading="lazy"></figure>
+<p>Import not mirrored by Export but by Share:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/symmetry_import_export@2x.webp" loading="lazy"></figure>
+<h1 id="text-in-icons">Text in icons</h1>
+<p>HIG again:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/hig_text_icons@2x.webp" loading="lazy"></figure>
+<p>Authors of HIG are arguing against including text as a part of an icon. So something like this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/metaphor_select@2x.webp" loading="lazy"></figure>
+<p>or this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/similar_i@2x.webp" loading="lazy"></figure>
+<p>would not fly in 1992.</p>
+<p>I agree, but Tahoe has more serious problems: icons consisting <em>only</em> of text. Like this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/text_font@2x.webp" loading="lazy"></figure>
+<p>It’s unclear where “metaphorical, abstract icon text that is not supposed to be read literally” ends and actual text starts. They use the same font, the same color, so how am I supposed to differentiate? Icons just get in a way: A...Complete? AaFont? What does it mean?</p>
+<p>I can maybe understand <img class="inline" src="https://tonsky.me/blog/tahoe-icons/textformat_characters_dottedunderline.svg"> and <img class="inline" src="https://tonsky.me/blog/tahoe-icons/a_ellipsis.svg">. Dots are supposed to represent something. I can imagine thinking that led to <img class="inline" src="https://tonsky.me/blog/tahoe-icons/aa.svg">. But <img class="inline" src="https://tonsky.me/blog/tahoe-icons/textformat_characters.svg">? No decorations. No effects. Just plain Abc. Really?</p>
+<h1 id="text-transformations">Text transformations</h1>
+<p>One might think that using icons to illustrate text transformations is a better idea.</p>
+<p>Like, you look at this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/text_transformations@2x.webp" loading="lazy"></figure>
+<p>or this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/text_size@2x.webp" loading="lazy"></figure>
+<p>or this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/text_styles@2x.webp" loading="lazy"></figure>
+<p>and just from the icon alone understand what will happen with the text. Icon <em>illustrates</em> the action.</p>
+<p>Also, BIU are well-established in word processing, so all upside?</p>
+<p>Not exactly. The problem is the same—text icon looks like text, not icon. Plus, these icons are <em>excessive</em>. What’s the point of taking the first letter and repeating it? The word “Bold” already starts with a letter “B”, it reads just as easily, so why double it? Look at it again:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/text_styles@2x.webp" loading="lazy"></figure>
+<p>It’s also repeated once more as a shortcut...</p>
+<p>There is a better way to design this menu:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/text_styles_inline@2x.webp" loading="lazy"></figure>
+<p>And it was known to Apple for at least 33 years.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/hig_style@2x.webp" loading="lazy"></figure>
+<h1 id="system-elements-in-icons">System elements in icons</h1>
+<p>Operating system, of course, uses some visual elements for its own purposes. Like window controls, resize handles, cursors, shortcuts, etc. It would be a mistake to use those in icons.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/hig_standard_elements@2x.webp" loading="lazy"></figure>
+<p>Unfortunately, Apple fell into this trap, too. They reused arrows.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/text_arrow@2x.webp" loading="lazy"></figure>
+<p>Key shortcuts:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/text_encoding@2x.webp" loading="lazy"></figure>
+<p>HIG has an entire section on ellipsis specifically and how dangerous it is to use it anywhere else in the menu.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/hig_ellipsis@2x.webp" loading="lazy"></figure>
+<p>And this exact problem is in Tahoe, too.</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/text_ellipsis@2x.webp" loading="lazy"></figure>
+<h1 id="icons-break-scanning">Icons break scanning</h1>
+<p>Without icons, you can just scan the menu from top to bottom, reading only the first letters. Because they all align:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/align_sequoia@2x.webp" loading="lazy"><figcaption>macOS Sequoia</figcaption></figure>
+<p>In Tahoe, though, some menu items have icons, some don’t, and they are aligned differently:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/align_tahoe@2x.webp" loading="lazy"></figure>
+<p>Some items can have both checkmarks <em>and</em> icons, or have only one of them, or have neither, so we get situations like this:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/align_holes@2x.webp" loading="lazy"></figure>
+<p>Ugh.</p>
+<h1 id="special-mention">Special mention</h1>
+<p>This menu deserves its own category:</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/writing_direction@2x.webp" loading="lazy"></figure>
+<p>Same icon for different actions. Missing the obvious metaphor. Somehow making the first one slightly smaller than the second and third. Congratulations! It got it all.</p>
+<h1 id="is-hig-still-relevant">Is HIG still relevant?</h1>
+<p>I’ve been mentioning HIG a lot, and you might be wondering: is an interface manual from 1992 still relevant today? Haven’t computers changed so much that entirely new principles, designs, and idioms apply?</p>
+<p>Yes and no. Of course, advice on how to adapt your icons to black-and-white displays is obsolete. But the principles—as long as they are good principles—still apply, because they are based on how humans work, not how computers work.</p>
+<p>Humans don’t get a new release every year. Our memory doesn’t double. Our eyesight doesn’t become sharper. Attention works the same way it always has. Visual recognition, motor skills—all of this is exactly as it was in 1992.</p>
+<p>So yeah, until we get a direct chip-to-brain interface, HIG will stay relevant.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>In my opinion, Apple took on an impossible task: to add an icon to every menu item. There are just not enough good metaphors to do something like that.</p>
+<p>But even if there were, the premise itself is questionable: if everything has an icon, it doesn’t mean users will find what they are looking for faster.</p>
+<p>And even if the premise was solid, I still wish I could say: they did the best they could, given the goal. But that’s not true either: they did a poor job consistently applying the metaphors and designing the icons themselves.</p>
+<p>I hope this article would be helpful in avoiding common mistakes in icon design, which Apple managed to collect all in one OS release. I love computers, I love interfaces, I love visual communication. It makes me sad seeing perfectly good knowledge already accessible 30 years ago being completely ignored or thrown away today.</p>
+<p>On the upside: it’s not that hard anymore to design better than Apple! Let’s drink to that. Happy New year!</p>
+<figure>
+<img src="https://tonsky.me/blog/tahoe-icons/smiley@2x.webp" loading="lazy"><figcaption>From SF Symbols: a smiley face calling somebody on the phone</figcaption></figure>
+<h1 id="notes">Notes</h1>
+<p>During review of this post I was made familiar with <a href="https://blog.jim-nielsen.com/2025/icons-in-menus/">Jim Nielsen’s article</a>, which hits a lot of the same points as I do. I take that as a sign there’s some common truth behind our reasoning.</p>
+<p>Also note: Safari → File menu got worse since 26.0. Used to have only 4 icons, now it’s 18!</p>
+<p>Thanks Kevin, Ryan, and Nicki for reading drafts of this post.</p>
+<h1 id="upd-notable-mentions">UPD: Notable mentions</h1>
+<ul>
+  <li><a href="https://simonwillison.net/2026/Jan/5/its-hard-to-justify-tahoe-icons/">Simon Willison</a></li>
+  <li><a href="https://daringfireball.net/linked/2026/01/05/hard-to-justify-tahoe-icons">John Gruber</a></li>
+  <li><a href="https://x.com/jasonfried/status/2008632347034566694">Jason Fried</a></li>
+  <li><a href="https://mjtsai.com/blog/2025/12/10/icons-in-menus-everywhere/#icons-in-menus-everywhere-update-2026-01-05">Michael Tsai</a></li>
+  <li><a href="https://www.ben-evans.com/pausdjfap/2026/1/13/11-january">Ben Evans</a></li>
+  <li><a href="https://tldr.tech/design/2026-01-07">TLDR Design</a></li>
+  <li><a href="https://9to5mac.com/2026/01/06/macos-tahoe-icons-do-exactly-what-apple-said-designers-should-never-do/">9TO5Mac</a></li>
+  <li><a href="https://pxlnv.com/linklog/tahoe-icons-inconsistent-confusing-illegible/">Pixel Envy</a></li>
+  <li><a href="https://bytes.dev/archives/452">bytes.dev</a></li>
+</ul>
+
+]]></content>
+    <author>
+      <name>Nikita Prokopov</name>
+      <email>niki@tonsky.me</email>
+    </author>
+  </entry>
+  <entry>
+    <title>Statistics made simple</title>
+    <link rel="alternate" type="text/html" href="https://tonsky.me/blog/clj-simple-stats/" />
+    <id>https://tonsky.me/blog/clj-simple-stats/</id>
+    <published>2025-12-15T00:00:00Z</published>
+    <updated>2026-10-16T00:03:56Z</updated>
+    <summary type="html"><![CDATA[
+Announcing a simple statistics library for Clojure web servers
+]]></summary>
+    <content type="html"><![CDATA[
+<p>I have a weird relationship with statistics: on one hand, I try not to look at it too often. Maybe once or twice a year. It’s because analytics is not actionable: what difference does it make if a thousand people saw my article or ten thousand?</p>
+<p>I mean, sure, you might try to guess people’s tastes and only write about what’s popular, but that will destroy your soul pretty quickly.</p>
+<p>On the other hand, I feel nervous when something is not accounted for, recorded, or saved for future reference. I might not need it now, but what if ten years later I change my mind?</p>
+<p>Seeing your readers also helps to know you are not writing into the void. So I really don’t need much, something very basic: the number of readers per day/per article, maybe, would be enough.</p>
+<p>Final piece of the puzzle: I self-host my web projects, and I use an old-fashioned web server instead of delegating that task to Nginx.</p>
+<p>Static sites are popular and for a good reason: they are fast, lightweight, and fulfil their function. I, on the other hand, might have an unfinished gestalt or two: I want to feel the full power of the computer when serving my web pages, to be able to do fun stuff that is beyond static pages. I need that freedom that comes with a full programming language at your disposal. I want to program my own web server (in Clojure, sorry everybody else).</p>
+<h1 id="existing-options">Existing options</h1>
+<p>All this led me on a quest for a statistics solution that would uniquely fit my needs. Google Analytics was out: bloated, not privacy-friendly, terrible UX, Google is evil, etc.</p>
+<figure>
+<img src="https://tonsky.me/blog/clj-simple-stats/ga@2x.webp" loading="lazy"><figcaption>What is going on?</figcaption></figure>
+<p>Some other JS solution might’ve been possible, but still questionable: SaaS? Paid? Will they be around in 10 years? Self-host? Are their cookies GDPR-compliant? How to count RSS feeds?</p>
+<p>Nginx has access logs, so I tried server-side statistics that feed off those (namely, Goatcounter). Easy to set up, but then I needed to create domains for them, manage accounts, monitor the process, and it wasn’t even performant enough on my server/request volume!</p>
+<h1 id="my-solution">My solution</h1>
+<p>So I ended up building my own. You are welcome to join, if your constraints are similar to mine. This is how it looks:</p>
+<figure>
+<img src="https://tonsky.me/blog/clj-simple-stats/screenshot@2x.webp" loading="lazy"></figure>
+<p>It’s pretty basic, but does a few things that were important to me.</p>
+<h2 id="setup">Setup</h2>
+<p>Extremely easy to set up. And I mean it as a feature.</p>
+<p>Just add our middleware to your Ring stack and get everything automatically: collecting and reporting.</p>
+<pre><code>(def app
+  (-&gt; routes
+    ...
+    (ring.middleware.params/wrap-params)
+    (ring.middleware.cookies/wrap-cookies)
+    ...
+    (clj-simple-stats.core/wrap-stats))) ;; &lt;-- just add this</code></pre>
+<p>It’s zero setup in the best sense: nothing to configure, nothing to monitor, minimal dependency. It starts to work immediately and doesn’t ask anything from you, ever.</p>
+<p>See, you already have your web server, why not reuse all the setup you did for it anyway?</p>
+<h2 id="request-types">Request types</h2>
+<p>We distinguish between request types. In my case, I am only interested in live people, so I count them separately from RSS feed requests, favicon requests, redirects, wrong URLs, and bots. Bots are particularly active these days. Gotta get that AI training data from somewhere.</p>
+<p>RSS feeds are live people in a sense, so extra work was done to count them properly. Same reader requesting <code>feed.xml</code> 100 times in a day will only count as one request.</p>
+<p>Hosted RSS readers often report user count in User-Agent, like this:</p>
+<pre><code>Feedly/1.0 (+http://www.feedly.com/fetcher.html; 457 subscribers; like FeedFetcher-Google)
+
+Mozilla/5.0 (compatible; BazQux/2.4; +https://bazqux.com/fetcher; 6 subscribers)
+
+Feedbin feed-id:1373711 - 142 subscribers</code></pre>
+<p>My personal respect and thank you to everybody on this list. I see you.</p>
+<figure>
+<img src="https://tonsky.me/blog/clj-simple-stats/readers@2x.webp" loading="lazy"></figure>
+<h2 id="graphs">Graphs</h2>
+<p>Visualization is important, and so is choosing the correct graph type. This is wrong:</p>
+<figure>
+<img src="https://tonsky.me/blog/clj-simple-stats/goat@2x.webp" loading="lazy"></figure>
+<p>Continuous line suggests interpolation. It reads like between 1 visit at 5am and 11 visits at 6am there were points with 2, 3, 5, 9 visits in between. Maybe 5.5 visits even! That is not the case.</p>
+<p>This is how a semantically correct version of that graph should look:</p>
+<figure>
+<img src="https://tonsky.me/blog/clj-simple-stats/graph@2x.webp" loading="lazy"></figure>
+<p>Some attention was also paid to having reasonable labels on axes. You won’t see something like 117, 234, 10875. We always choose round numbers appropriate to the scale: 100, 200, 500, 1K etc.</p>
+<p>Goes without saying that all graphs have the same vertical scale and syncrhonized horizontal scroll.</p>
+<h2 id="insights">Insights</h2>
+<p>We don’t offer much (as I don’t need much), but you can narrow reports down by page, query, referrer, user agent, and any date slice.</p>
+<h2 id="not-implemented-yet">Not implemented (yet)</h2>
+<p>It would be nice to have some insights into “What was this spike caused by?”</p>
+<p>Some basic breakdown by country would be nice. I do have IP addresses (for what they are worth), but I need a way to package GeoIP into some reasonable size (under 1 Mb, preferably; some loss of resolution is okay).</p>
+<p>Finally, one thing I am really interested in is “Who wrote about me?” I do have referrers, only question is how to separate signal from noise.</p>
+<p>Performance. DuckDB is a sport: it compresses data and runs column queries, so storing extra columns per row doesn’t affect query performance. Still, each dashboard hit is a query across the entire database, which at this moment (~3 years of data) sits around 600 MiB. I definitely need to look into building some pre-calculated aggregates.</p>
+<p>One day.</p>
+<h2 id="how-to-get">How to get</h2>
+<p>Head to <a href="https://github.com/tonsky/clj-simple-stats">github.com/tonsky/clj-simple-stats</a> and follow the instructions:</p>
+<figure>
+<a href="https://github.com/tonsky/clj-simple-stats"><img src="https://tonsky.me/blog/clj-simple-stats/banner@2x.webp" loading="lazy"></a></figure>
+<p>Let me know what you think! Is it usable to you? What could be improved?</p>
+
+]]></content>
+    <author>
+      <name>Nikita Prokopov</name>
+      <email>niki@tonsky.me</email>
+    </author>
+  </entry>
+</feed>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-TWjmgLqDPWfgKgcJnMtrU72a7nQZbNKa6UYubruUR8gj4QGfvfalaBiTwRoRb3nk2vTsAm611pSeGN4IYQap1NOh9M_mRgaXaDIN07FfkAFnhGZDBVjYvW7gLKAF_AmqoVwnVFO25VUBaoG59WxW3fn6pLhnWGx8JNO10nSBoFxYK-_9Et-UzYW3aDa4ID2s-yMBo0YerhB_UfUOC6tCH7pV2sEUNnAJ68G_8D8sWZ-JI1LwiYgVunLx3tXOaSTBohZ0YfBgEa-IRNVtz9iK75C894htG5JmdkM7iI19t2_talj3trxjYFHnIw32Kry2oCkL74Vi9mEgc27xXNG3KA==' ;
+		script-src 'nonce-TWjmgLqDPWfgKgcJnMtrU72a7nQZbNKa6UYubruUR8gj4QGfvfalaBiTwRoRb3nk2vTsAm611pSeGN4IYQap1NOh9M_mRgaXaDIN07FfkAFnhGZDBVjYvW7gLKAF_AmqoVwnVFO25VUBaoG59WxW3fn6pLhnWGx8JNO10nSBoFxYK-_9Et-UzYW3aDa4ID2s-yMBo0YerhB_UfUOC6tCH7pV2sEUNnAJ68G_8D8sWZ-JI1LwiYgVunLx3tXOaSTBohZ0YfBgEa-IRNVtz9iK75C894htG5JmdkM7iI19t2_talj3trxjYFHnIw32Kry2oCkL74Vi9mEgc27xXNG3KA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="TWjmgLqDPWfgKgcJnMtrU72a7nQZbNKa6UYubruUR8gj4QGfvfalaBiTwRoRb3nk2vTsAm611pSeGN4IYQap1NOh9M_mRgaXaDIN07FfkAFnhGZDBVjYvW7gLKAF_AmqoVwnVFO25VUBaoG59WxW3fn6pLhnWGx8JNO10nSBoFxYK-_9Et-UzYW3aDa4ID2s-yMBo0YerhB_UfUOC6tCH7pV2sEUNnAJ68G_8D8sWZ-JI1LwiYgVunLx3tXOaSTBohZ0YfBgEa-IRNVtz9iK75C894htG5JmdkM7iI19t2_talj3trxjYFHnIw32Kry2oCkL74Vi9mEgc27xXNG3KA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;ikSV27xQ_7Q target="_blank">
+					<h2>How many engineers does it take to deprecate a struct?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;kl1qohqDw1k target="_blank">
+					<h2>How many engineers does it take to deprecate a struct?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;fOJQ0MNPZjI target="_blank">
+					<h2>🌁 Cup o&#39; Go LIVE in SF with Bill Kennedy! Hosted by Antithesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;kiQh0zl2feM target="_blank">
+					<h2>🌁 Cup o&#39; Go LIVE in SF with Bill Kennedy! Hosted by Antithesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;YhdAKwhFaXU target="_blank">
+					<h2>We&#39;re taking a fall break</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-26">2026-09-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;y81FKR840kg target="_blank">
+					<h2>We&#39;re taking a fall break</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-26">2026-09-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;mUnk-H0mpLY target="_blank">
+					<h2>A totally racist episode so cache(sh) me outside how bout dah?!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-19">2026-09-19</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;KwE2wq2JkmQ target="_blank">
+					<h2>A totally racist episode so cache(sh) me outside how bout dah?!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-19">2026-09-19</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/iFaNAQh-q_A target="_blank">
+					<h2>Modern Go Guidelines - Cup o&#39; Go E172</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/GHuYloKnwFI target="_blank">
+					<h2>Better than Vibes - Cup o&#39; Go E172</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-12">2026-09-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;LTPleLI43VQ target="_blank">
+					<h2>A big episode about tiny things</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-12">2026-09-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;LthrAaBByX4 target="_blank">
+					<h2>A big episode about tiny things</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-12">2026-09-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;vnfhDqTsiLc target="_blank">
+					<h2>Go releases and events from EMEA and around the world</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-05">2026-09-05</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;V2coWY3IyCE target="_blank">
+					<h2>Go releases and events from EMEA and around the world</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-05">2026-09-05</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;XPy7gRuSgug target="_blank">
+					<h2>Everything You Always Wanted to Know About Go 1.27 But Were Afraid to Ask</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-30">2026-08-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g" target="_blank">Cup O&#39; Go</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="TWjmgLqDPWfgKgcJnMtrU72a7nQZbNKa6UYubruUR8gj4QGfvfalaBiTwRoRb3nk2vTsAm611pSeGN4IYQap1NOh9M_mRgaXaDIN07FfkAFnhGZDBVjYvW7gLKAF_AmqoVwnVFO25VUBaoG59WxW3fn6pLhnWGx8JNO10nSBoFxYK-_9Et-UzYW3aDa4ID2s-yMBo0YerhB_UfUOC6tCH7pV2sEUNnAJ68G_8D8sWZ-JI1LwiYgVunLx3tXOaSTBohZ0YfBgEa-IRNVtz9iK75C894htG5JmdkM7iI19t2_talj3trxjYFHnIw32Kry2oCkL74Vi9mEgc27xXNG3KA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-iqi43WNo0jsCZ7quua0yCWNgsFh8GccWIFzthxzNIcD6ePhVn3aWvnVr3u81hOgTOvJDtL3k2Cpc4SWZw_88o05VITAOgCfXDoVVBLldZwm7D6p54-KunCFEOEGKkQpTd-DZ2mGCG3YLRzK43cvg_JYsDCYdnog0bDaEoGdz9lclivZTJsmQL798hgWH7Yce971vrVf8DyR3JVMCfBdF10QQcOW_ujJLftM_IiNuiZXdBJ4QC-mw1-Un34ktF48X94xvKJpNj7-lnYSzXj3YkBVPSFUjQqloHbx7Si7BotvrbdLef8kvqkBVthb3xfa5pX9py9uIDdCSXwbgRnBpNg==' ;
+		script-src 'nonce-iqi43WNo0jsCZ7quua0yCWNgsFh8GccWIFzthxzNIcD6ePhVn3aWvnVr3u81hOgTOvJDtL3k2Cpc4SWZw_88o05VITAOgCfXDoVVBLldZwm7D6p54-KunCFEOEGKkQpTd-DZ2mGCG3YLRzK43cvg_JYsDCYdnog0bDaEoGdz9lclivZTJsmQL798hgWH7Yce971vrVf8DyR3JVMCfBdF10QQcOW_ujJLftM_IiNuiZXdBJ4QC-mw1-Un34ktF48X94xvKJpNj7-lnYSzXj3YkBVPSFUjQqloHbx7Si7BotvrbdLef8kvqkBVthb3xfa5pX9py9uIDdCSXwbgRnBpNg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="iqi43WNo0jsCZ7quua0yCWNgsFh8GccWIFzthxzNIcD6ePhVn3aWvnVr3u81hOgTOvJDtL3k2Cpc4SWZw_88o05VITAOgCfXDoVVBLldZwm7D6p54-KunCFEOEGKkQpTd-DZ2mGCG3YLRzK43cvg_JYsDCYdnog0bDaEoGdz9lclivZTJsmQL798hgWH7Yce971vrVf8DyR3JVMCfBdF10QQcOW_ujJLftM_IiNuiZXdBJ4QC-mw1-Un34ktF48X94xvKJpNj7-lnYSzXj3YkBVPSFUjQqloHbx7Si7BotvrbdLef8kvqkBVthb3xfa5pX9py9uIDdCSXwbgRnBpNg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/13/archived-tweets/ target="_blank">
+					<h2>Archived Tweets</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/12/atomic-wall-clocks/ target="_blank">
+					<h2>Atomic Wall Clocks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/12/eps/ target="_blank">
+					<h2>EPS?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/11/daves-rule-of-life/ target="_blank">
+					<h2>Dave’s Rule of Life</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/10/media-diet-11/ target="_blank">
+					<h2>Media Diet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/09/multipage/ target="_blank">
+					<h2>Multipage</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/09/justice-for-css/ target="_blank">
+					<h2>Justice for CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/07/glasses/ target="_blank">
+					<h2>Glasses</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/06/kelsey/ target="_blank">
+					<h2>Kelsey</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/05/wordpress-mcp/ target="_blank">
+					<h2>WordPress MCP</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/04/im-water/ target="_blank">
+					<h2>im Water</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-04">2026-10-04</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/09/30/experience-with-nectar-beds/ target="_blank">
+					<h2>Experience with Nectar Beds</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://chriscoyier.net" target="_blank">Chris Coyier</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="iqi43WNo0jsCZ7quua0yCWNgsFh8GccWIFzthxzNIcD6ePhVn3aWvnVr3u81hOgTOvJDtL3k2Cpc4SWZw_88o05VITAOgCfXDoVVBLldZwm7D6p54-KunCFEOEGKkQpTd-DZ2mGCG3YLRzK43cvg_JYsDCYdnog0bDaEoGdz9lclivZTJsmQL798hgWH7Yce971vrVf8DyR3JVMCfBdF10QQcOW_ujJLftM_IiNuiZXdBJ4QC-mw1-Un34ktF48X94xvKJpNj7-lnYSzXj3YkBVPSFUjQqloHbx7Si7BotvrbdLef8kvqkBVthb3xfa5pX9py9uIDdCSXwbgRnBpNg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

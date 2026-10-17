@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-ofm5F3wk_8ZalRMbhd7Z66vOY2h8RShn4_S4GE70BACqceudsdd0L_GOWOajFWoM2MD6T270N4jiyJLK2jJy7OpD0WMP1RFHdYtokHZk_iIZj6DyCtyll2ExHMvSbMPhnJ2CdtVJjy4nh7JzsrqUmBDBAKpAz6wJduad1XHDVOQyFQ-PVWjyBDLpcqO1F6uddyxcFTs7_A8LQYihNRHo1HZR7Seqee53g9aRdAtv290Um0DhUj9VcGVq31oJKs9kAu360zG9jmHyiuvy63tjxDT4smsZ3huEktvWUoFRMuDwyXZRezG3BnCETk92aAx7Z6JaRJCJliwpBVQYEH2mVw==' ;
+		script-src 'nonce-ofm5F3wk_8ZalRMbhd7Z66vOY2h8RShn4_S4GE70BACqceudsdd0L_GOWOajFWoM2MD6T270N4jiyJLK2jJy7OpD0WMP1RFHdYtokHZk_iIZj6DyCtyll2ExHMvSbMPhnJ2CdtVJjy4nh7JzsrqUmBDBAKpAz6wJduad1XHDVOQyFQ-PVWjyBDLpcqO1F6uddyxcFTs7_A8LQYihNRHo1HZR7Seqee53g9aRdAtv290Um0DhUj9VcGVq31oJKs9kAu360zG9jmHyiuvy63tjxDT4smsZ3huEktvWUoFRMuDwyXZRezG3BnCETk92aAx7Z6JaRJCJliwpBVQYEH2mVw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="ofm5F3wk_8ZalRMbhd7Z66vOY2h8RShn4_S4GE70BACqceudsdd0L_GOWOajFWoM2MD6T270N4jiyJLK2jJy7OpD0WMP1RFHdYtokHZk_iIZj6DyCtyll2ExHMvSbMPhnJ2CdtVJjy4nh7JzsrqUmBDBAKpAz6wJduad1XHDVOQyFQ-PVWjyBDLpcqO1F6uddyxcFTs7_A8LQYihNRHo1HZR7Seqee53g9aRdAtv290Um0DhUj9VcGVq31oJKs9kAu360zG9jmHyiuvy63tjxDT4smsZ3huEktvWUoFRMuDwyXZRezG3BnCETk92aAx7Z6JaRJCJliwpBVQYEH2mVw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.safjan.com/the-real-cost-of-model-migration-what-swapping-llms-actually-requires/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>The Real Cost of Model Migration - What Swapping LLMs Actually Requires</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-08">2026-04-08</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/the-illusion-of-control-in-ai-assisted-engineering/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>The illusion of control in AI-assisted engineering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-02">2026-03-02</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/version-your-vectors-index-versioning-as-the-missing-layer-in-rag/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Version Your Vectors - Index Versioning as the Missing Layer in RAG Observability and Compliance</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-25">2026-02-25</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/publishing-python-cli-tool-to-homebrew/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Publishing a Python CLI Tool to Homebrew</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-04">2026-02-04</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/the-limiting-factor-at-work-isnt-writing-code-anymore/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>The limiting factor at work isn&#39;t writing code anymore</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-27">2026-01-27</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/using-mlflowragas-integration-without-tracing/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Using MLflow-RAGAS Integration Without Tracing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-10">2026-01-10</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/ragas-mlflow-rag-evaluation-tutorial/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>RAG Evaluation with RAGAS and MLflow - A Practical Guide</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-07">2026-01-07</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/git-worktrees-ai-multi-workflows/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Working Faster with Git Worktrees and AI-Based Multi-Workflow Development</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-27">2025-11-27</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/git-worktrees-for-ai-coding/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Using Git Worktrees as Clean Rooms for AI-Assisted Coding</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-27">2025-11-27</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/avoid-homebrew-sudo-upgrades/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Avoiding Homebrew Upgrades That Require Sudo on macOS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-30">2025-10-30</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/python-protocols-structural-subtyping/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Understanding Python Protocols - Structural Subtyping in Practice</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-28">2025-10-28</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/evolution-of-type-hints-in-python/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Evolution of Type Hints in Python — From Comments to Inline Typing and Beyond</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-23">2025-10-23</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/git-checkout-orphan-gh-pages-performance-results/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Keeping performance results in a separate Git branch using `git checkout --orphan`</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-23">2025-10-23</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/language-server-protocol-minimal-example/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Understanding the Language Server Protocol through a Minimal Working Example</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-15">2025-10-15</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/css-variables-dynamic-reusable-styling/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Using CSS Variables for Dynamic and Reusable Styling</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-13">2025-10-13</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/bare-asterisk-in-python-function-signatures/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Bare Asterisk in Python Function Signatures - Keyword Only Arguments</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-09">2025-10-09</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/six-weeks-real-progress-exploring-shape-up-for-product-work/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Six Weeks, Real Progress - Exploring Shape Up for Product Work</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-05">2025-10-05</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/concurrent-futures-simpler-parallelism/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Simpler Parallelism with concurrent.futures</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-20">2025-09-20</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/threading-vs-multiprocessing-gil-implications/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Threading vs Multiprocessing in Python - GIL Implications and Choosing the Right Tool</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-09">2025-09-09</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/asyncio-basics-async-await-when-to-use/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>asyncio Basics - async/await and When to Actually Use Them</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-08">2025-09-08</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/replacing-makefile-with-invoke-for-crossplatform-python-tasks/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Replacing Makefile with Invoke for Cross-Platform Python Tasks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-13">2025-08-13</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/openai-python-sdk-with-local-ollama-models-and-alternatives/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Using OpenAI Python SDK with Local Ollama Models (and When to Opt for Alternatives)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-28">2025-07-28</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/building-a-multinotebook-report-with-quarto/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Building a Multi-Notebook Report with Quarto</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-22">2025-07-22</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/downgrade-or-upgrade-your-python-version-with-uv/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Downgrade or Upgrade Your Python Version with uv</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-25">2025-06-25</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/beyond-coverage-building-truly-complete-test-suites-with-github-copilot/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Beyond Coverage - Building Truly Complete Test Suites with GitHub Copilot</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-14">2025-06-14</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/understanding-pythons-copy-vs-deepcopy-when-to-use-each/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Understanding Python&#39;s `copy` vs `deepcopy` - When to Use Each</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-19">2025-03-19</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/tracking-down-zsh-alias-plugin-sources/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Tracking Down zsh Alias Plugin Sources</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-27">2025-02-27</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/managing-vs-code-keyboard-shortcuts-a-complete-guide/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Guide to Managing VS Code Keyboard Shortcuts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-10">2025-02-10</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/simple-inmemory-knowledge-graphs-for-quick-graph-querying/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Simple In-Memory Knowledge Graphs for Quick Graph Querying</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-15">2025-01-15</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.safjan.com/quick-ways-to-disable-github-actions-workflows-without-deletion/?utm_source&#61;rss&amp;utm_medium&#61;feed&amp;utm_campaign&#61;safjan-blog target="_blank">
+					<h2>Quick Ways to Disable GitHub Actions Workflows Without Deletion</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-02">2024-10-02</time>
+					|
+					<a href="https://safjan.com" target="_blank">safjan.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.safjan.com/" target="_blank">Krystian Safjan&#39;s Blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="ofm5F3wk_8ZalRMbhd7Z66vOY2h8RShn4_S4GE70BACqceudsdd0L_GOWOajFWoM2MD6T270N4jiyJLK2jJy7OpD0WMP1RFHdYtokHZk_iIZj6DyCtyll2ExHMvSbMPhnJ2CdtVJjy4nh7JzsrqUmBDBAKpAz6wJduad1XHDVOQyFQ-PVWjyBDLpcqO1F6uddyxcFTs7_A8LQYihNRHo1HZR7Seqee53g9aRdAtv290Um0DhUj9VcGVq31oJKs9kAu360zG9jmHyiuvy63tjxDT4smsZ3huEktvWUoFRMuDwyXZRezG3BnCETk92aAx7Z6JaRJCJliwpBVQYEH2mVw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

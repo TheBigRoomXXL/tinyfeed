@@ -1,0 +1,103 @@
+# ========================================================================================
+#                                      RSS / ATOM FEEDS
+# ========================================================================================
+
+https://lovergne.dev/rss.xml
+https://htmx.org/atom.xml
+https://www.bitecode.dev/feed
+https://rednafi.com/index.xml
+https://blog.danslimmon.com/feed/
+https://joshcollinsworth.com/api/rss.xml
+http://feeds.feedburner.com/LetsDiscussTheMatterFurther
+https://notes.eatonphil.com/rss.xml
+https://feeds.feedburner.com/DougHellmann
+https://research.swtch.com/feed.atom
+https://sirupsen.com/atom.xml
+https://bitbashing.io/feed.xml
+https://andy-bell.co.uk/feed.xml
+https://words.filippo.io/rss/
+https://lukeplant.me.uk/blog/atom/index.xml
+https://wizardzines.com/index.xml
+https://sethmlarson.dev/rss
+https://www.petemillspaugh.com/rss.xml
+https://jakelazaroff.com/rss.xml
+https://digest.browsertech.com/rss
+https://www.htmhell.dev/feed.xml
+https://daniel.do/rss.xml
+https://buttondown.email/hillelwayne/rss
+https://cliffle.com/rss.xml
+https://journal.stuffwithstuff.com/rss.xml
+https://ferd.ca/feed.rss
+https://tonsky.me/atom.xml
+https://chriscoyier.net/feed/
+https://hamvocke.com/feed.xml
+https://developer.mozilla.org/en-US/blog/rss.xml
+https://safjan.com/feeds/all.rss.xml
+https://feeds.feedburner.com/TroyHunt
+https://brooker.co.za/blog/rss.xml
+https://blog.google/threat-analysis-group/rss/
+https://solar.lowtechmagazine.com/posts/index.xml
+https://neopythonic.blogspot.com/feeds/posts/default
+https://blog.codingconfessions.com/feed
+https://j3s.sh/feed.atom
+https://blog.isosceles.com/feed/
+https://dave.cheney.net/feed
+https://cargocollective.com/rss/sagejenson
+https://www.somethingsimilar.com/feed
+https://wickstrom.tech/feed.xml
+https://research.swtch.com/feed.atom
+https://samcurry.net/api/feed.rss
+https://grantslatton.com/rss.xml
+https://paravoce.bearblog.dev/feed
+https://www.openmymind.net/atom.xml
+https://www.willem.dev/articles/index.xml
+https://www.scattered-thoughts.net/atom.xml
+https://val.packett.cool/feed.xml
+https://jvns.ca/atom.xml
+https://lewiscampbell.tech/blog/feed.xml
+https://mastodon.social/@hytradboi.rss
+https://raphaelkabo.com/rss.xml
+https://virtualzone.de/posts/index.xml
+https://annas-archive.org/blog/rss.xml
+https://lea.verou.me/feed.xml
+https://victoriametrics.com/index.xml
+https://nobloat.org/feed.xml
+https://antithesis.com/feed.xml
+https://blog.janestreet.com/feed.xml
+https://serversfor.dev/rss.xml
+https://btao.org/feed.xml
+https://internals-for-interns.com/index.xml
+https://feeds.acast.com/public/shows/software-unscripted
+https://www.youtube.com/feeds/videos.xml?channel_id=UCiDJtJKMICpb9B1qf7qjEOA
+https://www.youtube.com/feeds/videos.xml?channel_id=UC6107grRI4m0o2-emgoDnAA
+https://www.youtube.com/feeds/videos.xml?channel_id=UCHnyfMqiRRG1u-2MsSQLbXA
+https://www.youtube.com/feeds/videos.xml?channel_id=UCQG40havu4kNpB4pxUDQhYQ
+https://www.youtube.com/feeds/videos.xml?channel_id=UCgy9FjzTQ3wJ32JlkqcLU1g
+https://www.youtube.com/feeds/videos.xml?channel_id=UCRSg-mANRvOGLkV30EyW4jw
+https://www.youtube.com/feeds/videos.xml?channel_id=UCXh9mHdcBD-3aGCiECZMP1Q
+
+
+# ========================================================================================
+#                                      JSON FEEDS
+# ========================================================================================
+
+# Cannonical JSON feed
+https://www.jsonfeed.org/feed.json
+
+# Dates in Miliseconds
+https://xeiaso.net/
+
+# Has attachements
+https://changelog.com/feed.json
+
+# Several authors and use both author and authors fields
+https://sixcolors.com/feed.json
+
+# Has date_modified
+https://daringfireball.net/feeds/json
+
+# Out of specs dates
+https://adactio.com/journal/feed.json
+
+# No title
+https://www.manton.org/feed.json 

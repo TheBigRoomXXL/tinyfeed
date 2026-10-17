@@ -1,0 +1,1458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:webfeeds="http://webfeeds.org/rss/1.0" xml:lang="en">
+  <id>https://val.packett.cool/feed.xml</id>
+  <title>Val Packett's Blog</title>
+  <updated>2026-06-16T04:26:21.030Z</updated>
+  <link href="https://val.packett.cool/blog/" rel="alternate" type="text/html"/>
+  <link href="https://val.packett.cool/feed.json" rel="alternate" type="application/feed+json"/>
+  <link href="https://val.packett.cool/feed.xml" rel="self" type="application/atom+xml"/>
+  <icon>https://val.packett.cool/x/val.1.png</icon>
+  <logo>https://val.packett.cool/x/val.1.png</logo>
+  <webfeeds:logo>https://val.packett.cool/x/val.1.png</webfeeds:logo>
+  <webfeeds:accentColor>#9B70FF</webfeeds:accentColor>
+  <author>
+    <name>Val Packett</name>
+    <uri>https://val.packett.cool/</uri>
+  </author>
+  <entry>
+    <id>https://val.packett.cool/blog/microvm-apps-clan/</id>
+    <link href="https://clan.lol/blog/towards-app-platform-vmtech/" rel="alternate" type="text/html"/>
+    <title>Towards a secure peer-to-peer app platform for Clan</title>
+    <published>2025-09-26T00:00:00.000Z</published>
+    <updated>2025-09-26T00:00:00.000Z</updated>
+    <summary>
+      Guest post on the Clan project's blog, summarizing my development work on microVMs with GPU acceleration and desktop integration with Wayland and XDG Portals
+
+    </summary>
+    <author>
+      <name>Val Packett</name>
+      <uri>https://val.packett.cool/</uri>
+    </author>
+    <content type="html">
+      &lt;p&gt;While most of the existing Clan framework is dedicated to machine and service management, there’s more on the horizon. Our mission is to make sure peer-to-peer, user-controlled, community software can beat Big Tech solutions. That’s why we’re working on platform fundamentals that would open the way for our FOSS stack to match the usability and convenience of proprietary platforms.&lt;/p&gt;
+&lt;p&gt;Unfortunately, the FOSS world is still lagging behind commercial platforms in some important aspects:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Web and mobile apps are strongly sandboxed, so while they can get very aggressive in snooping on the data they &lt;em&gt;are&lt;/em&gt; allowed to access, the enforcement of the isolation model is very robust — and there is a model for &lt;em&gt;sharing&lt;/em&gt; data that makes the isolated applications actually useful..
+&lt;ul&gt;
+&lt;li&gt;Meanwhile in the FOSS world, it’s still extremely common to run software with full access to the user’s account. The only project that has built anything close to a similar platform for local software is Flatpak, which is still not perfect and its main repo has a very lax policy;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Centralized Web services can have “multiple instances” simply by switching accounts; self-hosting Web services is trivially multi-instance; even Android now provides a multi-instance facility..
+&lt;ul&gt;
+&lt;li&gt;Meanwhile local software often doesn’t have a global database, but when it does, it can be impossible to make it multi-instance without advanced knowledge;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Commercial apps come with their own always-online remote servers. Users don’t have to think about connecting the clients to the servers, it’s all pre-connected!
+&lt;ul&gt;
+&lt;li&gt;Meanwhile decentralized community software is stuck between various bad options. Supporting multiple commercial backends is tedious and defeats the point anyway. Self-hosting traditional web servers can get complex and unreliable, and exposes attack surface to the public Web. Direct peer-to-peer connections can be hard to set up and unreliable too, and typically don’t provide asynchronous communication.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So… What do we need to make it possible for communities to share apps install and load &lt;strong&gt;quickly&lt;/strong&gt;, already &lt;strong&gt;pre-connected&lt;/strong&gt; to network services; are isolated to a &lt;strong&gt;worry-free&lt;/strong&gt; level of security, and yet allow for enough &lt;strong&gt;sharing&lt;/strong&gt; via explicit permissions to make them useful?&lt;/p&gt;
+&lt;p&gt;The first piece of the puzzle is, unsurprisingly, Nix. The entire Clan project is built on Nix, and the future app platform is no exception. Nix makes it possible to quickly fetch and run any software – thanks to caching, as long as we steer everyone towards using very few common versions of the nixpkgs tree, most downloads could be almost as fast as web app loads.&lt;/p&gt;
+&lt;p&gt;Then we have to add a &lt;strong&gt;microVM hypervisor&lt;/strong&gt; with &lt;strong&gt;Wayland and GPU virtualization&lt;/strong&gt; and a side of &lt;strong&gt;D-Bus portals&lt;/strong&gt;… and we can finally get a glimpse of the future!&lt;/p&gt;
+
+&lt;h2 id="microvms"&gt;&lt;a class="header-anchor" href="#microvms"&gt;microVMs&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Secure isolation is essential for any modern app platform. Hardware-based virtualization is a lot more confidence-inspiring than shared-kernel isolation mechanisms like Linux namespaces. But it’s not &lt;em&gt;only&lt;/em&gt; a security measure. Running apps in VMs also improves environment consistency/reproducibility by ensuring everyone runs the same kernel — which can also give us portability, since it enables running on completely different host OSes as well.&lt;/p&gt;
+&lt;p&gt;If your experience with virtualization on desktop has only been with booting entire Linux distros under something like VirtualBox, you might be very skeptical of the same technology being involved in launching applications all the time. But that’s not at all inherent to the use of KVM!&lt;/p&gt;
+&lt;p&gt;Conventional VMs feel “heavy” —slow to launch, big RAM footprint, extra background CPU usage, fixed storage allocation, usually not very well integrated with the host desktop— only because their goal is to simulate a whole another computer within your existing computer. For app isolation, we don’t need that, so the whole stack can be vastly simplified and optimized for high performance and low overhead. The microVM idea was first popularized by AWS’s &lt;a href="https://firecracker-microvm.github.io/"&gt;Firecracker&lt;/a&gt; on the server side, powering instantly-launching event/request handlers in Lambda. A microVM boots directly into the kernel (skipping firmware) and does not emulate any legacy PC hardware, which results in &lt;em&gt;very&lt;/em&gt; fast boot times, on the order of a couple hundred milliseconds.&lt;/p&gt;
+&lt;p&gt;Now, has this been used on the client side already? Yes, most prominently by Asahi Linux, motivated by a technical restriction that was preventing Apple machines from playing legacy Windows games. That’s the &lt;a href="https://github.com/AsahiLinux/muvm"&gt;muvm&lt;/a&gt; project, powered by &lt;a href="https://github.com/containers/libkrun"&gt;libkrun&lt;/a&gt; – a Firecracker-like VMM provided as a dynamic library so that different frontends could be built. For our platform development, we have indeed adopted muvm (after submitting &lt;a href="https://github.com/AsahiLinux/muvm/pull/192"&gt;some changes&lt;/a&gt; that make it more useful for us), combining it with namespace-based &lt;a href="https://github.com/containers/bubblewrap"&gt;Bubblewrap&lt;/a&gt; to make a script that &lt;a href="https://git.clan.lol/clan/munix"&gt;runs NixOS system closures&lt;/a&gt; in microVMs.&lt;/p&gt;
+&lt;p&gt;…Wait, did someone mention playing games– like, highly GPU-demanding games? In a VM? Without a dedicated GPU?&lt;/p&gt;
+&lt;h2 id="desktop-and-gpu-support"&gt;&lt;a class="header-anchor" href="#desktop-and-gpu-support"&gt;Desktop and GPU support&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;In the Beginning (of virtio-gpu), there was the Framebuffer. An emulated computer monitor, a single rectangle representing the entire graphical output of the VM. Then there was &lt;a href="https://docs.mesa3d.org/drivers/virgl.html"&gt;VirGL&lt;/a&gt;, a way to forward the OpenGL API across the VM boundary to make the host render on its GPU on behalf of the VM, so that 3D graphics could be displayed on the emulated monitor. It wasn’t super fast, it wasn’t compatible with the latest GL extensions, it wasn’t very secure, but it was something. With the advent of Vulkan, &lt;a href="https://docs.mesa3d.org/drivers/venus.html"&gt;Venus&lt;/a&gt; was started as the Vulkan version of the same thing.&lt;/p&gt;
+&lt;p&gt;Meanwhile, the Chrome OS team was working on adding support for Linux apps. While it was initially based on namespaces, they quickly started working on switching to hardware virtualization. The virtio-gpu device was extended to support arbitrary “cross-domain” protocols, making it possible —with some wrapping-unwrapping— to forward Unix domain sockets that pass certain types of file descriptors (shared memory and DMA-BUF) to the guest. (Well, initially it was a whole separate virtual device but let’s skip over that.) Google’s crosvm supports &lt;a href="https://crosvm.dev/book/devices/wayland.html"&gt;connecting to the host Wayland socket&lt;/a&gt; to that facility, and the team wrote &lt;a href="https://chromium.googlesource.com/chromiumos/platform2/+/refs/heads/main/vm_tools/sommelier/README.md"&gt;Sommelier&lt;/a&gt; as the guest-side proxy that exposes a normal Wayland socket to guest apps.&lt;/p&gt;
+&lt;p&gt;The part of crosvm responsible for handling the virtio-gpu device was written as a reusable library called Rutabaga (now &lt;a href="https://github.com/magma-gpu/rutabaga_gfx"&gt;living outside of the CrOS repos&lt;/a&gt;), and integrated into other VMMs such as good old Qemu. Sommelier was packaged by various Linux distros as well, and one enthusiast wrote &lt;a href="https://roscidus.com/blog/blog/2021/03/07/qubes-lite-with-kvm-and-wayland/"&gt;an entire alternative to Sommelier&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Meanwhile, there was also a lot to improve in terms of accessing the GPU. As we’ve mentioned already, API forwarding solutions like VirGL/Venus leave a lot to be desired. PCIe passthrough requires a dedicated GPU, or SR-IOV support which GPU vendors have mostly restricted to enterprise models. However… of course a better way was possible! Rob Clark presented &lt;a href="https://indico.freedesktop.org/event/2/contributions/53/attachments/76/121/XDC2022_%20virtgpu%20drm%20native%20context.pdf"&gt;DRM native contexts&lt;/a&gt; at XDC 2022: this approach essentially paravirtualizes the kernel-space GPU driver, letting the guest submit hardware-specific commands that the host would run in separate contexts (relying on the same separation as between programs on the host). That’s the approach that was picked up by the Asahi Linux project for gaming because of the amazing performance it allows for, but it’s also intended to be a stronger security boundary due to providing way less attack surface on the host (it’s all I/O management rather than implementing complex APIs).&lt;/p&gt;
+&lt;p&gt;So, was it possible to take all of this technology and use it? Well… it required quite a bit of debugging and fixing everywhere – but that’s exactly why I joined! So far I’ve discovered that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the rutabaga_gfx integration in QEMU (which was the thing we tried to use initially) and other C consumers was broken with the latest versions due to &lt;a href="https://issuetracker.google.com/issues/440386997"&gt;an &lt;code&gt;ifdef&lt;/code&gt; mistake&lt;/a&gt; (&lt;a href="https://github.com/magma-gpu/rutabaga_gfx/pull/9"&gt;fixed&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;it’s not documented everywhere that &lt;a href="https://gitlab.com/qemu-project/qemu/-/issues/2574"&gt;kernel &amp;gt;= 6.13 is required&lt;/a&gt; to be able to touch AMD GPU memory from KVM guests in any way&lt;/li&gt;
+&lt;li&gt;Sommelier was &lt;a href="https://issuetracker.google.com/u/2/issues/441537635"&gt;assuming Chromium OS kernel patches&lt;/a&gt; and misinterpreting &lt;code&gt;ioctl&lt;/code&gt; responses on regular mainline Linux&lt;/li&gt;
+&lt;li&gt;libkrun’s internal version of rutabaga_gfx contained a tiny strange API modification incompatible with Sommelier/proxy-virtwl and didn’t handle memfd seals (&lt;a href="https://github.com/containers/libkrun/pull/407"&gt;fixed&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;RADV (Radeon Vulkan driver in Mesa) only recognized PCI devices including for virtgpu, ignoring the &lt;code&gt;virtio-mmio&lt;/code&gt; setup used by libkrun (&lt;a href="https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/37281"&gt;fixed&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And we’re continuing with more work in this area.&lt;/p&gt;
+&lt;h2 id="d-bus/xdg-desktop-portals"&gt;&lt;a class="header-anchor" href="#d-bus/xdg-desktop-portals"&gt;D-Bus / XDG Desktop Portals&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Application isolation is great, but completely isolated applications tend to have limited usefulness. That’s why we’re also integrating &lt;a href="https://flatpak.github.io/xdg-desktop-portal/"&gt;desktop portals&lt;/a&gt; that Flatpak uses —at least the file-opening / document portal— into the microVM-based platform.&lt;/p&gt;
+&lt;p&gt;The &lt;a href="https://git.clan.lol/clan/sidebus"&gt;sidebus&lt;/a&gt; project is inspired by &lt;a href="https://spectrum-os.org/"&gt;Spectrum&lt;/a&gt;’s setup for using the document portal with virtiofs to dynamically expose chosen files to the guest, using vsock as the D-Bus transport. It is based on the &lt;a href="https://github.com/dbus2/busd"&gt;busd&lt;/a&gt; broker library, and uses the portal frontend on the host for perfect integration with arbitrary desktop environments.&lt;/p&gt;
+&lt;p&gt;With the switch to libkrun however, we are looking at the possibility of making the Camera and Screencast portals working, with full hardware acceleration – by switching to virtgpu cross-domain as the transport instead of vsock. Currently libkrun already has added some PipeWire support to its copy of rutabaga_gfx, however that’s fixed to one system-wide socket. How these portals work is that for every request they pass a new restricted PipeWire remote socket over D-Bus. So we’re looking to make rutabaga’s cross-domain sockets more generic, to be able to just pass through that whole chain of file descriptor passing.&lt;/p&gt;
+&lt;p&gt;(And yes, lots of people are worried about PipeWire attack surface — it’s definitely possible to mitigate that with a proxy on the host that would only allow a small validated subset of the PipeWire protocol.)&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;&lt;a class="header-anchor" href="#conclusion"&gt;Conclusion&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;We’re looking to finally make a peer-to-peer community software platform that’s competitive with commercial ones in terms of security, usability and convenience.
+If you want to try it out now, you can! Just follow the installation instructions on our &lt;a href="https://git.clan.lol/clan/munix"&gt;munix project&lt;/a&gt;.
+Note that it’s still actively being developed, so if you find any issues, please open up a bug report!&lt;/p&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>https://val.packett.cool/blog/podfox/</id>
+    <link href="https://val.packett.cool/blog/podfox/" rel="alternate" type="text/html"/>
+    <title>Podfox: World's First Container-Aware Browser</title>
+    <published>2025-05-05T00:00:00.000Z</published>
+    <updated>2025-05-05T00:00:00.000Z</updated>
+    <summary>
+      A port conflict pushed me to abolish container port forwarding once and for all, making my Firefox talk to Podman's whole network. Also: containerizing dev environments for command-line addicts.
+
+    </summary>
+    <author>
+      <name>Val Packett</name>
+      <uri>https://val.packett.cool/</uri>
+    </author>
+    <content type="html">
+      &lt;p&gt;Containers. Containers containers containers. Even if you were reluctant before, it’s likely that you use them at least for running various supporting infrastructure when working on projects that involve that kind of thing. Having a whole-system install of Postgres on a laptop shared between various different projects never actually felt right. Running &lt;code&gt;podman run --rm -it -p 5432:5432 postgres:17&lt;/code&gt; to pop up a temporary instance with no persistent state does.&lt;/p&gt;
+&lt;p&gt;These days, it’s very typical for any web backend or other kind of networked service project to include something like a &lt;code&gt;docker-compose.yml&lt;/code&gt; file that makes it possible to just run all the service dependencies with one single command. And so I was running a Compose setup for one project, a serious business client consulting job thing, and I kept it in the background and I went to start up another project and—&lt;/p&gt;
+&lt;p&gt;oh no, that failed with EADDRINUSE. A &lt;em&gt;port conflict&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Both projects involved RabbitMQ and both forwarded the management web UI port to the host:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-yaml"&gt;  queue:
+    image: rabbitmq:3-management
+    ports: 
+      - "15672:15672"
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And as such, I couldn’t launch both projects without modifying the port numbers or something. So like any rational well-adjusted chill person, at that point I’ve decided that port forwarding Must. Be. ABOLISHED!!&lt;/p&gt;
+&lt;p&gt;Seriously though, we have &lt;a href="https://flathub.org/apps/app.devsuite.Ptyxis"&gt;Ptyxis&lt;/a&gt; as a container-aware terminal emulator… why isn’t there a container-aware web browser that would just communicate directly with the containers? (Does anyone remember &lt;a href="https://web.archive.org/web/20150313045857/http://pow.cx/"&gt;Pow&lt;/a&gt; from the golden age of Rails that proposed the “just open &lt;code&gt;yourapp.dev&lt;/code&gt;” experience?)&lt;/p&gt;
+&lt;p&gt;As the title suggests, now there kinda is a container-aware browser:&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:1.3314814814814815;background:#363a67 url(data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAACwAQCdASoMAAoACQCsJYwAAxZcj64AAP7Uj+8VBxvzjNgAAAA=);"&gt;&lt;picture&gt;&lt;source type="image/webp" srcset="scr.webp"&gt;&lt;img alt="Screenshot with a Firefox window on top showing a RabbitMQ management UI on http://myrabbit.randomtests.podman, and a terminal on the bottom shown launching podman run --rm -it --network randomtests --name myrabbit rabbitmq:3-management" src="scr.png" width="1438" height="1080" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;Okay, the title is slightly exaggerated. It’s not that the browser itself was modified in any way. And no, it’s not just running inside of a Podman container. There’s a process running alongside everything that makes it possible, and it’s quite simple and tiny.&lt;/p&gt;
+&lt;p&gt;Can you already guess how it works? First, let’s see how we got here.&lt;/p&gt;
+&lt;h2 id="how-do-containers-even-networking"&gt;&lt;a class="header-anchor" href="#how-do-containers-even-networking"&gt;How Do Containers Even Networking??&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Back in the day, containering required root privileges and there was a daemon running as root, which always felt repulsive to me. It never was an inherent necessity, but Linux’s namespacing abilities weren’t good enough to run without privileges. These days —thankfully— they are, and Podman encourages running “rootless” (and daemonless).&lt;/p&gt;
+&lt;p&gt;In the old-school rootful setup, networking is pretty straightforward: the daemon can create bridge interfaces on the host, containers get assigned IP addresses on a bridged subnet, and they are accessible as if they were actual machines. And it’s possible to &lt;a href="https://forums.docker.com/t/docker-using-dnsmasq-as-resolver-forwarder-to-reach-containers-from-host/137390"&gt;set up DNS&lt;/a&gt; on the host machine to resolve to container names but like… ugh, &lt;em&gt;messing with DNS&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;But as an unprivileged process we can’t just create bridges on the host (and I wouldn’t &lt;em&gt;want&lt;/em&gt; anything to show up in the list of network interfaces, it bothers me to see Stuff there!) so what does Podman do?&lt;/p&gt;
+&lt;p&gt;You might’ve heard about networking being “all fake in userspace” with &lt;code&gt;slirp4netns&lt;/code&gt; which is an amazing resurrection of early-90s modem era hacks that has just &lt;a href="https://www.youtube.com/watch?v=QMUEtEt1i3I"&gt;been replaced by&lt;/a&gt; a modern alternative called &lt;code&gt;pasta&lt;/code&gt; (mm, tasty – wait, what’s that &lt;a href="https://github.com/rootless-containers/bypass4netns"&gt;bypass4netns&lt;/a&gt; thing?). Heck, Podman’s &lt;a href="https://github.com/containers/podman/blob/400a9a528bfc33d23725958f379cb2bfecb4865e/docs/tutorials/rootless_tutorial.md"&gt;actual “rootless tutorial”&lt;/a&gt; mentions these as &lt;em&gt;the&lt;/em&gt; “rootless networking tools”. But… actually… that’s just the teeny tiny part that makes it possible for the unprivileged containers to &lt;em&gt;reach out to the outside world&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The actual networking stack is the real Linux kernel one, namespaced.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/containers/podman/discussions/22943#discussioncomment-9795883"&gt;Here’s what it actually looks like&lt;/a&gt;. Rootless Podman first creates a single network namespace called &lt;code&gt;rootless-netns&lt;/code&gt;, inside of which it creates bridge networks, real Linux kernel bridges; and for each container that joins a network it spawns it makes a &lt;code&gt;veth&lt;/code&gt; pair, one end of which is connected to the network’s bridge interface in the aforementioned common namespace, and the other end passed to the container’s own namespace.&lt;/p&gt;
+&lt;p&gt;And we can manually enter that “parent” namespace —without entering “a container”, &lt;em&gt;only&lt;/em&gt; entering the network namespace— by running &lt;code&gt;podman unshare --rootless-netns&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Wait, how does that work? Tell me, &lt;a href="https://wizardzines.com/zines/strace/"&gt;almighty &lt;code&gt;strace&lt;/code&gt;&lt;/a&gt;!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;open("/run/user/1000/libpod/tmp/pause.pid", O_RDONLY|O_LARGEFILE) = 4
+read(4, "1809", 11)                     = 4
+open("/proc/1809/ns/user", O_RDONLY|O_LARGEFILE|O_CLOEXEC) = 5
+fcntl(5, F_SETFD, FD_CLOEXEC)           = 0
+open("/proc/1809/ns/mnt", O_RDONLY|O_LARGEFILE|O_CLOEXEC) = 6
+fcntl(6, F_SETFD, FD_CLOEXEC)           = 0
+setns(5, 0)                             = 0
+setns(6, 0)                             = 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Oh, umm, that’s it?? Wait, where’s the netw—&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;openat(AT_FDCWD, "/run/user/1000/containers/networks/rootless-netns/rootless-netns", O_RDONLY|O_CLOEXEC) = 8
+[…]
+setns(8, CLONE_NEWNET)                  = 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Right, that explains the &lt;code&gt;mnt&lt;/code&gt; namespace above.&lt;/p&gt;
+&lt;p&gt;So the key is the &lt;a href="https://man7.org/linux/man-pages/man2/setns.2.html"&gt;setns(2)&lt;/a&gt; system call, which “allows the calling thread to move into different namespaces”. When it’s the only thread in the process, mind you, so we can’t just have different threads in different namespaces. But no one said we can’t retain open sockets from the previous namespace before switching! Just realizing that opens a world of possibilities. Now we can build a very elegant and simple…&lt;/p&gt;
+&lt;h2 id="proxy-ding-ding-ding-ding-ding"&gt;&lt;a class="header-anchor" href="#proxy-ding-ding-ding-ding-ding"&gt;Proxy! Ding ding ding ding ding&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;If you guessed “proxy” before reading all of the above, congratulations! You win! :)&lt;/p&gt;
+&lt;p&gt;That is what &lt;a href="https://codeberg.org/valpackett/podfox#podfox"&gt;Podfox&lt;/a&gt; actually is. It’s a SOCKS proxy that starts listening on the host system and then enters Podman’s rootless networking namespace in order to talk to your containers. It’s a portal into the container world, running as one simple process, written in Rust.&lt;/p&gt;
+&lt;p&gt;There’s no need to do any DNS on the host, as a proxy can handle hostnames however it likes, so Podfox parses &lt;code&gt;&amp;lt;container&amp;gt;.&amp;lt;network&amp;gt;.podman&lt;/code&gt; hostnames, queries &lt;code&gt;podman network inspect&lt;/code&gt; with the &lt;code&gt;network&lt;/code&gt; name to find the gateway address for the network, finally sends a DNS query for &lt;code&gt;&amp;lt;container&amp;gt;.dns.podman&lt;/code&gt; to that network’s gateway, connects to the returned address and starts proxying.&lt;/p&gt;
+&lt;p&gt;Beautiful.&lt;/p&gt;
+&lt;p&gt;It just works.&lt;/p&gt;
+&lt;p&gt;And you can install it from crates.io right now:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-shell"&gt;cargo install --locked podfox
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And run it as just &lt;code&gt;podfox&lt;/code&gt;, it would listen on port :42666 by default. (It also support systemd socket activation!)&lt;/p&gt;
+&lt;p&gt;Now, um, we haven’t actually touched the “fox” part of it all. The browser. When I was first testing, I was using Multi-Account Containers’ (heh) ability to assign proxies per Firefox container, but that was just for testing.&lt;/p&gt;
+&lt;p&gt;Later I made a WebExtension to make a global proxy rule that assigns the Podfox proxy to the fake &lt;code&gt;.podman&lt;/code&gt; TLD. It’s probably the simplest Firefox add-on ever that’s actually useful, as all it contained was a one-liner (!) background script:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-js"&gt;browser.proxy.onRequest.addListener(() =&amp;gt; ({ type: "socks", host: "localhost", port: 42666, proxyDNS: true }), { urls: ["*://*.podman/*"] });
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;But I’m not feeling like publishing a literal one-liner to addons.mozilla.org. I am considering making a tiny add-on for creating rules of this sort via a settings UI, but for now I’ve discovered a simpler solution that doesn’t require any add-on publishing at all.&lt;/p&gt;
+&lt;p&gt;Yeah, it’s &lt;a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file"&gt;PAC (Proxy Auto-Configuration)&lt;/a&gt;. Another 90s comeback, just like SLiRP!&lt;/p&gt;
+&lt;p&gt;Place the following in a file directly accessible to Firefox (I’m saying that because mind the Flatpak – if running Flatpak Firefox, expose a new directory through &lt;a href="https://flathub.org/apps/com.github.tchx84.Flatseal"&gt;Flatseal&lt;/a&gt; with just the file):&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-js"&gt;function FindProxyForURL(url, host) {
+  if (host.endsWith('.podman'))
+    return 'SOCKS5 localhost:42666';
+  return 'DIRECT';
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally, configure Firefox to use it (and tick the checkbox to proxy DNS names):&lt;/p&gt;
+&lt;figure class="lqip smol-bean" style="--ratio:1.9873150105708246;background:#2d2541 url(data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAABwAQCdASoMAAoACQCsJZgC/OFAAAD+5GGFhlicZwBPi4oAAAA=);"&gt;&lt;picture&gt;&lt;source type="image/webp" srcset="prefs.webp"&gt;&lt;img alt="Screenshot of Firefox proxy settings, set to 'Automatic proxy configuration URL' with a path of 'file:///home/val/.config/podfox/podfox.pac', and at the bottom the 'Proxy DNS when using SOCKSv[45]' checkboxes are checked" src="prefs.png" width="940" height="473" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;Now you have this virtual &lt;code&gt;.podman&lt;/code&gt; TLD always accessible in the browser, and as long as the Podfox proxy is running, you can open any port on any container in any network in your rootless Podman runtime!&lt;/p&gt;
+&lt;h2 id="bonus-containerizing-my-cli-development-environment"&gt;&lt;a class="header-anchor" href="#bonus-containerizing-my-cli-development-environment"&gt;Bonus: Containerizing my CLI Development Environment&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;So with this ability to browse services running in containers, and without using port forwarding, the services under development must run in containers as well, of course.&lt;/p&gt;
+&lt;p&gt;There’s been an explosion of container dev tools in the recent years. I’ve heard of &lt;a href="https://tilt.dev/"&gt;Tilt&lt;/a&gt; which provides a workflow where service containers by default get constantly rebuilt (and on top of that there’s an option for supporting live-reloading by copying changes into the container) and there’s a nice UI page for watching all the logs and the “most heavily suggested” runtime is a local Kubernetes cluster (even though just running in Podman is also possible). And &lt;a href="https://containers.dev/"&gt;the Development Container Specification™ from MicrosoftⓇ&lt;/a&gt; comes from the VSCode and GitHub Codespaces world and provides a manifest format that lets (typically) IDEs know how to set up a container where (typically) the Run button would run the app (and the language server and other related tools).&lt;/p&gt;
+&lt;p&gt;But I like my command-line environment and I don’t want it to be disrupted! I edit code in &lt;a href="https://helix-editor.com/"&gt;Helix&lt;/a&gt; —which runs language servers that might share their caches with the actual build— and run a variety of random tools, all from my &lt;a href="https://fishshell.com/"&gt;fish&lt;/a&gt; shell configured with a prompt that I like and so on.&lt;/p&gt;
+&lt;p&gt;Trying to run just-the-project-parts like the compiler, the service itself, the language server and language-specific tools like linters and formatters inside of the container sounds kinda painful, as for example Helix doesn’t have a “wrap all the tools in something” option, and configuring the PATH to include containerized tools or wrapping invocations manually sounds very annoying. I’d rather… bring my whole environment into each container!&lt;/p&gt;
+&lt;p&gt;Running a container with my dotfiles is surprisingly easy: &lt;code&gt;-v $HOME/.config:$HOME/.config:ro&lt;/code&gt; – thankfully pretty much everything I use supports XDG directories and doesn’t pollute &lt;code&gt;~&lt;/code&gt; with random paths. But what about the shell, the editor, the random tools? Building my own containers per project that add my tools on top of the project’s image sounds annoying, slow and heavy. Installing them in an overlay volume that wouldn’t even be a container image (which seems to be how VSCode dev containers do stuff) feels like a “dirtier” version of the same. Can’t I just &lt;code&gt;-v&lt;/code&gt; mount them?&lt;/p&gt;
+&lt;p&gt;Well, with how my setup already was, most of my tools were installed by an &lt;a href="https://codeberg.org/valpackett/dotfiles/src/commit/105193ab7a140986a30a3e42ce37d5220b7d75e6/.config/fish/functions/updatetools.fish"&gt;updatetools&lt;/a&gt; script into &lt;code&gt;~/.local&lt;/code&gt; directories. However, of course, they’re built for the host system — dynamically linking, currently, to &lt;a href="https://chimera-linux.org/"&gt;Chimera&lt;/a&gt;’s musl libc, LLVM libc++, and occasionally to various other system-wide libraries. They weren’t going to work in a random Debian-based container, unless packed with &lt;a href="https://github.com/VHSgunzo/sharun"&gt;sharun&lt;/a&gt; or whatever was the tool that I saw ages ago, but the whole point is to &lt;em&gt;avoid&lt;/em&gt; “weird stuff” like this. And I don’t want to build static binaries either. Not everything &lt;em&gt;can&lt;/em&gt; work as static binaries, even.&lt;/p&gt;
+&lt;p&gt;That’s when it hit me.&lt;/p&gt;
+&lt;p&gt;The answer is to get &lt;a href="https://brew.sh/"&gt;Homebrew&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Yes, that same package manager that came from the macOS world and always had to consider the host OS as sorta immutable, which in the old days was seen as a workaround for a proprietary OS, but now is a huge asset. Homebrew manages a separate unprivileged prefix, and has prebuilt packages with a fixed one, currently &lt;code&gt;/home/linuxbrew/.linuxbrew&lt;/code&gt; on Linux. (It also does &lt;a href="https://www.gobolinux.org/"&gt;GoboLinux&lt;/a&gt;-style multi-versioning, which I like to jokingly call “&lt;a href="https://nix.dev/"&gt;Nix&lt;/a&gt; for those of us who touch grass”, but that’s not very relevant right now.)&lt;/p&gt;
+&lt;p&gt;With containers, we can just mount Homebrew’s prefix: &lt;code&gt;-v /home/linuxbrew:/home/linuxbrew:ro&lt;/code&gt;. And append it to the PATH with Podman’s nice env-merge feature: &lt;code&gt;--env-merge PATH=\${PATH}:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin&lt;/code&gt;. And now we can change the &lt;code&gt;--entrypoint&lt;/code&gt; to the homebrewed fish… and we’re off to the races!&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:1.3055555555555556;"&gt;&lt;picture&gt;&lt;source type="image/webp" srcset="hop.webp"&gt;&lt;img alt="Screenshot of a terminal, first running fastfetch that shows Chimera Linux, then running 'podman run --rm -it --tz local -v /home/linuxbrew:/home/linuxbrew:ro --env-merge PATH=\${PATH}:/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin -e XDG_CONFIG_HOME=$HOME/.config -v $HOME/.config:$HOME/.config:ro -v $PWD:$PWD -w $PWD --entrypoint (which fish) haskell:9.10.1', the same shell prompt appears, fastfetch is run and shows Debian" src="hop.png" width="1504" height="1152" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;Now THAT’S what I call “distro hopping”!&lt;/p&gt;
+&lt;p&gt;Despite the superficial similarity with &lt;a href="https://distrobox.it/"&gt;Distrobox&lt;/a&gt; the above screenshot has at a glance, this is a different idea. Remember, we’re still talking about project-specific dev containers. This is &lt;em&gt;not&lt;/em&gt; a persistent “pet” container where you persistently install packages from another distro,&lt;/p&gt;
+&lt;p&gt;this is a runtime COMPOSITION of an ephemeral/“cattle” project-specific dev container that just has the project’s toolchain, and a “pet” user environment, mounted read-only.&lt;/p&gt;
+&lt;p&gt;And because it’s mounted, there are no redundant copies that can get outdated and no delay for copying/installing stuff! This is really cool. I can just enter any container image while bringing all my comfy stuff with me, instantly.&lt;/p&gt;
+&lt;p&gt;I went all-in on Homebrew, mostly replacing my custom tool installation/update script with a &lt;a href="https://codeberg.org/valpackett/dotfiles/src/branch/trunk/.config/homebrew/Brewfile"&gt;Brewfile&lt;/a&gt;, and I’m really happy about it. As a bonus, it also makes the original full-system kind of distro hopping easier! If I use Homebrew for all my CLI stuff and Flatpak for all my GUI stuff, I could be using something as fixed and bare-bones as &lt;a href="https://os.gnome.org/"&gt;GNOME OS&lt;/a&gt; for the host! Though I’m currently most intrigued by &lt;a href="https://aerynos.com/"&gt;AerynOS&lt;/a&gt; which reflects a lot of my engineering values and choices.&lt;/p&gt;
+&lt;p&gt;Anyway, so, I started by writing out these long &lt;code&gt;podman run&lt;/code&gt; invocations and quickly felt the need to automate them. The result is called &lt;a href="https://codeberg.org/valpackett/dotfiles/src/branch/trunk/.config/fish/functions/podchamp.fish"&gt;Podchamp&lt;/a&gt; (&lt;a href="https://codeberg.org/valpackett/dotfiles/src/commit/105193ab7a140986a30a3e42ce37d5220b7d75e6/.config/fish/functions/podchamp.fish"&gt;current version permalink&lt;/a&gt;) as a silly internet reference. It’s just a fish script that lives in my dotfiles, I’m not releasing it as a Real Project™ since it’s tiny and relatively specific to the way I personally do things, but what it does is simple: it finds the first &lt;code&gt;.podchamp[.local]&lt;/code&gt; config file above the working directory (in a “project root”), reads container-running instructions and either &lt;code&gt;run&lt;/code&gt;s a podman container or &lt;code&gt;exec&lt;/code&gt;s into an existing one. The instructions look like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;image mycoolproject-dev:latest
+pod pod_mycoolproject
+network mycoolproject_app-network
+name mycoolproject-dev
+persist /var/cache/rust
+env CARGO_TARGET_DIR=/var/cache/rust
+requires mycoolproject_postgres mycoolproject_rabbitmq
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;so it’s basically a bunch of convenience to store the per-project development container configuration in an actual file and not in shell history. And it’s been working great for me!&lt;/p&gt;
+&lt;p&gt;It also emits OSC 777 sequences to indicate to &lt;a href="https://gitlab.gnome.org/chergert/ptyxis"&gt;Ptyxis&lt;/a&gt; which container has been just entered, which (for now) Podman itself doesn’t do. The container-awareness in the terminal emulator is really nice for being able to spawn new tabs in the same container as the current tab – yes, not that much more, but that’s &lt;em&gt;huge&lt;/em&gt; for UX. It would be nice to have the same experience in other terminals — there’s &lt;a href="https://github.com/ghostty-org/ghostty/discussions/2358"&gt;a prototype for Ghostty&lt;/a&gt; already, and I’m looking into making it work &lt;a href="https://github.com/wezterm/wezterm/issues/6914"&gt;in WezTerm&lt;/a&gt;.&lt;/p&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>https://val.packett.cool/blog/2024q1-update/</id>
+    <link href="https://val.packett.cool/blog/2024q1-update/" rel="alternate" type="text/html"/>
+    <title>2024Q1 Update, or, my entire backlog I guess</title>
+    <published>2024-05-09T00:00:00.000Z</published>
+    <updated>2024-05-09T00:00:00.000Z</updated>
+    <summary>Trying to start posting more by posting about what I haven't been posting about but have been working on, way too quietly</summary>
+    <author>
+      <name>Val Packett</name>
+      <uri>https://val.packett.cool/</uri>
+    </author>
+    <content type="html">
+      &lt;p&gt;About a year ago, as I was living off of savings having recently quit a job, I was trying to see if I could do open source development full-time and live the “Content Creator™ life” by launching &lt;a href="https://www.patreon.com/valpackett"&gt;a Patreon page&lt;/a&gt;. As you can see from the publicly visible stats, I currently get 21 USD per month (…unless that changes after publication? hint hint :3) so clearly the “full-time” thing didn’t work out. I ended up doing paid contract work, of course.&lt;/p&gt;
+&lt;p&gt;So what went wrong, why weren’t I able to join the ranks of the FOSS developers that get actually significant subscription revenue? Basically… I’m terrible at being a “content creator”, due to the way my brain works:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I’m way better at starting projects than finishing them;&lt;/li&gt;
+&lt;li&gt;I do great work when I get obsessed with something, but I normally get obsessed with a variety of small-ish things all over the place instead of having a single, coherent, marketable Big Project,&lt;/li&gt;
+&lt;li&gt;and the things I get obsessed with happen to mostly be specifically &lt;em&gt;obscure&lt;/em&gt;, I’m a huge fan of uncommon platforms—and sadly there’s no money in things like bringing up amdgpu on FreeBSD on aarch64;&lt;/li&gt;
+&lt;li&gt;worst of all, a crucial part of “content creation” is public communication—and posting isn’t among the things I get obsessed with, posting is more like a chore for me…&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;and&lt;/em&gt; I have a habit of wanting to surprise everyone with a cool end result rather than keeping the public updated throughout the process, which, as you might imagine, combines &lt;em&gt;very well&lt;/em&gt; with the first issue on this list.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is why I’ve been blogging so little. I’m probably not getting anyone to volunteer to be the official Manager &amp;amp; Spokesperson of Val Packett Labs any time soon, so I’m writing this post to break the silence by myself, to try to get into the habit of quicker, more frequent post writing, and to use the public as a bit of a “manager” &lt;del&gt;and “therapist”&lt;/del&gt; i.e. let’s review my FOSS backlog/roadmap together!&lt;/p&gt;
+&lt;p&gt;Without further ado, here it is:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In the background, there’s an overarching operating system megaproject, tentatively titled &lt;a href="https://codeberg.org/SoftBSD"&gt;SoftBSD&lt;/a&gt;: building an atomic-image-based FreeBSD derivative that greatly simplifies All The Container Nonsense Of All Kinds into a unified software image management system.
+&lt;ul&gt;
+&lt;li&gt;It has spawned some various mini-subprojects such as an init system (yeah it would be reasonable to just use dinit but I have Opinions and Ideas about what “systemd the good parts” Actually means especially for This Kind of System) and a logging daemon (my take on the whole journald style binary files vs old school text files is just “SQLite”)… Those kinda deserve standalone “launches” of their own, and could be attractive by themselves to a wider audience, but I haven’t gotten around to doing that because… *looks at the rest of the list* ah yeah.&lt;/li&gt;
+&lt;li&gt;One of the planned subprojects, a fully logind-compatible session tracker that would finally let us run GNOME Shell on FreeBSD, I wanted to submit for FreeBSD Foundation sponsorship, and I’ve even discussed it with ed@…&lt;/li&gt;
+&lt;li&gt;Anyway, the BSD-work-in-general has been mostly blocked on setting up the cross-OS dev environment I want, for developing FreeBSD from under Linux and vice versa, sharing everything as much as possible, etc.&lt;/li&gt;
+&lt;li&gt;and the “key” part of that is filesystem sharing with VMs, so I went with the &lt;a href="https://reviews.freebsd.org/D41844"&gt;D41844&lt;/a&gt; import of Juniper’s 9pfs client implementation that didn’t really work as-is, imported the absent more recent Juniper commits except the one that broke everything, added a missing method for &lt;code&gt;mmap&lt;/code&gt; to work properly, overall got it to sort of a working state… only to hit a terrible performance wall? As I remember, building FreeBSD inside of a FreeBSD VM running off of virtio-9p with that driver would just spend the majority of time on lock contention rather than actually performing the work, making very little progress over time. I never quite got to trying to get my head around the concurrency implementation in that driver :/ &lt;em&gt;and yeah right I could probably just use NFS but shhhhh&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;At least the &lt;a href="https://github.com/freebsd/freebsd-src/pull/1066"&gt;Fixes to make bootstrapping from Linux/musl work&lt;/a&gt; that were also part of “the dev environment” have been met with plenty of interest and should end up merged eventually!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Something way easier and more light-hearted… browsing through my package repository accounts I’ve recovered a “CSS framework” I wrote a literal decade ago that I’d already deleted from GitHub, but not from npm; last month I started writing a blog post about exploring it a bit, and somehow still didn’t come around to finishing it. I &lt;em&gt;really&lt;/em&gt; need to cross this one out already.&lt;/li&gt;
+&lt;li&gt;I definitely could (and should) come back to &lt;a href="https://tiddly.packett.cool/"&gt;TiddlyPWA&lt;/a&gt; and &lt;a href="https://codeberg.org/valpackett/tiddlypwa/issues"&gt;work on some issues&lt;/a&gt; there.&lt;/li&gt;
+&lt;li&gt;And speaking of tiddly things, when I saw &lt;a href="https://heynote.com/"&gt;heynote&lt;/a&gt; I realized I could also use &lt;a href="https://mathjs.org/"&gt;math.js&lt;/a&gt; to build a “Soulver-like” inline calculator-notepad TiddlyWiki plugin.&lt;/li&gt;
+&lt;li&gt;Now a big one! Soooo I don’t have a gaming PC anymore and the PC port of the sequel to a big graphically intensive game I absolutely loved &lt;a href="https://store.steampowered.com/app/2420110/Horizon_Forbidden_West_Complete_Edition/"&gt;came out on Steam&lt;/a&gt; recently, so naturally I started working on a Cloud Gaming Solution that would satisfy me. Yes I’ve seen &lt;a href="https://github.com/Steam-Headless/docker-steam-headless"&gt;docker-steam-headless&lt;/a&gt;; no &lt;em&gt;of course&lt;/em&gt; it’s not how I’d build it, &lt;em&gt;of course&lt;/em&gt; my solution would be Wayland-based :D
+&lt;ul&gt;
+&lt;li&gt;I’ve actually done a lot of research and made a lot of progress on this, I’m quite close to getting it done;&lt;/li&gt;
+&lt;li&gt;and I have actually been posting a little bit on fedi about &lt;a href="https://social.treehouse.systems/@valpackett/112274236037502729"&gt;nvidia&lt;/a&gt; and &lt;a href="https://social.treehouse.systems/@valpackett/112339671773522157"&gt;amdgpu&lt;/a&gt; and &lt;a href="https://social.treehouse.systems/@valpackett/112381758393787505"&gt;CloudFormation&lt;/a&gt;, hey look at that.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Part of the aforementioned solution involves a little webapp (for spawning the instances of course) so &lt;em&gt;of course&lt;/em&gt; we require more &lt;del&gt;minerals&lt;/del&gt; web dev tools: I’ve long been a fan of the “bundler-less” way of doing things, and now with import maps shipped everywhere, &lt;a href="https://github.com/rails/importmap-rails"&gt;importmap-rails&lt;/a&gt; came out to promote their usage in production. I’m going to build a Rust thingy that’s just the “download all the JS locally to avoid depending on the CDN in production” feature of importmap-rails plus some tiny extras like pre-compressing text assets as &lt;code&gt;.gz&lt;/code&gt;/&lt;code&gt;.br&lt;/code&gt;, to be used right before &lt;a href="https://github.com/pyrossh/rust-embed"&gt;rust-embed&lt;/a&gt; in release builds.&lt;/li&gt;
+&lt;li&gt;To help me with a paid contract project, I’m working on a thing to help with manually editing big OpenAPI spec files… specifically a FUSE filesystem that splits a spec into separate files per path, always converted to YAML even if the “mounted” file is JSON.&lt;/li&gt;
+&lt;li&gt;As if I needed to add &lt;em&gt;another&lt;/em&gt; item onto this list!! Just a couple days ago I decided to finally take a look at that pile of very old cheap Android tablets collecting dust in my local hackerspace, primarily looking for something to run &lt;a href="https://github.com/feelfreelinux/octo4a"&gt;3D printer control&lt;/a&gt; on instead of an SBC… Well, I found a gem there, next to various broken junk there was a fully functioning tablet with a Rockchip RK3066 SoC and UART contact pads! I’m &lt;em&gt;definitely&lt;/em&gt; getting mainline-powered postmarketOS onto this. Here’s the tablet with a newly added serial connection:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class="lqip" style="--ratio:1.3333333333333333;background:#363a67 url(data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAAAQAgCdASoMAAoACQCsJYgC7ADc6o/4r5gAAP5vzOa1WUgh+3tjFReiwJ2PJmL/zNV1XEYKPmgAAA==);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="tabletuart.avif"&gt;&lt;img alt="Laptop screen with a terminal in the background, opened up little tablet with extra wires attached held in hand" src="tabletuart.jpg" width="3204" height="2403" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;Ah, by the way, some things I have actually &lt;em&gt;done&lt;/em&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Took PaperWM for a spin and contributed &lt;a href="https://github.com/paperwm/PaperWM/pull/815"&gt;the EDGE snapping mode&lt;/a&gt; to it.. yeah that’s that;&lt;/li&gt;
+&lt;li&gt;Fixed the &lt;a href="https://codeberg.org/valpackett/ergonice/src/branch/trunk/fw"&gt;firmware&lt;/a&gt; on my &lt;a href="/blog/ergonice/"&gt;custom keyboard&lt;/a&gt;, as there was a bug with the keyboard not responding anymore after a sleep-wake cycle on the host; now that’s not an issue anymore and even the keyboard itself &lt;a href="https://codeberg.org/valpackett/ergonice/commit/df6cd2b992334dd909997591e30e629ac00d4bb5"&gt;goes to deep sleep&lt;/a&gt; with a USB suspend, saving precious mW;&lt;/li&gt;
+&lt;li&gt;One day—apparently 7 months ago already, wow—I stumbled upon &lt;a href="https://wazero.io/"&gt;wazero&lt;/a&gt;, a WebAssembly runtime written in Go. Immediately I thought: hm, golang, &lt;a href="https://caddyserver.com/"&gt;Caddy&lt;/a&gt;, a wazero based plugin for Caddy just &lt;em&gt;should exist&lt;/em&gt; now, and with &lt;a href="https://github.com/tailscale/caddy-tailscale"&gt;caddy-tailscale&lt;/a&gt; I could then build a funny little one-process “FaaS” server where I could just POST a &lt;code&gt;.wasm&lt;/code&gt; binary and have it instantly appear as its own host in my tailnet. A &lt;a href="https://wasmer.io/posts/announcing-wcgi"&gt;CGI WASI binary&lt;/a&gt; specifically, of course, due to the “AWS Lambda is the new CGI” memes and such. Sadly the “final product” FaaS thing fell through due to caddy-tailscale’s experimental network listener mode not handling config reloads well, as well as due to me not having any actual use for this and losing motivation :D
+&lt;ul&gt;
+&lt;li&gt;But, but, but: &lt;a href="https://codeberg.org/valpackett/caddy-wasm-wcgi"&gt;caddy-wasm-wcgi&lt;/a&gt;, &lt;a href="https://codeberg.org/valpackett/caddy-multi-dyna-config"&gt;caddy-multi-dyna-config&lt;/a&gt;, and &lt;a href="https://codeberg.org/valpackett/cgi.cr"&gt;cgi.cr&lt;/a&gt; (the endpoint for accepting new wasm files and generating Caddy configs for them was to be written in &lt;a href="https://crystal-lang.org/"&gt;Crystal&lt;/a&gt;) are all actually working published complete projects, just… not announced anywhere, as I wasn’t feeling like blogging just about them without the meme-FaaS thing, so I guess this is their announcement here and they’re not part of the backlog anymore! Granted, WCGI is not the actual future and &lt;a href="https://github.com/brendandburns/caddy-wasm"&gt;caddy-wasm&lt;/a&gt; now exists for the proper WASI Component Model based HTTP stuff that &lt;em&gt;is&lt;/em&gt; the future. But if caddy-wasm-wcgi ever helps someone with Wasm-ifying an actual legacy application I’d be very happy about it!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Various build fixes landed for musl/Chimera: &lt;a href="https://github.com/tikv/jemallocator/pull/73"&gt;jemallocator&lt;/a&gt;, &lt;a href="https://github.com/compio-rs/compio/pull/233"&gt;compio&lt;/a&gt;, &lt;a href="https://github.com/greatest-ape/aquatic/pull/194"&gt;aquatic&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Got sponsored (!) to do something with actually rather obscure stuff: &lt;a href="https://github.com/booniepepper/dt-discord-bot/pull/1"&gt;rewrote&lt;/a&gt; a little Discord bot in &lt;a href="https://factorcode.org/"&gt;Factor&lt;/a&gt;, also writing &lt;a href="https://github.com/valpackett/org.factorcode.Factor"&gt;Flatpak build scripts&lt;/a&gt; for Factor due to running a non-glibc Linux.&lt;/li&gt;
+&lt;li&gt;Also sponsored: &lt;a href="https://github.com/Kagami/dav1d.js/pull/6"&gt;resurrecting dav1d.js/avif.js&lt;/a&gt; due to old iPhones.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;*exhales*&lt;/p&gt;
+&lt;p&gt;Okay, that’s… actually not too bad! Well, that’s &lt;em&gt;only&lt;/em&gt; the open source stuff, while I also need to do paid work, do local political activism, participate in the local hacklab, hang out with friends, take care of myself, and sometimes just watch some damn YouTube :D But still, the scary huge backlog isn’t actually that scary nor messy. I will continue working on what I like and some things will be successful and some less so and there’s that!&lt;/p&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>https://val.packett.cool/blog/use-openat/</id>
+    <link href="https://val.packett.cool/blog/use-openat/" rel="alternate" type="text/html"/>
+    <title>path.join Considered Harmful, or openat() All The Things</title>
+    <published>2024-01-08T00:00:00.000Z</published>
+    <updated>2024-01-08T00:00:00.000Z</updated>
+    <summary>
+      Say goodbye to path traversal attacks by using modern kernel facilities and get ready for the capabilities-secure future at the same time!
+    </summary>
+    <author>
+      <name>Val Packett</name>
+      <uri>https://val.packett.cool/</uri>
+    </author>
+    <content type="html">
+      &lt;p&gt;Soooo… isn’t it absurd that we have this hierarchical and dynamic structure called the file system, and the way we use it is by pretty much always traversing it from the root, by path, constructing paths using &lt;a href="https://security.stackexchange.com/q/123720"&gt;string manipulation tricks&lt;/a&gt; to hopefully try to be safe against both &lt;a href="https://owasp.org/www-community/attacks/Path_Traversal"&gt;attacks&lt;/a&gt; and &lt;a href="https://www.theregister.com/2015/01/17/scary_code_of_the_week_steam_cleans_linux_pcs/"&gt;accidents&lt;/a&gt;?&lt;/p&gt;
+&lt;p&gt;Yes. Yes, it is. Very much absurd and ridiculous. Just think about it. And despair. Or actually, don’t despair; instead, I want YOU to start caring about this and to join the fight for changing it! As we’ll see, the system interfaces have actually been evolving to make this situation better.&lt;/p&gt;
+&lt;p&gt;In this article we’ll learn the history of how Unix-like systems got a way to make stable references to filesystem subtrees and perform operations relative to those, explore the current state of filesystem APIs in various programming languages, and—hopefully—get motivated to improve that.&lt;/p&gt;
+&lt;h2 id="from-race-conditions"&gt;&lt;a class="header-anchor" href="#from-race-conditions"&gt;From race conditions…&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;As it is with many good things in this life, the &lt;code&gt;*at&lt;/code&gt; family of system calls was invented at Sun Microsystems.
+Specifically back in the early 00s, when Solaris 10 has introduced the &lt;code&gt;openat&lt;/code&gt;/&lt;code&gt;fchownat&lt;/code&gt;/&lt;code&gt;fstatat&lt;/code&gt;/&lt;code&gt;futimesat&lt;/code&gt;/&lt;code&gt;renameat&lt;/code&gt;/&lt;code&gt;unlinkat&lt;/code&gt;/&lt;code&gt;utimensat&lt;/code&gt; calls as a method to avoid race conditions / time of check vs time of use issues.
+Namely, this kind:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-c"&gt;#define STATE_DIR "/var/db/thing/"
+if (stat(STATE_DIR "ok", &amp;amp;sb) != 0) return false;
+// in between these calls some other process screws with what /var/db/thing means
+// e.g. overwriting what a symlink points to
+int db_fd = open(STATE_DIR "data", O_RDWR);
+// we ended up referring to one thing at time of check and another at time of use
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Before, it was only possible to avoid these by changing the current working directory and using relative paths from there (!), which was quite an ugly hack, especially bad because the working directory is &lt;em&gt;per-process&lt;/em&gt; state, so it wasn’t even thread-safe. That’s actually kinda really funny, isn’t it? “You can have ONE stable reference to a directory, as a treat,” said Unix.&lt;/p&gt;
+&lt;p&gt;The solution they came up with was using directory file descriptors and adding operations &lt;em&gt;relative to them&lt;/em&gt;, hence &lt;code&gt;*at&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-c"&gt;int state_dir = open("/var/db/thing", O_DIRECTORY /* checks that it is a dir */);
+if (fstatat(state_dir, "ok", &amp;amp;sb, 0) != 0) return false;
+int db_fd = openat(state_dir, "data", O_RDWR);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;From there, it has found its way into Linux, initially as userspace-only &lt;a href="https://lists.gnu.org/archive/html/bug-gnulib/2005-11/msg00043.html"&gt;procfs trickery&lt;/a&gt; but finally available as a set of real system calls in version &lt;a href="https://kernelnewbies.org/Linux_2_6_16"&gt;2.6.16&lt;/a&gt; from 2006.
+Then the POSIX.1-2008 standard has included these &lt;code&gt;*at&lt;/code&gt; calls and they were picked up by all the BSDs: first DragonFly and FreeBSD around 2008-09, OpenBSD a bit later in 2011, and the holdouts were NetBSD until late 2014 and macOS until late 2015.&lt;/p&gt;
+&lt;h2 id="to-sandboxing"&gt;&lt;a class="header-anchor" href="#to-sandboxing"&gt;…to sandboxing…&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Suspiciously soon after these calls were added to FreeBSD, the &lt;a href="https://www.cl.cam.ac.uk/research/security/capsicum/"&gt;Capsicum project&lt;/a&gt; at Cambridge came up with a way to build capability-based security for Unix.
+FreeBSD was the main target for prototyping, and the work got upstreamed for 9.0 and enabled by default in 10.0.
+There also was a Linux port sponsored by Google, with an implementation of the consumer side in Chromium, but all that sadly didn’t go anywhere.&lt;/p&gt;
+&lt;p&gt;So, what is the idea there, anyway?&lt;/p&gt;
+&lt;p&gt;Turns out, exactly these &lt;code&gt;*at&lt;/code&gt; calls are at the core of it.
+You see, while the original use case for kernel-level handles to directories was race condition avoidance, the researchers realized the great sandboxing potential of them.
+The &lt;a href="https://en.wikipedia.org/wiki/Capability-based_security"&gt;capability model&lt;/a&gt; has turned out to map very well onto the POSIX API: file descriptors are already unforgeable handles that indicate access to a resource.
+They can be passed between processes, inherited by child processes… and &lt;code&gt;openat&lt;/code&gt; is exactly how you go from a more-privileged filesystem capability (e.g. a descriptor to &lt;code&gt;/etc&lt;/code&gt; signifying access to the whole subtree under &lt;code&gt;/etc&lt;/code&gt;) to a less-privileged one (a descriptor to &lt;code&gt;/etc/passwd&lt;/code&gt; signifying access to only that file).&lt;/p&gt;
+&lt;p&gt;Well, provided you restrict it to actually only do the lookup beneath the directory and never escape it.
+&lt;em&gt;Capability mode&lt;/em&gt; does exactly that, along with disabling all access to &lt;em&gt;global namespaces&lt;/em&gt;, i.e. the ability to just &lt;code&gt;open()&lt;/code&gt; whatever by a global path, to reference a process by PID, that kind of thing.
+The idea is that you open the directories and other resources you anticipate working with, and then sandbox yourself to the resources you have and those derived from them.
+For example, roughly like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-c"&gt;int web_root = open("/var/www/site", O_DIRECTORY);
+int tcp_sock = socket(PF_INET6, SOCK_STREAM, 0);
+// bind, listen etc. omitted
+cap_enter(); // also check the return code lol
+// here we can accept client connections and talk to them,
+// access files under /var/www/site, and nothing more
+while (fd = event_loop_thing_poll(pfds)) {
+  if (fd == tcp_sock) {
+    event_loop_thing_add(pfds, accept(tcp_sock, NULL, NULL));
+  } else {
+    char *requested_path = read_request(fd);
+    int ffd = openat(web_root, requested_path, O_RDONLY);
+    sendfile(ffd, fd, /* … */);
+    close(ffd);
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are additional features like fine-grained limits &lt;a href="https://man.freebsd.org/cgi/man.cgi?cap_rights_limit"&gt;called “rights”&lt;/a&gt; that are inherited by everything derived from a capability and can only be reduced, never expanded—so like, you can have a directory handle so damn read-only that files opened below it using &lt;code&gt;openat&lt;/code&gt; could never be read-write—but that is the core idea.
+As a result, we have one of the strongest process sandboxes out there, based on a principled thought-out model instead of arbitrary deny/allow lists.
+The tradeoff is however that it’s not as easy to sandbox existing software into such a paradigm-shifting system, so e.g. OpenBSD gets to tout a bigger quick practical impact of their pledge+unveil system :)
+However some &lt;a href="https://www.youtube.com/watch?v=ErXtGMmRzJs"&gt;great&lt;/a&gt; &lt;a href="https://www.youtube.com/watch?v=TGA4wbjbqXc"&gt;research&lt;/a&gt; has been done since into mechanisms for retrofitting existing applications, and I’m sometimes trying to &lt;a href="https://reviews.freebsd.org/D38351"&gt;continue&lt;/a&gt; that line of reseach myself.&lt;/p&gt;
+&lt;h2 id="to-the-mainstream"&gt;&lt;a class="header-anchor" href="#to-the-mainstream"&gt;…to the mainstream…&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;So quite a few years later, during the explosion of various “cloud services” (advanced ways of running your code on someone else’s computer), this idea was extended further.
+&lt;a href="https://lwn.net/Articles/674770/"&gt;CloudABI&lt;/a&gt; (2016) was an attempt to define a sandboxed application format for “the cloud” based on a simple idea:
+what if we just have a new OS-neutral ABI that already starts in Capsicum capability mode and doesn’t include any syscalls inappropriate for that, i.e. ones that use global namespaces?&lt;/p&gt;
+&lt;p&gt;The design was very clever.
+Resources would be injected before program start by a launcher that would make that easy.
+The system call interface was entirely &lt;a href="https://en.wikipedia.org/wiki/VDSO"&gt;vDSO&lt;/a&gt;-based, one of the implications of which was that it was possible to run CloudABI binaries—without the sandboxing—on unmodified Linux and macOS using the launcher, allowing for developers to get on board easily.&lt;/p&gt;
+&lt;p&gt;Sadly, native (secure) support only got upstreamed to FreeBSD and nowhere else, and the project fizzled out due to lack of industry interest.
+Not without leaving a huge influence behind though!&lt;/p&gt;
+&lt;p&gt;At the same time, &lt;a href="https://webassembly.org/"&gt;WebAssembly&lt;/a&gt; was taking off as a solution for another level of sandboxing and abstraction, the machine level.
+Born out of &lt;a href="https://en.wikipedia.org/wiki/Asm.js"&gt;previous efforts&lt;/a&gt; to compile existing C/C++ projects (as big as game engines) to the browser, Wasm has quickly expanded into a huge array of other use cases as well, because of what it actually ended up being: the most lightweight and neutral low-level abstract machine.&lt;/p&gt;
+&lt;p&gt;Currently it seems to be catching on in the “cloud” industry, which has been looking for alternatives to heavyweight full-OS virtualization as the security boundary.
+That was helped by the “next big thing” being “edge” instead of “cloud”, which mostly seems to mean running customer code all across a worldwide CDN instead of in just a few huge datacenters.
+But the hype was all around a secure abstract machine when in reality the need for a common secure ABI was arguably even bigger there – assuming your goal isn’t explicitly doing vendor lock-in by providing a custom interface instead of a standard one :D
+(Hm, would it have helped if CloudABI was instead named EdgeABI?)&lt;/p&gt;
+&lt;p&gt;Anyway, thankfully, what’s fulfilling the need for an ABI is &lt;a href="https://wasi.dev/"&gt;WASI, the WebAssembly System Interface&lt;/a&gt;, which is… basically kinda sorta just a &lt;code&gt;wasm32-cloudabi&lt;/code&gt; target if you look at it! (Well, with the whole &lt;a href="https://component-model.bytecodealliance.org/introduction.html"&gt;Component Model&lt;/a&gt; thing that’s only going to be one aspect of it but still.)
+The &lt;a href="https://github.com/bytecodealliance/wasmtime/blob/4ba8b6c0d99d258aa0a4ed4ee7c687fcddae6c8e/docs/WASI-overview.md"&gt;WASI overview&lt;/a&gt; explicitly references CloudABI and Capsicum.
+And even the aforementioned research into Capsicumizing existing software in the form of &lt;a href="https://github.com/musec/libpreopen"&gt;libpreopen&lt;/a&gt;.
+In a way, we have won after all! :)
+The industry-hyped, Wasm-workgroup-blessed, by-all-compilers-supported ABI for POSIX-y applications is based on exactly these ideas.&lt;/p&gt;
+&lt;h2 id="and-back-to-the-regular-syscall-interfaces"&gt;&lt;a class="header-anchor" href="#and-back-to-the-regular-syscall-interfaces"&gt;…and back to the regular syscall interfaces…&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Meanwhile, other Things have been Happening with the system call API design all this time, right in the normal Unix-like kernels of “the present” that we actually run on hardware.&lt;/p&gt;
+&lt;p&gt;Way back in 2011, &lt;a href="https://kernelnewbies.org/Linux_2_6_39"&gt;Linux 2.6.39&lt;/a&gt; introduced the &lt;code&gt;O_PATH&lt;/code&gt; flag which allows opening, well, “only the path”—getting a stable reference to an inode—without actually opening the &lt;em&gt;contents&lt;/em&gt;. These descriptors can only be used with operations that don’t care about the contents, like the &lt;code&gt;*at()&lt;/code&gt; calls we’re discussing. In most cases, this is just an optimization: not opening what we don’t  &lt;em&gt;need&lt;/em&gt; opened. It’s fine to “fully” open a directory and then &lt;code&gt;openat()&lt;/code&gt; below. However the difference in semantics comes into play especially &lt;a href="https://github.com/flatpak/xdg-desktop-portal/pull/532#issuecomment-734305639"&gt;with symbolic links&lt;/a&gt;. To support these semantics as required by xdg-document-portal, FreeBSD got &lt;code&gt;O_PATH&lt;/code&gt; merged &lt;a href="https://reviews.freebsd.org/rG8d9ed174f3afba5f114742447e622fc1173d4774"&gt;in 2021&lt;/a&gt;, a whole decade later.&lt;/p&gt;
+&lt;p&gt;But the most important feature making directory descriptors attractive? The ability to do strictly-beneath lookups, like all lookups are under Capsicum, but no matter if your whole process is in a sandbox mode or not. Having an explicit flag in the API enables the developer to just pass a reference to a directory and tell the kernel to open a path &lt;em&gt;definitely under&lt;/em&gt; that subtree in the file system, without worrying about processing the path carefully to avoid escapes.&lt;/p&gt;
+&lt;p&gt;This was first proposed for FreeBSD &lt;a href="https://reviews.freebsd.org/D2808"&gt;back in 2015&lt;/a&gt; as &lt;code&gt;O_BENEATH&lt;/code&gt; and &lt;a href="https://reviews.freebsd.org/D17547"&gt;landed in late 2018&lt;/a&gt; in the development branch. Then &lt;a href="https://kernelnewbies.org/Linux_5.6"&gt;Linux 5.6&lt;/a&gt; in 2020 shipped with the &lt;a href="https://www.man7.org/linux/man-pages/man2/openat2.2.html"&gt;openat2()&lt;/a&gt; syscall that adds a bunch of controls over path resolution behavior, including the &lt;code&gt;RESOLVE_BENEATH&lt;/code&gt; flag implementing the Capsicum-style behavior. Almost immediately after FreeBSD has &lt;a href="https://reviews.freebsd.org/D25886"&gt;added &lt;code&gt;O_RESOLVE_BENEATH&lt;/code&gt;&lt;/a&gt; with the correct behavior since it was discovered that the original &lt;code&gt;O_BENEATH&lt;/code&gt; one actually wasn’t working as intended (oops); then &lt;a href="https://reviews.freebsd.org/D28907"&gt;the original &lt;code&gt;O_BENEATH&lt;/code&gt; was removed&lt;/a&gt;. For FreeBSD 14 there was also a &lt;a href="https://reviews.freebsd.org/D39773"&gt;fix landed&lt;/a&gt; to avoid the “&lt;code&gt;/..&lt;/code&gt; is &lt;code&gt;/&lt;/code&gt;” behavior when opening beneath a descriptor pointing to the root directory, to make the behavior equivalent to Linux, at the request of the author of a library that I’ve &lt;a href="https://github.com/bytecodealliance/cap-std/pull/296"&gt;added FreeBSD support to&lt;/a&gt; which finally landed just recently, speaking of which..&lt;/p&gt;
+&lt;h2 id="and-that-s-where-you-come-in"&gt;&lt;a class="header-anchor" href="#and-that-s-where-you-come-in"&gt;…and that’s where you come in!&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;So. We have arrived at the current point in time, where we have decent kernel support for holding references to directories in the file system and doing useful things with them, like safely opening files strictly beneath the directory. Now what’s needed the most is: adoption, adoption, adoption!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;In Rust&lt;/strong&gt;, use the &lt;a href="https://github.com/bytecodealliance/cap-std#cap-std"&gt;cap-std crate&lt;/a&gt;! It’s an excellent library that provides an appropriate high-level API for directory references:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-rust"&gt;// somewhere in initialization
+let mut root = Dir::open_ambient_dir("/var/www/memes", ambient_authority()).unwrap();
+
+// fn do_the_work(/* user input */ name: &amp;amp;str)
+let img = root.open(format!("out-{}.avif.tmp", name))?;
+let log = root.open_with(
+    format!("log-{}.txt", name),
+    OpenOptions::new().create(true).write(true)
+)?;
+root.rename(
+    format!("out-{}.avif.tmp", name),
+    root,
+    format!("out-{}.avif", name)
+)?; // etc.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And it takes advantage of modern Linux and FreeBSD system call API features to make this fast, while still supporting other platforms with a fallback method (essentially doing a system call per path component which should honestly be &lt;em&gt;fine&lt;/em&gt; in most cases).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;In other languages&lt;/strong&gt;, I’m not yet aware of cap-std equivalents; please do start working on your own! Or sponsor me to work on one for your favorite language I guess! :)&lt;/p&gt;
+&lt;p&gt;The basic idea of what such a library would be is this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-c"&gt;int open_beneath(int dirfd, const char *pathname, int flags, mode_t mode) {
+#ifdef __FreeBSD__
+	// TODO: validate flags/mode to match Linux behavior
+	return openat(dirfd, pathname, flags | O_RESOLVE_BENEATH, mode);
+#elif defined(__linux__)
+	struct open_how how = {
+		.flags = flags,
+		.mode = mode,
+		.resolve = RESOLVE_BENEATH,
+	};
+	return (int)syscall(SYS_openat2, dirfd, pathname, &amp;amp;how, sizeof(how));
+#else
+#error "TODO: the whole fallback algorithm from cap-std"
+#endif
+}
+
+// same with other operations
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;For young or evolving languages&lt;/strong&gt;, advocate for this paradigm to be incorporated into the standard library or “blessed” external libraries! I’ve noticed some awareness of the aforementioned ideas in this space:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;in the Zig standard library, &lt;a href="https://github.com/ziglang/zig/blob/804cee3b93cb7084c16ee61d3bcb57f7d3c9f0bc/lib/std/fs/Dir.zig#L1"&gt;the &lt;code&gt;Dir&lt;/code&gt; type is an fd wrapper with &lt;code&gt;*at&lt;/code&gt; ops&lt;/a&gt; but sadly as of right now there’s no attempt at providing the &lt;code&gt;RESOLVE_BENEATH&lt;/code&gt; behavior;&lt;/li&gt;
+&lt;li&gt;the new OCaml I/O library &lt;code&gt;eio&lt;/code&gt; has a &lt;a href="https://github.com/ocaml-multicore/eio/blob/4856fc430db261eb4c9e90107f0f629e1284d945/lib_eio_posix/fs.ml#L19-L23"&gt;sandboxed dir type&lt;/a&gt; that for now uses &lt;code&gt;realpath&lt;/code&gt; + string trickery and doesn’t hold an fd, but the authors are aware that it probably should and &lt;code&gt;RESOLVE_BENEATH&lt;/code&gt; exists.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It would be really awesome if we could push for a cap-std-like API to be the recommended default one everywhere.&lt;/p&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>https://val.packett.cool/blog/tiddlypwa/</id>
+    <link href="https://val.packett.cool/blog/tiddlypwa/" rel="alternate" type="text/html"/>
+    <title>Introducing TiddlyPWA: putting TiddlyWiki on modern web app steroids</title>
+    <published>2023-07-26T00:00:00.000Z</published>
+    <updated>2023-07-26T00:00:00.000Z</updated>
+    <summary>
+      Oops, I think I just turned the legendary personal wiki system into an offline-first, installable, encrypted, synchronized Progressive Web App
+    </summary>
+    <author>
+      <name>Val Packett</name>
+      <uri>https://val.packett.cool/</uri>
+    </author>
+    <content type="html">
+      &lt;p&gt;&lt;em&gt;tl;dr: go play with the new thing &lt;a href="https://tiddly.packett.cool/"&gt;there&lt;/a&gt;, report issues &lt;a href="https://codeberg.org/valpackett/tiddlypwa/issues"&gt;there&lt;/a&gt; and support me &lt;a href="https://www.patreon.com/valpackett"&gt;there&lt;/a&gt; :3 but please do read the full story below!&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://tiddlywiki.com/"&gt;TiddlyWiki&lt;/a&gt; is quite a famous note-taking system.
+Describing itself as “a non-linear personal web notebook”, it’s actually quite a bit more than that.
+Thanks to a plugin system, it’s basically an app platform, and plenty of &lt;a href="https://thaddeusjiang.github.io/Projectify/"&gt;cool stuff&lt;/a&gt; has been made for it.&lt;/p&gt;
+&lt;p&gt;And it exists as a unique thing: a self-contained web application—a single HTML file with both the app and the content—that you can take around on a USB flash drive.
+Oh wait… who even uses those anymore for anything other than OS installers and bringing files to a print shop?&lt;/p&gt;
+&lt;p&gt;So of course, a bunch of storage solutions have sprung up.
+There’s an official node.js based server mode where it becomes more like a traditional web app,
+there are browser extensions and even modules inside of TW itself for saving the updated single file to a server,
+there are mobile and desktop apps that try to combine that saving with some kind of offline support,
+there are people using a file sync solution like Syncthing – I’ve even heard of some people using Syncthing with the server version,
+syncing the &lt;code&gt;.tid&lt;/code&gt; files between devices and &lt;em&gt;running the server in &lt;a href="https://termux.dev/en/"&gt;Termux&lt;/a&gt; on their phones&lt;/em&gt; to access them on mobile.
+Oof. While I’m nerdy enough to &lt;em&gt;be able&lt;/em&gt; to do that, I’m also enough of a spoiled basic consumer to know that that’s not the user experience &lt;em&gt;I want&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;What I want is something that works like &lt;em&gt;an app&lt;/em&gt;. Fully working offline, syncing &lt;em&gt;efficiently&lt;/em&gt; (not by POSTing a multi-megabyte HTML file), quickly and reliably when online.
+And with client-side encryption, because there’s just &lt;em&gt;no reason&lt;/em&gt; to let the server side read the contents here.&lt;/p&gt;
+&lt;p&gt;There has actually been one good attempt at bringing this kind of sync to TiddlyWiki: &lt;a href="https://noteself.org/"&gt;NoteSelf&lt;/a&gt;, which integrated &lt;a href="https://pouchdb.com/"&gt;PouchDB&lt;/a&gt; for storage.
+I liked the sound of it, but in practice it wasn’t up to my standards.
+It’s a heavyweight modification of TiddlyWiki that doesn’t keep up with latest core updates, PouchDB/CouchDB feel a bit heavy themselves, there’s no encryption, and the offline support is just “run it from your hard drive”.&lt;/p&gt;
+&lt;p&gt;So… this is where I come in.
+Last year, looking to try TiddlyWiki once again, looking through the options and getting frustrated with the aforementioned everything, one thing inspired me.
+I stumbled upon &lt;a href="https://github.com/Jermolene/TiddlyWiki5/issues/3420"&gt;a basic IndexedDB plugin&lt;/a&gt; which made me realize that there is an API for storage backends inside TiddlyWiki.
+I realized that there’s no need for core modifications, that I could just start with this and—knowing what I know about the web platform—take it to the next level.
+Make a plugin that combines IndexedDB, encryption, a sync engine (with a custom super-lightweight server counterpart for it), and adds a Service Worker and a Web Manifest
+to turn TW into a &lt;a href="https://web.dev/what-are-pwas/"&gt;Progressive Web App&lt;/a&gt; that works offline and installs on mobile with “add to home screen”.
+That was a whole Vision. And I knew it had to be done. It just had to exist. So I got to work, putting aside my typical FreeBSD system-level work to get back to good old web dev.&lt;/p&gt;
+&lt;p&gt;Now, a whole year after that inspiring moment, having gone through huge personal life changes and a reverse putting-aside in favor of my other work again…
+it’s finally ready for the public to see.&lt;/p&gt;
+&lt;p&gt;So.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://tiddly.packett.cool/"&gt;Here it is.&lt;/a&gt;.&lt;/p&gt;
+&lt;figure&gt;&lt;video controls preload="none" muted width="1920" height="1080" poster="data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAAGNbWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAsaWxvYwAAAABEAAACAAEAAAABAAACLQAAEIgAAgAAAAEAAAG1AAAAeAAAAEJpaW5mAAAAAAACAAAAGmluZmUCAAAAAAEAAGF2MDFDb2xvcgAAAAAaaW5mZQIAAAAAAgAAYXYwMUFscGhhAAAAABppcmVmAAAAAAAAAA5hdXhsAAIAAQABAAAAw2lwcnAAAACdaXBjbwAAABRpc3BlAAAAAAAABQAAAALQAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQUMAAAAABNjb2xybmNseAACAAIABoAAAAAOcGl4aQAAAAABCAAAAAxhdjFDgQUcAAAAADhhdXhDAAAAAHVybjptcGVnOm1wZWdCOmNpY3A6c3lzdGVtczphdXhpbGlhcnk6YWxwaGEAAAAAHmlwbWEAAAAAAAAAAgABBAECgwQAAgQBBYYHAAARCG1kYXQSAAoHGWpn/Z/KoDJrE/wEIFYAWRoZFFM8pObBcj0LotyhWLs+CPamzgDO3Y2pbLeJPG5YJuBoUVuN1OPoVzJOLTUhzPg2C6Nom6DlJb0gcr14ky8f3wG5kwngoioo6NiZj3NEgUXgeUXVzu3zvkinGLoHG3/rIaASAAoKGWpn/Z/JAgIGhDL3IEzUQUEI8lJy/UeEuJt/8SpGcGqR8FEt5otYnI/Zchm2rtKmQUeLToLU9FD5KOjOZTeuGpMH6B8prGVKcgeOqAKXt0AaEuSjju3graECLqdKyBoj2nB2fOxNdvALNeKU3R29YvvaEAzBhFafzOxdKBaIYgFRGctEFDozLkqgQ1/++6r6jEqxX///nys5GURrp/wfe1BsRjzEkZEf/vnJYIPmRv//6b7w6LxlTuaviMZaW7hJs/dXIoOHEoC65jQ2qfNrkpX0QHR/7VKYijqS/fL6Q+zBPjh3Rtl0UaZU2ccwCjiaf6L1gGGzMzmeUAAFxO3X9d21wFVJXqw15C2316+rsNpMQBwzf7dZ04sqWFY6zZ+xBxB22NH5yvJw6OksYiZa4P5X0LCQWLzOe3ffedy6GCk6n5tiaX0oYOjhb/orCApA41xY0VHjmLxRsGVd/2Z7lJggyG8BovOv7OxFaf6um2hKSniQSKkRdArVm6dkN/y2qzzI+As5aS4vl1sNJvrYAz/Lh6rar1YYNFBl0iQSEeUWeaw31uSCxuxFxJBypVqID2zLxyZJyGD197C258gt+f1jz/3qD9ES+xu92q/AKvoEx5q5D7id6/4v+/pg8RlU/nC84IPbqhhUn/W28/Ho0AIbplOlQDUzdzr7jE41/U5g+t7HPkV3t/a/Jp0nMHIFUSx0456WaImpCq2+CKSFtUjbSZU7ETwvMV8uY8RnIR0zo2IsKZJtkBI7Ew/U+KJ+WxFcwO2KjTY/DqziV06GWvhoxfJCT5wej9g7I8BSXIYbzvt7TEnXN/7Jxgjdh75p9L1wbh/Zraot+WcbUP58Gz7tT8NjTwTSg3UqFGaRdvTnW7D7ait8KlC5yG/4ZvEB8s4umT0WAKoCPRb359686IJlB/jx8GVra9lrDfx+A0mpL5P1FxemmDNapxGI1IxOXUEUuZobVKB6RWzKOT8k59AOuZZ1p4aRAsI/WxRWfmfs5N9PyupxVJfe5SeFVUiOX4sDks3rFV1X617CGhM7xWkqIiXBqvmir0tP9D4ASrry2tUHZzHkOJz5Mf6POcfnVnWb2J33LCUd1zCtYUD+s45bM1ucLb28Y6WDAifn7IPriT3ecwIeFVXEcl176osST17bjroWz0kWBegbbjXt1bcMxLs4MWFpjOcuT0IP/3IXIZ/ZlGK4p4F8z0jQn+5rOQGnhuMCGRFnfzAYAtfqYX0kFBWRmPKEjRimtIr7TmsRdYUuva6csAwbxUg7/z+RA5SMY32q0lmdPZ5XvQJxy7GkGwmVMCTnh6e+t8ZgX+/tk2V2VsvhY3jv6nrTaxCbmMuiH4hG2H8Jj2FBaDaNEJE5W2rTtChVSfulKXzZc5MzaS3leOr4L5Rzm6+aWy50iB476ffzgqdh4Ls30L5ywWDkr3Kx5HAgcUeppb+DliTNDrtp4Ze+m4lorbAQ6qzET2WJLNiJYZ+pJt8wWJe/qpWVTnCZx4MVlqzNyLedNNzpbPjnuzVbYkog2vNeXBvaUOrSd3qG7Jc8nAExzu53SSMeg03pf/u8xEPVp0Svo5sQspDjHY2woDbxyFcDisav7p9cwiELCv+9SK5lEOSJmCDEqJajeR9q56BJOnOnyDmjWX6wp7CskETN0Rs16AajjnF0wAfYx88RvdwfKu6j+/WWNr+nN1REoPFGg3DiahMtt01jskZsyH0WKd0bwkc6XutWPmd6przV63wZiIiLVbebRNAPfX8z5eXQZ8R/7rWx5Xc9xcVJOaoCG85jQigwGYvdWEt1L5d9aBcdfSmoKwkVaXRE+MQ3IU7CT/1EI6l8kHDACmA3ga7mnPPomFPSK3mKL4ORF7KRfGAR+miQviIrgC8mG1UzUZDMjWlXrmQSOlvk6fkEgFaW5geWd+lWnYzxRoIaGjrfZUq8LdbO19w8ngpKw2Bkt0VxS8aKNY/NT+mQqgGpabzgllfV0hdKZGiiBIZiUii5pMxLuoTU+Ms0AS/EYg/u1pU0T8MV/zi6SRjwfik+/68fi0dU032CCJoKSgMOae/ibxNgU58raDkTAZ56lteB2sogxeu2Sfrhh+sezNj08KVZARqTR9dp31PIQ6LsT+neLefoCFrlLM+c+BKxsJWXYh/Ab5wlyP86cf/evWrfPzqDgSBGB2cTGJ9VTqs1pljkAa0X3QeWSB5zBV4VgLELTna03U70szpuR4vdFxrcWlhhaXIv/o5itl5Pp/Vojo/nLKcbvJOphhZjRDMWieFZ9iw0oIJz40KJilINJbmprVY4n1jbFtXWLITZs9WzbEhHNyavKphkB5SEp7sbAXqfC/aQqO1/KWK9kLIIOHr7l+u5KJVLoo+fzs08NxfJYjVQBkPMnIwTERPGYRrkVeeS450WmSMCFHijjB7JOz7jcm2aSxuSmRWq1dEjhSumFegOHh8avmMm2sVDeKrSb2gTvwoWoFKTcdBtAiczF6rR9EP9tFWfIv/54/QES7/iGWIRTX4hPWSDF8EJZfRJoZ9/XcZeh5zvShw0CR48di3pFnm1JBG/+ZsvxPqt6S1G0MV2cDmLBpTnPvK6R2pzEwqV9LLN3jTY/vti37uqSwQTgiUEqkQvVo+a3YeUQPjlBfCuYJSdN801hQn223tiIAmN0xAM/P5AyrzUHAYYxdT9Nt/skfrdM/1Tze7P+JNpQDcH0k8hssEJEl4SQ0M3+I9PIvX+k/7xfqiX5ocra+dIX1xYbnHUvTOQorjl+0xO9Eor2shn3pD/hGTYPopGZbTcPIfBZ87upXOIw2AE6+KweDA7/Ld7EwPZ4TartCiYOT4ZNq8zBz+SVRmtK0RfJb8uY7KDfckU+Jy6OjOU9qkcK/xpJKGJv0IOVLVaeDb1u0LCtpCqvZvJwWj/XyCS+O8mqcWMHesAPrnFGzJm7X0hz0ZAWUIFZU38E2id/4RGS7uSWtfq9/79IMzeCKji5h8rvhwxNIUdvX2JPSMJQaqao1LaxcXfT4K0+QtJKB8CiTIjd0P+5lOyKLQo169s//jhh4hTIrvuJQdu5loWbx7WMCvjpPLj7GCaTMiiZ72wkp7urChQPRIwCVSm653f/8O8W3Htm+xYtgRYloQSdHMfb55Z1fSJzwwi7H5SmK/9XRW39QZrNvg0ATPEdVxn3GSifoVJUjDroqcYYGxHWHUQKs0zzo6v/FSfO/UzGXRFyIp2xL6BhknxeFBkfIIdxZBlKahKQStWxn7nB5HeB/WAAiaGBJW2BKr5UqoFUgolAOut57R3sgJjaDyBvlEXYCQfNzM4M5iLGaGnoN6Kd2yxCEcMoaaEO94B1BeY+tSpqyDPE79X3O0Et3tqkgCEI1ouJohZevS7DurrHQ8MjY0v5g2OJ63Ydla1oETQFn0lwS0pqmDBQCCg03Na7nB0T3z2xSJfe/Is42nlzAtr8JMamhYHMc/5zYfZo31KBVnG2/VKKZoZ25tFQLxm7vOjlJCTRWvensI7037MvEmgnVNhZLyzIngf9nhit+UORKcCu6ZWt0+RkmFHWYl71fyBqUbakh6DVGNXTZEs/25jllG+JnITM3u6H/+I8rWXGVVEfP2GuopYXRBHvH31C7+EGctYRfflDGYGy0+zJyQXBgZmZlnTCEoiftl8sJzqU/vRXexGetjwCn+m9Qq7K37ZObpnGiC97ifMNo/4jAujbZwkxuS//88wXZPiPh8lvyOC1ggJh/rfkDWjMvdQsfLP51Ah1bmZeA3hVcr+jO3uNUVIXcZgZZM6zaFIPpe7fY+JuRdzu7S6IIw3oUYTrTd9iN4KaQmFUgL7M7ECehtYuh0bRiFlLR+kQbSq+K7uThs4Cx8sbQ11aCM0617CFiX0DmBl/uEC6esdRWqRZWTIoru66WArhmvwKKXTxKB7NQFMHgZCDPx72/yVrUzQWbEpmXuiEMeynvoHYc9Bs5kj/QRHaw1MdJq5S4StzvSdHTfWEewx6odtTfZgfPAnn9FjNzEAAh67zfjr4Ly9NUI7ObjAsukhLfvmek3WizDjHGzAFyzQVyzHG3jX2Jbi/5+sCukZm46M7TFSleiwfsHhdQdyQEu02Xb+IypOrY565KUN/pW7Y5UJbs9iTlv26tmzgn2n0hCQjnTDC3ngnMOx7B3BkKrFFyC7lvhyaWtPyVxhvtPHJmK2III9SF1rT4T9nkxs3ba4QGCU7tjPw0Dq0h5kVUpLQhb314J1LCrjqC4wDgdJw5GksfcafVkH9KMrPQZYGOlGYg1a6VV5d3mgSzad+rhXjks/BKTncKAZV06Nc89LVQW83jK5tobXCAw/xuRB2WDmGF+wVWPCmK4E2lroXMO43j7sE4QEmHu5z0o5U/xPwh1iLC48c0WLFRYymN2H6EpbFbIwFcwo1VJ6PCHd47ykH7sH5blaSNoQP7HHbBVhDEmOffmO9ZW3+sHXkGJ9lwXpmyLpwDDhTwj+mbQBBa+qCjDgatWQm/l+HhUKeT4C4gEQ81DkPH1lIrFFNp2WRv9x2O5NMxdGyLRCBPva19qdYhbw0am9sR+MX4GOvn9BTky7hF0BtXUSzDrSDJCxpIS9L/qlSXGprVFi+2UKfHEj2B+HZ3wSprkK/lDuWWfnJxql162hulGeh6tbb2A1mVjucGHwV/rgPXzU+GhnaiVv2jhVZnPs3gufvRkApweUAUctJVPTmDAoik/05NTbQj5Y9KPcEHfyEpuAy6TDZ6pBxOXc2QlgYf6tE1aOZt+xy9K9MmriMFTDdGNmGt7x3hO16qBEb8lWhzbH7D05hwsPTQTnbk37lG81wc05zx1MUKLwOW1g6oozfI1A8bFqpsJQfsS+ZXKqyTeKrlqFg2n3V0JsYqtwg1po4J0RTxakGdz9WuduRlTq4MSt6+9Jt6DNhAoQ1WdTAXv8GVslVz7/OkzWt2XdN01QhKhYU9AOQHzxcEbH3QM7zrbWv5T+ndIfCmSo29XDuxW9GvAaXvlutSH1w1aZNzjNy6ZSrqn+ETgsT2vwiRxOGk26Lo31Vpp4AoXKxEW3/Ty9NaTTmKnMJ4WIfqQfWeLR4hXysptmN2IoDwPwLfAE77xKQWpbHBgBxMTZcxtE4v5tgmdiu0m/hRTlwuDgTO1O/f/q595ty9wsF/vWPt6Q84tpbRB6PvaBzoMaYaj5HtGGIYffmCPFfHlbF4ljAdFzcS9hsB718gTN2obtX98SnPl/PuvzQjD55DFVIBBovz1TXmxArF9gGRGlcmzIcaJ3aqP71zBcUhrKrmvgSK9RcC00WBhrmEaDNoxHm0gn1h26mi+7a0i7ApGzH3tzNoVMZARJEpTL3z1ZNMTMQnfVWCgKNuuqsCOgdxVTrriN9uHBm1q6qv3TsVqdiCnhnq0wf2Ct5RK/+64y8AI8ByqT8dwJT2DYPTJjAzfq34jjXACDCyxjtpqN6DPr9dF7gmy0HCEmwby5UqL9+uYBTAxerwzn58ilEGZWgAEgR5d42Y/94x8qge7Pbv4gUpaySgZkRBL+ku+h//k5YfVZ4fwNA/Mf4fRdcmuiG4xnXdKXzXomrKddiQp7u5dInBmUp2P+F2DxgVQY21qQDtYDbB4KWNSR39+RJUEjFoMbHyAYUT/nMaQWjKctHJxCoAz2jCo8gA=="&gt;&lt;source type="video/webm" src="tiddlypwa-demo.webm"&gt;&lt;/video&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;a href="https://tiddly.packett.cool/"&gt;TiddlyPWA&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It’s still rough around the edges, but I’ve put &lt;em&gt;a lot&lt;/em&gt; of effort into the setup experience, hiding all the complexity of the flexibility available with how the system is structured
+and presenting a very simple “happy path” where if you open the app from a sync server it’s already preconfigured to sync with that server and so on.&lt;/p&gt;
+&lt;p&gt;I’ve also tried to document it, though I have to say that detailing the security model was a lot easier than trying to explain the whole synchronization/server/content-versus-app thing.
+Hopefully at least for those familiar with TiddlyWiki it’s not too hard to understand that there’s the “app wiki” with the core/plugins/themes and the separate encrypted content,
+and that the sync server can work with both (differently).&lt;/p&gt;
+&lt;p&gt;Now, to justify the whole existence of this blog post, let me also list some random fun facts and whatnot – everything that didn’t fit in the documentation itself :)&lt;/p&gt;
+&lt;h2 id="random-development-tidbits-ha"&gt;&lt;a class="header-anchor" href="#random-development-tidbits-ha"&gt;Random Development Tidbits (ha)&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Because of how browsers work, I’ve had to take extra care to make the storage work across multiple running tabs without corrupting anything.
+Moreover, I made it all explicitly work together well and it’s kind of a hidden feature now.
+Thanks to a combination of BroadcastChannels and Web Locks, you can enjoy a multi-tab experience.
+Browse the same wiki simultaneously in two tabs, the navigation will be independent but any changes will be visible everywhere.&lt;/p&gt;
+&lt;p&gt;This whole &lt;a href="https://codeberg.org/valpackett/argon2ian"&gt;argon2ian&lt;/a&gt; thing you might’ve seen was indeed created for TiddlyPWA!
+I’ve started out using PBKDF2 because it’s available in the Web Crypto API, but eventually decided to upgrade to a modern password hash rather than cranking out iteration counts.
+I wasn’t satisfied with the state of existing Argon2 WASM+JS wrappers, so I set out to make my own, code-golfed to the tiniest size possible.
+The &lt;a href="https://blahaj.zone/notes/9g8r2ffu4o"&gt;yak shaving stack&lt;/a&gt; got even deeper during that subproject.
+Also, I have used the very new &lt;a href="https://developer.mozilla.org/en-US/docs/Web/API/Compression_Streams_API"&gt;Compression Streams API&lt;/a&gt; to be able to bundle the Wasm binary as compressed while not having to bunlde a decompressor.
+And this has led to the creation of a very funny bug…&lt;/p&gt;
+&lt;p&gt;…so since that API was already used there I started using it to compress long-enough tiddler contents as well.
+Stream APIs are kind of annoying when you don’t want to stream, so I went with the whole “a stream is an async iterator” thing.
+When I first gave TiddlyPWA to an external tester I got a report of not being able to save a particular tiddler.
+Turns out, that iterator thing is only available in Firefox as of right now.
+I accidentally made it so that &lt;a href="https://blahaj.zone/notes/9gv2anuoss"&gt;&lt;em&gt;tiddlers longer than 240 bytes would only work in Firefox&lt;/em&gt;&lt;/a&gt;. :D&lt;/p&gt;
+&lt;p&gt;Another &lt;a href="https://blahaj.zone/notes/9gjs72259o"&gt;really funny bug&lt;/a&gt; is something I &lt;a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1840934"&gt;bugzilled here&lt;/a&gt; for Firefox Android.
+When using &lt;a href="https://github.com/florisboard/florisboard"&gt;FlorisBoard&lt;/a&gt;, pressing “enter” would result in the password mask (bullet ••• characters) becoming the actual value of the input.
+This is something that I have discovered while typing passwords into my TiddlyPWA password prompt!
+I also ran into an &lt;a href="https://github.com/mozilla-mobile/firefox-ios/issues/15244"&gt;already reported&lt;/a&gt; &lt;code&gt;prompt()&lt;/code&gt; bug in Firefox on iOS.&lt;/p&gt;
+&lt;p&gt;The server was initially written with SQLite as it is now, but when Deno KV was announced I got excited and rewrote it to use KV, hoping to leverage Deno Deploy for an easy server hosting experience.
+I quickly ran into a 64KiB limit per entry when trying to do the whole “save the HTML page” thing, but I found &lt;a href="https://github.com/kitsonk/kv-toolbox"&gt;kv-toolbox&lt;/a&gt;, a module that would do chunking for me.
+Then, after everything was ready, already with the aforementioned other person testing it, I discovered (and &lt;a href="https://blahaj.zone/notes/9h1dr9g4jq"&gt;ranted about&lt;/a&gt;) the undocumented &lt;a href="https://github.com/denoland/deno/issues/19284"&gt;10 mutations in a transaction&lt;/a&gt; limitation.
+I wasn’t about to give up on atomicity, so I just rewrote everything back to SQLite in a burst of anger and now I hold a bit of a grudge against Deno KV &amp;gt;_&amp;lt;
+Even though I recognize that, obviously, it’s just that &lt;em&gt;my use case is absolutely not the intended one&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://stackoverflow.com/a/68695508"&gt;This TypeScript thing&lt;/a&gt; that I &lt;a href="https://blahaj.zone/notes/9h1fdi76dt"&gt;referenced on fedi&lt;/a&gt; was actually for the SQLite part of the TiddlyPWA server.&lt;/p&gt;
+&lt;p&gt;There was a &lt;a href="https://blahaj.zone/notes/9hlma651nz"&gt;very last minute&lt;/a&gt; backwards-incompatible change I suddenly managed to do right before release.&lt;/p&gt;
+&lt;h2 id="so-tiddlypwa-needs-you"&gt;&lt;a class="header-anchor" href="#so-tiddlypwa-needs-you"&gt;So, TiddlyPWA Needs YOU!&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;I probably could’ve tried to make it as a commercial product with a centrally hosted server, but that’s not what I made.
+TiddlyPWA is fully free (both “as in beer” and “as in freedom”) because I believe in software that empowers everyone to own their data &lt;em&gt;and the software itself&lt;/em&gt;, that &lt;del&gt;is never gonna give you up&lt;/del&gt; doesn’t die for business reasons.&lt;/p&gt;
+&lt;p&gt;Right now TiddlyPWA is still early in its development, still missing a lot of things, but hopefully is solid enough to make you check it out.
+If you like what you see, please consider helping me continue working on it:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;go ahead and &lt;a href="https://tiddly.packett.cool/"&gt;try TiddlyPWA&lt;/a&gt; first of course!&lt;/li&gt;
+&lt;li&gt;report issues, read the code and suggest code changes &lt;a href="https://codeberg.org/valpackett/tiddlypwa"&gt;on Codeberg&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;support me &lt;a href="https://www.patreon.com/valpackett"&gt;on Patreon&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;follow me &lt;a href="https://social.treehouse.systems/@valpackett"&gt;on the fediverse&lt;/a&gt;;&lt;/li&gt;
+&lt;li&gt;share TiddlyPWA with anyone who might be interested.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Thanks!!&lt;/p&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>https://val.packett.cool/blog/ergonice/</id>
+    <link href="https://val.packett.cool/blog/ergonice/" rel="alternate" type="text/html"/>
+    <title>Yet another keyboard post, or, introducing ErgoNICE</title>
+    <published>2023-01-10T00:00:00.000Z</published>
+    <updated>2023-01-10T00:00:00.000Z</updated>
+    <summary>
+      I made a custom split mechanical keyboard! Because it's me, this involved things like contributing to a PCB design tool and discovering a ridiculously optimized way to read a keyboard matrix.
+    </summary>
+    <author>
+      <name>Val Packett</name>
+      <uri>https://val.packett.cool/</uri>
+    </author>
+    <content type="html">
+      &lt;p&gt;A whole decade ago (wow!) I read a blog post called “&lt;a href="https://stevelosh.com/blog/2012/10/a-modern-space-cadet/"&gt;A Modern Space Cadet&lt;/a&gt;”
+and… well, started caring about keyboards.
+I’ve adopted quite a few of the software tricks right there and then: shifts-as-parens and
+capslock-as-control-and-escape.&lt;/p&gt;
+&lt;p&gt;The hardware part—the whole mechanical keyboard thing—took me a couple years to get to.
+I was only using a MacBook Air when the post came out, but eventually as I got a desktop,
+I had purchased my first mech which was a Leopold with original Cherry MX Brown switches.
+I’ve used it for several years, but eventually I found myself wanting more.
+Specifically, clicky switches and the ergonomics of the split form factor.
+In 2020 I purchased &lt;a href="https://a.aliexpress.com/_dVJsSpR"&gt;this AliExpress split keyboard&lt;/a&gt; from a manufacturer
+called “Spider Island”. I’ve &lt;a href="https://github.com/qmk/qmk_firmware/pull/9900"&gt;ported QMK to it&lt;/a&gt;, because of course.
+It felt like a nice upgrade at the time, though the clone MX Blue switches weren’t the highest quality (as in, a couple
+started having weird phantom actuations) and the SATA cable connection between the halves being flaky was annoying.&lt;/p&gt;
+&lt;p&gt;Around the end of 2021 I was looking at higher quality split options like the &lt;a href="https://dygma.com/products/dygma-raise"&gt;Dygma Raise&lt;/a&gt;
+and the &lt;a href="https://www.zsa.io/moonlander/"&gt;ZSA Moonlander&lt;/a&gt; and… decided that I was too weird for either of them
+and would rather spend money on fabrication and parts for something fully custom.
+I think &lt;a href="https://www.youtube.com/watch?v=UKfeJrRIcxw"&gt;this video&lt;/a&gt; might have been the final inspiration.&lt;/p&gt;
+&lt;p&gt;So, I started thinking about what I actually wanted and came up with this list of requirements:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;column-staggered layout like the famous &lt;a href="https://www.ergodox.io/"&gt;ErgoDox&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;nice clicky switches (after some YouTube-watching the choice was clear: &lt;a href="https://www.youtube.com/watch?v=JaU3GkBKyNQ"&gt;Kailh Box Jade&lt;/a&gt;!)&lt;/li&gt;
+&lt;li&gt;“floating key” enclosure design (why is that the common term anyway? I always wanted to call it “borderless”! because it doesn’t have a border, come on!)&lt;/li&gt;
+&lt;li&gt;for connections: USB Type-C to the host, anything reliable between the halves&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And a list of extra “wants”:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;volume control knob (easy)&lt;/li&gt;
+&lt;li&gt;pins for connecting external buttons like a big red panic button or a &lt;a href="https://hackaday.com/2012/06/21/building-a-clutch-for-vim/"&gt;vim pedal&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;a magnetic connector for add-on modules like trackballs, like on the &lt;a href="https://ultimatehackingkeyboard.com/"&gt;UHKB&lt;/a&gt;?&lt;/li&gt;
+&lt;li&gt;a 3.3V TTL output-only serial port header, for a “teletype mode” i.e. directly typing into the UART of something like an RPi?&lt;/li&gt;
+&lt;li&gt;maybe analog input on WASD keys for gaming too?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Spoiler alert: I didn’t successfully implement all the experimental stuff :)
+But I’m really happy with the result!&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:2.1174484052532834;background:#afbeb9 url(data:image/webp;base64,UklGRjYAAABXRUJQVlA4ICoAAABwAQCdASoMAAoACQCsJYwAAk4vGAD+g9kFNR9a9sT2HJgubCeB8scAAAA=);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ergonice-result.avif"&gt;&lt;img alt="End result, the keyboard in its full glory" src="ergonice-result.jpg" width="5643" height="2665" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;So, here’s how we got there…&lt;/p&gt;
+&lt;h2 id="learning-pcb-design"&gt;&lt;a class="header-anchor" href="#learning-pcb-design"&gt;Learning PCB design&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The first thing you need to make a PCB-based keyboard is, well, being able to design PCBs!
+So I watched &lt;a href="https://www.youtube.com/watch?v=C7-8nUU6e3E"&gt;a KiCad tutorial on YouTube&lt;/a&gt; to learn and…
+did not start using KiCad. Because you see, I have a terminal case of hipster-ism :)
+So I started to play around with the far less popular &lt;a href="https://horizon-eda.org/"&gt;Horizon EDA&lt;/a&gt; instead and it was an absolute dream.
+What a beautiful, coherent, smart piece of software.&lt;/p&gt;
+&lt;p&gt;Before actually going for the full keyboard, I’ve decided to make a proof-of-concept: a little dev board
+basically containing what would be the brain of the keyboard (I picked the STM32L1 family because it was
+less affected by the chip shortage and, you know, power-saving sounds good) and pins.
+Tiny boards are a lot cheaper to manufacture, so if something went wrong, it wouldn’t be &lt;em&gt;that&lt;/em&gt; much of a loss.
+So I designed it, uploaded it to JLCPCB, paid some money and… success! It worked perfectly!&lt;/p&gt;
+&lt;div class="pic-row"&gt;&lt;figure class="lqip" style="--ratio:1.5625;background:#3d6654 url(data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAACQAQCdASoMAAoACQCsJYwAAp/SesAA/qh979bT2VM3DShAAAA=);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ferrispark-eda.avif"&gt;&lt;img alt="Ferrispark PCB loaded in Horizon EDA" src="ferrispark-eda.jpg" width="2400" height="1536" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;figure class="lqip" style="--ratio:1.1729468599033817;background:#3d6654 url(data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACQAQCdASoMAAoACQCsJZwAAkpdxAAA/f9jvL2DQUy8WEMLHkzc/41IiWRnXAAA);"&gt;&lt;picture&gt;&lt;img alt="Two Ferrispark boards fully assembled" src="ferrispark-live.jpg" width="1214" height="1035" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;p&gt;I called this board &lt;a href="https://codeberg.org/valpackett/ferrispark"&gt;Ferrispark&lt;/a&gt; as a reference to Ferris the Rust mascot
+and Digispark, the board whose form factor (18×29 mm) this one fits in.
+With that little thingy in hand, it was possible to experiment with firmware stuff while waiting for the keyboard PCB to be manufactured and shipped.
+But first…&lt;/p&gt;
+&lt;h2 id="layout"&gt;&lt;a class="header-anchor" href="#layout"&gt;Layout&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Unlike “normal” keyboards that come with boring standard ANSI/ISO layouts, enthusiast keyboards are very diverse,
+and with a fully custom build possibilities are truly endless. One can &lt;a href="https://www.youtube.com/watch?v=5RN_4PQ0j1A"&gt;try to get away with very few keys&lt;/a&gt;
+or &lt;a href="https://twitter.com/Foone/status/1489430212768985089"&gt;make an unhinged meme board&lt;/a&gt; or whatever.
+But I was after something practical, tailored to my habits, based on ergonomic innovations but not &lt;em&gt;too&lt;/em&gt; different from standard layouts.&lt;/p&gt;
+&lt;p&gt;So I opened &lt;a href="http://www.keyboard-layout-editor.com/"&gt;everyone’s favorite non-FOSS (boo) layout editor web app&lt;/a&gt;, loaded the Ergodox preset,
+removed all the unassigned keys surrounding the core clusters, and started adding keys that made sense to me.&lt;/p&gt;
+&lt;p&gt;The first thing I added was &lt;em&gt;two&lt;/em&gt; columns on the right side that kinda just bring back the punctuation as it is on ANSI.
+This felt really important to me because it’s not just about keeping the habits regarding the &lt;code&gt;{[&amp;lt;:;'"&amp;gt;]}&lt;/code&gt; stuff.
+Some non-Latin scripts such as &lt;a href="https://en.wikipedia.org/wiki/JCUKEN"&gt;Cyrillic&lt;/a&gt; have a lot of letters, so those two columns have actual letters on them when typing those.
+Coming up with alternatives (like chords) for &lt;em&gt;that&lt;/em&gt; seemed like more of a nightmare than just for punctuation.
+By the way, I added these columns without shifting them down, so they ended up as a 3-wide ortholinear grid cluster on the right end of the layout —
+I quickly realized that it would be a good fit for a numpad on an alternate layer too!&lt;/p&gt;
+&lt;p&gt;Then I started adding modifiers and other miscellaneous keys. I’ve added shifts where my fingers expect them to be
+(since I use shifts-as-parentheses, the “just one shift key” idea from minimalist boards is really not for me).
+For the thumb clusters, I’ve added the most important text actions—Space, Tab, Backspace, Return—as large keys.
+I’ve added a dedicated actual Compose key because I use one. Then I started noticing that the key count was climbing up.
+Dangerously close to a funny number, even. So I’ve added four extra “macro” keys, some really extra stuff like “menu”,
+and ended up with exactly 69 keys. That instantly solved the hard problem of naming things: the board was called “ErgoNICE” from that point on! :)
+Here’s how the layout looks:&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:2.3833042068738446;"&gt;&lt;picture&gt;&lt;img alt="ErgoNICE layout illustration" src="layout.svg" width="941" height="394.83" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;(This is the &lt;em&gt;physical&lt;/em&gt; layout, so you see QWERTY here. I actually type on &lt;a href="https://colemak.com/"&gt;Colemak&lt;/a&gt; though!)&lt;/p&gt;
+&lt;h2 id="pcbs"&gt;&lt;a class="header-anchor" href="#pcbs"&gt;PCBs&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Before actually designing the PCB, I started looking at existing keyboard designs (nearly all in KiCad), importing various parts
+into Horizon, purchasing extra components like the rotary volume knob and headphone jacks on AliExpress and modeling them in Horizon,
+and otherwise doing various preparations.&lt;/p&gt;
+&lt;p&gt;Keyboard PCBs aren’t rocket science. There are basically two ways to connect the keyswitches to the MCU: &lt;a href="http://blog.komar.be/how-to-make-a-keyboard-the-matrix/"&gt;in a matrix&lt;/a&gt;
+and directly. With a compact split keyboard, direct is more feasible than ever, you don’t even need &lt;em&gt;that&lt;/em&gt; huge of a microcontroller,
+so I actually saw that solution in one of the designs I was looking at. But my choice of MCU was somewhat limited by the chip shortage,
+and my board wasn’t &lt;em&gt;that&lt;/em&gt; compact, and I wasn’t looking forward to routing all the direct connections with just 2 layers
+(which was the limit for non-green boards on JLCPCB and I just &lt;em&gt;waaaanted&lt;/em&gt; a black one even though it won’t be visible),
+so the obvious decision was to go with a matrix with diodes on every switch.&lt;/p&gt;
+&lt;p&gt;The other decision I made early on was that the left half would contain the microcontroller and would be assembled by JLCPCB with a ton of SMD parts,
+while the right one I would entirely hand-solder at home, using parts I already owned when possible.
+And that would be… through-hole diodes and the &lt;a href="https://www.digikey.com/en/products/detail/microchip-technology/MCP23017-E-SP/894272"&gt;MCP23017-E/SP&lt;/a&gt;
+input/output expander. Yeah, &lt;em&gt;the DIP package variant&lt;/em&gt;. Because that’s what I purchased about 10 years ago (!) from
+an Arduino stuff store when I was first experimenting with electronics. How convenient!&lt;/p&gt;
+&lt;p&gt;Speaking of diodes, something I saw and really liked was this &lt;a href="https://github.com/keebio/Keebio-Parts.pretty/blob/c7ae3b44674679f4d767767c002fed1eacd414a1/Diode-Hybrid-Back.kicad_mod"&gt;footprint for either a surface-mount or through-hole diode&lt;/a&gt;.
+However you can’t just import that straightforwardly into Horizon. KiCad is fine with multiple pads/holes sharing a name, and
+will just collapse them into one pad. Horizon is a lot more strict: each pad must have its own unique name, and if you want to construct something fancy like that,
+you need to do it inside of a padstack. Thankfully, Horizon’s parametric padstack system is extremely capable. It’s based on a little
+stack-based scripting language for repositioning everything based on whatever logic you want. However it was missing the ability
+to reposition holes from the script, so I’ve had to &lt;a href="https://github.com/horizon-eda/horizon/pull/644"&gt;add it&lt;/a&gt;, and then:&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:1.5625;background:#2c2c2c url(data:image/webp;base64,UklGRiYAAABXRUJQVlA4IBoAAAAwAQCdASoMAAoACQCsJaQAA3AA/umILaAAAA==);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="padstack.avif"&gt;&lt;img alt="TH-and-SMD padstack loaded in Horizon EDA" src="padstack.jpg" width="2400" height="1536" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;So. Anyway. Actual keyboard design time. You can view &lt;a href="ergonice-sch.pdf"&gt;the full schematic as a PDF here&lt;/a&gt;.
+There’s not that much to say: it contains the aforementioned matrix (well, two of them, left and right), the microcontroller and everything it requires,
+the USB-C connector with &lt;a href="https://hackaday.com/2019/07/16/exploring-the-raspberry-pi-4-usb-c-issue-in-depth/"&gt;correctly separated&lt;/a&gt; CC resistors,
+TRRS audio connectors, various pin connectors (debug header, extras like external buttons),
+the rotary knob with required circuitry… oh, and a bunch of various protection. Even though I’ve noticed that various
+DIY keyboard designs don’t seem to do much of it, I was really into the idea of extra safety, so I put resistors on all the external-facing pins,
+transistors for reverse polarity protection on power inputs, a USBLC6 IC on the USB lines, and so on.&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:1.5625;background:#393939 url(data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoMAAoACQCsJZwAA3AA/ud1AAA=);"&gt;&lt;picture&gt;&lt;img alt="ErgoNICE schematic loaded in Horizon EDA" src="ergonice-eda-sch.png" width="2400" height="1536" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;Layout started with feeding the JSON output of the keyboard-layout-editor website to another website, &lt;a href="http://www.keyboardcad.com/"&gt;Keyboard CAD Assistant&lt;/a&gt;.
+It produces DXF files that are supposed to be used for cutting a plate on a CNC router, but I actually needed it for the PCB.
+I’ve imported the DXF into Horizon EDA, drew polygons with diagonals over each key square, and got precise centers of each key —
+exactly what’s necessary to position the keyswitches!&lt;/p&gt;
+&lt;p&gt;Then I drew the outlines of the halves, positioned all the other components, routed the tracks… everything as expected.
+Routing can be quite fun, especially when the EDA tool looks this nice (this is the “Rust” color scheme, ha):&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:1.5625;background:#8d604f url(data:image/webp;base64,UklGRjAAAABXRUJQVlA4ICQAAACQAQCdASoMAAoACQCsJYwCdAD1JzAA/iHYl5KgcP/lu92IAAA=);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ergonice-eda-pcb.avif"&gt;&lt;img alt="ErgoNICE board loaded in Horizon EDA" src="ergonice-eda-pcb.png" width="2400" height="1536" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;After getting pretty confident that the board was correct (the design rules check in Horizon is pretty helpful!) I’ve sent it off to manufacturing.
+A couple weeks later, I received the exciting notification from the post office. The long-awaited package from China!&lt;/p&gt;
+&lt;div class="pic-row"&gt;&lt;figure class="lqip" style="--ratio:1.7777777777777777;background:#2d3035 url(data:image/webp;base64,UklGRjYAAABXRUJQVlA4ICoAAACwAQCdASoMAAoACQCsJaQAAlxbHelwAP7LX2hEBtZIP5JMX24bFMQQAAA=);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ergonice-pcb-close-two.avif"&gt;&lt;img alt="ErgoNICE boards close-up" src="ergonice-pcb-close-two.jpg" width="2848" height="1602" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;figure class="lqip" style="--ratio:2.3343974461292896;background:#2d3035 url(data:image/webp;base64,UklGRjYAAABXRUJQVlA4ICoAAADwAQCdASoMAAoACQCsJaQAAq9hLuLi4AAA/rNbiXGnDHEO6nCvJbigAAA=);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ergonice-pcb-close.avif"&gt;&lt;img alt="ErgoNICE left side board close-up, microcontroller section" src="ergonice-pcb-close.jpg" width="2925" height="1253" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;p&gt;Here’s a comparison with the 3D preview in Horizon. The real thing always looks amazing!&lt;/p&gt;
+&lt;div class="pic-row"&gt;&lt;figure class="lqip" style="--ratio:1.5625;background:#9089d5 url(data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAACwAQCdASoMAAoACQCsJYgAAtzSQeAAAP5yaHlEdtKxghft/0iI7z4ArAAAAA==);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ergonice-eda-3d.avif"&gt;&lt;img alt="ErgoNICE board 3D preview" src="ergonice-eda-3d.jpg" width="2400" height="1536" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;figure class="lqip" style="--ratio:1.7782126549249837;background:#2d3035 url(data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAADQAQCdASoMAAoACQCsJaQAAp05LvzAAADykenChOnq6PtY7q9Jxl2CXo12wAAA);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ergonice-pcb-wide.avif"&gt;&lt;img alt="ErgoNICE boards, both halves" src="ergonice-pcb-wide.jpg" width="2726" height="1533" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;p&gt;If you want to play around with the PCB design files in Horizon EDA yourself, it’s in &lt;a href="https://codeberg.org/valpackett/ergonice/src/branch/trunk/pcb-ergonice"&gt;the &lt;code&gt;pcb-ergonice&lt;/code&gt; directory in the repo&lt;/a&gt;.
+And in the &lt;a href="https://codeberg.org/valpackett/ergonice/releases/tag/r1"&gt;release downloads&lt;/a&gt;, there is an export with Gerber files and BOM/CPL for assembly.
+Disclaimer: the revision 1 which is published there is slightly different from the revision 0 which I physically have built. Keep reading to see the bug that I fixed there!&lt;/p&gt;
+&lt;h3 id="analog-input"&gt;&lt;a class="header-anchor" href="#analog-input"&gt;Analog input?&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Analog keys are a pretty fun thing for gaming, allowing you to &lt;a href="https://www.youtube.com/watch?v=1WNI-f6QDPQ"&gt;move slowly in CS for example&lt;/a&gt;.
+I stumbled upon &lt;a href="https://alltrons.com/analog-keyboard-technology/"&gt;these people here&lt;/a&gt; that were trying to commercially sell add-on flex PCBs
+for adding the capability to an otherwise normal keyboard and began wondering if it’s possible to just DIY it.
+It seems to be a bit of a scary topic because they have a patent in some jurisdictions, but who would go after a non-commercial personal project?
+So, their technique is just using a &lt;a href="https://www.ti.com/product/LDC1614"&gt;Texas Instruments inductance to digital converter&lt;/a&gt; with a PCB coil.
+Luckily, these chips were easily available on JLCPCB’s assembly service (though not cheap), so I just went ahead with the experiment.
+That is, I designed a little “evaluation board”, suspiciously shaped to fit under the keyboard PCB’s WASD cluster and connect to it using 2.54mm headers :)&lt;/p&gt;
+&lt;p&gt;The interesting part of the design process is of course the PCB coils. TI provides &lt;a href="https://webench.ti.com/wb5/LDC/#/spirals"&gt;an online tool&lt;/a&gt; for generating them.
+It supports some export… into a couple commercial EDA tools. But I found a way get the results into Horizon. Get this:
+export as an EAGLE project, open that in KiCad, export the coil as SVG, clean it up in Inkscape (merge into one SVG path), export as DXF R12,
+and finally import into Horizon with a downscaling factor of 10000 because reasons. Oof, it’s there! But we can’t connect anything to it,
+because it’s just lines, not tracks. And somehow they’re not even all connected.&lt;/p&gt;
+&lt;p&gt;Naturally, this was an opportunity to dig into Horizon EDA’s codebase and &lt;a href="https://github.com/horizon-eda/horizon/pull/639"&gt;add some new tools&lt;/a&gt;!
+This was a very enjoyable experience, and with some quick feedback from the author of Horizon I split one of the tools into two, and here they are:
+“select connected lines”, “merge duplicate junctions”, and “lines to tracks”. With Horizon becoming this much better, the board was easy to make.
+This is how it looked:&lt;/p&gt;
+&lt;div class="pic-row"&gt;&lt;figure class="lqip" style="--ratio:1.0867389491242703;background:#2ec47a url(data:image/webp;base64,UklGRjYAAABXRUJQVlA4ICoAAABwAQCdASoMAAoACQCsJbAAAqu6gAD9RbAlls++3C41aChu5Tb/t7VAAAA=);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ldc-board.avif"&gt;&lt;img alt="TI LDC test board flat on the desk" src="ldc-board.jpg" width="1303" height="1199" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;figure class="lqip" style="--ratio:1.7892425905598244;background:#303030 url(data:image/webp;base64,UklGRi4AAABXRUJQVlA4ICIAAACQAQCdASoMAAoACQCsJZQAApZCS4AA/Y/V9/qMVolQAAAA);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ldc-testing.avif"&gt;&lt;img alt="TI LDC test board in a testing setup" src="ldc-testing.jpg" width="3260" height="1822" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;p&gt;To try it out, I wrote a &lt;a href="https://codeberg.org/valpackett/ldc1x1x"&gt;Rust embedded-hal driver for the LDC1x1x chips&lt;/a&gt; and
+an &lt;a href="https://codeberg.org/valpackett/freebsd-embedded-hal"&gt;embedded-hal implementation for FreeBSD userspace APIs&lt;/a&gt;
+so that I could test it directly on my PC with a CP2112 USB-to-I²C adapter, just piping the output from a demo program into
+&lt;a href="https://github.com/mogenson/ploot"&gt;ploot&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;What I’ve found is that while the stream of numbers was indeed correlated with how far the key was pushed down,
+it was not good. Whether I was catching the movement of the finger or the spring was pretty confusing, especially
+when under the actual keyboard PCB. The fact that the switches of my choice have a click bar might’ve been a negative impact,
+the distance to the switch from behind of the PCB was probably a problem, and the large 4-layer coil probably wasn’t quite compensating
+for that (or was it actually just bad?).&lt;/p&gt;
+&lt;p&gt;Either way, I couldn’t attach it to the keyboard because it turns out I’ve made a silly mistake in the schematic:
+I forgot to connect one of the columns to the microcontroller :D
+So I ended up running a bodge wire to one of the holes intended for the LDC board:&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:1.8525547445255475;background:#303030 url(data:image/webp;base64,UklGRigAAABXRUJQVlA4IBwAAAAwAQCdASoMAAoACQCsJQAAhnAA/umIFOcEoOAA);"&gt;&lt;picture&gt;&lt;img alt="ErgoNICE left side PCB with bodge wire" src="ergonice-pcb-bodge.jpg" width="1269" height="685" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;h2 id="case"&gt;&lt;a class="header-anchor" href="#case"&gt;Case&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;There are many ways to make a keyboard enclosure, but as I was into 3D printing, that question was already answered.
+How convenient that a split keyboard fits well into the dimentions of an Ender 3 build plate!
+I’ve been using &lt;a href="https://github.com/realthunder/FreeCAD"&gt;realthunder’s FreeCAD fork&lt;/a&gt; for modeling 3D printed parts,
+so that’s what I used for this one as well.
+Of course FreeCAD’s UI is clunky and its core is &lt;a href="https://github.com/realthunder/FreeCAD/issues?q=fillet+crash"&gt;crashy&lt;/a&gt;,
+but I’d rather not involve proprietary software in this project.
+Having CAD files in an open format is that valuable to me.
+And before someone starts preaching code-CAD like cadquery to me:
+sorry, I love sketching with a mouse and hate school-style math too much :D&lt;/p&gt;
+&lt;p&gt;I started out with exporting a 3D model of the boards and components on them as a STEP file from Horizon and importing it into FreeCAD.
+In the file, everything was cleanly separated out, i.e. each component was its own body. However due to format limitations
+every instance of the same part (e.g. every switch) is its own independent body, which takes up a lot of space on disk.
+I wrote a Python script in FreeCAD that would take the currently selected bodies and replace all of them except the first one
+with a link to the first one, removing the duplication of actual 3D model data. (Sadly I lost that script by now, but it was tiny.)&lt;/p&gt;
+&lt;p&gt;With a model of the boards, it wasn’t too hard to make an enclosure around them. The enclosure has two main parts.
+The plate is a flat extrusion that gets permanently attached between top of the PCB and the bottom halves of the switches.
+The tray is the rest of the enclosure, attached to the plate with screws.
+In addition there are tenting wedges that attach to the bottom of the tray, and the actual knob that goes on the rotary encoder.
+This is how it all looks in FreeCAD:&lt;/p&gt;
+&lt;div class="pic-row"&gt;&lt;figure class="lqip" style="--ratio:1.9204819277108434;background:#838586 url(data:image/webp;base64,UklGRioAAABXRUJQVlA4IB4AAACQAQCdASoMAAoACQCsJZQAAVTPJAAAU2itLPccAAA=);"&gt;&lt;picture&gt;&lt;img alt="ErgoNICE case overall look in FreeCAD" src="ergonice-case-cad-overall.png" width="2391" height="1245" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;figure class="lqip" style="--ratio:1.9204819277108434;background:#838586 url(data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAADQAQCdASoMAAoACQCsJZQAApEG15B0gACfYjCV2Aj3pbyPx40fRxQA);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ergonice-case-cad-cross.avif"&gt;&lt;img alt="ErgoNICE case cross-section in FreeCAD" src="ergonice-case-cad-cross.png" width="2391" height="1245" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;p&gt;Here’s a look into the tray from the above. I’ve added these supports underneath each key for extra rigidity.
+Otherwise it’s… not that remarkable?&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:1.9204819277108434;background:#838586 url(data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAADwAQCdASoMAAoACQCsJZACsAD7AQhY8AAA/IlGCE0GihYfqGcHw4AA);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ergonice-case-cad-tray.avif"&gt;&lt;img alt="ErgoNICE tray in FreeCAD" src="ergonice-case-cad-tray.png" width="2391" height="1245" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;I printed the parts on a heavily modified Ender 3 Pro out of dark gray sparkly PETG.
+It turned out pretty well! Everything fit together easily, the tolerances for things like the space for the key switches
+were exactly right, it looks very decent for a DIY object.
+Again, this is how it looks:&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:2.1174484052532834;background:#afbeb9 url(data:image/webp;base64,UklGRjYAAABXRUJQVlA4ICoAAABwAQCdASoMAAoACQCsJYwAAk4vGAD+g9kFNR9a9sT2HJgubCeB8scAAAA=);"&gt;&lt;picture&gt;&lt;source type="image/avif" srcset="ergonice-result.avif"&gt;&lt;img alt="End result, the keyboard in its full glory" src="ergonice-result.jpg" width="5643" height="2665" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;If you want to play around with the source model, it’s &lt;a href="https://codeberg.org/valpackett/ergonice/src/branch/trunk/case"&gt;all of that XML in the &lt;code&gt;case&lt;/code&gt; directory&lt;/a&gt;
+stored in the repo, saved using the version-control-friendly “save as directory” functionality of realthunder’s FreeCAD.
+And in the &lt;a href="https://codeberg.org/valpackett/ergonice/releases/tag/r1"&gt;release downloads&lt;/a&gt;, there’s an archive with STL and STEP exports.&lt;/p&gt;
+&lt;h2 id="firmware"&gt;&lt;a class="header-anchor" href="#firmware"&gt;Firmware&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Now that everything is put together physically, we need to put software on the tiny little computer that runs the keyboard
+(it’s computers all the way down!).&lt;/p&gt;
+&lt;p&gt;The most common way to get some keyboard firmware going is to use a popular project like &lt;a href="https://qmk.fm/"&gt;QMK&lt;/a&gt; (a classic
+that started on AVR and added Arm later) or &lt;a href="https://zmk.dev/"&gt;ZMK&lt;/a&gt; (popular with Bluetooth, based on a whole RTOS called Zephyr and
+configured with &lt;a href="https://www.devicetree.org/"&gt;flattened device trees&lt;/a&gt;).
+But of course, “common way” means it’s not what I’m going to do.&lt;/p&gt;
+&lt;h3 id="rust-on-stm32l1"&gt;&lt;a class="header-anchor" href="#rust-on-stm32l1"&gt;Rust on STM32L1&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;I like &lt;a href="https://www.rust-lang.org/"&gt;the Rust programming language&lt;/a&gt; quite a lot and it’s, like, good for embedded so &lt;em&gt;of course&lt;/em&gt; I’m going to use it here.
+Naturally, I’m not the only one doing so: I was quite happy to discover that there was already a library called
+&lt;a href="https://github.com/TeXitoi/keyberon"&gt;Keyberon&lt;/a&gt; for handling all the uhh… keyboarding.&lt;/p&gt;
+&lt;p&gt;Now, how does the Rust ecosystem for STM32 look like?
+Unlike the C world where you interact with one monolithic SDK (either the vendor-provided one or &lt;a href="https://libopencm3.org/"&gt;libopencm3&lt;/a&gt;)
+there is a lot more code sharing and integration due to the magic of package management.
+The “libopencm3” of Rust is spread over a variety of crates: the center of that vague “SDK” is
+interface crates like &lt;a href="https://github.com/rust-embedded/embedded-hal"&gt;embedded-hal&lt;/a&gt; and &lt;a href="https://github.com/rust-embedded-community/usb-device"&gt;usb-device&lt;/a&gt;,
+and there are both drivers that &lt;em&gt;use&lt;/em&gt; those interfaces and microcontroller support crates such as the &lt;a href="https://github.com/stm32-rs"&gt;stm32-rs&lt;/a&gt; ones that &lt;em&gt;implement&lt;/em&gt; them.
+There is however the “parallel ecosystems” thing too, but not because of vendors: the rather standalone world here is
+&lt;a href="https://embassy.dev/"&gt;Embassy&lt;/a&gt;, an &lt;code&gt;async&lt;/code&gt; embedded framework.&lt;/p&gt;
+&lt;p&gt;And in fact, because stm32-rs’s &lt;code&gt;stm32l1xx-hal&lt;/code&gt; is not actively maintained, I’ve considered using Embassy for the project.
+I played around with it, &lt;a href="https://github.com/embassy-rs/embassy/pull/579"&gt;fixing some STM32L1 initialization code&lt;/a&gt; and stuff,
+but ultimately ended up just &lt;a href="https://github.com/stm32-rs/stm32l1xx-hal/pull/14"&gt;forking &lt;code&gt;stm32l1xx-hal&lt;/code&gt;&lt;/a&gt;, adding USB support and I²C timeouts and of course fixing bugs.&lt;/p&gt;
+&lt;p&gt;With a reasonable HAL crate and Keyberon in hand, it’s pretty straightforward to put the pieces together.
+But I didn’t do anything in the straightforward way because I can get kinda obsessed with efficiency :)&lt;/p&gt;
+&lt;h3 id="stm32-hardware-magic"&gt;&lt;a class="header-anchor" href="#stm32-hardware-magic"&gt;STM32 Hardware Magic&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The cool thing to do for efficiency in embedded development is to let hardware do things as much as possible instead of software.&lt;/p&gt;
+&lt;p&gt;The first opportunity to leverage nice STM32 peripherals is of course the volume knob: the hardware timers have the
+ability to read a rotary encoder instead of, well, counting time.
+As long as you connect the encoder to a pair of pins that do correspond to a timer, which I did as
+I knew this beforehand, at the PCB design stage.
+So in the code, grabbing the timer for this purpose is as simple as:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-rust"&gt;let knob_cnt = cx.device.TIM2.qei((gpioa.pa0, gpioa.pa1), &amp;amp;mut rcc);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And when polling all the things, we simply check if the count has increased or decreased since the previous
+time we did that, and by how much.
+Depending on that, we press-and-release a designated key position in the layout,
+where we place volume up / volume down keys on the main layer and other fun stuff on other layers
+(e.g. I made it so that Fn+knob is scroll up / scroll down, just for fun).&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-rust"&gt;let knob_now = cx.local.knob_cnt.count() as i16;
+let knob_row = if knob_now &amp;gt; *cx.local.knob_last { 1 } else { 0 };
+for _ in 0..(knob_now - *cx.local.knob_last).abs() / 2 {
+    handle_event::spawn(layout::Event::Press(knob_row, (LCOLS + RCOLS) as u8)).unwrap();
+    handle_event::spawn(layout::Event::Release(knob_row, (LCOLS + RCOLS) as u8)).unwrap();
+}
+*cx.local.knob_last = knob_now;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, how about something more advanced? But what is left there to automate?
+Well, of course, the actual reading of the keyboard matrix! It’s a common thing, there should be hardware solutions!
+And there are. There are ICs that do keyboard matrix scanning (usually I/O expanders with that functionality),
+the Programmable I/O peripheral of the RP2040 might be promising for this application,
+of course cool things can be done with FPGAs (you can make a microcontroller with your own key scanner peripheral
+like in the &lt;a href="https://github.com/esden/icekeeb"&gt;icekeeb&lt;/a&gt; project).
+But it turns out our little STM32 already has a great tool for the job!&lt;/p&gt;
+&lt;p&gt;Because… it can DMA between memory and banks of GPIO pins, triggered by a timer.
+When I was thinking about the DMA capabilities, I was wondering if someone has already done what I wanted to do and yes!
+&lt;a href="https://summivox.wordpress.com/2016/06/03/keyboard-matrix-scanning-and-debouncing/"&gt;This 2016 blog post&lt;/a&gt; describes
+exactly how to do it. (With some bonus big-brain thoughts on key debouncing.)
+This part of the post sounded somewhat worrying:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Allocate all row output pins on one GPIO port and all column input pins on another GPIO port&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;as I have &lt;em&gt;not&lt;/em&gt; done that on my PCB. But well, I quickly realized that I could extend this idea to work
+with pins arbitrarily scattered across both of the two pin banks, just by using more timers.
+But my job was slightly easier as only columns (outputs in my design) were in both banks, A and B,
+while rows (inputs) only were in bank B.&lt;/p&gt;
+&lt;details&gt;&lt;summary class="open-more"&gt;Here’s how the Rust magic for that looks&lt;/summary&gt;&lt;p&gt;To generate the bit patterns, I used a &lt;code&gt;const fn&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-rust"&gt;const fn gen_gpio&amp;lt;const N: usize&amp;gt;(pins: [i32; N]) -&amp;gt; [u32; N] {
+    let mut result: [u32; N] = [0; N];
+    let mut p = 0;
+    while p &amp;lt; N {
+        if pins[p] &amp;gt;= 0 { result[p] = 1 &amp;lt;&amp;lt; pins[p]; }
+        p += 1;
+    }
+    result
+}
+
+static mut IN_GPIOB: [[u32; LCOLS]; 2 * BOUNCES] = [[69; LCOLS]; 2 * BOUNCES];
+static OUT_GPIOA: [u32; LCOLS] = gen_gpio([-1, -1, -1, -1, -1,  8, -1]);
+static OUT_GPIOB: [u32; LCOLS] = gen_gpio([ 1, 12, 13, 14, 15, -1,  0]);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Okay, not that cool, it’s a rather verbose way to avoid writing &lt;code&gt;1 &amp;lt;&amp;lt;&lt;/code&gt; everywhere, but I’m a big fan of
+compile-time function execution.
+But more to the point, the memory layout already explains how the DMA setup works.
+On every tick, the next output configuration will be selected across both GPIO ports (activating the next column)
+and the next readout of the inputs (well, of all the inputs on bank B) will be put into memory.&lt;/p&gt;&lt;p&gt;For configuring the DMA engines, which don’t have friendly wrappers in the HAL crate,
+I wrote &lt;a href="https://codeberg.org/valpackett/ergonice/src/commit/e3c0f93648354c8abb4ec118c95ed4e913308600/fw/src/dma_scan.rs"&gt;a macro&lt;/a&gt;
+wrapping the raw hardware register writes to make it look decent like so:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-rust"&gt;dma_chan! { dma1: // TIM4_CH1 -&amp;gt; DMA1_CH1
+    cndtr1 [LCOLS]     cmar1 [&amp;amp;OUT_GPIOB as *const _]
+    cpar1 [gpiob_odr]  ccr1 [mem2per nointr]
+};
+dma_chan! { dma1: // TIM3_CH3 -&amp;gt; DMA1_CH2
+    cndtr2 [LCOLS]     cmar2 [&amp;amp;OUT_GPIOA as *const _]
+    cpar2 [gpioa_odr]  ccr2 [mem2per nointr]
+};
+dma_chan! { dma1: // TIM3_UP -&amp;gt; DMA1_CH3
+    cndtr3 [LCOLS * BOUNCES * 2]  cmar3 [&amp;amp;mut IN_GPIOB as *mut _]
+    cpar3 [gpiob_idr]             ccr3 [per2mem intr]
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So, the output channels just cycle through the very short 7-element arrays, enabling only one column at a time.
+The input reading channel is the interesting one.
+The &lt;code&gt;* 2&lt;/code&gt; in the array length is related to DMA double buffering.
+See, the engine can interrupt the CPU both when it goes through the entire array and wraps around,
+and right in the middle of the array. This allows the CPU and the DMA engine to avoid stepping on each other’s feet:
+on the half interrupt we read the first half of the memory, and on the full interrupt we read the second one.
+And yeah, each half contains a few readouts in a row, to be fed into a debouncer.
+This is how it’s done, converting the raw GPIO readout bytes into a matrix for Keyberon:&lt;/p&gt;&lt;pre&gt;&lt;code class="language-rust"&gt;static ROW_GPIOS: [u32; ROWS]  = gen_gpio([4, 5, 6, 7, 2]);
+let is_half = dma1.isr.read().htif3().bit();
+let scans = unsafe {
+    &amp;amp;IN_GPIOB[if is_half {
+        0..BOUNCES
+    } else {
+        BOUNCES..2 * BOUNCES
+    }]
+};
+for scan in scans {
+    let mut mat = [[false; LCOLS]; ROWS];
+    for (c, colscan) in scan.iter().enumerate() {
+        for (r, rowmask) in ROW_GPIOS.iter().enumerate() {
+            mat[r][c] = (colscan &amp;amp; rowmask) != 0;
+        }
+    }
+    for ev in cx.local.debouncer_l.events(matrix::PressedKeys(mat)) {
+        handle_event::spawn(ev.transform(left2global)).unwrap();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/details&gt;
+&lt;p&gt;And… it works! Now, of course I haven’t measured any efficiency gains versus doing everything the basic software way :D
+But having fun with the implementation was the point more than anything.&lt;/p&gt;
+&lt;p&gt;The entire source of the firmware is in &lt;a href="https://codeberg.org/valpackett/ergonice/src/branch/trunk/fw"&gt;the &lt;code&gt;fw&lt;/code&gt; directory in the repo&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id="things-not-done"&gt;&lt;a class="header-anchor" href="#things-not-done"&gt;Things not done&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Of course the end result ended up less ambitious than the initial project.
+Out of the initial list of ideas, the analog input fell out at the PCB stage, while
+the extra peripheral (trackball/etc.) support kinda fell out at the case design stage.
+The “teletype mode” via the output-only serial port header only fell out here at the firmware stage though,
+with potential to come back and add it someday.&lt;/p&gt;
+&lt;p&gt;However there’s another thing I was rather interested in but didn’t get to try in the firmware, and that is
+&lt;a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/hid/selective-suspend-for-hid-over-usb-devices"&gt;USB Selective Suspend&lt;/a&gt;
+which should allow the microcontroller to go to sleep for idle periods.
+This isn’t easy to accomplish, but it seems like resuming the USB connection after sleep on the STM32L1 series might be possible.&lt;/p&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>https://val.packett.cool/blog/pixelbook/</id>
+    <link href="https://val.packett.cool/blog/pixelbook/" rel="alternate" type="text/html"/>
+    <title>FreeBSD and custom firmware on the Google Pixelbook</title>
+    <published>2019-10-06T00:00:00.000Z</published>
+    <updated>2019-10-06T00:00:00.000Z</updated>
+    <summary>
+      A search for a new thin-and-light laptop, a journey through the Chromebook firmware trust architecture, some FreeBSD kernel development, and finally, something about actually customizing open source firmware.
+    </summary>
+    <author>
+      <name>Val Packett</name>
+      <uri>https://val.packett.cool/</uri>
+    </author>
+    <content type="html">
+      &lt;p&gt;&lt;a href="/blog/thinkpad-x240/"&gt;Back in 2015&lt;/a&gt;, I jumped on the ThinkPad bandwagon by getting an X240 to run FreeBSD on.
+Unlike most people in the ThinkPad crowd, I actually liked the clickpad and didn’t use the trackpoint much.
+But this summer I’ve decided that it was time for something newer.
+I wanted something..&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;lighter and thinner (ha, turns out this is actually important, I got tired of carrying a T H I C C laptop - Apple was right all along);&lt;/li&gt;
+&lt;li&gt;with a 3:2 display (why is Lenovo making these Serious Work™ laptops 16:9 in the first place??
+16:9 is &lt;strong&gt;awful&lt;/strong&gt; in below-13-inch sizes especially);&lt;/li&gt;
+&lt;li&gt;with a HiDPI display (and ideally with a good size for exact 2x scaling instead of fractional);&lt;/li&gt;
+&lt;li&gt;with USB-C ports;&lt;/li&gt;
+&lt;li&gt;without a dGPU, &lt;em&gt;especially&lt;/em&gt; without an NVIDIA GPU;&lt;/li&gt;
+&lt;li&gt;assembled with screws and not glue (I don’t necessarily need expansion and stuff in a laptop all that much,
+but being able to replace the battery without dealing with a glued chassis is good);&lt;/li&gt;
+&lt;li&gt;supported by FreeBSD of course (“some development required” is okay but I’m not going to write &lt;em&gt;big&lt;/em&gt; drivers);&lt;/li&gt;
+&lt;li&gt;how about something with open source firmware, that would be fun.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;a href="https://github.com/aarch64-laptops"&gt;Qualcomm aarch64 laptops&lt;/a&gt; were out because embedded GPU drivers like freedreno
+(and UFS storage drivers, and Qualcomm Wi-Fi..) are not ported to FreeBSD.
+And because Qualcomm firmware is very cursed.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://rosenzweig.io/blog/panfrost-on-the-rk3399-meow.html"&gt;Samsung’s RK3399 Chromebook&lt;/a&gt;
+or the new &lt;a href="https://www.pine64.org/pinebook-pro/"&gt;Pinebook Pro&lt;/a&gt; would’ve been awesome.. if I were a Linux user.
+No embedded GPU drivers on FreeBSD, again. No one has added the stuff needed for FDT/OFW attachment to LinuxKPI.
+It’s rather tedious work, so we only support PCIe right now.
+(Can someone please make an ARM laptop with a PCIe GPU, say with an &lt;a href="https://en.wikipedia.org/wiki/Mobile_PCI_Express_Module"&gt;MXM slot&lt;/a&gt;?)&lt;/p&gt;
+&lt;p&gt;So it’s still gonna be amd64 (x86) then.&lt;/p&gt;
+&lt;p&gt;I really liked the design of the Microsoft Surface Book, but the
+&lt;a href="https://www.ifixit.com/Teardown/Microsoft+Surface+Book+Teardown/51972#s113615"&gt;iFixit score of 1 (one)&lt;/a&gt;
+and especially the Marvell Wi-Fi chip that doesn’t have a driver in FreeBSD are dealbreakers.&lt;/p&gt;
+&lt;p&gt;I was considering a ThinkPad X1 Carbon from an old generation - the one from the same year as the X230 is corebootable, so that’s fun.
+But going &lt;em&gt;back&lt;/em&gt; in processor generations just doesn’t feel great.
+I want something more efficient, not less!&lt;/p&gt;
+&lt;p&gt;And then I discovered the &lt;a href="https://en.wikipedia.org/wiki/Google_Pixelbook"&gt;Pixelbook&lt;/a&gt;.
+Other than the big huge large bezels around the screen, I liked everything about it.
+Thin aluminum design, a 3:2 HiDPI screen, &lt;strong&gt;rubber palm rests&lt;/strong&gt; (why isn’t every laptop ever doing that?!),
+the “convertibleness” (flip the screen around to turn it into.. something rather big for a tablet, but it is useful actually),
+a Wacom touchscreen that supports a pen, mostly reasonable hardware (Intel Wi-Fi),
+and that famous coreboot support (Chromebooks’ stock firmware &lt;em&gt;is&lt;/em&gt; coreboot + depthcharge).&lt;/p&gt;
+&lt;p&gt;So here it is, my new laptop, a Google Pixelbook.&lt;/p&gt;
+&lt;h2 id="what-is-a-chromebook-even"&gt;&lt;a class="header-anchor" href="#what-is-a-chromebook-even"&gt;What is a Chromebook, even&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The write protect screw is kind of a meme.
+All these years later, it’s That Thing everyone on various developer forums associates with Chromebooks.
+But times have moved on.
+As a reaction to glued devices and stuff, the Chrome firmware team has discovered a new innovative way of asserting
+physical presence: sitting around for a few minutes, pressing the power button when asked.
+Is actually pretty clever though, it &lt;em&gt;is&lt;/em&gt; more secure than.. not doing that.&lt;/p&gt;
+&lt;p&gt;Wait, what was that about?&lt;/p&gt;
+&lt;p&gt;Let’s go back to the beginning and look at firmware security in Chromebooks and other laptops.&lt;/p&gt;
+&lt;p&gt;These devices are designed for the mass market first.
+Your average consumer trusts the vendor and (because they’ve read a lot of scary news) might be afraid of scary attackers
+out to install a stealthy rootkit right into their firmware.
+Businesses are even more afraid of that, and they push for boot security on company laptops even more.
+This is why &lt;a href="https://github.com/corna/me_cleaner/wiki/Intel-Boot-Guard"&gt;Intel Boot Guard&lt;/a&gt; is a thing
+that the vast majority of laptops have these days.
+It’s a thing that makes sure only the vendor can update firmware.
+Evil rootkits are out. Unfortunately, the user is also out.&lt;/p&gt;
+&lt;p&gt;Google is not like most laptop vendors.&lt;/p&gt;
+&lt;p&gt;Yes, Google is kind of a surveillance capitalism / advertising monster, but that’s not what I’m talking about here.
+Large parts of Google are very much driven by FOSS enthusiasts.
+Or something. Anyway, the point is that Chromebooks are based on FOSS firmware and support
+user control as much as possible.
+(Without compromising regular-user security, but turns out these are not conflicting goals and we can all be happy.)&lt;/p&gt;
+&lt;p&gt;Instead of Boot Guard, Google has its own way of securing the boot process.
+The root of trust in modern (&amp;gt;=2017) devices is a special
+&lt;a href="https://www.youtube.com/watch?v=gC-lbMNmIsg"&gt;Google Security Chip&lt;/a&gt;, which in normal circumstances
+also ensures that only Google firmware runs on the machine, but:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;if you sit through the aforementioned power-button-clicking procedure,
+you get into Developer Mode: OS verification is off, you have a warning screen at boot,
+and you can press Ctrl-D to boot into Chrome OS, or (if you enabled this via a command run as root)
+Ctrl-L to open SeaBIOS.
+&lt;ul&gt;
+&lt;li&gt;Here’s the fun part.. it doesn’t have to be SeaBIOS.
+You can flash any Coreboot payload into the &lt;code&gt;RW_LEGACY&lt;/code&gt; slot right from Chrome OS, reboot, press a key
+and you’re booting that payload!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;if you also &lt;a href="https://www.sparkfun.com/products/14746"&gt;buy&lt;/a&gt; or
+&lt;a href="https://chromium.googlesource.com/chromiumos/third_party/hdctools/+/master/docs/ccd.md#making-your-own-suzyq"&gt;solder&lt;/a&gt;
+a special cable (“SuzyQable”) and do the procedure a couple times more, your laptop turns into the
+Ultimate Open Intel Firmware Development Machine. Seriously.
+&lt;ul&gt;
+&lt;li&gt;the security chip is a debug chip too!
+&lt;a href="https://chromium.googlesource.com/chromiumos/platform/ec/+/master/docs/case_closed_debugging_cr50.md"&gt;Case Closed Debugging&lt;/a&gt;
+gives you serial consoles for the security chip itself, the embedded controller (EC) and the application processor (AP, i.e. your main CPU),
+and it also gives you a flasher
+(via &lt;a href="https://aur.archlinux.org/packages/flashrom-chromeos/"&gt;special flashrom&lt;/a&gt; for now, but I’m told there’s plans to upstream)
+that allows you to write AP and EC firmware;&lt;/li&gt;
+&lt;li&gt;some security is still preserved with all the debugging: you can (and should) set a CCD password, which lets you
+lock-unlock the debug capabilities and change write-protect whenever you want, so that only you can flash firmware
+(at least without opening the case and doing &lt;strong&gt;very&lt;/strong&gt; invasive things, the flash chip is not even SOIC anymore I think);&lt;/li&gt;
+&lt;li&gt;and you can hack without fear: the security chip is not brickable! Yes, yes, that means the chip is only a
+“look but don’t touch” kind of open source, it will only boot Google-signed firmware.
+Some especially paranoid people think this is An NSA Backdoor™.
+I think this is an awesome way to allow FULL control of the main processor and the EC,
+over just a cable, with &lt;strong&gt;no way of bricking the device&lt;/strong&gt;!
+And to solve the paranoia, &lt;a href="https://reproducible-builds.org/"&gt;reproducible builds&lt;/a&gt; would be great.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="you-mentioned-something-about-freebsd-in-the-title"&gt;&lt;a class="header-anchor" href="#you-mentioned-something-about-freebsd-in-the-title"&gt;You mentioned something about FreeBSD in the title?&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Okay, okay, let’s go.
+I didn’t even &lt;em&gt;want&lt;/em&gt; to write an introduction to Chromebooks but here we are.
+Anyway, while waiting for the debug cable to arrive, I’ve done a lot of work on FreeBSD,
+using the first method above (&lt;code&gt;RW_LEGACY&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;SeaBIOS does not have display output working in OSes that don’t specifically support the Coreboot framebuffer
+(OpenBSD does, FreeBSD doesn’t), and I really just hate legacy BIOS, so
+I’ve had to install a UEFI implementation into &lt;code&gt;RW_LEGACY&lt;/code&gt; since I didn’t have the cable yet.
+My own EDK2 build did not work (now I see that it’s probably because it was a debug build and that has failing assertions).
+So I’ve downloaded &lt;a href="https://mrchromebox.tech"&gt;MrChromebox’s full ROM image&lt;/a&gt;, extracted the payload using &lt;code&gt;cbfstool&lt;/code&gt;
+and flashed that. Boom. Here we go, press Ctrl-L for UEFI. Nice. Let’s install FreeBSD.&lt;/p&gt;
+&lt;p&gt;The live USB booted fine. With the EFI framebuffer, an NVMe SSD and a PS/2 keyboard it was a working basic system.
+I’ve resized the Chrome OS data partition (Chrome OS recovers from that fine, without touching custom partitions),
+found that there’s already an EFI system partition (with a GRUB2 setup to boot Chrome OS, which didn’t boot like that o_0),
+installed everything and went on with configuration and developing support for more hardware.&lt;/p&gt;
+&lt;p&gt;(note: I’m leaving out the desktop configuration part here, it’s mostly a development post; I use &lt;a href="https://github.com/WayfireWM/wayfire"&gt;Wayfire&lt;/a&gt; as my display server if you’re curious.)&lt;/p&gt;
+&lt;p&gt;So how’s the hardware?&lt;/p&gt;
+&lt;h3 id="wi-fi-and-bluetooth"&gt;&lt;a class="header-anchor" href="#wi-fi-and-bluetooth"&gt;Wi-Fi and Bluetooth&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Well, that was easy.
+The Pixelbook has an Intel 7265.
+The exact same wireless chip that was in my ThinkPad.
+So, Wi-Fi works great with &lt;code&gt;iwm&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Bluetooth.. if this was the newer 8265, would’ve already just worked :D&lt;/p&gt;
+&lt;p&gt;These Intel devices present a “normal” &lt;code&gt;ubt&lt;/code&gt; USB Bluetooth adapter, except it only becomes normal if you upload firmware
+into it, otherwise it’s kinda dead.
+(And in that dead state, it spews interrupts, raising the idle power consumption by preventing the system
+from going into package C7 state! So &lt;code&gt;usbconfig -d 0.3 power_off&lt;/code&gt; that stuff.)
+FreeBSD now has a firmware uploader for the 8260/8265, but it does not support the older protocol used by the 7260/7265.
+It wouldn’t be that hard to add that, but no one has done it yet.&lt;/p&gt;
+&lt;h3 id="input-devices"&gt;&lt;a class="header-anchor" href="#input-devices"&gt;Input devices&lt;/a&gt;&lt;/h3&gt;
+&lt;h4 id="keyboard"&gt;&lt;a class="header-anchor" href="#keyboard"&gt;Keyboard&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;Google kept the keyboard as good old PS/2, which is great for ensuring that you can get started with a custom OS
+with a for-sure working keyboard.&lt;/p&gt;
+&lt;p&gt;About the only interesting thing with the keyboard was the Google Assistant key, where the Win key usually is.
+It was not recognized as anything at all.
+I used DTrace to detect the scancode without adding prints into the kernel and rebooting:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;dtrace -n 'fbt::*scancode2key:entry { printf("[st %x] %x?\n", *(int*)arg0, arg1); } \
+  fbt::*scancode2key:return { printf("%x\n", arg1);  }'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And wrote &lt;a href="https://reviews.freebsd.org/D21565"&gt;a patch&lt;/a&gt; to interpret it as a useful key
+(right meta, couldn’t think of anything better).&lt;/p&gt;
+&lt;h4 id="touch"&gt;&lt;a class="header-anchor" href="#touch"&gt;Touch*&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;The touchpad and touchscreen are HID-over-I²C, like on many other modern laptops.
+I don’t know why this cursed bus from the 80s is &lt;em&gt;gaining&lt;/em&gt; popularity, but it is.
+At least FreeBSD has a driver for Intel (Synopsys DesignWare really) I²C controllers.&lt;/p&gt;
+&lt;p&gt;(Meanwhile Apple MacBooks now use &lt;a href="https://github.com/roadrunner2/macbook12-spi-driver"&gt;&lt;em&gt;SPI for even the keyboard&lt;/em&gt;&lt;/a&gt;.
+FreeBSD has an Intel SPI driver but right now it only supports ACPI attachment for Atoms and such, not PCIe yet.)&lt;/p&gt;
+&lt;p&gt;The even better news is that &lt;a href="https://github.com/wulf7/iichid"&gt;there is a nice HID-over-I²C driver in development as well&lt;/a&gt;.
+(note: the &lt;a href="https://people.freebsd.org/~wulf/acpi_iicbus.patch"&gt;corresponding patch for configuring the devices via ACPI&lt;/a&gt;
+is pretty much a requirement, uncomment &lt;code&gt;-DHAVE_ACPI_IICBUS&lt;/code&gt; in the iichid makefile too to get that to work.
+Also, &lt;a href="https://bugs.freebsd.org/bugzilla/attachment.cgi?id=207356&amp;action=diff"&gt;upcoming Intel I²C improvement patch&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;The touchscreen started working with that driver instantly.&lt;/p&gt;
+&lt;p&gt;The touchpad was.. a lot more “fun”.
+The I²C bus it was on would just appear dead.
+After some &lt;a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240339"&gt;debugging&lt;/a&gt;, it turned out that the in-progress
+iichid driver was sending a wrong extra out-of-spec command, which was causing Google’s touchpad firmware
+to throw up and lock up the whole bus.&lt;/p&gt;
+&lt;p&gt;But hey, nice bug discovery, if any other device turns out to be as strict in accepting input, no one else would have that problem.&lt;/p&gt;
+&lt;p&gt;Another touchpad thing: by default, you have to touch it with a lot of pressure.
+Easily fixed in libinput:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;% cat /usr/local/etc/libinput/local-overrides.quirks
+[Eve touchpad]
+MatchUdevType=touchpad
+AttrPressureRange=12:6
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id="upd-2019-10-24-pixelbook-pen"&gt;&lt;a class="header-anchor" href="#upd-2019-10-24-pixelbook-pen"&gt;&lt;strong&gt;UPD 2019-10-24&lt;/strong&gt; Pixelbook Pen&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;The touchscreen in the Pixelbook is made by Wacom, and supports stylus input like the usual Wacom tablets.
+For USB ones, on FreeBSD you can just use &lt;code&gt;webcamd&lt;/code&gt; to run the Linux driver in userspace.
+Can’t exactly do that with I²C.&lt;/p&gt;
+&lt;p&gt;But! &lt;a href="/notes/2019-10-21-20-12-26"&gt;Thankfully, it exposes generic HID stylus reports&lt;/a&gt;, zero Wacom specifics required.
+I’ve been able to &lt;a href="https://github.com/wulf7/iichid/pull/5"&gt;write a driver&lt;/a&gt; for that quite easily.
+Now it works. With pressure, tilt, the button, all the things :)&lt;/p&gt;
+&lt;h3 id="display-backlight-brightness"&gt;&lt;a class="header-anchor" href="#display-backlight-brightness"&gt;Display backlight brightness&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;This was another “fun” debugging experience.
+The &lt;code&gt;intel_backlight&lt;/code&gt; console utility (which was still the thing to use on FreeBSD) did nothing.&lt;/p&gt;
+&lt;p&gt;I knew that the i915 driver on Chrome OS could adjust the brightness, so I made it work here too, and all it took is:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://reviews.freebsd.org/D21564"&gt;adding more things to LinuxKPI&lt;/a&gt; to allow uncommenting the
+brightness controls in i915kms;&lt;/li&gt;
+&lt;li&gt;(and naturally, uncommenting them);&lt;/li&gt;
+&lt;li&gt;finding out that this panel uses native DisplayPort brightness configured via DPCD (DisplayPort Configuration Data),
+enabling &lt;code&gt;compat.linuxkpi.i915_enable_dpcd_backlight="1"&lt;/code&gt; in &lt;code&gt;/boot/loader.conf&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;finding out that there’s a fun bug in the.. hardware, sort of:
+&lt;ul&gt;
+&lt;li&gt;the panel reports that it supports both DPCD backlight and a direct PWM line (which is true);&lt;/li&gt;
+&lt;li&gt;Google/Quanta/whoever &lt;em&gt;did not connect&lt;/em&gt; the PWM line;&lt;/li&gt;
+&lt;li&gt;(the panel is not aware of that);&lt;/li&gt;
+&lt;li&gt;the i915 driver prefers the PWM line when it’s reported as available.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Turns out there was &lt;a href="https://patchwork.kernel.org/patch/9640237/"&gt;a patch sent to Linux to add a “prefer DPCD” toggle&lt;/a&gt;,
+but for some reason it was not merged.
+The patch does not apply cleanly so I just did a simpler hack version:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-diff"&gt;--- i/drivers/gpu/drm/i915/intel_dp_aux_backlight.c
++++ w/drivers/gpu/drm/i915/intel_dp_aux_backlight.c
+@@ -252,8 +252,12 @@ intel_dp_aux_display_control_capable(struct intel_connector *connector)
+         * the panel can support backlight control over the aux channel
+         */
+        if (intel_dp-&amp;gt;edp_dpcd[1] &amp;amp; DP_EDP_TCON_BACKLIGHT_ADJUSTMENT_CAP &amp;amp;&amp;amp;
+-           (intel_dp-&amp;gt;edp_dpcd[2] &amp;amp; DP_EDP_BACKLIGHT_BRIGHTNESS_AUX_SET_CAP) &amp;amp;&amp;amp;
+-           !(intel_dp-&amp;gt;edp_dpcd[2] &amp;amp; DP_EDP_BACKLIGHT_BRIGHTNESS_PWM_PIN_CAP)) {
++           (intel_dp-&amp;gt;edp_dpcd[2] &amp;amp; DP_EDP_BACKLIGHT_BRIGHTNESS_AUX_SET_CAP)
++/* for Pixelbook (eve), simpler version of https://patchwork.kernel.org/patch/9618065/ */
++#if 0
++            &amp;amp;&amp;amp; !(intel_dp-&amp;gt;edp_dpcd[2] &amp;amp; DP_EDP_BACKLIGHT_BRIGHTNESS_PWM_PIN_CAP)
++#endif
++                       ) {
+                DRM_DEBUG_KMS("AUX Backlight Control Supported!\n");
+                return true;
+        }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And with that, it works, with 65536 steps of brightness adjustment even.&lt;/p&gt;
+&lt;h3 id="suspend/resume"&gt;&lt;a class="header-anchor" href="#suspend/resume"&gt;Suspend/resume&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The Pixelbook uses regular old ACPI S3 sleep, not the &lt;a href="https://reviews.freebsd.org/D17676"&gt;fancy new S0ix thing&lt;/a&gt;,
+so that’s good.&lt;/p&gt;
+&lt;p&gt;On every machine with a &lt;a href="https://en.wikipedia.org/wiki/Trusted_Platform_Module"&gt;TPM&lt;/a&gt; though,
+you have to tell the TPM to save state before suspending, otherwise you get a reset on resume.
+I already knew this because I’ve &lt;a href="/notes/2017-11-22-15-11-44"&gt;experienced that on the ThinkPad&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The Google Security Chip runs an open-source TPM 2.0 implementation (fun fact, written by Microsoft)
+and it’s connected via… *drum roll* I²C. Big surprise (not).&lt;/p&gt;
+&lt;p&gt;FreeBSD already has TPM 2.0 support in the kernel, the
+&lt;a href="https://github.com/tpm2-software/tpm2-tools"&gt;userspace tool stack&lt;/a&gt; was recently added to Ports as well.
+But of course there was no support for connecting to the TPM over I²C, and especially not to the
+Cr50 (GSC) TPM specifically. (it has quirks!)&lt;/p&gt;
+&lt;p&gt;I &lt;a href="https://github.com/myfreeweb/freebsd/commit/600e6006c1b969b73d3fec86208f37011884f1e1"&gt;wrote a driver (WIP)&lt;/a&gt;
+hooking up the I²C transport (relies on the aforementioned ACPI-discovery-of-I²C patch).
+It does not use the interrupt (I found it buggy: at first attachment, it fires continuously,
+and after a reattach it stops completely) and after attach (or after system resume) the &lt;em&gt;first&lt;/em&gt; command
+errors out, but that can be fixed and other than that, it works.
+Resume is fixed, entropy can be harvested, it &lt;a href="https://github.com/tpm2-software/tpm2-pkcs11"&gt;could be used for SSH keys&lt;/a&gt; too.&lt;/p&gt;
+&lt;p&gt;Another thing with resume: I’ve had to build the kernel with &lt;code&gt;nodevice sdhci&lt;/code&gt; to prevent the
+Intel SD/MMC controller (which is not attached to anything here - I’ve heard that the 128GB model might be using eMMC
+instead of NVMe but that’s unclear) from &lt;a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=211705"&gt;hanging for a couple minutes on resume&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id="dynamic-cpu-frequency"&gt;&lt;a class="header-anchor" href="#dynamic-cpu-frequency"&gt;Dynamic CPU frequency&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;At least on the stock firmware, the old-school Intel SpeedStep did not work because the driver could not
+find some required ACPI nodes (perf or something).&lt;/p&gt;
+&lt;p&gt;Forget that, the new &lt;a href="https://reviews.freebsd.org/D18028"&gt;Intel Speed Shift&lt;/a&gt; (which lets the CPU adjust frequency on its own) works nicely with the linked patch.&lt;/p&gt;
+&lt;h3 id="tablet-mode-switch"&gt;&lt;a class="header-anchor" href="#tablet-mode-switch"&gt;Tablet mode switch&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;When the lid is flipped around, the keyboard is disabled (unless you turn the display brightness to zero,
+I’ve heard - which is fun because that means you can &lt;a href="https://www.reddit.com/r/PixelBook/comments/dalk1l/my_pixelbook_desktop_setup/f1u4nwi/"&gt;connect a montior and have a sort-of
+computer-in-a-keyboard look&lt;/a&gt;,
+like retro computers) and the system gets a notification (Chrome OS reacts to that by enabling tablet mode).&lt;/p&gt;
+&lt;p&gt;Looking at the DSDT table in ACPI, it was quite obvious how to support that notification:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Device (TBMC) {
+    Name (_HID, "GOOG0006")  // _HID: Hardware ID
+    Name (_UID, One)  // _UID: Unique ID
+    Name (_DDN, "Tablet Motion Control")  // _DDN: DOS Device Name
+    Method (TBMC, 0, NotSerialized) {
+        If ((RCTM () == One)) { Return (One) }
+        Else { Return (Zero) }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;On Linux, this is exposed as an evdev device with switch events.
+I was able to &lt;a href="https://reviews.freebsd.org/D21612"&gt;replicate that&lt;/a&gt; quite easily.
+My display server does not support doing anything with that yet, but I’d like to do something like
+enabling &lt;a href="https://source.puri.sm/Librem5/squeekboard"&gt;an on-screen keyboard&lt;/a&gt; to pop up automatically
+when tablet mode is active.&lt;/p&gt;
+&lt;h3 id="keyboard-backlight-brightness"&gt;&lt;a class="header-anchor" href="#keyboard-backlight-brightness"&gt;Keyboard backlight brightness&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;I generally leave it off because I don’t look at the keyboard, but this was
+&lt;a href="https://reviews.freebsd.org/D21746"&gt;a fun and easy driver to write&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Also obvious how it works when looking at ACPI:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Device (KBLT) {
+    Name (_HID, "GOOG0002")  // _HID: Hardware ID
+    Name (_UID, One)  // _UID: Unique ID
+    Method (KBQC, 0, NotSerialized) {
+        Return (^^PCI0.LPCB.EC0.KBLV) /* \_SB_.PCI0.LPCB.EC0_.KBLV */
+    }
+    Method (KBCM, 1, NotSerialized) {
+        ^^PCI0.LPCB.EC0.KBLV = Arg0
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id="using-the-debug-cable-on-freebsd"&gt;&lt;a class="header-anchor" href="#using-the-debug-cable-on-freebsd"&gt;Using the debug cable &lt;strong&gt;on&lt;/strong&gt; FreeBSD&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The debug cable presents serial consoles as bulk endpoints without any configuration capabilities.
+On Linux, they are supported by &lt;a href="https://github.com/torvalds/linux/blob/ba606975938179b1e893e44e190d0001de8e5262/drivers/usb/serial/usb-serial-simple.c"&gt;the “simple” USB serial driver&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Adding the device to the “simple” FreeBSD driver &lt;code&gt;ugensa&lt;/code&gt; &lt;a href="https://reviews.freebsd.org/D21863"&gt;took some debugging&lt;/a&gt;.
+The driver was clearing USB stalls when the port is opened.
+That’s allowed by the USB spec and quite necessary on some devices.
+Unfortunately, the debug interface throws up when it sees that request.
+The responsible code in the device &lt;a href="https://chromium.googlesource.com/chromiumos/platform/ec/+/refs/tags/cr50_v4.5/chip/g/usb.c#835"&gt;has a &lt;code&gt;/* Something we need to add support for? */&lt;/code&gt; comment&lt;/a&gt; :D&lt;/p&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPD&lt;/strong&gt;: A Chrome OS engineer has notified me that the workaround is no longer necessary since Cr50 firmware version 0.3.24!&lt;/ins&gt;&lt;/p&gt;
+&lt;h3 id="audio"&gt;&lt;a class="header-anchor" href="#audio"&gt;Audio?&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The only thing that’s unsupported is onboard audio.
+The usual HDA controller only exposes the DisplayPort audio-through-the-monitor thing.
+The speakers, mic and headphone jack are all connected to various codecs exposed via… yet again, I²C.
+I am not about to write the drivers for these codecs, since I’m not really interested in audio on laptops.&lt;/p&gt;
+&lt;h2 id="firmware-is-fun"&gt;&lt;a class="header-anchor" href="#firmware-is-fun"&gt;Firmware is Fun&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;After the debug cable arrived, I’ve spent some time debugging the console-on-FreeBSD thing mentioned above,
+and then started messing with coreboot and TianoCore EDK2.&lt;/p&gt;
+&lt;p&gt;My discoveries so far:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;there’s nothing on the AP console on stock firmware because Google compiles release FW with serial output off,
+I think to save on power or something;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;me_cleaner&lt;/code&gt; &lt;a href="https://github.com/corna/me_cleaner/issues/300"&gt;needs to be run with &lt;code&gt;-S -w MFS&lt;/code&gt;&lt;/a&gt;.
+As mentioned in the &lt;code&gt;--help&lt;/code&gt;, the &lt;code&gt;MFS&lt;/code&gt; partition contains PCIe related stuff.
+Removing it causes the NVMe drive to detach soon after boot;&lt;/li&gt;
+&lt;li&gt;upstream Coreboot (including MrChromebox’s builds) fails to initialize the TPM, just gets zero
+in response to the vendor ID request. Funnily enough, that would’ve solved the resume problem
+without me having to write the I²C TPM driver for FreeBSD - but now that I’ve written it, I’d prefer
+to actually have the ability to use the TPM;&lt;/li&gt;
+&lt;li&gt;EDK2’s recent &lt;code&gt;UefiPayloadPkg&lt;/code&gt; doesn’t support &lt;a href="https://bugzilla.tianocore.org/show_bug.cgi?id=2241"&gt;PS/2 keyboard&lt;/a&gt;
+and &lt;a href="https://bugzilla.tianocore.org/show_bug.cgi?id=2240"&gt;NVMe&lt;/a&gt; out of the box, but they’re very easy to add
+(hopefully someone would add them upstream after seeing my bug reports);&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;UefiPayloadPkg&lt;/code&gt; supports getting the framebuffer from coreboot very well;&lt;/li&gt;
+&lt;li&gt;coreboot can run Intel’s GOP driver before the payload (it’s funny that we’re running a UEFI module before
+running the UEFI implementation) and that works well;&lt;/li&gt;
+&lt;li&gt;but &lt;code&gt;libgfxinit&lt;/code&gt; - the nice FOSS, written-in-Ada, verified-with-SPARK implementation of Intel GPU
+initialization and framebuffer configuration - supports Kaby Lake now!
+&lt;ul&gt;
+&lt;li&gt;however, we have a DPCD thing again with this display panel here - it reports
+max lane bandwidth as &lt;code&gt;0x00&lt;/code&gt;, &lt;code&gt;libgfxinit&lt;/code&gt; interprets that as the slowest speed and
+we end up not having enough bandwidth for the high-res screen;&lt;/li&gt;
+&lt;li&gt;I’ve been told that this is because there’s a new way of conveying this information that’s unsupported. I’ll dig
+around in the Linux i915 code and try to implement it properly here but for now, I just did a quick hack,
+hardcoding the faster bandwidth. Ta-da! My display is initialized with formally verified open source code!
+Minus one blob running at boot!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;persistent storage of EFI variables needs some SMM magic. There’s
+&lt;a href="https://github.com/MrChromebox/edk2/commit/c792dbf1bd692bb95781a79d5d2d886a4933bc77"&gt;a quick patch&lt;/a&gt; that
+changes EDK2’s emulated variable store to use coreboot’s SMM store.
+EDK2 has a proper SMM store of its own, I’d like to look into making that coreboot-compatible or at least
+just writing a separate coreboot-compatible store module.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;UPD 2019-10-24&lt;/strong&gt; for external displays, DisplayPort alt mode on USB-C can be used. Things to note:
+&lt;ul&gt;
+&lt;li&gt;DP++ (DP cables literally becoming HDMI cables) can’t work over USB Type C,
+which is why there are no &lt;code&gt;HDMI-A-n&lt;/code&gt; connectors on the GPU, so a passive HDMI-mDP dongle plugged into a mDP-TypeC dongle won’t work;&lt;/li&gt;
+&lt;li&gt;the Chrome EC runs the alt mode negotiation, the OS doesn’t need any special support;&lt;/li&gt;
+&lt;li&gt;for DP dongles to work at all, the EC &lt;strong&gt;must run RW firmware&lt;/strong&gt; and that doesn’t happen as-is
+with upstream coreboot. There is a jump command on the EC console.
+Also &lt;a href="https://github.com/MrChromebox/coreboot/commit/3f6e950980e65980476808938f0395f187f36b3c"&gt;this patch&lt;/a&gt;
+should help?? (+ &lt;a href="https://github.com/MrChromebox/coreboot/commit/23e81ecad1e20cd7bfbeb59e06804a5d5ba2f3bb"&gt;this&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="an-aside-why-mess-with-firmware"&gt;&lt;a class="header-anchor" href="#an-aside-why-mess-with-firmware"&gt;An aside: why mess with firmware?&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;If you’re not the kind of person who’s made happy by just the fact that some more code during the boot process
+of their laptop is now open and verified, and you just want things to work, you might not be as excited
+about open source firmware development as I am.&lt;/p&gt;
+&lt;p&gt;But you can do cool things with firmware that give you &lt;strong&gt;practical&lt;/strong&gt; benefit.
+The best example I’m seeing is better Hackintosh support.
+Instead of patching macOS to work on your machine, you could patch your machine to pretend to almost be a Mac:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://mjg59.dreamwidth.org/52149.html"&gt;Creating hardware where no hardware exists&lt;/a&gt; (using SMM
+to emulate Apple’s System Management Controller in coreboot);&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/acidanthera/AppleSupportPkg"&gt;AppleSupportPkg&lt;/a&gt; (making EDK2 more compatible with Apple things).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Is this cool or what?&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;&lt;a class="header-anchor" href="#conclusion"&gt;Conclusion&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Pixelbook, FreeBSD, coreboot, EDK2 good.&lt;/p&gt;
+&lt;p&gt;Seriously, I have no big words to say, other than just recommending this laptop to FOSS enthusiasts :)&lt;/p&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>https://val.packett.cool/blog/vbox-to-hyper-v/</id>
+    <link href="https://val.packett.cool/blog/vbox-to-hyper-v/" rel="alternate" type="text/html"/>
+    <title>Moving VMs from VirtualBox to Client Hyper-V</title>
+    <published>2017-07-20T00:00:00.000Z</published>
+    <updated>2017-07-20T00:00:00.000Z</updated>
+    <summary>The year of Windows on the desktop? Taking Microsoft's hypervisor for a spin by setting up a modern FreeBSD VM.</summary>
+    <author>
+      <name>Val Packett</name>
+      <uri>https://val.packett.cool/</uri>
+    </author>
+    <content type="html">
+      &lt;p&gt;I’ve decided to move the VMs on my desktop from VirtualBox to Microsoft Hyper-V.
+Because reasons.&lt;/p&gt;
+&lt;p&gt;Actually because I’ve upgraded my desktop to an AMD Ryzen CPU: first, AMD-V/SVM is not supported by the &lt;em&gt;Intel&lt;/em&gt; HAXM thing from the Android SDK, so I wanted to try out Microsoft’s Hyper-V based Android “emulator” (VM configurator/runner thingy) instead.
+Second, giving 16 virtual CPUs on an SMT 8-core to a FreeBSD guest in VirtualBox results in a weird performance issue.
+(Though giving 4 vCPUs to &lt;em&gt;multiple&lt;/em&gt; VMs on a 4-core CPU worked fine.)
+Third, it’s &lt;em&gt;Oracle&lt;/em&gt; VM VirtualBox and no one likes Oracle.&lt;/p&gt;
+&lt;figure class="lqip" style="--ratio:1.455547391623806;background:rgb(230,232,233) url(data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAABQBQCdASowACAAP+Hq6Gy/vLAptVv4A/A8CWUAAFvoq1QAz3i1Z8XiXfRZhGz5R7FJeYAA/lHT2bCUVBNGZjAIYCm9raJANh9WUjtiCqakB89wXAwAAA==);"&gt;&lt;picture&gt;&lt;img alt="Screenshot" src="scr.png" width="1981" height="1361" class="u-photo" loading="lazy" decoding="async"&gt;&lt;/picture&gt;&lt;/figure&gt;
+&lt;p&gt;So, here’s how you can do it as well.&lt;/p&gt;
+&lt;h2 id="how-to-get-hyper-v"&gt;&lt;a class="header-anchor" href="#how-to-get-hyper-v"&gt;How to get Hyper-V&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;You need Windows 10 Pro, Enterprise or Education.
+(Or Windows Server, obviously.)
+Just enable it as a feature and restart.&lt;/p&gt;
+&lt;p&gt;Alternatively, installing the &lt;a href="https://www.visualstudio.com/vs/msft-android-emulator/"&gt;MS Android “emulator”&lt;/a&gt; automatically enables it.&lt;/p&gt;
+&lt;h2 id="how-to-migrate-a-vm-freebsd-linux-or-windows-with-efi"&gt;&lt;a class="header-anchor" href="#how-to-migrate-a-vm-freebsd-linux-or-windows-with-efi"&gt;How to migrate a VM (FreeBSD, Linux or Windows with EFI)&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;(NOTE: older versions of FreeBSD apparently had some loader issue that prevented EFI boot in Hyper-V. Everything works for me on a recent build of 11-STABLE.)&lt;/p&gt;
+&lt;p&gt;In VirtualBox, go to the Virtual Media Manager (Ctrl+D) and copy your disk as &lt;code&gt;VHD&lt;/code&gt;.
+In the Hyper-V Manager, use the Edit Disk dialog to convert the &lt;code&gt;VHD&lt;/code&gt; to &lt;code&gt;VHDX&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;If you haven’t done that yet, go to the Virtual Switch Manager and make a virtual switch (“External” is like bridge mode in VBox).&lt;/p&gt;
+&lt;p&gt;Now make a virtual machine.
+Generation 2, no dynamic memory (FreeBSD doesn’t support that), select the virtual switch and the VHDX disk.&lt;/p&gt;
+&lt;p&gt;Click Connect and it should just work.&lt;/p&gt;
+&lt;p&gt;By the way, it’s nice that you can always close the console window without powering off the VM, unlike in VirtualBox where you need a special “Detachable start”.&lt;/p&gt;
+&lt;p&gt;Interestingly, if you create the VM without a disk and attach the disk later, you won’t see “boot from hard drive” in the firmware / boot order settings.
+And there’s no add button! (WTF?)
+The fix is to use PowerShell:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="language-powershell"&gt;$vm = Get-VM "YOUR VM NAME"
+Set-VMFirmware $vm -FirstBootDevice (Get-VMHardDiskDrive $vm)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Speaking of which, it’s nice to have a directly integrated PowerShell interface to all the things.
+My little &lt;a href="https://github.com/myfreeweb/xvmmgr"&gt;xvmmgr&lt;/a&gt; script was initially written for VirtualBox, and that required &lt;em&gt;COM&lt;/em&gt;.&lt;/p&gt;
+&lt;h2 id="how-to-migrate-a-vm-other-os"&gt;&lt;a class="header-anchor" href="#how-to-migrate-a-vm-other-os"&gt;How to migrate a VM (other OS)&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Well, a similar process, but use Generation 1.&lt;/p&gt;
+&lt;h2 id="my-experience-so-far"&gt;&lt;a class="header-anchor" href="#my-experience-so-far"&gt;My experience so far&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Client Hyper-V has pleasantly surprised me.
+It’s a very smooth experience: it &lt;em&gt;looks&lt;/em&gt; like a Type 2 hypervisor even though it’s actually Type 1, it runs VMs without any performance issues… what else could you ask for?&lt;/p&gt;
+&lt;p&gt;Well, the downside is its lack of flexibility in terms of paravirtualized (MS calls them “synthetic” or something) vs emulated devices.&lt;/p&gt;
+&lt;p&gt;All you get is the choice between two generations.
+Generation 1 means legacy BIOS boot from an emulated &lt;em&gt;IDE&lt;/em&gt; drive with emulated all the things plus optionally some paravirtualized devices like the NIC.
+Generation 2 means EFI boot from a SCSI drive with paravirtualized &lt;em&gt;everything&lt;/em&gt;.
+Oh and the SCSI controller is also on the &lt;code&gt;vmbus&lt;/code&gt;.
+So there’s no way to use EFI and SCSI with e.g. OpenBSD, you need full Hyper-V support for at least the disk and network to do that.
+Thankfully Microsoft contributed that support to FreeBSD! :)&lt;/p&gt;
+    </content>
+  </entry>
+  <entry>
+    <id>https://val.packett.cool/blog/thinkpad-x240/</id>
+    <link href="https://val.packett.cool/blog/thinkpad-x240/" rel="alternate" type="text/html"/>
+    <title>FreeBSD on the ThinkPad X240</title>
+    <published>2016-01-03T00:00:00.000Z</published>
+    <updated>2016-01-03T00:00:00.000Z</updated>
+    <summary>The beginning of my FreeBSD laptop adventure. 2016 was an awkward time for this but I have contributed to fixing that.</summary>
+    <author>
+      <name>Val Packett</name>
+      <uri>https://val.packett.cool/</uri>
+    </author>
+    <content type="html">
+      &lt;p&gt;So, I bought a laptop to run FreeBSD.&lt;/p&gt;
+&lt;p&gt;I was going to get a &lt;a href="http://blog.grem.de/pages/c720.html"&gt;C720 Chromebook&lt;/a&gt;, but I got a good deal for an X240. Yeah, yeah, a laptop from the preinstalled-insecure-adware company, whatever. Anyway, it’s a ThinkPad, so it feels very solid, has an excellent keyboard and good free software support.&lt;/p&gt;
+&lt;p&gt;So, let’s get FreeBSD running!&lt;/p&gt;
+&lt;h2 id="installation"&gt;&lt;a class="header-anchor" href="#installation"&gt;Installation&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;I’ve replaced the stock HDD with an SSD, compiled the &lt;a href="https://github.com/freebsd/freebsd-base-graphics/tree/drm-i915-update-38"&gt;drm-i915-update-38&lt;/a&gt; branch of FreeBSD on a different machine, wrote the memstick image to an old USB flash drive, booted it and installed FreeBSD on the ThinkPad.&lt;/p&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: that landed in head a long time ago, I think you can just pick up the latest release now.&lt;/ins&gt;&lt;/p&gt;
+&lt;p&gt;The first installation, with ZFS root + UFS &lt;code&gt;/boot&lt;/code&gt;, did not work because the EFI loader couldn’t load &lt;code&gt;zfs.ko&lt;/code&gt;. After reinstalling on UFS, the loader does load &lt;code&gt;zfs.ko&lt;/code&gt;… Oh well.&lt;/p&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: now ZFS root works out of the box.&lt;/ins&gt;&lt;/p&gt;
+&lt;p&gt;GRUB 2 is also an option (and &lt;em&gt;the&lt;/em&gt; option for using &lt;a href="https://www.freshports.org/sysutils/beadm"&gt;sysutils/beadm&lt;/a&gt;), but &lt;a href="https://unix.stackexchange.com/questions/250028/grub2-security-vulnerability-pressing-backspace-28-times-what-are-my-risks-wh/250079"&gt;the recent “backspace 28 times to bypass boot passphrase” vulnerability&lt;/a&gt; really discouraged me from installing it. Of course, &lt;a href="https://twitter.com/rootkovska/status/677780387804901377"&gt;what are you even trying to protect with that passphrase&lt;/a&gt;, but ugh, GNU code “quality”.&lt;/p&gt;
+&lt;h2 id="power-management"&gt;&lt;a class="header-anchor" href="#power-management"&gt;Power management&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The usual laptop settings for &lt;code&gt;/etc/rc.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;powerd_enable="YES"
+powerd_flags="-a hiadaptive -b adaptive -i 75 -r 85 -p 500"
+performance_cx_lowest="Cmax"
+economy_cx_lowest="Cmax"
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: &lt;a href="https://github.com/lonkamikaze/powerdxx"&gt;powerd++&lt;/a&gt; is a better powerd!&lt;/ins&gt;&lt;/p&gt;
+&lt;p&gt;And for &lt;code&gt;/boot/loader.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hw.pci.do_power_nodriver=3
+drm.i915.enable_rc6=7
+hw.snd.latency=7
+hint.pcm.0.buffersize=65536
+hint.pcm.1.buffersize=65536
+hint.pcm.2.buffersize=65536
+hw.snd.feeder_buffersize=65536
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Battery life with the internal + big external battery: ~8 - 8.5 hours of mostly surfing the web with Firefox on Wi-Fi with 50% screen brightness. (Obviously, more hours without Firefox :D) I don’t know how some reviewers got 20 hours of Wi-Fi browsing on Windows. Linux users say it’s &lt;a href="https://www.reddit.com/r/Ubuntu/comments/2oheiu/linux_os_suggestion_for_lenovo_x240/cmn7n0o"&gt;6-7 hours&lt;/a&gt; or &lt;a href="http://www.splitbrain.org/blog/2014-03/08-lenovo_thinkpad_x240_xubuntu"&gt;above 8 hours&lt;/a&gt;, so FreeBSD is not worse than Linux there. That’s good :-)&lt;/p&gt;
+&lt;p&gt;I couldn’t get suspend/resume to work. It does suspend but doesn’t resume (pressing the power button makes the fans spin, but the power button is still blinking).&lt;/p&gt;
+&lt;p&gt;But putting the X240 into sleep mode for short breaks is not really necessary. With the huge battery and the ultra-low-power processor, just leaving it running for 15-30 minutes won’t drain the battery much.&lt;/p&gt;
+&lt;p&gt;Oh, and the power consumption can be measured with Intel’s performance counters. Install &lt;a href="https://freshports.org/sysutils/intel-pcm/"&gt;sysutils/intel-pcm&lt;/a&gt; and run:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo kldload cpuctl
+$ sudo pcm.x
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Power consumption of the CPU (and GPU, and everything else on the chip) when idle and running Xorg is around 3 Watt.&lt;/p&gt;
+&lt;h2 id="ethernet-and-wi-fi"&gt;&lt;a class="header-anchor" href="#ethernet-and-wi-fi"&gt;Ethernet and Wi-Fi&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Works. This laptop has Intel’s networking hardware, which is great news for free operating systems. Not that I like Intel (super evil Management Engine!!) but they do write open source drivers for Linux, and BSD developers port them to the BSDs.&lt;/p&gt;
+&lt;p&gt;The Intel PRO/1000 Ethernet card is supported by the &lt;code&gt;em&lt;/code&gt; driver.&lt;/p&gt;
+&lt;p&gt;The Intel 7260 wireless card is supported by the &lt;code&gt;iwm&lt;/code&gt; driver.&lt;/p&gt;
+&lt;p&gt;Only &lt;code&gt;802.11a/b/g&lt;/code&gt; is supported in &lt;code&gt;iwm&lt;/code&gt; for now (IIRC because the driver is imported from OpenBSD, and they’re still working on &lt;code&gt;802.11n&lt;/code&gt; support).&lt;/p&gt;
+&lt;h2 id="bluetooth"&gt;&lt;a class="header-anchor" href="#bluetooth"&gt;Bluetooth&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Doesn’t work.&lt;/p&gt;
+&lt;p&gt;Apparently, it’s &lt;a href="http://www.ubuntu.com/certification/catalog/component/usb/4103/8087%3A07dc/"&gt;this one&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It’s not even connecting as a USB device:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;usbd_req_re_enumerate: addr=1, set address failed! (USB_ERR_TIMEOUT, ignored)
+usbd_setup_device_desc: getting device descriptor at addr 1 failed, USB_ERR_TIMEOUT
+ugen0.2: &amp;lt;Unknown&amp;gt; at usbus0 (disconnected)
+uhub_reattach_port: could not allocate new device
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I never use Bluetooth on laptops, anyway.&lt;/p&gt;
+&lt;h2 id="graphics-intel-hd-graphics-on-haswell"&gt;&lt;a class="header-anchor" href="#graphics-intel-hd-graphics-on-haswell"&gt;Graphics (Intel HD Graphics on Haswell!)&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Works. &lt;s&gt;Well, there’s a reason I’m using the &lt;code&gt;drm-i915-update-38&lt;/code&gt; branch ;-) This is not in a release yet — it’s not even in &lt;code&gt;-CURRENT&lt;/code&gt;! — so I’m not expecting perfect quality.&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: this was merged a long time ago. There’s a new &lt;code&gt;drm-next&lt;/code&gt; in &lt;a href="https://github.com/FreeBSDDesktop/freebsd-base-graphics"&gt;the graphics team’s fork&lt;/a&gt; though, and it brings Skylake support, Wayland…&lt;/ins&gt;&lt;/p&gt;
+&lt;p&gt;But it works fine with correct settings.&lt;/p&gt;
+&lt;p&gt;Do not load &lt;code&gt;i915kms&lt;/code&gt; in the boot loader!! The system won’t boot. Instead, use the &lt;code&gt;kld_list&lt;/code&gt; setting in &lt;code&gt;/etc/rc.conf&lt;/code&gt; to load the module later in the boot process.&lt;/p&gt;
+&lt;p&gt;When you load &lt;code&gt;i915kms&lt;/code&gt;, it will repeat this error for less than a second:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;error: [drm:pid51453:intel_sbi_read] *ERROR* timeout waiting for SBI to complete read transaction
+error: [drm:pid51453:intel_sbi_write] *ERROR* timeout waiting for SBI to complete write transaction
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That’s okay, it works anyway. Looks like &lt;a href="https://github.com/freebsd/freebsd/commit/4ef184b756b083683d4bac92ab02330aa08c4427"&gt;this is not even Haswell specific&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So, here’s the &lt;code&gt;xorg.conf&lt;/code&gt; part:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Section "Device"
+      Option      "AccelMethod"            "sna"
+      Option      "TripleBuffer"           "true"
+      Option      "HotPlug"                "true"
+      Option      "TearFree"               "false"
+      Identifier  "Card0"
+      Driver      "intel"
+      BusID       "PCI:0:2:0"
+EndSection
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: with &lt;code&gt;drm-next&lt;/code&gt;, the &lt;code&gt;modesetting&lt;/code&gt; driver with &lt;code&gt;glamor&lt;/code&gt; acceleration works!&lt;/ins&gt;&lt;/p&gt;
+&lt;p&gt;Brightness adjustment works via &lt;del&gt;both&lt;/del&gt; &lt;a href="https://www.freshports.org/graphics/intel-backlight/"&gt;graphics/intel-backlight&lt;/a&gt; &lt;del&gt;and &lt;code&gt;acpi_video&lt;/code&gt; (&lt;code&gt;sysctl hw.acpi.video.lcd0.brightness&lt;/code&gt;)&lt;/del&gt;. &lt;del&gt;The brightness keys on the keyboard don’t work properly though. The fn key on F5 (lower brightness) just sets the brightness to maximum, F6 (raise brightness) does nothing. Here’s the error that’s shown when pressing the lower brightness key with &lt;code&gt;drm.debug=3&lt;/code&gt; in &lt;code&gt;/boot/loader.conf&lt;/code&gt;:&lt;/del&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[drm:KMS:pid12:intel_panel_get_max_backlight] max backlight PWM = 852
+[drm:KMS:pid12:intel_panel_actually_set_backlight] set backlight PWM = 841
+[drm:pid12:intel_opregion_gse_intr] PWM freq is not supported
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;del&gt;So I’ve configured F5 and F6 (the real function keys, FnLock mode) to call &lt;code&gt;intel_backlight&lt;/code&gt;.&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: &lt;code&gt;acpi_video&lt;/code&gt; is the one incorrectly changing the brightness to max! Don’t load it. &lt;code&gt;acpi_ibm&lt;/code&gt; changes the brightness correctly!&lt;/ins&gt;&lt;/p&gt;
+&lt;p&gt;HDMI output works with a Mini DisplayPort adapter. 1080p video playback on an HDMI TV using &lt;code&gt;mpv&lt;/code&gt; is smooth.&lt;/p&gt;
+&lt;p&gt;VAAPI video output and hardware accelerated decoding works. With &lt;code&gt;mpv --vo=vaapi --hwdec=vaapi&lt;/code&gt;, CPU usage is around 20% for a 1080p H.264 video (vs. 60% with software decoding), the fans stay silent. You’ll need to install &lt;a href="https://www.freshports.org/multimedia/libva-intel-driver/"&gt;multimedia/libva-intel-driver&lt;/a&gt; and &lt;a href="https://www.freshports.org/multimedia/mpv"&gt;multimedia/mpv&lt;/a&gt; from pkg, and rebuild &lt;a href="https://www.freshports.org/multimedia/ffmpeg"&gt;multimedia/ffmpeg&lt;/a&gt; with the VAAPI option.&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;OpenCL on the Haswell GPU (powered by Beignet) doesn’t work yet. &lt;code&gt;clinfo&lt;/code&gt; shows:&lt;/del&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Beignet: self-test failed: (3, 7, 5) + (5, 7, 3) returned (3, 7, 5)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: OpenCL was fixed a long time ago.&lt;/ins&gt;&lt;/p&gt;
+&lt;h2 id="audio"&gt;&lt;a class="header-anchor" href="#audio"&gt;Audio&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Works. The built-in Realtek ALC292 sound card just works. FreeBSD’s audio support is good.&lt;/p&gt;
+&lt;p&gt;The internal microphone is recognized as a separate device:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ cat /dev/sndstat
+Installed devices:
+pcm0: &amp;lt;Intel Haswell (HDMI/DP 8ch)&amp;gt; (play)
+pcm1: &amp;lt;Realtek ALC292 (Analog 2.0+HP/2.0)&amp;gt; (play/rec) default
+pcm2: &amp;lt;Realtek ALC292 (Internal Analog Mic)&amp;gt; (rec)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;HDMI audio works too (&lt;code&gt;sysctl hw.snd.default_unit&lt;/code&gt; to switch the sound card; applications that play sound have to be restarted.)&lt;/p&gt;
+&lt;h2 id="webcam"&gt;&lt;a class="header-anchor" href="#webcam"&gt;Webcam&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Works. With &lt;code&gt;webcamd&lt;/code&gt;, of course. But I don’t need it, so I’ve disabled it in the BIOS Setup.&lt;/p&gt;
+&lt;h2 id="sd-card-reader"&gt;&lt;a class="header-anchor" href="#sd-card-reader"&gt;SD card reader&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Doesn’t work.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pciconf&lt;/code&gt; detects it as:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;none2@pci0:2:0:0:       class=0xff0000 card=0x221417aa chip=0x522710ec rev=0x01 hdr=0x00
+    vendor     = 'Realtek Semiconductor Co., Ltd.'
+    device     = 'RTS5227 PCI Express Card Reader'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It’s supported in OpenBSD with &lt;a href="http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man4/rtsx.4?query=rtsx&amp;sec=4"&gt;rtsx(4)&lt;/a&gt;. FreeBSD bugs for this: &lt;a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=161719"&gt;161719&lt;/a&gt;, &lt;a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=204521"&gt;204521&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It should be possible to use it with OpenBSD/NetBSD/Linux in a bhyve VM with PCI passthrough, like &lt;a href="http://0xfeedface.org/2014/12/11/FreeBSD-Intel-wifi-via-bhyve.html"&gt;the Wi-Fi card before iwm was added&lt;/a&gt;. That would also be more secure (that’s what &lt;a href="https://www.qubes-os.org"&gt;Qubes&lt;/a&gt; does for all the hardware.) But I don’t need to use SD cards on this laptop.&lt;/p&gt;
+&lt;h2 id="trackpad-and-trackpoint"&gt;&lt;a class="header-anchor" href="#trackpad-and-trackpoint"&gt;Trackpad and TrackPoint&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;del&gt;Oh, this is the most interesting part. Well, it works, sure. But there are at least three ways of using them, none of which is perfect.&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: &lt;a href="https://github.com/freebsd/freebsd/commit/bc8448b7c73bbbcaf15b375eb9648e963bcc8334"&gt;evdev synaptics landed in current&lt;/a&gt;!&lt;/ins&gt;&lt;/p&gt;
+&lt;h3 id="moused"&gt;&lt;a class="header-anchor" href="#moused"&gt;moused&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;FreeBSD includes &lt;code&gt;moused&lt;/code&gt;, a little daemon that watches the mouse device you tell it to watch and forwards all events to a virtualized mouse, which is accessible to Xorg at &lt;code&gt;/dev/sysmouse&lt;/code&gt; and also works on the text console. It has advanced support (like sensitivity settings) for Synaptics touchpads and ThinkPad TrackPoints (set &lt;code&gt;hw.psm.synaptics_support=1&lt;/code&gt; and &lt;code&gt;hw.psm.trackpoint_support=1&lt;/code&gt; in &lt;code&gt;/boot/loader.conf&lt;/code&gt; to enable).&lt;/p&gt;
+&lt;p&gt;Sadly, it forwards all events to a virtualized &lt;em&gt;mouse&lt;/em&gt;. Not a trackpad, just a mouse, so the experience is not as good.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;xorg.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Section "InputDevice"
+      Identifier "SysMouse"
+      Driver     "mouse"
+      Option     "Device" "/dev/sysmouse"
+EndSection
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id="xf86-input-synaptics"&gt;&lt;a class="header-anchor" href="#xf86-input-synaptics"&gt;xf86-input-synaptics&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;This is the Synaptics driver that provides a great trackpad experience. Inertial scrolling, horizontal scrolling, natural scrolling, perfectly smooth cursor movement… Everything is as good as in OS X on a MacBook.&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;But the TrackPoint doesn’t work. On the X240, it’s attached to the trackpad as a guest mouse. The trackpad forwards the TrackPoint’s PS/2 events with a special mark (IIRC, it’s W = 3).&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;And the Synaptics driver &lt;a href="http://cgit.freedesktop.org/xorg/driver/xf86-input-synaptics/commit/?id=b19e3782a77c171ca20fc962f95923495fdb7978"&gt;stopped supporting guest devices in 2010&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: &lt;a href="https://github.com/myfreeweb/xf86-input-synaptics"&gt;added the guest mouse support back to xf86-input-synaptics&lt;/a&gt;! Also adds ClickPad support to the raw PS/2 protocol used by the driver on the BSDs (on Linux, it uses evdev, and they only added clickpad support there).&lt;/ins&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;Also, clicking doesn’t work, but I don’t care. I’m used to tapping.&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;xorg.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Section "InputDevice"
+      Identifier  "Touchpad"
+      Driver      "synaptics"
+      Option      "Protocol" "psm"
+      Option      "Device" "/dev/psm0"
+      Option      "VertEdgeScroll" "off"
+      Option      "VertTwoFingerScroll" "on"
+      Option      "HorizEdgeScroll" "off"
+      Option      "HorizTwoFingerScroll" "on"
+      Option      "VertScrollDelta" "-111"
+      Option      "HorizScrollDelta" "-111"
+      Option      "ClickPad" "on"
+      Option      "SoftButtonAreas" "4201 0 0 1950 2710 4200 0 1950"
+      Option      "AreaTopEdge" "5%"
+EndSection
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id="evdevfbsd"&gt;&lt;a class="header-anchor" href="#evdevfbsd"&gt;evdevfbsd&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;I accidentally found &lt;a href="https://github.com/jiixyj/evdevfbsd"&gt;evdevfbsd&lt;/a&gt;, a little program that exposes PS/2 devices as &lt;code&gt;evdev&lt;/code&gt; devices via CUSE (&lt;strong&gt;C&lt;/strong&gt;haracter Device in &lt;strong&gt;Use&lt;/strong&gt;rspace).&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;evdev&lt;/code&gt; is a protocol that comes from Linux. It allows kernel (or CUSE) drivers to provide a standardized interface for devices so that Xorg wouldn’t care about any particular vendor.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;evdevfbsd&lt;/code&gt; correctly separates the trackpad and the TrackPoint. Cursor movement works. But only cursor movement. No touch scrolling, no tapping, no clicking. And it looks like it might be &lt;code&gt;xf86-input-evdev&lt;/code&gt;’s fault, because &lt;a href="https://github.com/gvalkov/python-evdev/blob/master/bin/evtest.py"&gt;evtest.py&lt;/a&gt; shows tap events when tapping!&lt;/p&gt;
+&lt;h3 id="something-else"&gt;&lt;a class="header-anchor" href="#something-else"&gt;&lt;del&gt;Something else?&lt;/del&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;del&gt;I’ve tried to write a CUSE program that works as a proxy between &lt;code&gt;/dev/psm0&lt;/code&gt; and the Synaptics driver, extracting guest (TrackPoint) events in the process.&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;It almost works… the only problem is that the Synaptics driver locks the whole X server while reading from my proxy, so only mouse movement works and nothing else, not even Ctrl+Alt+F1 to switch to a console. Well, the power button works. And SSHing into the laptop.&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;del&gt;Seems like the problem with CUSE is that there’s no way to find out, in the &lt;code&gt;poll&lt;/code&gt; method, that the process that polls your device wants to stop. So, when &lt;code&gt;moused&lt;/code&gt; reads from the proxy, it works, but when you stop &lt;code&gt;moused&lt;/code&gt; with Ctrl-C, it doesn’t stop until you touch the TrackPoint or the trackpad a little to send an event.&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;&lt;ins class="remark-ins"&gt;&lt;strong&gt;UPDATE&lt;/strong&gt;: &lt;a href="https://github.com/myfreeweb/xf86-input-synaptics"&gt;added the guest mouse support back to xf86-input-synaptics&lt;/a&gt;!&lt;/ins&gt;&lt;/p&gt;
+&lt;h2 id="touchscreen"&gt;&lt;a class="header-anchor" href="#touchscreen"&gt;Touchscreen&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Works. It’s recognized as a USB HID device at &lt;code&gt;/dev/uhid0&lt;/code&gt;. There are two ways to use it in Xorg.&lt;/p&gt;
+&lt;h3 id="mouse-emulation"&gt;&lt;a class="header-anchor" href="#mouse-emulation"&gt;Mouse emulation&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The simple way: you can use it with the &lt;code&gt;mouse&lt;/code&gt; driver, as a regular mouse. Obviously, this does not provide multi-touch.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;xorg.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Section "InputDevice"
+      Identifier "Touchscreen"
+      Driver     "mouse"
+      Option     "Protocol" "usb"
+      Option     "Device" "/dev/uhid0"
+EndSection
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id="multi-touch"&gt;&lt;a class="header-anchor" href="#multi-touch"&gt;Multi-touch&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The other way: you can use it with &lt;code&gt;webcamd&lt;/code&gt; and the &lt;code&gt;evdev&lt;/code&gt; driver. This will actually support multi-touch.&lt;/p&gt;
+&lt;p&gt;Recompile &lt;a href="https://freshports.org/x11-drivers/xf86-input-evdev"&gt;x11-drivers/xf86-input-evdev&lt;/a&gt; from ports with the &lt;code&gt;MULTITOUCH&lt;/code&gt; option, start &lt;code&gt;webcamd&lt;/code&gt; like this (note that CUSE is part of the base system on &lt;code&gt;11-CURRENT&lt;/code&gt;, so it’s not called &lt;code&gt;cuse4bsd&lt;/code&gt; anymore):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo make -C /usr/ports/x11-drivers/xf86-input-evdev config deinstall install clean
+$ sudo kldload cuse
+$ sudo webcamd -d ugen1.3 -N Touchscreen-ELAN -M 0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;xorg.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Section "InputDevice"
+      Identifier "Touchscreen"
+      Driver     "evdev"
+      Option     "Device" "/dev/input/event0"
+EndSection
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Start &lt;code&gt;chrome --touch-events&lt;/code&gt; and visit the &lt;a href="http://www.snappymaria.com/canvas/TouchEventTest.html"&gt;touch event test&lt;/a&gt;! Also, you can scroll in GTK+ 3 applications like &lt;a href="http://corebird.baedert.org/"&gt;Corebird&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Unfortunately, it’s really bad at detecting when a touch &lt;em&gt;ends&lt;/em&gt;. This means that scrolling and tapping &lt;a href="https://www.youtube.com/watch?v=nMR1o5cc2nc"&gt;will get stuck&lt;/a&gt;. So I’m using the &lt;code&gt;mouse&lt;/code&gt; driver for now.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;UPDATE:&lt;/strong&gt; the new &lt;code&gt;wmt(4)&lt;/code&gt; kernel driver supports the touchscreen perfectly, without that issue!! Also, &lt;code&gt;libinput&lt;/code&gt;  is better than &lt;code&gt;evdev&lt;/code&gt; in Xorg.&lt;/p&gt;
+&lt;h2 id="tpm-trusted-platform-module"&gt;&lt;a class="header-anchor" href="#tpm-trusted-platform-module"&gt;TPM (Trusted Platform Module)&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Works. (With the dedicated TPM 1.2 module. Haven’t tried Intel’s built-in TPM 2.0 support. The choice between them is in the BIOS/UEFI settings.)&lt;/p&gt;
+&lt;p&gt;OpenSSH works with a TPM key through &lt;a href="https://github.com/ThomasHabets/simple-tpm-pk11"&gt;simple-tpm-pk11&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;UPDATE:&lt;/strong&gt; turns out the TPM was preventing the laptop from waking up from suspend! (And I did unload the tpm module before suspend.) Disabled it in firmware settings.&lt;/p&gt;
+&lt;h2 id="conclusion"&gt;&lt;a class="header-anchor" href="#conclusion"&gt;Conclusion&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;It’s possible to use a Haswell ThinkPad with FreeBSD right now :-) Everything except Bluetooth, SD cards and &lt;del&gt;waking up from sleep&lt;/del&gt; works.&lt;/p&gt;
+&lt;p&gt;OpenBSD would be better though. They have excellent ThinkPad support, because OpenBSD developers use OpenBSD on ThinkPads. But I’m working on software that uses FreeBSD jails, and I just prefer FreeBSD.&lt;/p&gt;
+    </content>
+  </entry>
+</feed>

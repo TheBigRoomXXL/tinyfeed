@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-aQjWkBDwrA_OE5UOs0wGGAA-Z5G7oSl6xrLxrrYiGvfgCJik5Ay9V6Utt0Nmyfsavfzswk1sJlHXgy3lYLyEu1FrdLEwFdruIjO2mgpKdky7ZoiRJrQlXKPKpJ8-MHlxFfJxbDEIfQnTbXdXS4xTkNeEEbGnZs_berOeVTZCovDJONWp-V0ddH9JIqtszh0UsejAIJXuhLWpiBPyJUNwqDhwAo9oEQ10AzZ3qkk84wFhoPjPV3F-u2XwsPMG7DI5k7gWtcKXwg_RcWPZMuNE8GQisXJHFQAY9SBqDGdUo7RNVX7p6FjoHd4nVaC7PE2PNhHkKaHMmPky7mGt3bjqHw==' ;
+		script-src 'nonce-aQjWkBDwrA_OE5UOs0wGGAA-Z5G7oSl6xrLxrrYiGvfgCJik5Ay9V6Utt0Nmyfsavfzswk1sJlHXgy3lYLyEu1FrdLEwFdruIjO2mgpKdky7ZoiRJrQlXKPKpJ8-MHlxFfJxbDEIfQnTbXdXS4xTkNeEEbGnZs_berOeVTZCovDJONWp-V0ddH9JIqtszh0UsejAIJXuhLWpiBPyJUNwqDhwAo9oEQ10AzZ3qkk84wFhoPjPV3F-u2XwsPMG7DI5k7gWtcKXwg_RcWPZMuNE8GQisXJHFQAY9SBqDGdUo7RNVX7p6FjoHd4nVaC7PE2PNhHkKaHMmPky7mGt3bjqHw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="aQjWkBDwrA_OE5UOs0wGGAA-Z5G7oSl6xrLxrrYiGvfgCJik5Ay9V6Utt0Nmyfsavfzswk1sJlHXgy3lYLyEu1FrdLEwFdruIjO2mgpKdky7ZoiRJrQlXKPKpJ8-MHlxFfJxbDEIfQnTbXdXS4xTkNeEEbGnZs_berOeVTZCovDJONWp-V0ddH9JIqtszh0UsejAIJXuhLWpiBPyJUNwqDhwAo9oEQ10AzZ3qkk84wFhoPjPV3F-u2XwsPMG7DI5k7gWtcKXwg_RcWPZMuNE8GQisXJHFQAY9SBqDGdUo7RNVX7p6FjoHd4nVaC7PE2PNhHkKaHMmPky7mGt3bjqHw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/dns-proxy-forwarder-blackhole/ target="_blank">
+					<h2>Go-hole: A minimalistic DNS proxy and and blocker</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-05">2023-02-05</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/openrc-podman-kube-play/ target="_blank">
+					<h2>OpenRC Script for &#39;podman kube play&#39;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-26">2022-10-26</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/podman-multiple-networks/ target="_blank">
+					<h2>Connecting multiple networks to a Podman container</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-16">2022-10-16</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/alpine-podman/ target="_blank">
+					<h2>Setting up Alpine Linux with Podman</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-25">2022-06-25</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/alpine-docker-rootless/ target="_blank">
+					<h2>Setting up Alpine Linux with Rootless Docker</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-19">2022-06-19</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/k3s-glusterfs/ target="_blank">
+					<h2>Setting up a Kubernetes cluster with K3S, GlusterFS and Load Balancing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-03">2021-09-03</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/onedrive-upload-backup/ target="_blank">
+					<h2>Back up server to OneDrive’s special App Folder</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-02">2021-09-02</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/unifi-usg-multiple-ip-addresses-on-pppoe/ target="_blank">
+					<h2>Unifi USG: Multiple IP addresses on PPPoE</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-16">2021-08-16</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/raspberry-pi-os-remove-packages/ target="_blank">
+					<h2>Raspberry Pi OS: Remove unnecessary packages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-07">2020-06-07</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/traefik-access-log-influxdb-grafana-telegraf/ target="_blank">
+					<h2>Analyze Traefik access log using InfluxDB and Grafana</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-03">2020-06-03</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/endomono-export-gpx/ target="_blank">
+					<h2>Export trainings from Endomondo as GPX files</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-01">2020-06-01</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/usb-boot-raspberry-pi/ target="_blank">
+					<h2>Native USB boot for Raspberry Pi 4</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-28">2020-05-28</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/multi-arch-docker-images-2/ target="_blank">
+					<h2>Build Multi-Arch images on Docker Hub (Part 2)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-16">2020-05-16</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/multi-arch-docker-images-1/ target="_blank">
+					<h2>Build Multi-Arch images on Docker Hub (Part 1)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-15">2020-05-15</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/jenkins-build-docker-images/ target="_blank">
+					<h2>How to let Jenkins build Docker images</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-06-11">2017-06-11</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/lets-encrypt-effs-certbot-with-nginx-in-docker/ target="_blank">
+					<h2>Using Let’s Encrypt / EFF’s CertBot with NGINX in Docker</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-02-11">2017-02-11</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/encrypted-file-container-macos/ target="_blank">
+					<h2>Creating an encrypted file container on macOS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-12-06">2016-12-06</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/uptime-robot-website-monitoring/ target="_blank">
+					<h2>UptimeRobot: A nice free website monitoring service</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-09-05">2016-09-05</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/fix-docker-not-using-etc-hosts-on-macos/ target="_blank">
+					<h2>Fix Docker not using /etc/hosts on MacOS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-08-28">2016-08-28</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/from-fhem-to-openhab-with-homegear-installation-docker-container/ target="_blank">
+					<h2>From FHEM to OpenHAB with Homegear: Installation/Docker container</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-08-28">2016-08-28</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/https-ssl-in-wordpress-behind-proxy/ target="_blank">
+					<h2>How to set up HTTPS/SSL in WordPress behind Proxy (nginx, HAProxy, Apache, lighttpd)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-08-27">2016-08-27</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/reduce-pdf-file-size-2/ target="_blank">
+					<h2>How to reduce PDF file size in Linux - Part 2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-08-15">2015-08-15</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/ipv6-on-a-sonicwall/ target="_blank">
+					<h2>How to enable IPv6 on a SonicWall (SonicOS 5.9) using NAT</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-11-20">2014-11-20</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/reduce-pdf-file-size/ target="_blank">
+					<h2>How to reduce PDF file size in Linux</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-11-21">2012-11-21</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://virtualzone.de/posts/determining-a-locations-federal-state-using-google-maps-api/ target="_blank">
+					<h2>Determining a location’s federal state using Google Maps API</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-08-10">2012-08-10</time>
+					|
+					<a href="https://virtualzone.de" target="_blank">virtualzone.de</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://virtualzone.de/posts/" target="_blank">Posts on Virtualzone Blog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="aQjWkBDwrA_OE5UOs0wGGAA-Z5G7oSl6xrLxrrYiGvfgCJik5Ay9V6Utt0Nmyfsavfzswk1sJlHXgy3lYLyEu1FrdLEwFdruIjO2mgpKdky7ZoiRJrQlXKPKpJ8-MHlxFfJxbDEIfQnTbXdXS4xTkNeEEbGnZs_berOeVTZCovDJONWp-V0ddH9JIqtszh0UsejAIJXuhLWpiBPyJUNwqDhwAo9oEQ10AzZ3qkk84wFhoPjPV3F-u2XwsPMG7DI5k7gWtcKXwg_RcWPZMuNE8GQisXJHFQAY9SBqDGdUo7RNVX7p6FjoHd4nVaC7PE2PNhHkKaHMmPky7mGt3bjqHw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

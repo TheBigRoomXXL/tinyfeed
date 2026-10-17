@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-CNJa67GcmHPgzBtc5NCN9Ahhf4Nh95jE1FJEkSDv1My7VXMN7XNstJm08EMS_OIW_chOTHGK2KvZsRJw8_C2PGoQaFO16ey3T9bcL2fQmjnnfTuJqy0tMd_Zrt4wXM8NgaIpndNtE3gx5gehWp5ML4QMWhfhzLaFaNoPgd3G0IuN9QHCQWiPcoZ3hG1oWFWH42Zrp3DMOzP7D6ffejKzqggl0kSBDuyOMDcZpX8uNwgDtO7HLlRbbvdjwTe2nHtA0inzskb8MlUPProdfcz5sOpumRVXfEelc-lZ_bsnw8b1u0ItavZ5DTiegdR547EoGQ0QZnVE7ugN7votprcWgA==' ;
+		script-src 'nonce-CNJa67GcmHPgzBtc5NCN9Ahhf4Nh95jE1FJEkSDv1My7VXMN7XNstJm08EMS_OIW_chOTHGK2KvZsRJw8_C2PGoQaFO16ey3T9bcL2fQmjnnfTuJqy0tMd_Zrt4wXM8NgaIpndNtE3gx5gehWp5ML4QMWhfhzLaFaNoPgd3G0IuN9QHCQWiPcoZ3hG1oWFWH42Zrp3DMOzP7D6ffejKzqggl0kSBDuyOMDcZpX8uNwgDtO7HLlRbbvdjwTe2nHtA0inzskb8MlUPProdfcz5sOpumRVXfEelc-lZ_bsnw8b1u0ItavZ5DTiegdR547EoGQ0QZnVE7ugN7votprcWgA==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="CNJa67GcmHPgzBtc5NCN9Ahhf4Nh95jE1FJEkSDv1My7VXMN7XNstJm08EMS_OIW_chOTHGK2KvZsRJw8_C2PGoQaFO16ey3T9bcL2fQmjnnfTuJqy0tMd_Zrt4wXM8NgaIpndNtE3gx5gehWp5ML4QMWhfhzLaFaNoPgd3G0IuN9QHCQWiPcoZ3hG1oWFWH42Zrp3DMOzP7D6ffejKzqggl0kSBDuyOMDcZpX8uNwgDtO7HLlRbbvdjwTe2nHtA0inzskb8MlUPProdfcz5sOpumRVXfEelc-lZ_bsnw8b1u0ItavZ5DTiegdR547EoGQ0QZnVE7ugN7votprcWgA==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://research.swtch.com/fp-proof target="_blank">
+					<h2>Fast Unrounded Scaling: Proof by Ivy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-19">2026-01-19</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/fp target="_blank">
+					<h2>Floating-Point Printing and Parsing Can Be Simple And Fast</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-19">2026-01-19</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/fp-knuth target="_blank">
+					<h2>Pulling a New Proof from Knuth’s Fixed-Point Printer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-10">2026-01-10</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/fp-all target="_blank">
+					<h2>Floating Point Formatting</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-10">2026-01-10</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/diffcover target="_blank">
+					<h2>Differential Coverage for Debugging</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-25">2025-04-25</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/bisect target="_blank">
+					<h2>Hash-Based Bisect Debugging in Compilers and Runtimes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-18">2024-07-18</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/xz-script target="_blank">
+					<h2>The xz attack shell script</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-02">2024-04-02</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/xz-timeline target="_blank">
+					<h2>Timeline of the xz open source attack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-02">2024-04-02</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/gochanges target="_blank">
+					<h2>Go Changes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-08">2023-12-08</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/testing target="_blank">
+					<h2>Go Testing By Example</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-05">2023-12-05</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/nih target="_blank">
+					<h2>Running the “Reflections on Trusting Trust” Compiler</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-26">2023-10-26</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/ub target="_blank">
+					<h2>C and C&#43;&#43; Prioritize Performance over Correctness</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-18">2023-08-18</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/sample target="_blank">
+					<h2>The Magic of Sampling, and its Limitations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-02-04">2023-02-04</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/deps target="_blank">
+					<h2>Our Software Dependency Problem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-01-23">2019-01-23</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/vgo-eng target="_blank">
+					<h2>What is Software Engineering?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-05-30">2018-05-30</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/dogma target="_blank">
+					<h2>Go and Dogma</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-01-09">2017-01-09</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/acme target="_blank">
+					<h2>A Tour of Acme</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-09-17">2012-09-17</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/boolean target="_blank">
+					<h2>Minimal Boolean Formulas</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-05-18">2011-05-18</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/zip target="_blank">
+					<h2>Zip Files All The Way Down</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-03-18">2010-03-18</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/utf8 target="_blank">
+					<h2>UTF-8: Bits, Bytes, and Benefits</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-03-05">2010-03-05</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/bell-labs target="_blank">
+					<h2>Computing History at Bell Labs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2008-04-09">2008-04-09</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/sparse target="_blank">
+					<h2>Using Uninitialized Memory for Fun and Profit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2008-03-14">2008-03-14</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/tictactoe target="_blank">
+					<h2>Play Tic-Tac-Toe with Knuth</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2008-01-25">2008-01-25</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://research.swtch.com/crabs target="_blank">
+					<h2>Crabs, the bitmap terror!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2008-01-09">2008-01-09</time>
+					|
+					<a href="https://research.swtch.com" target="_blank">research.swtch.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="" target="_blank">research!rsc</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="CNJa67GcmHPgzBtc5NCN9Ahhf4Nh95jE1FJEkSDv1My7VXMN7XNstJm08EMS_OIW_chOTHGK2KvZsRJw8_C2PGoQaFO16ey3T9bcL2fQmjnnfTuJqy0tMd_Zrt4wXM8NgaIpndNtE3gx5gehWp5ML4QMWhfhzLaFaNoPgd3G0IuN9QHCQWiPcoZ3hG1oWFWH42Zrp3DMOzP7D6ffejKzqggl0kSBDuyOMDcZpX8uNwgDtO7HLlRbbvdjwTe2nHtA0inzskb8MlUPProdfcz5sOpumRVXfEelc-lZ_bsnw8b1u0ItavZ5DTiegdR547EoGQ0QZnVE7ugN7votprcWgA==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

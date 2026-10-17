@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-6cBkpkaGaJvX65J1KnKuXnndguYX3wOoi1CNl6LGbkrzO-mOmjXasWVwDLpHplEJpZy4RWCRH-eBU2htI5qJstVs80TqlBvKhdqDSyfjDi7pwl99OCPQdkyqu9XCLwOc3EIKWTp_VyxQndyy1Dq1p8VBWPdkBjBjJYEMxZe8KEkgDe1d5SgR4bkzphvGlDHCsM9kjkQD5Pd8bdgTm-nC4CInHZd8730MH-TW2WDmOLkpJSUqQUWENzcOJsirrDm5VVNADa29V86Wbz98kuELU0_QSyLtKldK7FJLIsRJTXdyUWP2fbFF2vxnWQV1VlAg2rbmjF_Z6q84gNUyRyxLcQ==' ;
+		script-src 'nonce-6cBkpkaGaJvX65J1KnKuXnndguYX3wOoi1CNl6LGbkrzO-mOmjXasWVwDLpHplEJpZy4RWCRH-eBU2htI5qJstVs80TqlBvKhdqDSyfjDi7pwl99OCPQdkyqu9XCLwOc3EIKWTp_VyxQndyy1Dq1p8VBWPdkBjBjJYEMxZe8KEkgDe1d5SgR4bkzphvGlDHCsM9kjkQD5Pd8bdgTm-nC4CInHZd8730MH-TW2WDmOLkpJSUqQUWENzcOJsirrDm5VVNADa29V86Wbz98kuELU0_QSyLtKldK7FJLIsRJTXdyUWP2fbFF2vxnWQV1VlAg2rbmjF_Z6q84gNUyRyxLcQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="6cBkpkaGaJvX65J1KnKuXnndguYX3wOoi1CNl6LGbkrzO-mOmjXasWVwDLpHplEJpZy4RWCRH-eBU2htI5qJstVs80TqlBvKhdqDSyfjDi7pwl99OCPQdkyqu9XCLwOc3EIKWTp_VyxQndyy1Dq1p8VBWPdkBjBjJYEMxZe8KEkgDe1d5SgR4bkzphvGlDHCsM9kjkQD5Pd8bdgTm-nC4CInHZd8730MH-TW2WDmOLkpJSUqQUWENzcOJsirrDm5VVNADa29V86Wbz98kuELU0_QSyLtKldK7FJLIsRJTXdyUWP2fbFF2vxnWQV1VlAg2rbmjF_Z6q84gNUyRyxLcQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2022/10/reasoning-about-asynciosemaphore.html target="_blank">
+					<h2>Reasoning about asyncio.Semaphore</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-05">2022-10-05</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2022/02/meeting-mike-burrows.html target="_blank">
+					<h2>Meeting Mike Burrows</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-01">2022-03-01</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2019/03/why-operators-are-useful.html target="_blank">
+					<h2>Why operators are useful</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-03-15">2019-03-15</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2018/11/what-do-do-with-your-computer-science.html target="_blank">
+					<h2>What to do with your computer science career</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-11-26">2018-11-26</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2016/07/about-spammers-and-comments.html target="_blank">
+					<h2>About spammers and comments</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-07-23">2016-07-23</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2016/05/union-syntax.html target="_blank">
+					<h2>Union syntax</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-05-18">2016-05-18</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2016/05/adding-type-annotations-for-fspath.html target="_blank">
+					<h2>Adding type annotations for fspath</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-05-18">2016-05-18</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2016/05/the-anystr-type-variable.html target="_blank">
+					<h2>The AnyStr type variable</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-05-17">2016-05-17</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2016/04/kings-day-speech.html target="_blank">
+					<h2>King&#39;s Day Speech</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-04-27">2016-04-27</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2013/10/book-review-charles-dierbach.html target="_blank">
+					<h2>Book review: Introduction to Computer Science Using Python (by Charles Dierbach)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-10-28">2013-10-28</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2013/10/letter-to-young-programmer.html target="_blank">
+					<h2>Letter to a young programmer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2013-10-25">2013-10-25</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2011/08/compare-and-set-in-memcache.html target="_blank">
+					<h2>Compare-And-Set in Memcache</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-08-25">2011-08-25</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2011/07/before-python.html target="_blank">
+					<h2>Before Python</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-07-25">2011-07-25</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2011/06/depth-and-breadth-of-python.html target="_blank">
+					<h2>The depth and breadth of Python</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-06-03">2011-06-03</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2011/01/asynchronous-rpc-in-app-engine-today.html target="_blank">
+					<h2>Asynchronous RPC in App Engine Today</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-01-24">2011-01-24</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2011/01/new-app-engine-datastore-api.html target="_blank">
+					<h2>A new App Engine datastore API</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2011-01-07">2011-01-07</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2009/12/while-you-type-searching.html target="_blank">
+					<h2>While-you-type Searching</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-12-11">2009-12-11</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2009/11/python-in-scientific-world.html target="_blank">
+					<h2>Python in the Scientific World</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-11-05">2009-11-05</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2009/09/lovely-python.html target="_blank">
+					<h2>Lovely Python!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-09-17">2009-09-17</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2009/07/scientists-discover-that-hidden.html target="_blank">
+					<h2>Scientists Discover That Hidden Persuaders Are Real</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-07-22">2009-07-22</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2009/07/progressive-vs-conservative.html target="_blank">
+					<h2>Progressive vs. Conservative</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-07-21">2009-07-21</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2009/06/ironpython-in-action-and-decline-of.html target="_blank">
+					<h2>IronPython in Action and the Decline of Windows</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-06-26">2009-06-26</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2009/06/higs-and-lows-of-ieee-computer-magazine.html target="_blank">
+					<h2>Highs and Lows of IEEE Computer Magazine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-06-17">2009-06-17</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2009/06/new-app-engine-book.html target="_blank">
+					<h2>New App Engine Book</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-06-15">2009-06-15</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://neopythonic.blogspot.com/2009/05/so-you-want-to-learn-python.html target="_blank">
+					<h2>So you want to learn Python?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2009-05-26">2009-05-26</time>
+					|
+					<a href="https://neopythonic.blogspot.com" target="_blank">neopythonic.blogspot.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://neopythonic.blogspot.com/" target="_blank">Neopythonic</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="6cBkpkaGaJvX65J1KnKuXnndguYX3wOoi1CNl6LGbkrzO-mOmjXasWVwDLpHplEJpZy4RWCRH-eBU2htI5qJstVs80TqlBvKhdqDSyfjDi7pwl99OCPQdkyqu9XCLwOc3EIKWTp_VyxQndyy1Dq1p8VBWPdkBjBjJYEMxZe8KEkgDe1d5SgR4bkzphvGlDHCsM9kjkQD5Pd8bdgTm-nC4CInHZd8730MH-TW2WDmOLkpJSUqQUWENzcOJsirrDm5VVNADa29V86Wbz98kuELU0_QSyLtKldK7FJLIsRJTXdyUWP2fbFF2vxnWQV1VlAg2rbmjF_Z6q84gNUyRyxLcQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

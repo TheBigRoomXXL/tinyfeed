@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Josh Collinsworth</title>
+<description>Josh Collinsworth's blog</description>
+<language>en</language>
+<link>https://joshcollinsworth.com</link>
+<atom:link href="https://joshcollinsworth.com/api/rss.xml" rel="self" type="application/rss+xml"/>
+<lastBuildDate>Mon, 05 Oct 2026 16:06:34 GMT</lastBuildDate>
+<item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/tupo</guid>
+<title><![CDATA[The story of Tupo, my new daily logic puzzle]]></title>
+<link>https://joshcollinsworth.com/blog/tupo</link>
+<description><![CDATA[Tupo is my first new game in four years. I'm excited to share it with the world, and to talk about the process behind it.]]></description>
+<category>personal</category>
+<category>design</category>
+<category>web</category>
+<pubDate>Mon, 05 Oct 2026 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/in-defense-of-two-state-theme-toggles</guid>
+<title><![CDATA[In defense of two-state theme toggles]]></title>
+<link>https://joshcollinsworth.com/blog/in-defense-of-two-state-theme-toggles</link>
+<description><![CDATA[There's a lively debate going on over whether theme toggles should have two options (light/dark) or three, with an added "system" option. I maintain two-state toggles are better in most cases (though not all), and that the case for a third option rests mainly on problems most users don't actually have.]]></description>
+<category>opinion</category>
+<category>web</category>
+<category>design</category>
+<pubDate>Fri, 21 Aug 2026 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/productivity</guid>
+<title><![CDATA[LLMs and performative productivity]]></title>
+<link>https://joshcollinsworth.com/blog/productivity</link>
+<description><![CDATA[It's worth asking whether LLMs are actually making us more productive at all—and if so, what we might be sacrificing in return.]]></description>
+<category>opinion</category>
+<category>personal</category>
+<category>AI</category>
+<pubDate>Fri, 05 Jun 2026 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/man-cereal</guid>
+<title><![CDATA[Man Cereal]]></title>
+<link>https://joshcollinsworth.com/blog/man-cereal</link>
+<description><![CDATA[Yesterday, even though my son is barely seven years old, toxic masculinity permeated his life and, perhaps permanently and irreparably, stole a small piece of his joy.]]></description>
+<category>personal</category>
+<pubDate>Tue, 03 Mar 2026 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/baby-review</guid>
+<title><![CDATA[My review of the Nüborn Baby at 3 months]]></title>
+<link>https://joshcollinsworth.com/blog/baby-review</link>
+<description><![CDATA[My Nüborn Baby arrived in October, and now that I've had a few months to get used to it, I thought I'd write up a review, in case you were thinking of getting one for yourself.]]></description>
+<category>satire</category>
+<pubDate>Fri, 16 Jan 2026 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/2025</guid>
+<title><![CDATA[2025 Year in Review]]></title>
+<link>https://joshcollinsworth.com/blog/2025</link>
+<description><![CDATA[A look back on 2025, and all the weird, wonderful things that happened in my year.]]></description>
+<category>personal</category>
+<pubDate>Tue, 30 Dec 2025 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/sloptimism</guid>
+<title><![CDATA[AI optimism is a class privilege]]></title>
+<link>https://joshcollinsworth.com/blog/sloptimism</link>
+<description><![CDATA[I think I have an idea why we're so extremely divided on AI: it's because we have an intuitive sense of who it stands to benefit, and who stands to pay the costs. I think whether you see reason for optimism has a lot to do with which group you see yourself in.]]></description>
+<category>opinion</category>
+<category>personal</category>
+<category>AI</category>
+<category>popular</category>
+<pubDate>Wed, 03 Dec 2025 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/alchemy</guid>
+<title><![CDATA[Alchemy]]></title>
+<link>https://joshcollinsworth.com/blog/alchemy</link>
+<description><![CDATA[Some thoughts on attempts to create gold out of nothing, and how generative AI, in many ways, mirrors that doomed pursuit]]></description>
+<category>opinion</category>
+<category>AI</category>
+<pubDate>Sun, 09 Nov 2025 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/titles-matter</guid>
+<title><![CDATA[Titles matter]]></title>
+<link>https://joshcollinsworth.com/blog/titles-matter</link>
+<description><![CDATA[Is a person who prompts an LLM to generate a website a web developer? And if not, what is the difference, and why does that matter so much?]]></description>
+<category>web</category>
+<category>opinion</category>
+<pubDate>Tue, 26 Aug 2025 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/the-blissful-zen-of-a-good-side-project</guid>
+<title><![CDATA[The blissful zen of a good side project]]></title>
+<link>https://joshcollinsworth.com/blog/the-blissful-zen-of-a-good-side-project</link>
+<description><![CDATA[One of life's greatest simple pleasures is creating something just for yourself.]]></description>
+<category>personal</category>
+<category>design</category>
+<category>web</category>
+<category>popular</category>
+<pubDate>Fri, 04 Apr 2025 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/goodbye-griff</guid>
+<title><![CDATA[Goodbye, Griff. You were a good boy.]]></title>
+<link>https://joshcollinsworth.com/blog/goodbye-griff</link>
+<description><![CDATA[A tribute to the member of our family we lost this weekend.]]></description>
+<category>personal</category>
+<pubDate>Mon, 27 Jan 2025 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/rare-words-in-common-phrases</guid>
+<title><![CDATA[Rare words in common phrases, and how to avoid getting them wrong]]></title>
+<link>https://joshcollinsworth.com/blog/rare-words-in-common-phrases</link>
+<description><![CDATA[A running list of uncommon, strange, and/or archaic words embedded in common idioms, to help you type them correctly next time you use them.]]></description>
+<category>advice</category>
+<pubDate>Fri, 24 Jan 2025 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/enjoyed-in-2024</guid>
+<title><![CDATA[Things I enjoyed in 2024]]></title>
+<link>https://joshcollinsworth.com/blog/enjoyed-in-2024</link>
+<description><![CDATA[Things I watched, read, played, got into, enjoyed, or did and would do again, in 2024.]]></description>
+<category>personal</category>
+<pubDate>Tue, 24 Dec 2024 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/childlike-and-childish</guid>
+<title><![CDATA[The childlike and the childish]]></title>
+<link>https://joshcollinsworth.com/blog/childlike-and-childish</link>
+<description><![CDATA[Life in America has long felt like a game played between adults and children; a game where one side knows the rules and is dedicated to keeping them, and the other is merely making up ad-hoc rules from moment to moment, for no reason but to help them win.]]></description>
+<category>personal</category>
+<pubDate>Wed, 06 Nov 2024 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/response-to-defending-open-source</guid>
+<title><![CDATA[A response to "Defending Open Source: Protecting the Future of WordPress"]]></title>
+<link>https://joshcollinsworth.com/blog/response-to-defending-open-source</link>
+<description><![CDATA[I feel it's important to issue a critical reading of Automattic's post, as it doesn't seem to offer much of a serious or objective examination of the issues at hand. Rather, the post unfortunately reads as something more akin to a puff piece, or corporate propaganda.]]></description>
+<category>opinion</category>
+<category>web</category>
+<category>wordpress</category>
+<pubDate>Tue, 05 Nov 2024 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/fire-matt</guid>
+<title><![CDATA[If WordPress is to survive, Matt Mullenweg must be removed]]></title>
+<link>https://joshcollinsworth.com/blog/fire-matt</link>
+<description><![CDATA[I believe Matt Mullenweg's abuses of his unilateral, unchecked powers prove that it is in the best interest of the entire WordPress community that he be removed from power immediately.]]></description>
+<category>opinion</category>
+<category>web</category>
+<category>wordpress</category>
+<pubDate>Fri, 27 Sep 2024 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/fwiw</guid>
+<title><![CDATA[For whatever it's worth: my advice on job hunting in tech]]></title>
+<link>https://joshcollinsworth.com/blog/fwiw</link>
+<description><![CDATA[A collection of things I've learned over my decade in the industry, on how and where to look for jobs, applying, interviewing, talking about yourself and your work, and all those other fun things. For whatever it's worth.]]></description>
+<category>opinion</category>
+<category>personal</category>
+<category>advice</category>
+<pubDate>Fri, 07 Jun 2024 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/ten-years-of-code</guid>
+<title><![CDATA[A decade of code]]></title>
+<link>https://joshcollinsworth.com/blog/ten-years-of-code</link>
+<description><![CDATA[A personal (read: meandering) post inspired by the realization that I first began to learn HTML and CSS exactly ten years ago, reflecting on the lucky turning points that brought me to where I am today.]]></description>
+<category>personal</category>
+<category>web</category>
+<pubDate>Fri, 10 May 2024 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/glove80-followup</guid>
+<title><![CDATA[Follow-up: the Glove80 after six months]]></title>
+<link>https://joshcollinsworth.com/blog/glove80-followup</link>
+<description><![CDATA[An update on my previous first impressions post, covering how it's been using the MoErgo Glove80 every day for the past six months, how it's affected my RSI, and whether I'd recommend it (short answer: yes).]]></description>
+<category>gear</category>
+<category>opinion</category>
+<pubDate>Mon, 08 Apr 2024 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/devaluing-frontend</guid>
+<title><![CDATA[The quiet, pervasive devaluation of frontend]]></title>
+<link>https://joshcollinsworth.com/blog/devaluing-frontend</link>
+<description><![CDATA[I keep noticing those of us in the frontend field being treated much the same as nurses, paralegals, and executive assistants. Our work is seen as important, certainly, but just not the same as, or as important as, the “real” work.]]></description>
+<category>personal</category>
+<category>opinion</category>
+<category>css</category>
+<category>web</category>
+<pubDate>Thu, 07 Mar 2024 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/copilot</guid>
+<title><![CDATA[I worry our Copilot is leaving some passengers behind]]></title>
+<link>https://joshcollinsworth.com/blog/copilot</link>
+<description><![CDATA[Why I worry about the effect GitHub Copilot is having and will continue to have on the accessibility of the web at scale.]]></description>
+<category>opinion</category>
+<category>a11y</category>
+<category>AI</category>
+<pubDate>Tue, 13 Feb 2024 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/enjoyed-in-2023</guid>
+<title><![CDATA[Things I enjoyed in 2023]]></title>
+<link>https://joshcollinsworth.com/blog/enjoyed-in-2023</link>
+<description><![CDATA[Things I watched, read, played, got into, enjoyed, or did and would do again, in 2023.]]></description>
+<category>personal</category>
+<pubDate>Sat, 30 Dec 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/glove80-first-impressions</guid>
+<title><![CDATA[First impressions of the MoErgo Glove80 ergonomic keyboard]]></title>
+<link>https://joshcollinsworth.com/blog/glove80-first-impressions</link>
+<description><![CDATA[How does the Glove80 stack up against similar keyboards like the Moonlander and Ergodox? I share my impressions after the first few weeks of use.]]></description>
+<category>gear</category>
+<category>opinion</category>
+<pubDate>Tue, 24 Oct 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/layoffs-are-bullshit</guid>
+<title><![CDATA[A message from the Captain of the S.S. Layoff]]></title>
+<link>https://joshcollinsworth.com/blog/layoffs-are-bullshit</link>
+<description><![CDATA[Indeed, there's plenty to go around, thanks largely to all of you. But the fastest way to make the numbers better is to stop feeding and sheltering people and their families. Nothing personal.]]></description>
+<category>satire</category>
+<pubDate>Wed, 04 Oct 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/tailwind-is-smart-steering</guid>
+<title><![CDATA[Classic rock, Mario Kart, and why we can't agree on Tailwind]]></title>
+<link>https://joshcollinsworth.com/blog/tailwind-is-smart-steering</link>
+<description><![CDATA[It's popular to say we can’t agree on Tailwind, but I posit we actually already do. I think what we actually disagree on isn’t the details of this (or any) specific software; it's in what we value, and how we each define assets and liabilities.]]></description>
+<category>css</category>
+<category>personal</category>
+<category>opinion</category>
+<category>web</category>
+<pubDate>Tue, 26 Sep 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/antiquated-react</guid>
+<title><![CDATA[Things you forgot (or never knew) because of React]]></title>
+<link>https://joshcollinsworth.com/blog/antiquated-react</link>
+<description><![CDATA[If you don't often look beyond established comfortable defaults, you might be surprised to learn just how far the world of frontend has moved away from React, and how big that gap continues to grow.]]></description>
+<category>opinion</category>
+<category>web</category>
+<category>react</category>
+<category>popular</category>
+<pubDate>Fri, 04 Aug 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/alfred-raycast</guid>
+<title><![CDATA[Alfred vs. Raycast: my constant debate]]></title>
+<link>https://joshcollinsworth.com/blog/alfred-raycast</link>
+<description><![CDATA[After a year or so of using Raycast, I'm switching back to Alfred. This is what prompted me to make that decision, and why I may or may not stick with it.]]></description>
+<category>personal</category>
+<category>opinion</category>
+<pubDate>Mon, 24 Jul 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/sveltekit-page-transitions</guid>
+<title><![CDATA[Adding page transitions in SvelteKit]]></title>
+<link>https://joshcollinsworth.com/blog/sveltekit-page-transitions</link>
+<description><![CDATA[Transitions, easing, and routing are all baked into SvelteKit. This makes utilizing page transition effects in SvelteKit sites and apps as easy as adding just a few lines of code.]]></description>
+<category>javascript</category>
+<category>design</category>
+<category>web</category>
+<category>svelte</category>
+<pubDate>Wed, 01 Mar 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/great-transitions</guid>
+<title><![CDATA[Ten tips for better CSS transitions and animations]]></title>
+<link>https://joshcollinsworth.com/blog/great-transitions</link>
+<description><![CDATA[Creating high-quality, polished web animations is both a science and an art. This post covers the best things I've learned over the last decade of crafting web UIs.]]></description>
+<category>css</category>
+<category>design</category>
+<category>web</category>
+<category>popular</category>
+<pubDate>Tue, 28 Feb 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/easing-curves</guid>
+<title><![CDATA[Understanding easing and cubic-bezier curves in CSS]]></title>
+<link>https://joshcollinsworth.com/blog/easing-curves</link>
+<description><![CDATA[The easing curve can make or break any animation on the web. Let's look at the science of CSS cubic-bezier curves, and the art of using them to make the best web animations possible.]]></description>
+<category>css</category>
+<category>design</category>
+<category>web</category>
+<pubDate>Wed, 22 Feb 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/moonlander</guid>
+<title><![CDATA[Impressions of the ZSA Moonlander at one month]]></title>
+<link>https://joshcollinsworth.com/blog/moonlander</link>
+<description><![CDATA[My thoughts, experience, and advice after using the Moonlander as my main keyboard for both personal and work projects for a full month]]></description>
+<category>personal</category>
+<category>gear</category>
+<category>opinion</category>
+<pubDate>Tue, 24 Jan 2023 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/never-use-px-for-font-size</guid>
+<title><![CDATA[Why you should never use px to set font-size in CSS]]></title>
+<link>https://joshcollinsworth.com/blog/never-use-px-for-font-size</link>
+<description><![CDATA[Many developers seem to believe there's no difference between px and other CSS units. Let's dispel that myth, for the sake of better accessibility.]]></description>
+<category>a11y</category>
+<category>web</category>
+<category>css</category>
+<category>popular</category>
+<pubDate>Fri, 28 Oct 2022 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/42-for-42</guid>
+<title><![CDATA[Forty-two]]></title>
+<link>https://joshcollinsworth.com/blog/42-for-42</link>
+<description><![CDATA[I'm 42 years old today. This is a personal post about where I am now, what's going on in my head, and 42 things I've learned (or at least, think I've learned).]]></description>
+<category>personal</category>
+<category>opinion</category>
+<pubDate>Wed, 26 Oct 2022 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/sveltekit-breaking-changes</guid>
+<title><![CDATA[Breaking changes in SvelteKit, August 2022]]></title>
+<link>https://joshcollinsworth.com/blog/sveltekit-breaking-changes</link>
+<description><![CDATA[SvelteKit introduced breaking changes to its routing and data loading in August 2022. Learn how to convert from the old way of doing things to the new.]]></description>
+<category>svelte</category>
+<category>javascript</category>
+<category>web</category>
+<pubDate>Wed, 17 Aug 2022 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/self-fulfilling-prophecy-of-react</guid>
+<title><![CDATA[The self-fulfilling prophecy of React]]></title>
+<link>https://joshcollinsworth.com/blog/self-fulfilling-prophecy-of-react</link>
+<description><![CDATA[The only thing React is better at than other front-end frameworks is being popular. So how long will that self-perpetuating cycle continue?]]></description>
+<category>web</category>
+<category>opinion</category>
+<category>popular</category>
+<category>react</category>
+<pubDate>Wed, 27 Jul 2022 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/announcing-hondo</guid>
+<title><![CDATA[Announcing Hondo]]></title>
+<link>https://joshcollinsworth.com/blog/announcing-hondo</link>
+<description><![CDATA[Updating Quina to version 2.0 filled my head with new ideas that I just couldn't walk away from. Eventually, those ideas took the shape of a whole new word game, named Hondo.]]></description>
+<category>javascript</category>
+<category>design</category>
+<category>svelte</category>
+<category>web</category>
+<pubDate>Thu, 14 Jul 2022 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/accessible-toggle-buttons</guid>
+<title><![CDATA[Building accessible toggle buttons (with examples for Svelte, Vue, and React)]]></title>
+<link>https://joshcollinsworth.com/blog/accessible-toggle-buttons</link>
+<description><![CDATA[Toggle buttons might be the biggest missing native HTML element. This post will help you code them right, for all users, in any (or no) framework.]]></description>
+<category>a11y</category>
+<category>web</category>
+<category>javascript</category>
+<category>vue</category>
+<category>svelte</category>
+<category>popular</category>
+<pubDate>Thu, 19 May 2022 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/debugging-ios-on-mac</guid>
+<title><![CDATA[Debugging iOS Safari (when all you have is a Mac)]]></title>
+<link>https://joshcollinsworth.com/blog/debugging-ios-on-mac</link>
+<description><![CDATA[Debugging iOS Safari is a challenge (and possibly expensive) when you don't have access to an iPhone. Here are a few options to get around that problem.]]></description>
+<category>web</category>
+<pubDate>Tue, 10 May 2022 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/css-grid-bar-charts</guid>
+<title><![CDATA[Creating dynamic bar charts with CSS grid]]></title>
+<link>https://joshcollinsworth.com/blog/css-grid-bar-charts</link>
+<description><![CDATA[How to use CSS grid to make a responsive, adaptable bar chart with no math or external library required!]]></description>
+<category>css</category>
+<category>web</category>
+<pubDate>Thu, 24 Mar 2022 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/build-static-sveltekit-markdown-blog</guid>
+<title><![CDATA[Let's learn SvelteKit by building a static Markdown blog from scratch]]></title>
+<link>https://joshcollinsworth.com/blog/build-static-sveltekit-markdown-blog</link>
+<description><![CDATA[Learn the fundamentals of SvelteKit by building a statically generated blog from scratch, with Markdown support, Sass, an API, and an RSS feed.]]></description>
+<category>svelte</category>
+<category>javascript</category>
+<category>web</category>
+<pubDate>Mon, 27 Dec 2021 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/add-blog-comments-static-site</guid>
+<title><![CDATA[Adding blog comments to your static site with utterances]]></title>
+<link>https://joshcollinsworth.com/blog/add-blog-comments-static-site</link>
+<description><![CDATA[The web world is full of tradeoffs. Going from a CMS to a static site keeps things simple—but that simplicity comes with costs. Luckily, giving up comments on your blog doesn't have to be one of them.]]></description>
+<category>web</category>
+<category>javascript</category>
+<category>svelte</category>
+<pubDate>Sat, 06 Nov 2021 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/converting-from-gridsome-to-sveltekit</guid>
+<title><![CDATA[Converting from Gridsome to SvelteKit]]></title>
+<link>https://joshcollinsworth.com/blog/converting-from-gridsome-to-sveltekit</link>
+<description><![CDATA[I've been a fan of Svelte for years, but never had the opportunity to use it on a serious project before. So when I found myself looking for a new platform for this site as SvelteKit entered open beta, it seemed like perfect timing.]]></description>
+<category>javascript</category>
+<category>svelte</category>
+<category>web</category>
+<pubDate>Mon, 04 Oct 2021 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/introducing-svelte-comparing-with-react-vue</guid>
+<title><![CDATA[Introducing Svelte, and Comparing Svelte with React and Vue]]></title>
+<link>https://joshcollinsworth.com/blog/introducing-svelte-comparing-with-react-vue</link>
+<description><![CDATA[Svelte is a new style of framework for building sites and apps. Let's dive into what makes it different, why it's so enjoyable, and how it's able to ship such tiny, fast apps.]]></description>
+<category>javascript</category>
+<category>svelte</category>
+<category>vue</category>
+<category>react</category>
+<category>web</category>
+<pubDate>Fri, 01 Oct 2021 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/goodbye-wordpress</guid>
+<title><![CDATA[Goodbye, WordPress]]></title>
+<link>https://joshcollinsworth.com/blog/goodbye-wordpress</link>
+<description><![CDATA[WordPress was potentially the most impactful and empowering technology I've yet encountered. It transformed my career path and enabled me to do anything I wanted at every point in my journey. So why leave it now?]]></description>
+<category>wordpress</category>
+<category>javascript</category>
+<category>vue</category>
+<pubDate>Mon, 01 Feb 2021 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/announcing-quina-my-first-app</guid>
+<title><![CDATA[Announcing Quina (My First App)!]]></title>
+<link>https://joshcollinsworth.com/blog/announcing-quina-my-first-app</link>
+<description><![CDATA[The story of building Quina, a word game Progressive Web App built with Nuxt, and launched on the Google Play Store.]]></description>
+<category>javascript</category>
+<category>design</category>
+<category>web</category>
+<category>vue</category>
+<pubDate>Thu, 10 Dec 2020 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/creating-custom-gutenberg-blocks-with-the-block-lab-plugin</guid>
+<title><![CDATA[How to Create Custom Editor Blocks with Block Lab]]></title>
+<link>https://joshcollinsworth.com/blog/creating-custom-gutenberg-blocks-with-the-block-lab-plugin</link>
+<description><![CDATA[Block Lab is a WordPress plugin that simplifies the process of creating custom blocks to use in the block editor, AKA Gutenberg, the new content editor in WordPress 5.0. This post explains how to use it, even if you only know basic HTML.]]></description>
+<category>css</category>
+<category>design</category>
+<category>php</category>
+<category>wordpress</category>
+<pubDate>Sun, 14 Jun 2020 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/a-new-headless-site-with-gridsome</guid>
+<title><![CDATA[A New Headless Site with Gridsome]]></title>
+<link>https://joshcollinsworth.com/blog/a-new-headless-site-with-gridsome</link>
+<description><![CDATA[A lengthy write-up diving into what headless means, its advantages and disadvantages, some of the techniques and gotchas involved, and, finally, the new design of this site specifically.]]></description>
+<category>javascript</category>
+<category>web</category>
+<category>vue</category>
+<category>wordpress</category>
+<pubDate>Sat, 06 Jun 2020 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/goodbye-instagram</guid>
+<title><![CDATA[This isn't the Time, But it's the Perfect Time; Goodbye, Instagram]]></title>
+<link>https://joshcollinsworth.com/blog/goodbye-instagram</link>
+<description><![CDATA[…Lately, I’ve been wondering whether I can actually continue supporting Instagram and the company behind it, however passively or at whatever seemingly insignificant scale. And while I was zeroing in on this answer anyway, the events of the last couple of weeks have clearly cemented in my mind that the answer—for me, at least—is an unequivocal “no.”]]></description>
+<category>personal</category>
+<pubDate>Wed, 03 Jun 2020 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/how-to-connect-local-with-codekit</guid>
+<title><![CDATA[How to Connect Local with CodeKit]]></title>
+<link>https://joshcollinsworth.com/blog/how-to-connect-local-with-codekit</link>
+<description><![CDATA[Enjoy all the convenience of easy local WordPress development with Local, plus build tools with CodeKit, without any of the tricky command line setup.]]></description>
+<category>css</category>
+<category>javascript</category>
+<category>web</category>
+<category>wordpress</category>
+<pubDate>Fri, 21 Feb 2020 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/confirm-all-ids-are-unique-in-an-array-of-javascript-objects-using-map-and-sets</guid>
+<title><![CDATA[How to Check Uniqueness in an Array of Objects in JavaScript]]></title>
+<link>https://joshcollinsworth.com/blog/confirm-all-ids-are-unique-in-an-array-of-javascript-objects-using-map-and-sets</link>
+<description><![CDATA[Working with arrays of objects in JavaScript can be difficult. This post covers how to ensure all object keys (IDs) are unique, and how to find non-unique values.]]></description>
+<category>javascript</category>
+<category>web</category>
+<pubDate>Mon, 17 Feb 2020 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/adding-gutenberg-full-and-wide-width-image-support-to-your-wordpress-theme</guid>
+<title><![CDATA[Adding Gutenberg Full- and Wide-Width Image Support to Your WordPress Theme]]></title>
+<link>https://joshcollinsworth.com/blog/adding-gutenberg-full-and-wide-width-image-support-to-your-wordpress-theme</link>
+<description><![CDATA[Gutenberg brings with it the ability to set image blocks as full-width or wide-width. This article talks about how to enable support for that feature in your theme, and one way to write the CSS that makes it work.]]></description>
+<category>css</category>
+<category>web</category>
+<category>wordpress</category>
+<pubDate>Sat, 16 Mar 2019 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/lets-learn-css-variables</guid>
+<title><![CDATA[Let's Learn CSS Variables!]]></title>
+<link>https://joshcollinsworth.com/blog/lets-learn-css-variables</link>
+<description><![CDATA[CSS variables (otherwise known as CSS custom properties) give previously impossible superpowers to CSS developers. This post covers what they are, how they work, and a couple of nifty ways you can implement them on your own website.]]></description>
+<category>css</category>
+<pubDate>Sun, 25 Feb 2018 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/new-site-new-theme-for-2018</guid>
+<title><![CDATA[New Site, New Theme for 2018]]></title>
+<link>https://joshcollinsworth.com/blog/new-site-new-theme-for-2018</link>
+<description><![CDATA[Building a WordPress theme (and a new brand) from scratch.]]></description>
+<category>design</category>
+<category>web</category>
+<category>php</category>
+<category>wordpress</category>
+<pubDate>Tue, 02 Jan 2018 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/five-ways-to-become-a-better-designer-that-arent-design</guid>
+<title><![CDATA[Five Ways to Become a Better Designer (That Aren't Design)]]></title>
+<link>https://joshcollinsworth.com/blog/five-ways-to-become-a-better-designer-that-arent-design</link>
+<description><![CDATA[There’s vast world of design learning and opportunity right in front of us constantly. All we need to do is take the time to notice it and learn from it.]]></description>
+<category>design</category>
+<category>opinion</category>
+<category>advice</category>
+<pubDate>Sat, 04 Feb 2017 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/essential-tools-wordpress-development</guid>
+<title><![CDATA[My Essential Tools for WordPress Development]]></title>
+<link>https://joshcollinsworth.com/blog/essential-tools-wordpress-development</link>
+<description><![CDATA[Some of these apps, resources and tools aren’t directly WordPress-related, or even necessarily development-related; some have to do with productivity or just make life a little easier. That’s by design. Part of being a developer is learning to work and use your tools as efficiently and with as little wasted time and mental energy as possible.]]></description>
+<category>opinion</category>
+<category>web</category>
+<category>wordpress</category>
+<pubDate>Sat, 25 Jun 2016 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/the-five-things-i-wish-somebody-had-told-me-as-a-design-student</guid>
+<title><![CDATA[The Five Things I Wish Somebody Had Told Me as a Design Student]]></title>
+<link>https://joshcollinsworth.com/blog/the-five-things-i-wish-somebody-had-told-me-as-a-design-student</link>
+<description><![CDATA[Your worst instructor as a design student will lay out clear goals and expectations which will not change; this is not a given with clients.]]></description>
+<category>design</category>
+<category>personal</category>
+<category>opinion</category>
+<category>advice</category>
+<pubDate>Sun, 21 Feb 2016 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/wordpress-child-theme-explanation</guid>
+<title><![CDATA[WordPress Child Theme Explanation and Walkthrough]]></title>
+<link>https://joshcollinsworth.com/blog/wordpress-child-theme-explanation</link>
+<description><![CDATA[When you’re just starting out with WordPress, it’s easy to think that you can just open up the style.css file included with your theme and begin making alterations. And that will work—at least for a while—but it won’t be a good idea…]]></description>
+<category>web</category>
+<category>wordpress</category>
+<pubDate>Thu, 31 Dec 2015 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/why-designers-shouldnt-remake-other-designers-logos</guid>
+<title><![CDATA[Why Designers Shouldn't "Fix" Other Designers' Logos]]></title>
+<link>https://joshcollinsworth.com/blog/why-designers-shouldnt-remake-other-designers-logos</link>
+<description><![CDATA[No matter how simple the end product, design is hard work. To come up with something that looks good, something people like, is at best tangential to the main point. The question is: does it succeed at meeting the project goals? And you don’t know how to answer that question.]]></description>
+<category>design</category>
+<category>personal</category>
+<category>opinion</category>
+<pubDate>Fri, 04 Sep 2015 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/8-student-portfolio-mistakes</guid>
+<title><![CDATA[8 Mistakes to Avoid in Your Student Design Portfolio]]></title>
+<link>https://joshcollinsworth.com/blog/8-student-portfolio-mistakes</link>
+<description><![CDATA[Consider this post a guide on how to avoid the most common mistakes young designers make when assembling their portfolios.]]></description>
+<category>design</category>
+<category>opinion</category>
+<category>advice</category>
+<pubDate>Thu, 20 Aug 2015 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/profit-is-not-a-value</guid>
+<title><![CDATA[Profit is Not a Value]]></title>
+<link>https://joshcollinsworth.com/blog/profit-is-not-a-value</link>
+<description><![CDATA[Any executive or business owner will say their company values integrity, and virtually every company claims that they reward and value their employees exhibiting their brand values. But is that really accurate?]]></description>
+<category>opinion</category>
+<category>personal</category>
+<pubDate>Wed, 05 Aug 2015 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/filetypes</guid>
+<title><![CDATA[Understanding the Difference Between Image and Vector File Types]]></title>
+<link>https://joshcollinsworth.com/blog/filetypes</link>
+<description><![CDATA[If you’re like me, you’ve probably spent some time wondering (and Googling) about the differences between various popular format types commonly used for graphic design applications. So I decided I’d create a resource that’s hopefully a handy reference on the matter of discerning file type supports and behavior.]]></description>
+<category>design</category>
+<category>web</category>
+<pubDate>Thu, 11 Jun 2015 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/pantone</guid>
+<title><![CDATA[Pantone, Color, and What I Wish I Had Known Sooner as a Designer]]></title>
+<link>https://joshcollinsworth.com/blog/pantone</link>
+<description><![CDATA[One of the most difficult things for me to learn in my transition from the classroom to a professional branding agency was how to properly handle color output. So I decided to write this post in the hope of saving you some from some of the pitfalls that I failed to avoid.]]></description>
+<category>design</category>
+<category>advice</category>
+<pubDate>Wed, 01 Apr 2015 00:00:00 GMT</pubDate>
+</item><item>
+<guid isPermaLink="true">https://joshcollinsworth.com/blog/12-things</guid>
+<title><![CDATA[Social Media, Compulsion, and the 12 Things I Learned on My Break from Facebook]]></title>
+<link>https://joshcollinsworth.com/blog/12-things</link>
+<description><![CDATA[I’m beginning to believe that becoming more connected with everyone is making me less connected with anyone.]]></description>
+<category>opinion</category>
+<category>personal</category>
+<pubDate>Fri, 27 Mar 2015 00:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>

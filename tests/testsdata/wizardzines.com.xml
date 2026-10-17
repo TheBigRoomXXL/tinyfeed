@@ -1,0 +1,14 @@
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[Wizard Zines]]></title>
+  <link href="https://wizardzines.com/index.xml" rel="self"/>
+  <link href="https://wizardzines.com"/>
+  <updated>2026-10-06T12:39:20+00:00</updated>
+  <id>http://wizardzines.com</id>
+  <author>
+    <name><![CDATA[]]></name>
+  </author>
+  <generator uri="http://gohugo.io/">Hugo</generator>
+  
+  
+  
+</feed>

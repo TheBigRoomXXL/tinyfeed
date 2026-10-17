@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-mEzi-6YbjAYFie5pE5bHNs5f4M9CaYjeuCvirbT3fvJI-m1cd9Jl9THw9kcv2NcfNkC5GMeGvwKIErtaSQqs5adBOsEWgwu4cTDGWFJWs1SpKtUgLmmbS690zic5kKBWU0Gf1EW4_ExdJMYiDHxaQQF51h19NogB86ibk2VIs_11j8EOIcRD3UUQwUwUe4QixrDaMFSndPkX5D48rfw1PjOMA1UYPZWBARH1D2Sut9zMwTfl7CUoUsNUATbxgtDC_jCD_kcww78APf6Ktb3WE5Ispg4SBl84jmDe7H3OsP7HmjMHs061oE0rPBdtBUzN2g-GtLuoPCUB9PE6viFijg==' ;
+		script-src 'nonce-mEzi-6YbjAYFie5pE5bHNs5f4M9CaYjeuCvirbT3fvJI-m1cd9Jl9THw9kcv2NcfNkC5GMeGvwKIErtaSQqs5adBOsEWgwu4cTDGWFJWs1SpKtUgLmmbS690zic5kKBWU0Gf1EW4_ExdJMYiDHxaQQF51h19NogB86ibk2VIs_11j8EOIcRD3UUQwUwUe4QixrDaMFSndPkX5D48rfw1PjOMA1UYPZWBARH1D2Sut9zMwTfl7CUoUsNUATbxgtDC_jCD_kcww78APf6Ktb3WE5Ispg4SBl84jmDe7H3OsP7HmjMHs061oE0rPBdtBUzN2g-GtLuoPCUB9PE6viFijg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="mEzi-6YbjAYFie5pE5bHNs5f4M9CaYjeuCvirbT3fvJI-m1cd9Jl9THw9kcv2NcfNkC5GMeGvwKIErtaSQqs5adBOsEWgwu4cTDGWFJWs1SpKtUgLmmbS690zic5kKBWU0Gf1EW4_ExdJMYiDHxaQQF51h19NogB86ibk2VIs_11j8EOIcRD3UUQwUwUe4QixrDaMFSndPkX5D48rfw1PjOMA1UYPZWBARH1D2Sut9zMwTfl7CUoUsNUATbxgtDC_jCD_kcww78APf6Ktb3WE5Ispg4SBl84jmDe7H3OsP7HmjMHs061oE0rPBdtBUzN2g-GtLuoPCUB9PE6viFijg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://changelog.com/podcast/686 target="_blank">
+					<h2>Changelog Interviews 686: From zero to NanoClaw</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/posts/changelog-irl-sf26-planetscale target="_blank">
+					<h2>Changelog IRL @ PlanetScale (Sept 17, 2026)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/685 target="_blank">
+					<h2>Changelog Interviews 685: Forking Cal.com to closed source</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-03">2026-09-03</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/684 target="_blank">
+					<h2>Changelog Interviews 684: Postgres at PlanetScale</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-25">2026-08-25</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/683 target="_blank">
+					<h2>Changelog Interviews 683: Canary tokens and digital tripwires</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-21">2026-07-21</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/682 target="_blank">
+					<h2>Changelog Interviews 682: From open source hits to OpenAI</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-05">2026-06-05</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/681 target="_blank">
+					<h2>Changelog Interviews 681: MCP on Code Mode</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-15">2026-05-15</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/130 target="_blank">
+					<h2>Changelog &amp; Friends 130: Automation at the speed of Swamp</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-13">2026-05-13</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/185 target="_blank">
+					<h2>Changelog News 185: Bitwarden CLI compromised</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-29">2026-04-29</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/680 target="_blank">
+					<h2>Changelog Interviews 680: Exploring with agents</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-24">2026-04-24</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/184 target="_blank">
+					<h2>Changelog News 184: Astral has been acquired by OpenAI</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-27">2026-03-27</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/679 target="_blank">
+					<h2>Changelog Interviews 679: From Tailnet to platform</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-11">2026-03-11</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/183 target="_blank">
+					<h2>Changelog News 183: Big change brings big change</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-10">2026-03-10</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/129 target="_blank">
+					<h2>Changelog &amp; Friends 129: Finale &amp; Friends</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-02">2026-03-02</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/678 target="_blank">
+					<h2>Changelog Interviews 678: Opus 4.5 changed everything</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-27">2026-02-27</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/182 target="_blank">
+					<h2>Changelog News 182: The mythical agent-month</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-23">2026-02-23</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/677 target="_blank">
+					<h2>Changelog Interviews 677: Selling SDKs in the era of many Claudes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-19">2026-02-19</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/181 target="_blank">
+					<h2>Changelog News 181: All the Claw things</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-16">2026-02-16</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/128 target="_blank">
+					<h2>Changelog &amp; Friends 128: Han shot first</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-13">2026-02-13</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/676 target="_blank">
+					<h2>Changelog Interviews 676: Building the machine that builds the machine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-11">2026-02-11</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/180 target="_blank">
+					<h2>Changelog News 180: Vouch for an open source web of trust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-09">2026-02-09</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/127 target="_blank">
+					<h2>Changelog &amp; Friends 127: It&#39;s a renaissance woman&#39;s world</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-06">2026-02-06</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/675 target="_blank">
+					<h2>Changelog Interviews 675: Setting Docker Hardened Images free</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-04">2026-02-04</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/179 target="_blank">
+					<h2>Changelog News 179: The tech monoculture is finally breaking</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-02">2026-02-02</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/126 target="_blank">
+					<h2>Changelog &amp; Friends 126: Natural born SaaS killers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-30">2026-01-30</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/674 target="_blank">
+					<h2>Changelog Interviews 674: Securing npm is table stakes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-29">2026-01-29</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/178 target="_blank">
+					<h2>Changelog News 178: Clawdbot triggers a run on Mac Minis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-26">2026-01-26</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/125 target="_blank">
+					<h2>Changelog &amp; Friends 125: The state of homelab tech (2026)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-24">2026-01-24</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/673 target="_blank">
+					<h2>Changelog Interviews 673: The era of the Small Giant</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-22">2026-01-22</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/177 target="_blank">
+					<h2>Changelog News 177: Agent psychosis: are we going insane?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-19">2026-01-19</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/124 target="_blank">
+					<h2>Changelog &amp; Friends 124: Kaizen! Let it crash</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-17">2026-01-17</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/123 target="_blank">
+					<h2>Changelog &amp; Friends 123: The GitHub problem (and other predictions)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-14">2026-01-14</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/176 target="_blank">
+					<h2>Changelog News 176: Linus Torvalds gets the AI coding bug</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-12">2026-01-12</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/672 target="_blank">
+					<h2>Changelog Interviews 672: From GitLab to Kilo Code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-07">2026-01-07</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/175 target="_blank">
+					<h2>Changelog News 175: The move faster manifesto</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-05">2026-01-05</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/122 target="_blank">
+					<h2>Changelog &amp; Friends 122: State of the &#34;log&#34; 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-19">2025-12-19</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/671 target="_blank">
+					<h2>Changelog Interviews 671: Agents in the database</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-18">2025-12-18</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/174 target="_blank">
+					<h2>Changelog News 174: The code, prose &amp; pods that shaped 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-15">2025-12-15</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/121 target="_blank">
+					<h2>Changelog &amp; Friends 121: Down the Linux rabbit hole</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-12">2025-12-12</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/670 target="_blank">
+					<h2>Changelog Interviews 670: Autonomous drone delivery in a Zip</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-10">2025-12-10</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/173 target="_blank">
+					<h2>Changelog News 173: The &#34;confident idiot&#34; problem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-08">2025-12-08</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/120 target="_blank">
+					<h2>Changelog &amp; Friends 120: Very important agents</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-05">2025-12-05</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/669 target="_blank">
+					<h2>Changelog Interviews 669: Werner Vogels predicts the future</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-04">2025-12-04</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/172 target="_blank">
+					<h2>Changelog News 172: What actually makes you senior</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-01">2025-12-01</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/119 target="_blank">
+					<h2>Changelog &amp; Friends 119: The 4 DIMM problem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-28">2025-11-28</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/668 target="_blank">
+					<h2>Changelog Interviews 668: The inner workings of Wikipedia</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-26">2025-11-26</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/171 target="_blank">
+					<h2>Changelog News 171: What is a tech bubble anyway?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-24">2025-11-24</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/friends/118 target="_blank">
+					<h2>Changelog &amp; Friends 118: NOT a swarm!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-21">2025-11-21</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/667 target="_blank">
+					<h2>Changelog Interviews 667: Creating communal computers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-19">2025-11-19</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/news/170 target="_blank">
+					<h2>Changelog News 170: Why is Zig so cool?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-17">2025-11-17</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://changelog.com/" target="_blank">Changelog</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="mEzi-6YbjAYFie5pE5bHNs5f4M9CaYjeuCvirbT3fvJI-m1cd9Jl9THw9kcv2NcfNkC5GMeGvwKIErtaSQqs5adBOsEWgwu4cTDGWFJWs1SpKtUgLmmbS690zic5kKBWU0Gf1EW4_ExdJMYiDHxaQQF51h19NogB86ibk2VIs_11j8EOIcRD3UUQwUwUe4QixrDaMFSndPkX5D48rfw1PjOMA1UYPZWBARH1D2Sut9zMwTfl7CUoUsNUATbxgtDC_jCD_kcww78APf6Ktb3WE5Ispg4SBl84jmDe7H3OsP7HmjMHs061oE0rPBdtBUzN2g-GtLuoPCUB9PE6viFijg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

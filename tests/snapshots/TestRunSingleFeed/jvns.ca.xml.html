@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-lsHrhnzWqpaKsoctHir4fy-YUKZzuRH2GHaHDpkXBcZlRXW4IKgHOSlXtmyFi-jazMDnTdxwZAKq5lLH99NeFstpKIyjPEukPkofwGQluDPulp9ayT91hdcJd2geyooQk_ORxOUHldmKzVNprv_UOkcxtRaGN5c-_BJ9sSNw0B4BJ1iNYQIOffPYJn7EyIq-PWCWlMl_SN2QpQBWflUa6Aj9lj2Kwz8eeCbBhkJt7FJg_kYLhQcujCbU5Cv5DldD1UW-w1Ckfo3zjbmv74RJCI-hgtMUu9PGcA224P_6p1PpmuT4yIW-5lUvwqY2wxDMQSYyXlIfbEsnlKnBB_i6Tw==' ;
+		script-src 'nonce-lsHrhnzWqpaKsoctHir4fy-YUKZzuRH2GHaHDpkXBcZlRXW4IKgHOSlXtmyFi-jazMDnTdxwZAKq5lLH99NeFstpKIyjPEukPkofwGQluDPulp9ayT91hdcJd2geyooQk_ORxOUHldmKzVNprv_UOkcxtRaGN5c-_BJ9sSNw0B4BJ1iNYQIOffPYJn7EyIq-PWCWlMl_SN2QpQBWflUa6Aj9lj2Kwz8eeCbBhkJt7FJg_kYLhQcujCbU5Cv5DldD1UW-w1Ckfo3zjbmv74RJCI-hgtMUu9PGcA224P_6p1PpmuT4yIW-5lUvwqY2wxDMQSYyXlIfbEsnlKnBB_i6Tw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="lsHrhnzWqpaKsoctHir4fy-YUKZzuRH2GHaHDpkXBcZlRXW4IKgHOSlXtmyFi-jazMDnTdxwZAKq5lLH99NeFstpKIyjPEukPkofwGQluDPulp9ayT91hdcJd2geyooQk_ORxOUHldmKzVNprv_UOkcxtRaGN5c-_BJ9sSNw0B4BJ1iNYQIOffPYJn7EyIq-PWCWlMl_SN2QpQBWflUa6Aj9lj2Kwz8eeCbBhkJt7FJg_kYLhQcujCbU5Cv5DldD1UW-w1Ckfo3zjbmv74RJCI-hgtMUu9PGcA224P_6p1PpmuT4yIW-5lUvwqY2wxDMQSYyXlIfbEsnlKnBB_i6Tw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/09/27/replacing-the-old-battery-on-rechargeable-bike-lights/ target="_blank">
+					<h2>Replacing the old battery on rechargeable bike lights</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/07/21/more-nice-django-things/ target="_blank">
+					<h2>Some more things about Django I&#39;ve been enjoying</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-21">2026-07-21</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/07/17/learning-about-running-sqlite/ target="_blank">
+					<h2>Learning a few things about running SQLite</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-17">2026-07-17</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/05/15/moving-away-from-tailwind--and-learning-to-structure-my-css-/ target="_blank">
+					<h2>Moving away from Tailwind, and learning to structure my CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-15">2026-05-15</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/05/04/css-colour-palettes/ target="_blank">
+					<h2>Links to CSS colour palettes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-04">2026-05-04</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/05/02/testing-vue-components-in-the-browser/ target="_blank">
+					<h2>Testing Vue components in the browser</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-02">2026-05-02</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/03/10/examples-for-the-tcpdump-and-dig-man-pages/ target="_blank">
+					<h2>Examples for the tcpdump and dig man pages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-03-10">2026-03-10</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/02/18/man-pages/ target="_blank">
+					<h2>Notes on clarifying man pages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-18">2026-02-18</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/01/27/some-notes-on-starting-to-use-django/ target="_blank">
+					<h2>Some notes on starting to use Django</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-27">2026-01-27</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/01/08/a-data-model-for-git/ target="_blank">
+					<h2>A data model for Git (and other docs updates)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-08">2026-01-08</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2025/10/10/notes-on-switching-to-helix-from-vim/ target="_blank">
+					<h2>Notes on switching to Helix from vim</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-10">2025-10-10</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2025/06/24/new-zine--the-secret-rules-of-the-terminal/ target="_blank">
+					<h2>New zine: The Secret Rules of the Terminal</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-26">2025-06-26</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2025/06/10/how-to-compile-a-c-program/ target="_blank">
+					<h2>Using `make` to compile C programs (for non-C-programmers)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-06-10">2025-06-10</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2025/03/07/escape-code-standards/ target="_blank">
+					<h2>Standards for ANSI escape codes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-07">2025-03-07</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2025/02/13/how-to-add-a-directory-to-your-path/ target="_blank">
+					<h2>How to add a directory to your PATH</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-13">2025-02-13</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2025/02/05/some-terminal-frustrations/ target="_blank">
+					<h2>Some terminal frustrations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-05">2025-02-05</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/ target="_blank">
+					<h2>What&#39;s involved in getting a &#34;modern&#34; terminal setup?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-11">2025-01-11</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2024/11/26/terminal-rules/ target="_blank">
+					<h2>&#34;Rules&#34; that terminal programs follow</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-12">2024-12-12</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/ target="_blank">
+					<h2>Why pipes sometimes get &#34;stuck&#34;: buffering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-29">2024-11-29</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2024/11/18/how-to-import-a-javascript-library/ target="_blank">
+					<h2>Importing a frontend Javascript library without a build system</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-18">2024-11-18</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://jvns.ca" target="_blank">Julia Evans</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="lsHrhnzWqpaKsoctHir4fy-YUKZzuRH2GHaHDpkXBcZlRXW4IKgHOSlXtmyFi-jazMDnTdxwZAKq5lLH99NeFstpKIyjPEukPkofwGQluDPulp9ayT91hdcJd2geyooQk_ORxOUHldmKzVNprv_UOkcxtRaGN5c-_BJ9sSNw0B4BJ1iNYQIOffPYJn7EyIq-PWCWlMl_SN2QpQBWflUa6Aj9lj2Kwz8eeCbBhkJt7FJg_kYLhQcujCbU5Cv5DldD1UW-w1Ckfo3zjbmv74RJCI-hgtMUu9PGcA224P_6p1PpmuT4yIW-5lUvwqY2wxDMQSYyXlIfbEsnlKnBB_i6Tw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

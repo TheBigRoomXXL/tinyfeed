@@ -1,0 +1,517 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>Let's Discuss the Matter Further</title>
+    <link>https://rhodesmill.org/brandon/feed/</link>
+    <description>Thoughts and ideas from Brandon Rhodes</description>
+    <atom:link href="https://rhodesmill.org/brandon/feed/" rel="self"/>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>python-feedgen</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 29 Jun 2026 00:00:00 -0400</lastBuildDate>
+    <item>
+      <title>The first half of 2026</title>
+      <link>https://rhodesmill.org/brandon/2026/first-half/</link>
+      <description>ven though my open source projects
+are only one hobby among several,
+I was able to invest enough hours
+over the first half of 2026
+to produce several updates and releases.
+In case anyone is curious about what I’ve been up to,
+here are the milestones that were reached over the past few months.&lt;/p&gt;
+&lt;h2&gt;January&lt;/h2&gt;
+&lt;p&gt;The first month of the year
+saw a new release of my flagship astronomy library,
+&lt;a href="https://rhodesmill.org/skyfield/installation.html#v1-54-2026-january-18"&gt;Skyfield version 1.54&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This new version is the product of a refactoring
+that I started working on in 2025.
+Whenever Skyfield is asked to compute an &lt;code&gt;.apparent()&lt;/code&gt; position,
+it figures out how much the target’s light is deflected
+by the Sun, Jupiter, and Saturn.
+And for observers on the Earth’s surface or in Earth orbit,
+it computes the deflection from the Earth’s mass itself.
+But what if a user wants to add additional deflectors to that list?
+Or to remove one or two of them?
+Or to turn deflection all the way off?&lt;/p&gt;
+&lt;p&gt;The list of deflectors, alas, was hard-coded in Skyfield’s internals
+as a hidden implementation detail.
+That needed to change!
+So I have now rewritten the deflection logic to turn it inside out,
+surfacing the list of deflectors
+as an optional argument to &lt;code&gt;.apparent()&lt;/code&gt;
+that the caller can see and control.&lt;/p&gt;
+&lt;p&gt;The rewrite also accidentally fixed a bug in Skyfield
+that I hadn’t previously identified:
+Skyfield was sometimes incorrectly computing the slight deflection
+produced by the Earth’s mass.
+So, with this release,
+an occasional inaccuracy of up to 0.5 mas was eliminated
+for observers on the Earth’s surface and in Earth orbit.&lt;/p&gt;
+&lt;p&gt;I also released a new version 2.24 of the Skyfield support library
+&lt;a href="https://pypi.org/project/jplephem/"&gt;jplephem&lt;/a&gt;
+because NumPy has decided to stop supporting assignment
+to an array’s &lt;code&gt;.shape&lt;/code&gt; attribute,
+and so jplephem’s use of that maneuver
+was starting to annoy users with deprecation warnings.
+The library now uses NumPy’s &lt;code&gt;.reshape()&lt;/code&gt; instead.&lt;/p&gt;
+&lt;h2&gt;February&lt;/h2&gt;
+&lt;p&gt;There are still folks out there
+who use my &lt;a href="https://rhodesmill.org/pyephem/"&gt;PyEphem&lt;/a&gt;
+astronomy library.
+The &lt;code&gt;ephem&lt;/code&gt; module that it offers,
+despite its clunky interface,
+has provided the Python language
+with access to a basic C-language astronomy library
+since PyEphem’s first release in 1998.&lt;/p&gt;
+&lt;p&gt;So when a user notified me that Python 3.14 had been released,
+it was time for me to slog into the project’s GitHub Actions,
+get the build working for the new Python version,
+and make a release.&lt;/p&gt;
+&lt;p&gt;(But, alas,
+don’t look for the release in the changelog on the PyEphem web site.
+It turns out that the Sphinx documentation build for PyEphem is broken
+because of breaking changes in Sphinx itself, in setuptools, &lt;em&gt;and&lt;/em&gt; in jinja2.
+Hopefully I’ll get it fixed later this year.)&lt;/p&gt;
+&lt;h2&gt;March&lt;/h2&gt;
+&lt;p&gt;For half a decade
+I have been the custodian of the
+&lt;a href="https://xephem.github.io/XEphem/Site/xephem.html"&gt;XEphem&lt;/a&gt;
+astronomy application for Unix and Mac,
+after the retirement of its original author and maintainer,
+Elwood Downey.&lt;/p&gt;
+&lt;p&gt;In January the XEphem community received the news
+that Elwood’s long and productive life had reached its end,
+which inspired me, over Feburary and early March,
+to dig into XEphem’s open issues on GitHub
+and make progress on some of the bugs and issues that folks had run into.
+It also emboldened me —
+I suppose because only now do I feel that I’m really captain of the ship —
+to make a first big change of my own:
+the arrow keys can now be used to scroll around
+on the main Sky View showing the stars and planets.&lt;/p&gt;
+&lt;p&gt;If you’re curious to see all of the updates
+that were included in the new release,
+click “Change log” in the left-hand menu
+at the &lt;a href="https://xephem.github.io/XEphem/Site/xephem.html"&gt;project’s web site&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;April–June&lt;/h2&gt;
+&lt;p&gt;My main focus in the second quarter of the year
+was wrangling a series of pull requests from a generous contributor,
+Clément Robert,
+that led to a new version 2.26
+of the &lt;a href="https://pypi.org/project/sgp4/"&gt;sgp4&lt;/a&gt; library,
+which computes the positions of Earth satellites.
+The library is used both by Skyfield
+and by other Python projects that need satellite positions.
+Thanks Clément’s work,
+the module is now built atop the “Python Limited API”,
+allowing a single binary wheel
+to support multiple versions of Python.&lt;/p&gt;
+&lt;p&gt;Thanks to Clément’s code tweaks and metadata updates,
+users will hopefully no longer need to open a new issue
+every time a major Python version is released,
+asking for a new release of sgp4.
+Instead, the existing binary wheel will continue working
+even as they make new releases of Python.&lt;/p&gt;
+&lt;h2&gt;I wasn’t at PyCon this year&lt;/h2&gt;
+&lt;p&gt;I didn’t attend PyCon 2026, in Long Beach, California, this year.&lt;/p&gt;
+&lt;p&gt;If any readers turn out to be seriously curious as to why,
+then I’ll need to set aside some time to sit down
+and engage in some introspection and writing.
+But here are a few quick thoughts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;My habit of annual week-long Grand Canyon hikes
+has been starting to expand into three and even, sometimes,
+four weeks of outdoor adventures each year,
+which leaves less time for conferences.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;I first attended PyCon, way back in 2008, not just to listen,
+but in order to contribute my first conference talk.
+Every year since then,
+I’ve either been a speaker myself,
+or else I’ve been gathering ideas
+for upcoming talks at other conferences that have invited me.
+But it feels a bit like my era has passed —
+invitations to conferences no longer appear in my inbox,
+and even if I did get an invite today,
+I’m not sure I’d have anything new to say.
+I get all kinds of fun things done with Python each month,
+but I accomplish them using the same approach to programming
+that’s served me well for a couple of decades.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Because of the collapse of my social media presence —
+I never did recover the kind of community
+that I enjoyed with other programmers
+when we were all on Twitter back in the late twenty-teens —
+I feel like I leave vibrant conversations at PyCon
+only to walk out into a world of silence.
+When I attended PyCon last year, in 2025,
+the conversations made my mind spark with ideas
+and new directions for my projects!
+But after a few weeks in the silence back at home,
+the sparks had gone out.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;It was easier to say “yes” to attending PyCon
+when it was either at a wonderful outdoor destination
+(Portland; Salt Lake City)
+or a city that was within driving distance
+(Cleveland; Pittsburgh).
+For whatever reason, Long Beach just didn’t feel like a can’t-miss
+conference destination for me.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As wider context,
+I should mention that computer programming is not,
+at the moment, my day job:
+I paused my career a few years ago
+when I purchased a historic home.
+I assured my wife that it would only take me about a year to renovate,
+but, alas — it turns out that programming projects
+aren’t the only projects that I’m able to vastly underestimate!
+In case you want to follow along,
+here’s the project on Instagram:&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.instagram.com/goshens.harper.house/"&gt;https://www.instagram.com/goshens.harper.house/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;While I’m enjoying all of the new technical skills that I’m learning —
+I’ve even started attending a monthly meetup
+for folks who rehabilitate historic homes —
+I’ll admit to having conflicting emotions about the project:
+doing work on a historic home doesn’t &lt;em&gt;scale.&lt;/em&gt;
+My hours of work only affect and improve this one single property.
+Whereas, when I used to work full-time on software,
+dozens or hundreds of people were able to benefit
+from every tweak or improvement that I made.&lt;/p&gt;
+&lt;p&gt;Maybe I’ll find myself shifting myself back
+to a majority-keyboard schedule within the next year or two?
+We’ll see!&lt;/p&gt;
+&lt;h2&gt;What’s Next?&lt;/h2&gt;
+&lt;p&gt;So what will I focus on as we begin the second half of 2026?
+With the sgp4 release now complete,
+I feel like it’s time to take a deep breath and regroup.&lt;/p&gt;
+&lt;p&gt;Over the next month,
+I want to read back through all open GitHub issues
+for my various projects,
+and make sure they all have up-to-date responses.
+Sometimes I intend to reply at length about a complicated issue,
+but don’t get around to it before needing to respond to a more pressing bug.&lt;/p&gt;
+&lt;p&gt;I might also finally abandon &lt;code&gt;setuptools&lt;/code&gt; for my compiled projects.
+A few experiments that I did last week
+suggest that, for compiled Python modules like &lt;code&gt;sgp4&lt;/code&gt; and &lt;code&gt;ephem&lt;/code&gt;,
+&lt;a href="https://mesonbuild.com/meson-python/"&gt;meson-python&lt;/a&gt;
+might result in a better workflow both locally on my laptop
+and also in CI —
+for example, by not writing build products
+directly into the source tree.
+Hopefully the attempt to switch build tools
+doesn’t become a yak-shaving ordeal
+that prevents me from making other progress on my projects!&lt;/p&gt;
+&lt;p&gt;Finally,
+I think I’m going to tackle a small example Skyfield project:
+a script that computes a year’s worth of celestial events —
+like New Moon and Full Moon, solstices, equinoxes, and conjunctions —
+and writes out an &lt;code&gt;.ics&lt;/code&gt; iCalendar file
+that the user can import into their favorite calendar program.
+I’ll publish it as an example in the Skyfield docs.
+It should be fun.
+Over the years,
+I have spent so much time maintaining my various projects
+that I’ve often not had any time to actually &lt;em&gt;use&lt;/em&gt; them!&lt;/p&gt;
+</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2026/first-half/</guid>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 -0400</pubDate>
+    </item>
+    <item>
+      <title>Animating Ptolemy’s Equant with Python, SVG, and CSS</title>
+      <link>https://rhodesmill.org/brandon/2019/animating-the-equant/</link>
+      <description>&lt;p&gt;[&lt;strong&gt;UPDATE:&lt;/strong&gt; A full Solar System model is now available that you can view, animated using the techniques described in this post! See &lt;a href="https://rhodesmill.org/ptolemy/"&gt;Ptolemy’s cosmos, to scale&lt;/a&gt;.]&lt;/p&gt;
+&lt;p&gt;You will recall
+my &lt;a href="https://rhodesmill.org/brandon/2018/matplotlib-blit-repair/"&gt;previous blog post&lt;/a&gt;
+that tried to build the necessary scaffolding
+for me to finally write up my 2017 PyCon Ireland keynote
+on the structure of the Medieval universe.
+It ran into several problems with &lt;a href="https://matplotlib.org/3.1.1/api/animation_api.html"&gt;matplotlib animations&lt;/a&gt; —
+but, having written that post,
+I realized that the problem ran deeper.&lt;/p&gt;
+&lt;p&gt;How could &lt;em&gt;any&lt;/em&gt; animation show a Solar System,
+when a Solar System’s motion never exactly repeats?
+The orbital periods of the planets aren’t exact multiples of each other,
+and don’t provide a moment
+when the planets reach their original positions
+and the animation can start over again.
+At whatever moment an animation finished
+and looped back to the beginning,
+the planets would visibly and jarringly jump back to their original position.&lt;/p&gt;
+&lt;p&gt;But then I remembered that modern browsers support animation directly,
+and thought:
+could a python script produce an SVG diagram
+with a separate CSS animation for each planet,
+that repeated each time that specific planet finished a revolution?&lt;/p&gt;
+&lt;p&gt;The result would be an animated Solar System
+that fits into a few thousand bytes,
+would render with perfect clarity,
+and runs continuously for as long has the viewer was willing to watch!&lt;/p&gt;
+&lt;p&gt;But there’s a problem.&lt;/p&gt;
+&lt;p&gt;The CSS animation mechanism is perfect
+for the simplest possible planetary orbit: uniform circular motion.
+Here’s a simple SVG diagram in which a planet
+and the line connecting it to the origin
+are grouped within a single &lt;code&gt;&amp;lt;g&amp;gt;&lt;/code&gt; element.&lt;/p&gt;
+
+&lt;div class=" highlight hl-python3"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;pylab&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;IPython.display&lt;/span&gt; &lt;span class="k"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HTML&lt;/span&gt;
+&lt;span class="err"&gt;𝜏&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;2.0&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pi&lt;/span&gt;
+
+&lt;span class="n"&gt;circular_svg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+&lt;span class="s"&gt;&amp;lt;svg version=&amp;quot;1.1&amp;quot; width=220 height=220&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt; &amp;lt;g transform=&amp;quot;translate(110, 110)&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt;  &amp;lt;circle cx=0 cy=0 r=100 stroke=lightgray stroke-width=1 fill=none /&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt;  &amp;lt;g class=&amp;quot;anim %s&amp;quot;&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt;   &amp;lt;line x1=0 y1=0 x2=100 y2=0 stroke=lightgray /&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt;   &amp;lt;circle cx=100 cy=0 r=5 fill=#bb0 /&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt;  &amp;lt;/g&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt;  &amp;lt;circle cx=0 cy=0 r=3 fill=#040 /&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt; &amp;lt;/g&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt;&amp;lt;/svg&amp;gt;&lt;/span&gt;
+&lt;span class="s"&gt;&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+
+&lt;span class="n"&gt;HTML&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;circular_svg&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;stationary&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;pre class="output"&gt;
+Populating the interactive namespace from numpy and matplotlib
+&lt;/pre&gt;
+
+&lt;div class="output"&gt;
+&lt;svg version="1.1" width=220 height=220&gt;
+ &lt;g transform="translate(110, 110)"&gt;
+  &lt;circle cx=0 cy=0 r=100 stroke=lightgray stroke-width=1 fill=none /&gt;
+  &lt;g class="anim stationary"&gt;
+   &lt;line x1=0 y1=0 x2=100 y2=0 stroke=lightgray /&gt;
+   &lt;circle cx=100 cy=0 r=5 fill=#bb0 /&gt;
+  &lt;/g&gt;
+  &lt;circle cx=0 cy=0 r=3 fill=#040 /&gt;
+ &lt;/g&gt;
+&lt;/svg&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We use &lt;code&gt;translate()&lt;/code&gt; to move (0,0) to the middle of the diagram
+where it can serve as the circle’s center.
+We paint a big circle for the orbit,
+small circles to mark the orbit’s center and a planet,
+and a line to link them.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://rhodesmill.org/brandon/2019/animating-the-equant/"&gt;Read the full article...&lt;/a&gt;&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2019/animating-the-equant/</guid>
+      <pubDate>Fri, 23 Aug 2019 00:00:00 -0400</pubDate>
+    </item>
+    <item>
+      <title>Animating Saturn with matplotlib, a subclass, and mock.patch()</title>
+      <link>https://rhodesmill.org/brandon/2018/matplotlib-blit-repair/</link>
+      <description>em&gt;Based on my lightning talk at PyOhio 2018&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I hope that this comes across not as a complaint about matplotlib,
+but as a celebration of tools that a dynamic language like Python
+offers in situations where a library is seriously misbehaving
+and needs some crucial live-edits to run successfully.&lt;/p&gt;
+&lt;p&gt;The task had seemed so simple.
+To support an upcoming series of posts
+based on my 2014 keynote at PyCon Ireland
+(“Building the Medieval Universe in 7 Easy Steps with Scientific Python”),
+I wanted to render an animation of one of the outer planets —
+I chose Saturn —
+progressing slowly eastward across the sky
+over several seasons and several years.&lt;/p&gt;
+&lt;video controls autoplay loop height="648" width="648"&gt;
+&lt;source type="video/mp4" src="http://rhodesmill.org/brandon/2018/saturn.mp4"&gt;
+&lt;/video&gt;
+&lt;p&gt;Instead, I got to spend a weekend wrestling with matplotlib.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://rhodesmill.org/brandon/2018/matplotlib-blit-repair/"&gt;Read the full article...&lt;/a&gt;&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2018/matplotlib-blit-repair/</guid>
+      <pubDate>Sat, 04 Aug 2018 00:00:00 -0400</pubDate>
+    </item>
+    <item>
+      <title>Learning SymPy while eliminating trigonometry from rotations</title>
+      <link>https://rhodesmill.org/brandon/2018/sympy/</link>
+      <description>&lt;p&gt;I have played with Python’s
+&lt;a href="http://docs.sympy.org/latest/index.html"&gt;SymPy symbolic math library&lt;/a&gt; before,
+but for the first time last week I used it to solve a real problem!
+In the process I had to confront three errors
+in my understanding of how SymPy works:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;I had somehow imagined that SymPy was secretly storing
+all the equations I was writing
+and would use them automatically later.&lt;/li&gt;
+&lt;li&gt;I thought I could convince SymPy to eliminate intermediate symbols.&lt;/li&gt;
+&lt;li&gt;I thought each variable in my problem needed to be a SymPy symbol.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;While working through these misunderstandings to a solution,
+I ran across two features that made SymPy’s results
+easier to use in my Python code than I had expected!&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;SymPy not only supports fancy formatting of math formulae,
+but can print them as pure Python expressions
+ready to be pasted into a Python program.&lt;/li&gt;
+&lt;li&gt;SymPy can perform subexpression elimination
+to prevent your code
+from computing any sub-result twice.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The sections of this post tackle each of the items above in turn.&lt;p&gt;&lt;a href="https://rhodesmill.org/brandon/2018/sympy/"&gt;Read the full article...&lt;/a&gt;&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2018/sympy/</guid>
+      <pubDate>Sat, 16 Jun 2018 00:00:00 -0400</pubDate>
+    </item>
+    <item>
+      <title>Computing a final Tiangong-1 pass with Python</title>
+      <link>https://rhodesmill.org/brandon/2018/tiangong/</link>
+      <description>&lt;p&gt;Do you remember the thrilling re-entry scene
+at the end of the movie &lt;em&gt;Gravity&lt;/em&gt;?
+The Chinese space station Tiangong-1
+is orbiting at thousands of miles per hour
+when (spoiler) it dips fatally into the Earth's upper atmosphere.
+The drag buffets and tears at the station’s components
+before the increasing friction
+finally flashes the air around the station into a glowing plasma,
+reducing the station to a shredded sparkling field of debris.&lt;/p&gt;
+&lt;p&gt;Well — tomorrow, it’s actually going to happen.&lt;/p&gt;
+&lt;p&gt;But before it does, I’d love to see Tiangong-1 from the ground
+as it makes its final orbits above our planet.
+Can Python help me find a final pass of Tiangong-1
+over my town?&lt;/p&gt;
+&lt;p&gt;Let’s give it a try!&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://rhodesmill.org/brandon/2018/tiangong/"&gt;Read the full article...&lt;/a&gt;&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2018/tiangong/</guid>
+      <pubDate>Sat, 31 Mar 2018 00:00:00 -0400</pubDate>
+    </item>
+    <item>
+      <title>A New Driver for the Original Twiddler</title>
+      <link>https://rhodesmill.org/brandon/2018/twiddler/</link>
+      <description>
+&lt;p&gt;The practical take-away from this post
+is that if you’re ever trying to debug serial communications
+with a device that — against all tradition —
+only transmits when the Data Terminal Ready line is clear
+(devices should normally do the opposite:
+transmit only when Data Terminal Ready is set),
+then never run &lt;tt class="docutils literal"&gt;stty&lt;/tt&gt; on the serial port
+to double-check your settings.&lt;/p&gt;
+&lt;img alt="The original Twiddler one-handed keyboard" src="http://rhodesmill.org/brandon/2018/twiddler.jpg" /&gt;
+&lt;p&gt;Why?&lt;/p&gt;
+&lt;p&gt;Because &lt;tt class="docutils literal"&gt;stty&lt;/tt&gt; turns Data Terminal Ready back on.
+Without even asking you!&lt;/p&gt;
+&lt;p&gt;So the device will never communicate with you,
+and you may very nearly conclude that your device is broken
+before you happen to remove the &lt;tt class="docutils literal"&gt;stty&lt;/tt&gt; call
+and see the device finally work.
+So that’s the take-away.
+But the full story is a bit longer.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://rhodesmill.org/brandon/2018/twiddler/"&gt;Read the full article...&lt;/a&gt;&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2018/twiddler/</guid>
+      <pubDate>Fri, 30 Mar 2018 00:00:00 -0400</pubDate>
+    </item>
+    <item>
+      <title>Fixing OpenConnect’s VPN Search Domains on Ubuntu</title>
+      <link>https://rhodesmill.org/brandon/2017/openconnect-split-dns/</link>
+      <description>
+
+&lt;p&gt;A quick technical note about VPN hostnames on Ubuntu Linux,
+since otherwise I will forget:&lt;/p&gt;
+&lt;p&gt;If other users of your VPN can refer to hosts by an unqualified hostname,
+but an Ubuntu user like you receives a &lt;code&gt;not found&lt;/code&gt; error
+for the same hostname,
+then try creating the following file
+(you will need to create the directory by hand).&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://rhodesmill.org/brandon/2017/openconnect-split-dns/"&gt;Read the full article...&lt;/a&gt;&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2017/openconnect-split-dns/</guid>
+      <pubDate>Thu, 03 Aug 2017 00:00:00 -0400</pubDate>
+    </item>
+    <item>
+      <title>PyCon Trivia Night, Third Edition</title>
+      <link>https://rhodesmill.org/brandon/2016/pycon-trivia-night/</link>
+      <description>
+&lt;p&gt;At PyCon&amp;nbsp;2016 it was my honor,
+for a third year in a row,
+to host a Trivia Dinner on the first evening of the conference!
+This year’s venue was the storied
+&lt;a class="reference external" href="http://www.mcmenamins.com/CrystalBallroom"&gt;Crystal Ballroom&lt;/a&gt;,
+a music venue in Downtown Portland’s west end.
+To make sure that our event took full advantage of the big stage,
+I booked the &lt;a class="reference external" href="http://adcap.biz/"&gt;Adventure Capitalists&lt;/a&gt;,
+who followed up the trivia dinner
+with a rousing set of punk startup tunes:&lt;/p&gt;
+&lt;blockquote class="twitter-tweet" data-lang="en"&gt;&lt;p lang="en" dir="ltr"&gt;Have a conference pass? Come by the Crystal Ballroom and see the Adventure Capitalists! &lt;a href="https://t.co/sg0GxqiDpF"&gt;pic.twitter.com/sg0GxqiDpF&lt;/a&gt;&lt;/p&gt;&amp;mdash; PyCon (@pycon) &lt;a href="https://twitter.com/pycon/status/737502417797799936"&gt;May 31, 2016&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src="//platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;&lt;p&gt;Last year’s trivia night questions
+focused on such exciting topics as PEP-8 and Python&amp;nbsp;3,
+but it turns out that these were fraught topics
+about which most of the audience were not very familiar.
+So I made a promise:
+the PyCon&amp;nbsp;2016 trivia night would be all Python&amp;nbsp;2, all the time!
+The questions below dive into and celebrate
+the retro roots of the legacy Python language.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://rhodesmill.org/brandon/2016/pycon-trivia-night/"&gt;Read the full article...&lt;/a&gt;&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2016/pycon-trivia-night/</guid>
+      <pubDate>Thu, 09 Jun 2016 00:00:00 -0400</pubDate>
+    </item>
+    <item>
+      <title>PyCon Trivia Night, Second Edition</title>
+      <link>https://rhodesmill.org/brandon/2015/pycon-trivia-night/</link>
+      <description>
+&lt;p&gt;As was the case
+during first year that the conference was in Montréal,
+I was invited for PyCon&amp;nbsp;2015 to lead an evening dinner trivia contest
+on the first full conference day.&lt;/p&gt;
+&lt;p&gt;Wanting to help the audience celebrate
+all of the advances that are being made in Python&amp;nbsp;3,
+I skewed my questions heavily in the direction
+of the strides that the core developers are taking
+with the new version of the language.
+Alas!
+My focus was not as popular with the audience
+as I had hoped.
+It turns out that Python&amp;nbsp;2.7 is still far more popular
+than its predecessor,
+and many contestants were frustrated
+about being asked so many questions and details
+about a language hardly anybody used.
+So I made a promise to the audience:
+if a third trivia dinner happens at PyCon&amp;nbsp;2016 in Portland,
+that I will make it Retro Python Trivia Night
+and ask all of the questions about the Python&amp;nbsp;2 series!&lt;/p&gt;
+&lt;p&gt;The questions follow,
+then the answers are way down at the bottom of the post
+so you can try answering on your own
+before you scroll down and peek.
+Enjoy!&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://rhodesmill.org/brandon/2015/pycon-trivia-night/"&gt;Read the full article...&lt;/a&gt;&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2015/pycon-trivia-night/</guid>
+      <pubDate>Thu, 16 Apr 2015 00:00:00 -0400</pubDate>
+    </item>
+    <item>
+      <title>The First-Ever PyCon Trivia Night</title>
+      <link>https://rhodesmill.org/brandon/2014/pycon-trivia-night/</link>
+      <description>&lt;p&gt;PyCon seems to find new ways of fostering community single every year.
+&lt;a href="https://us.pycon.org/2014/"&gt;This year’s conference in Montréal&lt;/a&gt;
+featured the début
+of &lt;a href="https://us.pycon.org/2014/events/dinners/"&gt;official Friday night dinners&lt;/a&gt;
+which I first learned about from a surprising email
+entitled &lt;code&gt;Want to MC a trivia night at the PyCon dinner?&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;I accepted the invitation!&lt;/p&gt;
+&lt;p&gt;While I have enjoyed other volunteer roles at PyCon,
+this one was particularly exciting
+because of the difference that official evening activities can make
+for newcomers.
+Remembering my own first conferences,
+it can be stressful to face that lonely moment
+when the evening lightning talks have just finished.
+Everyone else seems to pair up and make dinner plans so quickly.
+Unless you can somehow involve yourself in someone else’s dinner plans,
+you picture a long walk back to your hotel
+to order room service — alone —
+while everyone else sits at candlelit tables in real restaurants
+talking and laughing and enjoying Québécois cuisine.
+I hope that my dinner, plus the one hosted by Greg Brockman,
+provided a few people with a safe default option
+who otherwise might have had to fend for themselves.
+&lt;p&gt;&lt;a href="https://rhodesmill.org/brandon/2014/pycon-trivia-night/"&gt;Read the full article...&lt;/a&gt;&lt;/p&gt;</description>
+      <guid isPermaLink="false">https://rhodesmill.org/brandon/2014/pycon-trivia-night/</guid>
+      <pubDate>Tue, 29 Apr 2014 00:00:00 -0400</pubDate>
+    </item>
+  </channel>
+</rss>

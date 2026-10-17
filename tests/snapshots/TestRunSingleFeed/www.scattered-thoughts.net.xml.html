@@ -1,0 +1,2610 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-YaR61UjJscQgfpH34PA6mB8sG7Hjhr7dqq21tHe6ABKzpzzSgiYxkUnw0QsEvx1jvWZZQ0hOaQSAVgXoFs4FBIaNB1bwhgNPiK0MK5BrB6q7nGZsSSeDXYs5PB5A2JnOuyZAKw0KqhLRQZx4FabgpIKZNQT-0j8b4SR0fPibMyKPvCpmxEmfPyKrbtkyhQKhouVD0iAUZfl9-sdvHcdNEU5F4z4wR00TzVMZvvDiY5JXs7ufr0DE2n_4PVjHazLEsXHxzjq0W6Zk2t9FHqEwIN5RKG6YH-YrYfW8IldHlEz-ZVg-B7BW2KNK007JBxxRlk6Q9KSTbgS-ynqLKERKyg==' ;
+		script-src 'nonce-YaR61UjJscQgfpH34PA6mB8sG7Hjhr7dqq21tHe6ABKzpzzSgiYxkUnw0QsEvx1jvWZZQ0hOaQSAVgXoFs4FBIaNB1bwhgNPiK0MK5BrB6q7nGZsSSeDXYs5PB5A2JnOuyZAKw0KqhLRQZx4FabgpIKZNQT-0j8b4SR0fPibMyKPvCpmxEmfPyKrbtkyhQKhouVD0iAUZfl9-sdvHcdNEU5F4z4wR00TzVMZvvDiY5JXs7ufr0DE2n_4PVjHazLEsXHxzjq0W6Zk2t9FHqEwIN5RKG6YH-YrYfW8IldHlEz-ZVg-B7BW2KNK007JBxxRlk6Q9KSTbgS-ynqLKERKyg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="YaR61UjJscQgfpH34PA6mB8sG7Hjhr7dqq21tHe6ABKzpzzSgiYxkUnw0QsEvx1jvWZZQ0hOaQSAVgXoFs4FBIaNB1bwhgNPiK0MK5BrB6q7nGZsSSeDXYs5PB5A2JnOuyZAKw0KqhLRQZx4FabgpIKZNQT-0j8b4SR0fPibMyKPvCpmxEmfPyKrbtkyhQKhouVD0iAUZfl9-sdvHcdNEU5F4z4wR00TzVMZvvDiY5JXs7ufr0DE2n_4PVjHazLEsXHxzjq0W6Zk2t9FHqEwIN5RKG6YH-YrYfW8IldHlEz-ZVg-B7BW2KNK007JBxxRlk6Q9KSTbgS-ynqLKERKyg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0061/ target="_blank">
+					<h2>0061: i&#39;m not a cat, artificial adventures, synthetic sagas, anthropic, sponsors</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-20">2026-09-20</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/synthetic-sagas/ target="_blank">
+					<h2>Synthetic sagas</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-20">2026-09-20</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/artificial-adventures/ target="_blank">
+					<h2>Artificial adventures</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-07-01">2026-07-01</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/im-not-a-cat/ target="_blank">
+					<h2>I&#39;m not a cat</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-24">2026-06-24</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0060/ target="_blank">
+					<h2>0060: SF</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-21">2026-06-21</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0059/ target="_blank">
+					<h2>0059: NYC and SF?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-06-05">2026-06-05</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/borrow-checking-without-type-checking/ target="_blank">
+					<h2>Borrow-checking without type-checking</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-22">2026-04-22</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0058/ target="_blank">
+					<h2>0058: borrow-checking surprises, books, links</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-07">2026-04-07</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/borrow-checking-surprises/ target="_blank">
+					<h2>Borrow-checking surprises</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-07">2026-04-07</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0057/ target="_blank">
+					<h2>0057: consulting, zest progress, reads that lasted, books, links</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-17">2026-02-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/2025/ target="_blank">
+					<h2>2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-17">2026-02-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0056/ target="_blank">
+					<h2>0056: consulting, zest progress, existentialize, modular borrowing, do we understand sql, zjit updates, books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-06">2025-12-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0055/ target="_blank">
+					<h2>0055: consulting, sql needed structure, slow forum, on the line, out of thin air, papers, other stuff</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-11-01">2025-11-01</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/sql-needed-structure/ target="_blank">
+					<h2>SQL needed structure</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-04">2025-09-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0054/ target="_blank">
+					<h2>0054: zest namespaces, store tags after payloads, go allocation probe, everyones got one, pprof labelguns, go value types, go perf probe, tpde, anyblox, books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-09-02">2025-09-02</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/everyones-got-one/ target="_blank">
+					<h2>Everyone&#39;s got one</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-05">2025-08-05</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/go-allocation-probe/ target="_blank">
+					<h2>Go allocation probe</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-18">2025-07-18</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/store-tags-after-payloads/ target="_blank">
+					<h2>Store tags after payloads</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-07-13">2025-07-13</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0053/ target="_blank">
+					<h2>0053: consulting, go tips, benchmark_mode, niri, linkrot, sea of nos, llm outsourcing, books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-05-31">2025-05-31</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/a-rough-survey-of-compilation-recompilation-and-compile-time-evaluation/ target="_blank">
+					<h2>A rough survey of compilation, recompilation, and compile-time evaluation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-04">2025-04-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0052/ target="_blank">
+					<h2>0052: hytradboi videos and post-mortem, zest repo, no internet, on social media, my product is my garden, datafusion and clickhouse jits, books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-14">2025-03-14</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/hytradboi-2025-postmortem/ target="_blank">
+					<h2>HYTRADBOI 2025 postmortem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-03">2025-03-03</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/other-kinds-of-talks/ target="_blank">
+					<h2>Other kinds of talks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-24">2025-02-24</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0051/ target="_blank">
+					<h2>0051: hytradboi program and tickets, query compilers, decorrelation encore, books, misc</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-13">2025-02-13</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/hytradboi-2025-program-and-tickets/ target="_blank">
+					<h2>HYTRADBOI 2025 program and tickets</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-31">2025-01-31</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/the-missing-tier-for-query-compilers/ target="_blank">
+					<h2>The missing tier for query compilers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-12">2025-01-12</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0050/ target="_blank">
+					<h2>0050: smolderingly fast b-trees, serious fun, what is the point of an online conference, it&#39;s ok to be afraid, HYTRADBOI progress, no other progress, vancouver.systems, not the incentives, llm garbage, books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-25">2024-11-25</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/its-ok-to-be-afraid/ target="_blank">
+					<h2>It&#39;s ok to be afraid</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-16">2024-11-16</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/what-is-the-point-of-an-online-conference/ target="_blank">
+					<h2>What is the point of an online conference?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-30">2024-10-30</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/serious-fun/ target="_blank">
+					<h2>Serious fun</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-20">2024-10-20</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0049/ target="_blank">
+					<h2>0049: hytradboi 2025, consulting, zest progress, labeled continue, bet against sql, zero-cost costs in debug, packed memory arrays, papers, books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-08">2024-10-08</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/smolderingly-fast-btrees/ target="_blank">
+					<h2>Smolderingly fast b-trees</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-06">2024-10-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/hytradboi-2025/ target="_blank">
+					<h2>HYTRADBOI 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-21">2024-09-21</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0048/ target="_blank">
+					<h2>0048: zest progress, zest ordering, wasm alignment, umbra papers, future of fast code, new internet, books, other stuff</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-31">2024-08-31</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0047/ target="_blank">
+					<h2>0047: babys second wasm compiler, zig honggfuzz, values can be values, dont look UB, surely you can be serious, other links, books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-11">2024-07-11</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/babys-second-wasm-compiler/ target="_blank">
+					<h2>Baby&#39;s second wasm compiler</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-09">2024-07-09</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/ruminating-about-mutable-value-semantics/ target="_blank">
+					<h2>Ruminating about mutable value semantics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-03">2024-06-03</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0046/ target="_blank">
+					<h2>0046: zest syntax, zest progress, sponsors-only repos, future compilers, error-handling implementations, suboperators, why we drive</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-02">2024-05-02</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/zest-syntax/ target="_blank">
+					<h2>Zest: syntax</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-04-16">2024-04-16</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0045/ target="_blank">
+					<h2>0045: unexplanations, business things, zest progress, internal consistency repro, why murat blogs, compiler books &#43; papers, compiling sql to wasm, other books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-28">2024-03-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/notes-on-compiler-irs/ target="_blank">
+					<h2>Notes on compiler IRs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-27">2024-03-27</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/miscellaneous-ideas/ target="_blank">
+					<h2>Miscellaneous ideas</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-23">2024-03-23</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/how-to-trade-software-for-small-money/ target="_blank">
+					<h2>How to trade software for small money?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-21">2024-03-21</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/unexplanations-sql-is-syntactic-sugar-for-relational-algebra/ target="_blank">
+					<h2>Unexplanations: sql is syntactic sugar for relational algebra</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-18">2024-03-18</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/unexplanations-relational-algebra-is-math/ target="_blank">
+					<h2>Unexplanations: relational algebra is math</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-11">2024-03-11</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0044/ target="_blank">
+					<h2>0044: zest progress, unexplanations, generic dilemma, bitc retrospective, adversarial memory safety, done list, tiny muffins, anti-anti-spam, happiness, daily rituals, other books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-28">2024-02-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/zest-dialects-and-metaprogramming/ target="_blank">
+					<h2>Zest: dialects and metaprogramming</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-28">2024-02-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/unexplanations-sql-declarative/ target="_blank">
+					<h2>Unexplanations: query optimization works because sql is declarative</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-21">2024-02-21</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/notation-and-representation/ target="_blank">
+					<h2>Zest: notation and representation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-02-04">2024-02-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0043/ target="_blank">
+					<h2>0043: 2023, debog, never sort, critique of sql, status game, more fuel you</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-15">2024-01-15</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/2023/ target="_blank">
+					<h2>2023</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-15">2024-01-15</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0042/ target="_blank">
+					<h2>0042: consulting lessons, there are no strings on me, buttondown, focus goof, jsfuck, 1ml</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-01">2023-12-01</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/there-are-no-strings-on-me/ target="_blank">
+					<h2>There are no strings on me</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-22">2023-11-22</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0041/ target="_blank">
+					<h2>0041: columnar kernels in go, go grouches, column sketches, why user-mode threads, gross margins vs open source, celebrity worship</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-11-04">2023-11-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/columnar-kernels-in-go/ target="_blank">
+					<h2>Columnar kernels in go?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-10-20">2023-10-20</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0040-1/ target="_blank">
+					<h2>0040.1: meta in myanmar</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-29">2023-09-29</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0040/ target="_blank">
+					<h2>0040: olap survey, lobster, feldera, innovation, wizard papers, umbra papers, olap papers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-29">2023-09-29</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/a-shallow-survey-of-olap-and-htap-query-engines/ target="_blank">
+					<h2>A shallow survey of OLAP and HTAP query engines</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-09-28">2023-09-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0039/ target="_blank">
+					<h2>0039: implementing interactive languages, baby&#39;s first wasm compiler, zig 0.11, attack of the killer features, zed, attention span, psychology&#39;s loss, privatizing sovereignty</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-29">2023-08-29</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/babys-first-wasm-compiler/ target="_blank">
+					<h2>Baby&#39;s first wasm compiler</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-28">2023-08-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/implementing-interactive-languages/ target="_blank">
+					<h2>Implementing interactive languages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-24">2023-08-24</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0038-1/ target="_blank">
+					<h2>0038.1: consulting</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-08-10">2023-08-10</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0038/ target="_blank">
+					<h2>0038: cheap compilation, mvs-to-wasm, automatically isolating bugs, mastodone, other stuff</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-07-28">2023-07-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0037/ target="_blank">
+					<h2>0037: dynamic mutable value semantics, interior pointers, uninterning, functionless effects, papers, books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-06-27">2023-06-27</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0036/ target="_blank">
+					<h2>0036: typescript, papers, books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-29">2023-05-29</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0035/ target="_blank">
+					<h2>0035: back to the shack</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-05-04">2023-05-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/what-is-a-database/ target="_blank">
+					<h2>What is a database?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-04-19">2023-04-19</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0034/ target="_blank">
+					<h2>0034: perf handover, compaction unchained, crash harder, sketching the query engine, focus catchup, android update policies, legopunk, a world without email, nobody cares, segcache, bloomRF, existential consistency, ssd parameters, fantastic ssd internals</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-31">2023-03-31</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0033/ target="_blank">
+					<h2>0033: table sizing, bench harder, wasm first steps, sycl vancouver, breathing for warriors, move your dna, the molecule of more, how to decide, slouching towards utopia</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-05">2023-03-05</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0032/ target="_blank">
+					<h2>0032: undroppable tombstones, forest fuzzer, manifest race, hash_log, zig coercions, zig pointer hops, zig object notation, domain knowledge, built from broken, database internals, papers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-31">2023-01-31</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0031/ target="_blank">
+					<h2>0031: 2022, systems distributed, random ids, deleting tombstones, disorderly compaction, juggling blocks, code review woes, holiday shutdown, searching for implementors, everything is copy, sharing the page cache after fysncgate, 9/10 climbers, rise and fall of peer review, real-world concurrency</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-05">2023-01-05</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/2022/ target="_blank">
+					<h2>2022</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-01-05">2023-01-05</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0030/ target="_blank">
+					<h2>0030: lsm perf, colorblind concurrency, tracing, evacuating preimp, reading, fixing my shoulders</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-05">2022-12-05</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0029/ target="_blank">
+					<h2>0029: san francisco, seattle, tigerbeetle, studying, links</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-11-04">2022-11-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0028/ target="_blank">
+					<h2>0028: HYTRADBOI jam, sqllogictest in a week, how safe is zig again, rr on alder lake, google maps jank, links</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-05">2022-10-05</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0027-1/ target="_blank">
+					<h2>0027.1: hytradboi jam</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-31">2022-08-31</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0027/ target="_blank">
+					<h2>0027: preimp, framework, dotfiles and backups, links</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-08-28">2022-08-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0026/ target="_blank">
+					<h2>0026: break, preimp essay, focus &#43; clojure, zed experiments, decorrelation and nested relations, bunny, sqlite mode, reading, links</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-26">2022-07-26</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0025/ target="_blank">
+					<h2>0025: preimp, focus &#43; mach, emergent ventures, clockwork labs, success, hytradboi ideas, zig debugging tips, dev-setup.sh, clojurescript blues, analogies for end-user programming, half-arsed workflows, javascript vs serialization, links</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-06-24">2022-06-24</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0024/ target="_blank">
+					<h2>0024: HYTRADBOI postmortem, HYTWACFI?, preimp, emergent ventures, data and reality, merkle search trees, readyset, julia compilation times</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-28">2022-05-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/hytradboi-2022-postmortem/ target="_blank">
+					<h2>HYTRADBOI 2022 postmortem</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-05-02">2022-05-02</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0023/ target="_blank">
+					<h2>0023: HYTRADBOI teaser, dida vs datalogui, preimp cruft, dbsp, links etc</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-24">2022-04-24</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/the-shape-of-data/ target="_blank">
+					<h2>The shape of data</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-29">2022-03-29</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0022/ target="_blank">
+					<h2>0022: preimp, shape of data, hytradboi progress, office hours, in nyc, riffle, cue, technical dimensions, js compound keys, hop</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-03-28">2022-03-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0021/ target="_blank">
+					<h2>0021: hytradboi schedule &#43; tickets, imp v3 ideas, real world of technology, changing minds, essence of software, typed image-based programming with structure editing, fosdem 2022, introspecting async</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-21">2022-02-21</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0020/ target="_blank">
+					<h2>0020: hytradboi, milestones, data soup, airtable, self-hosting</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-02-03">2022-02-03</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0019/ target="_blank">
+					<h2>0019: Refactor</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-26">2022-01-26</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0018/ target="_blank">
+					<h2>0018: last reflections, why start a new database conference, 2021 retrospective, imp schemaless db &#43; crdt, office hours, internal inconsistency in the wild, rss feeds, salsa needs finite collections, tiddlywiki vs unigraph, multidimensional indexes, arrow, just don&#39;t fsync, testing distributeds systems, tigerbeetle perf demos, web3, explicit formal structure, zig doctests, rust arenas, semidirect products of crdts, single-program distributed systems, sqlite qpsg, valhalla, mundanity of excellence, to mmap or not to mmap, libgavran, relational e-matching</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-17">2022-01-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-heterogenous-types/ target="_blank">
+					<h2>Imp: heterogenous types</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-10">2022-01-10</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/2021/ target="_blank">
+					<h2>2021</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-30">2021-12-30</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/coding/ target="_blank">
+					<h2>Coding</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-20">2021-12-20</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/why-start-a-new-database-conference/ target="_blank">
+					<h2>Why start a new database conference?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-17">2021-12-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0017/ target="_blank">
+					<h2>0017: hytradboi updates, imp stonks, misparaphrasing oracle, technical books, rum, creator economy, friend groups, ub, omg design principles, zig build, fossil and indexes, flatpak, skiplang, convex, fuzzing beyond testing, tigerbeetle dev videos, wafl</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-15">2021-12-15</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/testing/ target="_blank">
+					<h2>Testing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-26">2021-11-26</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/writing/ target="_blank">
+					<h2>Writing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-25">2021-11-25</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0016/ target="_blank">
+					<h2>0016: dida validator and debugger, focus selector perf and async children, emotional management, speed matters, moving faster, have you tried rubbing a database on it, handmade highlights, airtable scripts, bank python, napa, pollen, against markdown, zig-snapshots, exhaustive test inputs, gf, nixos debug symbols, duckdb blog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-15">2021-11-15</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/emotional-management/ target="_blank">
+					<h2>Emotional management</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-01">2021-11-01</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/moving-faster/ target="_blank">
+					<h2>Moving faster</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-23">2021-10-23</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/speed-matters/ target="_blank">
+					<h2>Speed matters</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-14">2021-10-14</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0015/ target="_blank">
+					<h2>0015: imp internals, reflections, precedence, make mode, mutant, q3, error recovery, tonsky ui, subtext 10, factfulness, benchmarking advice, dependency hubs, independent research, zig wayland, retool, observable dependencies, ugly buildings, without scihub, wasm virtual memory, huawei breakdown, infrastructure langauges, stencil vectors, chiX</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-12">2021-10-12</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/2021-q3-roundup/ target="_blank">
+					<h2>2021 Q3 roundup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-12">2021-10-12</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/better-operator-precedence/ target="_blank">
+					<h2>Better operator precedence</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-09">2021-10-09</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/setting-goals/ target="_blank">
+					<h2>Setting goals</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-06">2021-10-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/things-unlearned/ target="_blank">
+					<h2>Things unlearned</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-29">2021-09-29</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/on-bad-advice/ target="_blank">
+					<h2>On bad advice</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-22">2021-09-22</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/reflections-on-a-decade-of-coding/ target="_blank">
+					<h2>Reflections on a decade of coding</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-22">2021-09-22</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0014/ target="_blank">
+					<h2>0014: imp live repl &#43; syntax &#43; errors, focus highlighting &#43; squigglies, dida nop, web woes, undrafting, rel, oracle encore, chidb, pinebook touchpad, toplev, use of a life, imgui accessibility, wheel reinvention jam, chibicc, files vs web silos, handwritten parsers, perf ninja</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-06">2021-09-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/focus-intro/ target="_blank">
+					<h2>Focus: intro</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-06">2021-09-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/focus-rendering/ target="_blank">
+					<h2>Focus: rendering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-06">2021-09-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/focus-text/ target="_blank">
+					<h2>Focus: text</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-06">2021-09-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/thoughts-on-benchmarking-streaming-systems/ target="_blank">
+					<h2>Thoughts on benchmarking streaming systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-06">2021-09-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-live-repl/ target="_blank">
+					<h2>Imp: live repl</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-09-04">2021-09-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0013/ target="_blank">
+					<h2>0013: till death do us part, minimum wage, dida free, implicit ordering in relational languages, ultralearning, responses to against sql, oracle decorrelation, gede improvements, antisponsoring, convivial design heuristics, knowledge transfer, crafting databases, rust complexity, antitrust, gelly, shakti, lumosql, anti-marketing, NAAL, ledger of harms, tonsky icfp, debugging stories</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-07">2021-08-07</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/implicit-ordering-in-relational-languages/ target="_blank">
+					<h2>Implicit ordering in relational languages</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-08-05">2021-08-05</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/notes/ultralearning/ target="_blank">
+					<h2>Ultralearning</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-27">2021-07-27</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0012/ target="_blank">
+					<h2>0012: dida wasm api &#43; indexes &#43; reduce, food and carbon emissions, async rust, handmade seattle, ideas matter, tools for thought and dida animations, redpanda wasm, live 2021, opportunity costs of twitter, work vs jobs, sourcehut simplicity, writing tools faster, ec2 trends, the state of academia</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-09">2021-07-09</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/2021-q2-roundup/ target="_blank">
+					<h2>2021 Q2 roundup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-09">2021-07-09</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/against-sql/ target="_blank">
+					<h2>Against SQL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-07-09">2021-07-09</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0011/ target="_blank">
+					<h2>0011: dida release, DD reading, antirez and small tech, reactive ui, how to test, doom vs memory safety, state of academia, wasm-bindgen, apl compilers, relational.ai and salsa.jl</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-06-14">2021-06-14</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0010/ target="_blank">
+					<h2>0010: dida, live repls, query planning for streaming, rust allocators, more zig goto, database resources, guix on mac, criticising people&#39;s work, pay what you want</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-05-18">2021-05-18</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/making-live-repls-behave/ target="_blank">
+					<h2>Making live repls behave</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-05-18">2021-05-18</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/why-query-planning-for-streaming-systems-is-hard/ target="_blank">
+					<h2>Why query planning for streaming systems is hard</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-05-08">2021-05-08</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0009/ target="_blank">
+					<h2>0009: 2021 Q1 roundup, updates to internal consistency, garden of forking paths, push vs pull, beca, cambria</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-04-24">2021-04-24</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/2021-q1-roundup/ target="_blank">
+					<h2>2021 Q1 roundup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-04-22">2021-04-22</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0008/ target="_blank">
+					<h2>0008: the last internal consistency, geoffrey litt&#39;s new newsletter, business structure vs quality, aws throttling, papoc, our machinery, on twitter, injuries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-04-17">2021-04-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/internal-consistency-in-streaming-systems/ target="_blank">
+					<h2>Internal consistency in streaming systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-04-17">2021-04-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0007/ target="_blank">
+					<h2>0007: yet more internal consistency, re: how safe is zig, async performance, local-first software, fuzzers and emulators, deterministic hardware counters, zig goto</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-04-03">2021-04-03</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/how-safe-is-zig/ target="_blank">
+					<h2>How (memory) safe is zig?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-19">2021-03-19</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0006/ target="_blank">
+					<h2>0006: more internal consistency, how safe is zig, bullshit jobs, debt, utopia of rules, kevin&#39;s zig adventure, pinebook pro, trio</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-19">2021-03-19</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/notes/bullshit-jobs/ target="_blank">
+					<h2>Bullshit jobs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-19">2021-03-19</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/notes/debt/ target="_blank">
+					<h2>Debt</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-19">2021-03-19</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/notes/utopia-of-rules/ target="_blank">
+					<h2>Utopia of rules</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-19">2021-03-19</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/mmio-in-zig/ target="_blank">
+					<h2>Memory-mapped IO registers in zig</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-03-08">2021-03-08</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/an-opinionated-map-of-incremental-and-streaming-systems/ target="_blank">
+					<h2>An opinionated map of incremental and streaming systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-27">2021-02-27</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0005/ target="_blank">
+					<h2>0005: internal consistency in streaming systems, MMIO in zig, a small matter of programming, rxi, martin kleppmann&#39;s new patreon, redpanda benchmarks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-27">2021-02-27</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/notes/a-small-matter-of-programming/ target="_blank">
+					<h2>A small matter of programming</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-25">2021-02-25</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0004/ target="_blank">
+					<h2>0004: map of incremental/streaming systems, draft of thoughts on benchmarking streaming systems, the mature optimization handbook, various dataflow and database talks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-16">2021-02-16</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/notes/the-mature-optimization-handbook/ target="_blank">
+					<h2>The mature optimization handbook</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-16">2021-02-16</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/materialize-decorrelation/ target="_blank">
+					<h2>How Materialize and other databases optimize SQL subqueries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-16">2021-02-16</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0003/ target="_blank">
+					<h2>0003: optimizing correlated subqueries, digital minimalism, data-oriented design</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-06">2021-02-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/notes/digital-minimalism/ target="_blank">
+					<h2>Digital minimalism</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-06">2021-02-06</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0002/ target="_blank">
+					<h2>0002: correlated subqueries intro, text editor data-structures, working in public, thoughts on independent research</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-30">2021-01-30</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/notes/working-in-public/ target="_blank">
+					<h2>Working in public</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-26">2021-01-26</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0001/ target="_blank">
+					<h2>0001: welcome, text editor intro &#43; rendering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-25">2021-01-25</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/why-isnt-differential-dataflow-more-popular/ target="_blank">
+					<h2>Why isn&#39;t differential dataflow more popular?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-21">2021-01-21</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/2020-spending/ target="_blank">
+					<h2>2020 spending</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-01-15">2021-01-15</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/looking-for-debugger-2/ target="_blank">
+					<h2>Looking for more debugger</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-13">2020-12-13</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/looking-for-debugger/ target="_blank">
+					<h2>Looking for debugger</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-13">2020-12-13</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/canadas-express-entry-program/ target="_blank">
+					<h2>Canada&#39;s Express Entry program</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-26">2020-10-26</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/assorted-thoughts-on-zig-and-rust/ target="_blank">
+					<h2>Assorted thoughts on zig (and rust)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-19">2020-10-19</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/small-tech/ target="_blank">
+					<h2>Small tech</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-09-07">2020-09-07</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-iteration/ target="_blank">
+					<h2>Imp: iteration</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-17">2020-06-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-boxes/ target="_blank">
+					<h2>Imp: boxes</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-06-02">2020-06-02</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-solving-functions/ target="_blank">
+					<h2>Imp: solving functions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-29">2020-04-29</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/open-multiple-dispatch-in-zig/ target="_blank">
+					<h2>Open multiple dispatch in zig</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-28">2020-04-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/pinephone-first-steps/ target="_blank">
+					<h2>Pinephone first steps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-27">2020-04-27</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/select-wat-from-sql/ target="_blank">
+					<h2>SELECT wat FROM sql</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-04-16">2020-04-16</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-decorrelation/ target="_blank">
+					<h2>Imp: decorrelation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-02">2020-02-02</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/2019-spending/ target="_blank">
+					<h2>2019 spending</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-01-04">2020-01-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-simple-interpreter/ target="_blank">
+					<h2>Imp: simple interpreter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-18">2019-10-18</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-types/ target="_blank">
+					<h2>Imp: types</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-14">2019-10-14</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-denotational-semantics/ target="_blank">
+					<h2>Imp: denotational semantics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-01">2019-10-01</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-sets-and-funs/ target="_blank">
+					<h2>Imp: core language</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-09-30">2019-09-30</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imp-intro/ target="_blank">
+					<h2>Imp: intro</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-09-27">2019-09-27</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/frugality-is-non-linear/ target="_blank">
+					<h2>Frugality is non-linear</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-04-09">2019-04-09</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/zero-copy-deserialization-in-julia/ target="_blank">
+					<h2>Zero-copy deserialization in Julia</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-08-28">2018-08-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/julia-as-a-platform-for-language-development/ target="_blank">
+					<h2>Julia as a platform for language development</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-08-16">2018-08-16</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/psychology-vs-the-graphics-pipeline/ target="_blank">
+					<h2>Psychology vs the graphics pipeline</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-12-11">2017-12-11</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/staged-interpreters-in-rust/ target="_blank">
+					<h2>Staged interpreters in rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-11-22">2017-11-22</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/contrast-coding-is-an-implementation-detail/ target="_blank">
+					<h2>Contrast codes are an implementation detail</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-11-21">2017-11-21</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/relational-ui/ target="_blank">
+					<h2>A UI library for a relational language</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-07-28">2017-07-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/decision-points-and-utility/ target="_blank">
+					<h2>Decision points and utility</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-07-08">2017-07-08</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/monolog/ target="_blank">
+					<h2>Monolog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-03-16">2017-03-16</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/qnd-review-of-ppig-1989-2015/ target="_blank">
+					<h2>Quick and dirty review of Psychology of Programming Interest Group 1989-2015</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-11-17">2016-11-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/vive-experiments/ target="_blank">
+					<h2>Vive experiments</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-10-28">2016-10-28</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/a-practical-relational-query-compiler-in-500-lines/ target="_blank">
+					<h2>A practical relational query compiler in 500 lines of code</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-10-11">2016-10-11</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/complexity-budgets/ target="_blank">
+					<h2>Complexity budgets</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-10-25">2015-10-25</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/three-months-of-rust/ target="_blank">
+					<h2>Three months of rust</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-06-04">2015-06-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/scaling-down/ target="_blank">
+					<h2>Scaling down</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-02-09">2015-02-09</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/imperative-thinking-and-the-making-of-sandwiches/ target="_blank">
+					<h2>Imperative thinking and the making of sandwiches</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-07-21">2014-07-21</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/pain-we-forgot/ target="_blank">
+					<h2>Pain we forgot</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-05-17">2014-05-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/local-state-is-harmful/ target="_blank">
+					<h2>Local state is harmful</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-02-17">2014-02-17</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/search-trees-and-core-dot-logic/ target="_blank">
+					<h2>Search trees and core.logic</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-12-19">2012-12-19</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/strucjure-motivation/ target="_blank">
+					<h2>Strucjure: motivation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-12-04">2012-12-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/causal-ordering/ target="_blank">
+					<h2>Causal ordering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2012-08-16">2012-08-16</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/optimising-texsearch/ target="_blank">
+					<h2>Optimising texsearch</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-12-08">2010-12-08</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/design-and-analysis-of-a-gossip-algorithm/ target="_blank">
+					<h2>Design and analysis of a gossip algorithm</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-09-04">2010-09-04</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/examining-scampy/ target="_blank">
+					<h2>Examining scampy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2010-05-19">2010-05-19</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://www.scattered-thoughts.net/" target="_blank">Scattered Thoughts</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="YaR61UjJscQgfpH34PA6mB8sG7Hjhr7dqq21tHe6ABKzpzzSgiYxkUnw0QsEvx1jvWZZQ0hOaQSAVgXoFs4FBIaNB1bwhgNPiK0MK5BrB6q7nGZsSSeDXYs5PB5A2JnOuyZAKw0KqhLRQZx4FabgpIKZNQT-0j8b4SR0fPibMyKPvCpmxEmfPyKrbtkyhQKhouVD0iAUZfl9-sdvHcdNEU5F4z4wR00TzVMZvvDiY5JXs7ufr0DE2n_4PVjHazLEsXHxzjq0W6Zk2t9FHqEwIN5RKG6YH-YrYfW8IldHlEz-ZVg-B7BW2KNK007JBxxRlk6Q9KSTbgS-ynqLKERKyg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

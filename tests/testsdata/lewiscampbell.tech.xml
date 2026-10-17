@@ -1,0 +1,3789 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <link rel="self" href="https://lewiscampbell.tech/blog/feed.xml" type="application/atom+xml"/>
+  <icon>https://lewiscampbell.tech/img/icon46.png</icon>
+  <title>Lewis Campbell&apos;s Blog</title>
+  <subtitle>Software Testing, Distributed Systems, and miscellaneous Programming.</subtitle>
+  <link href="https://lewiscampbell.tech/"/>
+  <updated>2026-10-10T23:17:24.665Z</updated>
+  <id>https://lewiscampbell.tech/</id>
+  <author><name>Lewis Campbell</name></author>
+  
+    <entry>
+      <title>Waterfall Reconsidered</title>
+      <link href="https://lewiscampbell.tech/blog/261011"/>
+      <id>https://lewiscampbell.tech/blog/261011</id>
+      <updated>2026-10-10T11:00:00.000Z</updated>
+      <summary>Ackshually, what you're doing is not real waterfall.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  We all know waterfall is bad. It&apos;s outdated, bureaucratic, ineffective, and
+  makes you late for dinner. It&apos;s just a stupid thing we did in the bad old
+  days, before we were taught better by a group of consultants at a mountain
+  retreat.
+&lt;/p&gt;
+
+&lt;p&gt;Or so the Agilists would have us believe.&lt;/p&gt;
+&lt;img src=&quot;/img/Norm.jpg&quot;&gt;
+&lt;p&gt;
+  Today agile apologists claim the true meaning of agile has been distorted.
+  What we commonly think of as Agile - bureaucratic processes, standups,
+  backlogs, product owners, sprints etc etc - is actually Industrial Agile,
+  sometimes or Big-A Agile. But, &lt;i&gt;actually&lt;/i&gt;, the original agile (small-a!)
+  is wonderful, and contains only what&apos;s in agile manifesto.
+&lt;/p&gt;
+&lt;p&gt;
+  I will show we can make the exact same argument for waterfall; that there is
+  an original, uncorrupted kernel we have neglected, and that the horrible nasty
+  Industrial Waterfall - held up as a bogeyman by agilists - is a distortion of
+  the initial, elegant idea. You have been lied to, dear reader - and if you
+  would learn more of the truth of small-w waterfall, read forth!
+&lt;/p&gt;
+&lt;h2&gt;Waterfall Was Iterative&lt;/h2&gt;
+&lt;p&gt;
+  Today &quot;Waterfall&quot; is taken to mean a one pass development process. First all
+  the requirements are done, then the specs, then the coding, then the tests -
+  in more or less granularity. You can only go forward between these phases -
+  never backwards. Problem in the specs? Too bad, they&apos;ve been signed off on.
+&lt;/p&gt;
+&lt;p&gt;
+  But it did not mean this to the men who coined it. The first mention of
+  &quot;Waterfall&quot; was the 1976 paper &lt;a
+    href=&quot;https://static.aminer.org/pdf/PDF/000/361/405/software_requirements_are_they_really_a_problem.pdf&quot;
+  &gt;Software Requirements: Are They Really a Problem?&lt;/a&gt; by Bell &amp; Thayer. In it
+  they argue that software requirements do not just &quot;arise naturally&quot;, but need
+  an engineering effort to define well (a finding that still eludes many
+  software teams some 50 years thence), and early in the second page they write
+  of &quot;software development systems&quot;; what we might today call methodologies:
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;
+    ...practicioneers have concluded that a top-down approach is superior to the
+    bottom-up approach of the past. The Military Standard set MIL- STD 490/483
+    recognized this newer approach by specifying a system requirements document,
+    a &quot;design-to&quot; requirements document that is created in response to the
+    system requirements, and then a &quot;code-to&quot; requirements document for each
+    software module in the design. Each of these is at a lower level of detail
+    than the former, so the system developers are led through a top-down
+    process. The same top-down approach to a series of requirements statements
+    is explained, without the specialized military jargon, in an excellent paper
+    by Royce [5]; he introduced the concept of the &quot;waterfall&quot; of development
+    activities. In this approach software is developed in the disciplined
+    sequence of activities shown in Figure I.
+  &lt;/p&gt;
+  &lt;p&gt;
+    Each of the documents in the early phases of the waterfall can be considered
+    as stating a set of requirements. At each level a set of requirements serve
+    as the input and a design is produced as output. This design then becomes
+    the requirements set for the designer at the next level down.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;
+  Their Figure I is based on the infamous &quot;Waterfall Diagram&quot; (retroactively
+  named) of Royce&apos;s 1970 paper
+  &lt;a href=&quot;https://www.praxisframework.org/files/royce1970.pdf&quot;
+  &gt;Managing the Development of Large Software Systems (Royce, 1970)&lt;/a&gt;:
+&lt;/p&gt;
+&lt;img src=&quot;/img/RoyceWaterfall.svg&quot; alt=&quot;Waterfall development process&quot;&gt;
+
+&lt;p&gt;
+  &lt;i&gt;
+    (First off, let me state clearly - I&apos;ve read the Royce paper, yes I know he
+    wasn&apos;t arguing for phase-gated development, yes I know he didn&apos;t coin the
+    term waterfall, and yes I know the people most angry at the title of the
+    article won&apos;t read this far and will still comment that I am ignorant of all
+    the above. Back to the article.)
+  &lt;/i&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+  So what impressed Bell &amp; Thayer was not some notion of a rigid gated process,
+  but just how clearly the top-down software development process had been
+  illustrated, showing clearly that higher designs naturally flowed down to
+  lower. Indeed they took it for granted that requirements development must be
+  iterative; writing on page 6:
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;
+    The importance of continually reviewing requirements for their impact on
+    design solutions is obvious, especially in a top-down environment where each
+    iteration through the development cycle affords the opportunity to deal with
+    changing or incorrect requirements, and to factor these changes into the
+    evolving design.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2&gt;The Argument for Top-Down Design&lt;/h2&gt;
+
+&lt;p&gt;
+  So if phase-gating gremlins are not an integral part of waterfall (more lies
+  from the Agile-Industrial complex), what&apos;s left is what Bell &amp; Thayer
+  immediately zeroed in on: Top-Down design. The papers I am drawing from were
+  written in the 70s, and many of the terms may be strange to us today. So let&apos;s
+  break down a modern top-down design into three phases:
+&lt;/p&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;Requirements&lt;/dt&gt;
+  &lt;dd&gt;What the real world requires of the software&lt;/dd&gt;
+  &lt;dt&gt;Design&lt;/dt&gt;
+  &lt;dd&gt;API Design, UI Design, Software Architecture&lt;/dd&gt;
+  &lt;dt&gt;Development&lt;/dt&gt;
+  &lt;dd&gt;
+    Creating a computer program that follows the specs; coding, testing, etc
+  &lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 744 366&quot; width=&quot;100%&quot;&gt;
+  &lt;style&gt;
+  :root {
+    color-scheme: light dark;
+    color: CanvasText;
+    font: system-ui;
+  }
+  rect {
+    fill: none;
+    stroke: currentColor;
+  }
+  text {
+    fill: currentColor;
+    text-anchor: middle;
+    font-size: x-large;
+  }
+  path {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+  }
+  &lt;/style&gt;
+  &lt;defs&gt;
+    &lt;marker
+      id=&quot;arrow&quot;
+      viewBox=&quot;0 0 10 10&quot;
+      refX=&quot;0&quot;
+      refY=&quot;5&quot;
+      markerWidth=&quot;5&quot;
+      markerHeight=&quot;5&quot;
+      orient=&quot;auto-start-reverse&quot;
+    &gt;
+      &lt;path d=&quot;M 0 1 L 10 5 L 0 9 z&quot;&gt;&lt;/path&gt;
+    &lt;/marker&gt;
+    &lt;rect id=&quot;box&quot; width=&quot;300&quot; height=&quot;100&quot; stroke-width=&quot;2&quot;&gt;&lt;/rect&gt;
+    &lt;path
+      id=&quot;conn&quot;
+      d=&quot;M 300,54 Q 330,54 350,119&quot;
+      stroke-width=&quot;2&quot;
+      marker-end=&quot;url(#arrow)&quot;
+    &gt;
+    &lt;/path&gt;
+  &lt;/defs&gt;
+
+  &lt;g transform=&quot;translate(2,2)&quot;&gt;
+    &lt;use href=&quot;#box&quot;&gt;&lt;/use&gt;
+    &lt;text x=&quot;150&quot; y=&quot;58&quot;&gt;REQUIREMENTS&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;use href=&quot;#conn&quot; transform=&quot;translate(2,2)&quot;&gt;&lt;/use&gt;
+
+  &lt;g transform=&quot;translate(222,132)&quot;&gt;
+    &lt;use href=&quot;#box&quot;&gt;&lt;/use&gt;
+    &lt;text x=&quot;150&quot; y=&quot;58&quot;&gt;DESIGN&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;use href=&quot;#conn&quot; transform=&quot;translate(222,132)&quot;&gt;&lt;/use&gt;
+
+  &lt;g transform=&quot;translate(442,262)&quot;&gt;
+    &lt;use href=&quot;#box&quot;&gt;&lt;/use&gt;
+    &lt;text x=&quot;150&quot; y=&quot;58&quot;&gt;DEVELOPMENT&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+&lt;p&gt;
+  Note how inherent direction of the whole thing. If there&apos;s a change in the
+  design, it likely means more development work. If there&apos;s a change in
+  requirements, then the design must change, and hence more development - it
+  quite literally flows as surely as water does.
+&lt;/p&gt;
+
+&lt;p&gt;
+  This is of course a heuristic and not an absolute rule; in a well functioning
+  organisation with effective testing an issue in development can definitely
+  propagate its way up and cause higher level designs to be debugged. From Bell
+  &amp; Thayer, page 5:
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;
+    However, reports documenting requirement-related problems or needed change
+    can be generated throughout the development cycle, not just during
+    appropriate requirement reviews. In fact, such information also comes from
+    the design phase and as late as the formal testing phase... While the
+    principal activity may be software design or testing, documented problems at
+    any point in the development cycle may identify the source of the problem as
+    any previous activity, e.g., a requirement error documented on a software
+    problem report written during formal testing.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;
+  Does it then follow that their waterfall is purely circular? I argue not -
+  there&apos;s a directionality to it, and design flows downwards. All software is
+  judged by problems it solves in the real world, how it is to use, and how well
+  developed it is - in that order. That issues lower in the waterfall (ie, slow
+  unmaintainable code) can affect things further up does not change this. Rarely
+  will a technical development issue change high level requirements - there is a
+  direction, a gravity drawing us towards the implementation, and waterfall
+  describes it. As Fred Brooks said in
+  &lt;a href=&quot;https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf&quot;&gt;
+    No Silver Bullet
+  &lt;/a&gt;:
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;
+    The hardest single part of building a software system is deciding precisely
+    what to build...No other part of the work so cripples the resulting system
+    if done wrong. No other part is more difficult to rectify later.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;
+  The agile manifesto is a slippery piece of work - hinting at much and saying
+  little - but I think even they acknowledge this:
+&lt;/p&gt;
+
+&lt;blockquote&gt;
+  Welcome changing requirements, even late in development. Agile processes
+  harness change for the customer&apos;s competitive advantage.
+&lt;/blockquote&gt;
+
+&lt;p&gt;
+  Anyone who&apos;s been a contract dev on a day rate will confirm that changing
+  requirements are absolutely a thing to welcome. Bell &amp; Thayer&apos;s &quot;waterfall of
+  development activities&quot; exists, whether a team produces artefacts for it or
+  not. A failure to acknowledge a phenomenon does not make it go away.
+&lt;/p&gt;
+
+&lt;h2&gt;Restoring the Honour of Waterfall&lt;/h2&gt;
+
+&lt;p&gt;
+  We are told to judge agile in its purist form, and in the most charitable way;
+  but the ideas behind waterfall have a clarity of thought and a clearness of
+  metaphor that far surpasses anything in that dreary &quot;manifesto&quot;. So, why not
+  carry the name proudly? Waterfall is just top-down iterative development, and
+  that is an sensible, effective approach. A brave new world of waterfall
+  coaches, waterfall consulting and waterfall conferences await us, if only we
+  would reach out our hands to grasp it.
+&lt;/p&gt;
+
+&lt;img src=&quot;/img/WaterfallCoalCreek.jpg&quot;&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>AIgnostic</title>
+      <link href="https://lewiscampbell.tech/blog/260723"/>
+      <id>https://lewiscampbell.tech/blog/260723</id>
+      <updated>2026-07-22T12:00:00.000Z</updated>
+      <summary>"Not that I would repress the impulse, you understand, any more than I would starve any other part of my nature."</summary>
+      <content type="html">
+
+&lt;p&gt;
+  I no longer want to be seen as someone with a &quot;position&quot; on using LLMs for
+  software development.
+&lt;/p&gt;
+
+&lt;p&gt;
+  A &lt;a href=&quot;/blog/260114&quot;&gt;previous article&lt;/a&gt; caused some to peg me as an
+  &quot;anti-AI&quot; voice. But it was far more about the scourge of AI Influencers; the
+  newly minted Agentic Experts loudly proclaiming that all who disagreed with
+  their vision of the future were merely driven by fear. On the technology
+  itself I was (and am) someone who often finds them useful, if not in the earth
+  shattering way described by our industry&apos;s loudest and shrillest voices.
+&lt;/p&gt;
+&lt;p&gt;
+  For the truth is software development has not fundamentally changed. Programs
+  must stil be built, delivered, and provide value. Code is and will remain the
+  &lt;a href=&quot;/blog/260622&quot;&gt;final specification&lt;/a&gt;, the highest level
+  deterministic representation we have of what the machine will actually do.
+  Readability has not stopped mattering, because source code has always been
+  about communicating with both man and machine. Reading begets understanding,
+  and code that is not understood is legacy whether it&apos;s two years or two hours
+  old.
+&lt;/p&gt;
+
+&lt;p&gt;
+  So I hereby declare myself AIgnostic. I care as much about your use of
+  language models as I do your text editor or keyboard - I&apos;m milldy interested
+  and I have my own perferences, but I&apos;m not going to get too animated about
+  your personal tools. Own your commits and make good software. How you get
+  there should be your own concern.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>A Guide to Agile for English Speakers</title>
+      <link href="https://lewiscampbell.tech/blog/260713"/>
+      <id>https://lewiscampbell.tech/blog/260713</id>
+      <updated>2026-07-12T12:00:00.000Z</updated>
+      <summary>Useful vocabulary for weary travellers, and those held captive.</summary>
+      <content type="html">
+
+&lt;style&gt;
+@import url(&quot;https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&amp;display=swap&quot;);
+dt,
+.agile {
+  font-family: &quot;Comic Neue&quot;, sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  font-size: larger;
+}
+dt {
+  padding-top: 0.5rem;
+  padding-bottom: 0rem;
+}
+&lt;/style&gt;
+&lt;p&gt;
+  Agile can be incredibly hard to understand; I hope this short guide proves
+  useful.
+&lt;/p&gt;
+
+&lt;h2&gt;Basic Vocabulary&lt;/h2&gt;
+&lt;dl&gt;
+  &lt;dt&gt;Backlog&lt;/dt&gt;
+  &lt;dd&gt;To-do List.&lt;/dd&gt;
+  &lt;dt&gt;Epic&lt;/dt&gt;
+  &lt;dd&gt;???&lt;/dd&gt;
+  &lt;dt&gt;Grooming a backlog&lt;/dt&gt;
+  &lt;dd&gt;Editing a todo-list.&lt;/dd&gt;
+  &lt;dt&gt;Retro, Retrospective&lt;/dt&gt;
+  &lt;dd&gt;
+    A long &lt;span class=&quot;agile&quot;&gt;standup&lt;/span&gt;, marking the end of a
+    &lt;span class=&quot;agile&quot;&gt;sprint&lt;/span&gt;.
+  &lt;/dd&gt;
+  &lt;dt&gt;Scrum Master&lt;/dt&gt;
+  &lt;dd&gt;Ceremonial role. Utility unknown.&lt;/dd&gt;
+  &lt;dt&gt;Sprint&lt;/dt&gt;
+  &lt;dd&gt;
+    Arbitrary unit of work taking an arbitrary unit of time. Significance
+    unknown.
+  &lt;/dd&gt;
+  &lt;dt&gt;Standup&lt;/dt&gt;
+  &lt;dd&gt;
+    Religious ritual involving technical people justifying their jobs to
+    non-technical people, who don&apos;t understand what they do.
+  &lt;/dd&gt;
+  &lt;dt&gt;Story Points&lt;/dt&gt;
+  &lt;dd&gt;An estimation game for children.&lt;/dd&gt;
+  &lt;dt&gt;User Story&lt;/dt&gt;
+  &lt;dd&gt;A specification game for children.&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;h2&gt;Agile Manifesto&lt;/h2&gt;
+&lt;img src=&quot;/img/SmallChildrensManifesto.jpg&quot; /&gt;
+&lt;p&gt;
+  One of the most challenging texts in the Agile Language; often referenced but
+  famously hard to interpret. I have chosen a few select passages, but bear in
+  mind there is no consensus among Agile scholars as to their meaning.
+&lt;/p&gt;
+&lt;dl&gt;
+  &lt;dt&gt;Working software over comprehensive documentation&lt;/dt&gt;
+  &lt;dd&gt;We don&apos;t haven a user guide, wanna hop on a call ???&lt;/dd&gt;
+  &lt;dt&gt;Responding to change over following a plan&lt;/dt&gt;
+  &lt;dd&gt;We&apos;ll wing it.&lt;/dd&gt;
+  &lt;dt&gt;
+    Welcome changing requirements, even late in development. Agile processes
+    harness change for the customer&apos;s competitive advantage.
+  &lt;/dt&gt;
+  &lt;dd&gt;We&apos;re paid hourly.&lt;/dd&gt;
+  &lt;dt&gt;
+    Business people and developers must work together daily throughout the
+    project.
+  &lt;/dt&gt;
+  &lt;dd&gt;Send a lot of emails, but don&apos;t say much in any of them.&lt;/dd&gt;
+  &lt;dt&gt;
+    Continuous attention to technical excellence and good design enhances
+    agility.
+  &lt;/dt&gt;
+  &lt;dd&gt;It is what it is.&lt;/dd&gt;
+&lt;/dl&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Short Reflection on being Offline for 24 hours</title>
+      <link href="https://lewiscampbell.tech/blog/260712"/>
+      <id>https://lewiscampbell.tech/blog/260712</id>
+      <updated>2026-07-11T12:00:00.000Z</updated>
+      <summary>Taking a brief off-ramp from the information highway.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  There are, I think two reactions to the title of this post. One is to scoff at
+  how short a time 24 hours really is; something barely worth mentioning. But
+  another, perhaps less voiced reaction is to think &quot;wow, I can&apos;t remember when
+  I last did that...&quot;
+&lt;/p&gt;
+&lt;p&gt;
+  When I last did this it was involuntary - I was living in a shack in the
+  mountains and a sheep had chewed through the cable connecting me to the
+  satellite dish, which was in turn connecting me to the web. And so I spent a
+  couple of weekends net-less (with weekdays at a co-working space so I could
+  keep in contact with my client). But I can remember kind of enjoying it,
+  reading things I claimed I would get round to reading but never did, and
+  thinking more deeply. &quot;Maybe I should make it a regular thing&quot; I thought,
+  &quot;just to reset things and get a new perspective...&quot;.
+&lt;/p&gt;
+&lt;p&gt;
+  That was some six years ago, and the most I&apos;d managed since then is maybe an
+  hour of self-imposed internet exile. But things have been building recently.
+  Having a three your old who - while she does enjoy a cheeky music video or
+  three - is nevertheless content to do things like read, draw, and play with
+  blocks through her day made me reflect. How much was she seeing her father
+  doom scrolling with the excuse of &quot;I just need a break&quot;? Why couldn&apos;t I be
+  more like her, and how long until she was more like me? I took note of the
+  contemporary moral panic around kids and smart phones, and I deemed it
+  pointless if society at large was addicted; the generation who had chided us
+  millenials for &quot;always TXTing&quot; on our monochrome nokias were now grey,
+  wisened, and often more addicted to contemporary devices than we ever were.
+  But unlike the generations before or after, I at least had partial immunity
+  from remembering old youtube with it&apos;s amateur video content and primitive
+  skinner box mechanisms; of having some natural resistance to the more modern
+  and extreme developments of shorts and AI thumbnails. What hope does a child
+  have of resisting contemporary, weapons-grade slop addiction?
+&lt;/p&gt;
+&lt;p&gt;
+  And so I&apos;ve spent the last 24 hours cut off from the internet as an
+  experiment. Completely self imposed - just disconnected my devices and set an
+  alarm. Once again I read more, once again I thought more deeply, and once
+  again I liked it. My alarm will be ringing soon and I will be lying if I said
+  I wasn&apos;t excited to re-connect. And nor am I trying to say that the internet
+  itself as some wholly negative thing - after all, that&apos;s where the things I
+  read come from; the best written material the world has to offer, saved to my
+  machine. And yet despite the incredible upside of the internet, I can&apos;t help
+  wonder if my continued resistance against its dark side might require more
+  drastic action. I&apos;d already quit facebook, reddit, lobsters, HN
+  (ok...provisionally) bluesky, several discords, and most recently I&apos;d been off
+  youtube entirely for days. But there&apos;s always a hook back in. &quot;I can&apos;t quit X&quot;
+  I tell myself, &quot;I&apos;ve met so many great people... oh what&apos;s that, tech drama?
+  Well they surely need to hear &lt;em&gt;my&lt;/em&gt; opinion...&quot;
+&lt;/p&gt;
+&lt;p&gt;
+  My time online draws near. The ever-full needle of stranger&apos;s opinions hovers
+  tantalisingly over my swabbed, tensed arm. Still, I like to think I&apos;ve taken
+  the first step.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Why I think Rust is Object Oriented</title>
+      <link href="https://lewiscampbell.tech/blog/260709"/>
+      <id>https://lewiscampbell.tech/blog/260709</id>
+      <updated>2026-07-08T12:00:00.000Z</updated>
+      <summary>If it quacks like a duck, and implements the Duck trait...</summary>
+      <content type="html">
+
+&lt;p&gt;
+  &lt;i&gt;
+    Before we begin, I want to say
+    &lt;b&gt;I don&apos;t care that much if you disagree with me.&lt;/b&gt;
+    There&apos;s no sound precise mathematical definition of Object Oriented, no ISO
+    standard, and no grand arbiter who decides what is and what is not OO
+    (although I believe Casey Muratori may have applied for that position
+    somewhere in his 12 day monologue about the subject). You are unlikely to
+    change my mind, and I am unlikely to change yours, and that&apos;s perfectly
+    fine. On with the post!
+  &lt;/i&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  In my heart of hearts, Rust feels like an object oriented language.
+  Practically everything I write in Rust is a datum + set of behaviours
+  intimately associated therewith. I hide my struct fields, give my
+  totally-not-objects equality semantics and string representation. I utilise
+  polymorphism via traits - and while I know that traits are
+  &lt;em&gt;not technically&lt;/em&gt; interfaces, that fact occupies the same region of my
+  brain that knows that
+  &lt;a
+    href=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Mandrill_Albert_September_2015_Zoo_Berlin_%282%29.jpg/500px-Mandrill_Albert_September_2015_Zoo_Berlin_%282%29.jpg&quot;
+  &gt;mandrills&lt;/a&gt;
+  are &lt;em&gt;not technically&lt;/em&gt; baboons. Almost all my functionality is written
+  in methods, and those methods belong to the data they operate on, in a way
+  that they definitely don&apos;t in something like C or OCaml.
+&lt;/p&gt;
+
+&lt;p&gt;
+  But what about inheritance? OO-haters often fixate on this as
+  &lt;em&gt;the&lt;/em&gt;
+  defining thing about objects, which has always perplexed me. I came up in the
+  JavaMania era and &quot;composition over inheritance&quot; was the accepted wisdom of
+  every programmer who took OO seriously. I scarcely used it during my time in
+  the C# mines. Historically speaking the case is weak as well; neither
+  &lt;a href=&quot;https://worrydream.com/EarlyHistoryOfSmalltalk/&quot;&gt;
+    the first smalltalk, nor the first simula&lt;/a&gt;
+  had inheritance. Self was hugely influential (traits originated in Self) and
+  didn&apos;t have it either. I won&apos;t deny it wasn&apos;t a common feature, but it never
+  took center stage in my mind outside the brief &quot;Cat inherits Mammal&quot; phrase we
+  all go through, and it certainly wasn&apos;t encouraged in the OO design books I
+  read.
+&lt;/p&gt;
+&lt;p&gt;
+  So why the disconnect? Why does talking about this not resonate with other
+  Rust programmers? I think because in the Rust culture, &quot;objects&quot; are something
+  very different. They&apos;re virtual destructors &amp; inheritance trees. They&apos;re a
+  nasty thing C++ had that Rust forwent because dynamic dispatch is
+  &lt;em&gt;slow&lt;/em&gt; (except in Zig of course where it&apos;s fast now). Of course Rust
+  isn&apos;t OO!
+&lt;/p&gt;
+&lt;p&gt;
+  But for those of us who took object-oriented design seriously, everything you
+  read just reinforced that they&apos;re neat little black boxes you call methods on.
+  And of those, rust is full.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Reject Agility, Embrace Specification</title>
+      <link href="https://lewiscampbell.tech/blog/260622"/>
+      <id>https://lewiscampbell.tech/blog/260622</id>
+      <updated>2026-06-21T12:00:00.000Z</updated>
+      <summary>Rebuilding Software Engineering in the Post-Agile world.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  Here&apos;s a reproduction of the infamous &quot;Waterfall Diagram&quot;, from the landmark
+  paper
+  &lt;a href=&quot;https://www.praxisframework.org/files/royce1970.pdf&quot;
+  &gt;Managing the Development of Large Software Systems (Royce, 1970)&lt;/a&gt;:
+&lt;/p&gt;
+&lt;img src=&quot;/img/RoyceWaterfall.svg&quot; alt=&quot;Waterfall development process&quot;&gt;
+&lt;p&gt;Behold, the enemy of Agile! Although, in its defence...&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    This diagram was the second of 9 figures, each showing a more sophisticated
+    and realistic approach to software development than the last.
+  &lt;/li&gt;
+  &lt;li&gt;
+    It&apos;s almost 60 years old (&amp;quot;Program Design&amp;quot; and &amp;quot;Coding&amp;quot;
+    is a distinction that makes a lot more sense in the era of batch
+    compilation)
+  &lt;/li&gt;
+  &lt;li&gt;It&apos;s much better than my realistic diagram of the Agile Model:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 400 180&quot; width=&quot;100%&quot;&gt;
+  &lt;defs&gt;
+    &lt;marker
+      id=&quot;arrow-loop&quot;
+      viewBox=&quot;0 0 10 10&quot;
+      refX=&quot;0&quot;
+      refY=&quot;5&quot;
+      markerWidth=&quot;10&quot;
+      markerHeight=&quot;10&quot;
+      markerUnits=&quot;userSpaceOnUse&quot;
+      orient=&quot;auto&quot;
+    &gt;
+      &lt;path
+        d=&quot;M 0 1 L 10 5 L 0 9 z&quot;
+        style=&quot;fill: none; stroke-linejoin: round&quot;
+      /&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+  &lt;g stroke-width=&quot;2&quot; marker-end=&quot;url(#arrow-loop)&quot;&gt;
+    &lt;path d=&quot;M 140,45 C 85,45 85,130 130,130&quot; /&gt;
+    &lt;path d=&quot;M 260,130 C 315,130 315,45 270,45&quot; /&gt;
+  &lt;/g&gt;
+
+  &lt;g transform=&quot;translate(140,20)&quot;&gt;
+    &lt;rect width=&quot;120&quot; height=&quot;50&quot; /&gt;
+    &lt;text x=&quot;60&quot; y=&quot;30&quot;&gt;CODING&lt;/text&gt;
+  &lt;/g&gt;
+  &lt;g transform=&quot;translate(140,100)&quot;&gt;
+    &lt;rect width=&quot;120&quot; height=&quot;60&quot; /&gt;
+    &lt;text x=&quot;60&quot; y=&quot;19&quot;&gt;NONSENSICAL&lt;/text&gt;
+    &lt;text x=&quot;60&quot; y=&quot;36&quot;&gt;AGILE&lt;/text&gt;
+    &lt;text x=&quot;60&quot; y=&quot;53&quot;&gt;CEREMONY&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+
+&lt;p&gt;
+  (Keen-eyed readers will note that unlike the Agile Model, the Waterfall Model
+  actually terminates...)
+&lt;/p&gt;
+&lt;p&gt;
+  But I bring up the &quot;Waterfall Diagram&quot; because I am writing about
+  &lt;em&gt;specifications&lt;/em&gt;, and in doing so I inevitably open myself to
+  accusations of Waterfallism. For just as the fall of Rome marked the beginning
+  of the Dark Ages of Western Europe, so too has the publication of the Agile
+  Manifesto marked the Dark Ages of Software Engineering; our present age of
+  superstitious planning rituals, and broad literary collapse. And to argue in
+  this Dark Age that extensive writing - or indeed &lt;em&gt;thinking&lt;/em&gt; - should
+  precede or accompany the development of computer programs is to invite
+  hostility.
+&lt;/p&gt;
+&lt;p&gt;
+  And so I will face this foursquare; and
+  &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Ruin&quot;&gt;
+    much as the Anglo-Saxons once looked upon the ruins of Roman
+    Civilisation&lt;/a&gt;, I have looked upon the Ruins of Software Engineering
+  (beautifully preserved in the aforelinked PDF scan), and I have striven to
+  find a new way forward. In later years the Renaissance was sparked by the
+  re-discovery of the classics; and it will be the same, I think, for us.
+&lt;/p&gt;
+
+&lt;h2&gt;Specifications in a Modern Style&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Why won&apos;t people write specs? People claim that it&apos;s because they&apos;re saving
+    time by skipping the spec-writing phase. They act as if spec-writing was a
+    luxury reserved for NASA space shuttle engineers, or people who work for
+    giant, established insurance companies. Balderdash. First of all, failing to
+    write a spec is the single biggest unnecessary risk you take in a software
+    project. It&apos;s as stupid as setting off to cross the Mojave desert with just
+    the clothes on your back, hoping to “wing it.” Programmers and software
+    engineers who dive into code without writing a spec tend to think they&apos;re
+    cool gunslingers, shooting from the hip. They&apos;re not. They are terribly
+    unproductive. They write bad code and produce shoddy software, and they
+    threaten their projects by taking giant risks which are completely uncalled
+    for.
+  &lt;/p&gt;
+  — Joel Spolsky,
+  &lt;cite&gt;
+    &lt;a
+      href=&quot;https://www.joelonsoftware.com/2000/10/02/painless-functional-specifications-part-1-why-bother/&quot;
+    &gt;
+      Painless Functional Specifications
+    &lt;/a&gt;
+  &lt;/cite&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  So what do I mean by specifications, or specs? Broadly; non-code artefacts
+  that describe software problems and solutions. It can describe a vision of
+  software before it exists, or be an audit of a current system. But its purpose
+  is to describe how software should behave, how it should be built, and where
+  it should sit in the world.
+&lt;/p&gt;
+&lt;p&gt;
+  (Some might prefer to call these &quot;requirements&quot;, or &quot;design docs&quot;. IEEE
+  defines an alternate model on
+  &lt;a
+    href=&quot;https://ieeecs-media.computer.org/media/education/swebok/swebok-v4.pdf&quot;
+  &gt;
+    page 46 of this document
+  &lt;/a&gt;
+  which may suit you just as well (or better). If your terminology or taxonomies
+  differ - use them! My goal is not to convince you to follow my model
+  precisely; the goal is to convince you that yours is worth specifying.)
+&lt;/p&gt;
+&lt;h3&gt;Kinds of Specs&lt;/h3&gt;
+&lt;svg
+  xmlns=&quot;http://www.w3.org/2000/svg&quot;
+  viewBox=&quot;0 0 304 204&quot;
+  text-anchor=&quot;middle&quot;
+&gt;
+  &lt;g stroke=&quot;currentColor&quot; stroke-width=&quot;1&quot;&gt;
+    &lt;rect x=&quot;2&quot; y=&quot;2&quot; width=&quot;300&quot; height=&quot;200&quot; /&gt;
+    &lt;rect x=&quot;27&quot; y=&quot;47&quot; width=&quot;250&quot; height=&quot;150&quot; /&gt;
+    &lt;rect x=&quot;52&quot; y=&quot;92&quot; width=&quot;200&quot; height=&quot;100&quot; /&gt;
+    &lt;rect x=&quot;77&quot; y=&quot;137&quot; width=&quot;150&quot; height=&quot;50&quot; stroke-dasharray=&quot;3,3&quot; /&gt;
+    &lt;!--
+      &lt;ellipse cx=&quot;152&quot; cy=&quot;102&quot; rx=&quot;150&quot; ry=&quot;100&quot; /&gt;
+      &lt;ellipse cx=&quot;152&quot; cy=&quot;122&quot; rx=&quot;125&quot; ry=&quot;75&quot; /&gt;
+      &lt;ellipse cx=&quot;152&quot; cy=&quot;142&quot; rx=&quot;100&quot; ry=&quot;50&quot; /&gt;
+      &lt;ellipse cx=&quot;152&quot; cy=&quot;162&quot; rx=&quot;75&quot; ry=&quot;25&quot; /&gt;
+    --&gt;
+  &lt;/g&gt;
+  &lt;g fill=&quot;currentColor&quot;&gt;
+    &lt;text x=&quot;152&quot; y=&quot;30&quot;&gt;Operational&lt;/text&gt;
+    &lt;text x=&quot;152&quot; y=&quot;75&quot;&gt;Functional&lt;/text&gt;
+    &lt;text x=&quot;152&quot; y=&quot;120&quot;&gt;Technical&lt;/text&gt;
+    &lt;text x=&quot;152&quot; y=&quot;167.5&quot; font-family=&quot;monospace&quot;&gt;COMPUTER CODE&lt;/text&gt;
+  &lt;/g&gt;
+&lt;/svg&gt;
+&lt;p&gt;
+  Software exists in multiple contexts, from corporate strategy to code, and
+  rarely will one document satisfy everyone. A technical specialist likely cares
+  little about the business goals software is meant to meet, and likewise board
+  members might be bored to tears hearing about algorithms and architecture. And
+  again, the way I&apos;ve split contexts here is not prescriptive; words like
+  &quot;product&quot; or &quot;systems&quot; may appear in your own definitions, or you may have
+  four instead of three; season to taste. The important things are:
+&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Different contexts are of interest to different stakeholders.&lt;/li&gt;
+  &lt;li&gt;An outer context provides a foundation for the inner context.&lt;/li&gt;
+  &lt;li&gt;
+    Recognising that a change in an outer context will trigger a change in inner
+    contexts.
+  &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+  (There is arguably an even larger context missing here; the Strategic Business
+  context. To this I will do something a consultant should never do, and admit
+  &lt;i&gt;I do not have enough experience here to intelligently talk about it.&lt;/i&gt;)
+&lt;/p&gt;
+&lt;p&gt;
+  And finally it&apos;s worth noting that the borders between different contexts will
+  always be blurry, and a good spec author welcomes feedback and input. If
+  something in say the functional specs turns out to be infeasible technically,
+  this is useful information! Communicate, and do not build on things blindly.
+&lt;/p&gt;
+&lt;h4&gt;Operational Specs&lt;/h4&gt;
+&lt;p&gt;All software exists in some operational reality, larger than itself.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;User roles: internal and external (i.e. Suppliers, Customers)&lt;/li&gt;
+  &lt;li&gt;Workflows (i.e. Order Processing, Manufacturing)&lt;/li&gt;
+  &lt;li&gt;Constraints (i.e Physical, Logistic, Regulatory)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  I find operational requirements require the most eliciting; they are the least
+  likely to exist formally and the most likely to have developed organically and
+  live in people&apos;s heads.
+&lt;/p&gt;
+
+&lt;h4&gt;Functional Specs&lt;/h4&gt;
+&lt;p&gt;
+  Once grounded in an operational context, one can begin to think how the
+  software works from a user&apos;s perspective.
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Scenarios / User stories&lt;/li&gt;
+  &lt;li&gt;User interfaces (wireframes)&lt;/li&gt;
+  &lt;li&gt;High-level data flows (integrations, reporting, etc.)&lt;/li&gt;
+  &lt;li&gt;Non-Goals - what the system will &lt;em&gt;not&lt;/em&gt; do, and why&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  If you only write one level of spec, make it Functional Specs. It most clearly
+  defines what success is in terms of the software being written, and it is the
+  one most likely to be read by both technical and non-technical stakeholders.
+&lt;/p&gt;
+&lt;h4&gt;Technical Specs&lt;/h4&gt;
+&lt;p&gt;
+  The internal implementation of the software; an explicit reckoning of
+  technical tradeoffs and decisions.
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Tech stack choices&lt;/li&gt;
+  &lt;li&gt;
+    Dependency justification (I go into more detail
+    &lt;a href=&quot;/blog/250718&quot;&gt;here&lt;/a&gt;)
+  &lt;/li&gt;
+  &lt;li&gt;Core Modules&lt;/li&gt;
+  &lt;li&gt;Key Algorithms and Data Structures&lt;/li&gt;
+  &lt;li&gt;Data schemas (SQL, JSON, binary...)&lt;/li&gt;
+  &lt;li&gt;High Level API (HTTP Routes, Wire Protocols...)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  Specs at this level can be very useful as input for AI tooling, to help create
+  working prototypes and first drafts. Discovering your assumtpions are broken
+  is best done sooner than later!
+&lt;/p&gt;
+
+&lt;h2&gt;Frequently Encountered Objections&lt;/h2&gt;
+&lt;h3&gt;No one will read them.&lt;/h3&gt;
+&lt;p&gt;There is an onus on the reader, and there is an onus on the writer&lt;/p&gt;
+&lt;p&gt;
+  The writer must make the specs engaging. Diagrams, links, quotes, bullet
+  points, and even fundamentals like the correct use of paragraphs (now extinct
+  on LinkedIn) and relevant headings. The author must be able to point to some
+  division of the spec (whether file, web page, section etc) and say
+  &quot;Stakeholder; this section is relevant to you!&quot;.
+&lt;/p&gt;
+&lt;p&gt;
+  As for the reader, I will make this (perhaps controversial) point - a base
+  level of literacy is a prerequisite for good software. At time of writing,
+  serious software starts at six figures and goes on from there. They are
+  famously hard to estimate and budget for. Given this, if decision makers
+  cannot trouble themselves to spend time on a well-written document, with
+  diagrams and bullet-points, that defines what success looks like in a way that
+  is relevant and understandable to them, I question how important the project
+  really is to them anyway.
+&lt;/p&gt;
+&lt;p&gt;
+  No volume of meetings will ever make up for an unwillingness to read and write
+&lt;/p&gt;
+&lt;h3&gt;&quot;Upfront Design Does Not Work.&quot;&lt;/h3&gt;
+&lt;p&gt;
+  I very much agree that specifications should not be etched in stone, and
+  should be malleable. &quot;No plan survives first contact with the enemy&quot; and all
+  that. But to march into battle with no plan at all is to invite failure. And
+  so I argue you should do an upfront design, but do not over specify; you must
+  retain the capacity to react to changes. Know that it will be changed by
+  contact with reality; by things yet unforeseen. And favour breadth over depth:
+  it is better to cover everything, than cover any one thing in detail.
+&lt;/p&gt;
+&lt;h3&gt;&quot;A sufficiently detailed spec is code&quot;&lt;/h3&gt;
+&lt;p&gt;
+  An objection most commonly made by those programmers who see specs as a
+  bureaucratic burden imposed on them from above. Of course in practice
+  programmers themselves instinctively know this not to be true; or READMEs,
+  man-pages, API documentation would have no reason to exist in anything
+  open-source.
+&lt;/p&gt;
+&lt;p&gt;
+  Anything sufficiently complex must be reasoned about at different levels. We
+  could equally make the observation that all other natural sciences are just
+  the children of physics; but much of our advanced civilisation is, of course,
+  built on the reasoning of complex natural phenomena at levels far above the
+  atom.
+&lt;/p&gt;
+
+&lt;h2&gt;Specifications: An Effort Worth Making&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    The hardest single part of building a software system is deciding precisely
+    what to build. No other part of the conceptual work is so difficult as
+    establishing the detailed technical requirements, including all the
+    interfaces to people, to machines, and to other software systems. No other
+    part of the work so cripples the resulting system if done wrong. No other
+    part is more difficult to rectify later.
+  &lt;/p&gt;
+  — Fred Brooks,
+  &lt;cite&gt;
+    &lt;a href=&quot;https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf&quot;&gt;
+      No Silver Bullet
+    &lt;/a&gt;
+  &lt;/cite&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    What could go wrong? What&apos;s wrong? Which question would we rather ask? The
+    former, because code, like steel, is less expensive to change while it&apos;s
+    hot. A problem solved in production is many times more expensive than a
+    problem solved in implementation, or a problem solved in design.
+  &lt;/p&gt;
+
+  &lt;cite&gt;
+    —
+    &lt;a
+      href=&quot;https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md&quot;
+    &gt;
+      TigerStyle
+    &lt;/a&gt;
+  &lt;/cite&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  Everything in software is done in a context. Specs make these contexts
+  concrete.
+&lt;/p&gt;
+&lt;p&gt;
+  The programmer, sure of the functional context in which he operates, is free
+  to devote all his skill in the making of software that is reliable and fast.
+  He is not burdened by doubt (&quot;is this really what the business wants?&quot;), his
+  thoughts not distracted by the consideration of contexts other than his own.
+&lt;/p&gt;
+&lt;p&gt;
+  And so, I leave you with this; if you enjoy wasting money and projects that
+  never end, by all means specify nothing. Rely on an incoherent picture;
+  fragments scattered across emails, meetings, and chats; and hope that
+  expensive technical resources can piece this all together, and somehow delve
+  into your mind to recreate the image you had.
+&lt;/p&gt;
+
+&lt;p&gt;
+  But if you want to succeed, what success looks like must be defined. And this
+  picture of success must be refined still further until it can form the basis
+  of a technical execution. Requirements exist regardless of whether they are
+  specified or not; you might as well write them down.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>The Decline of Search Engines is an Opportunity</title>
+      <link href="https://lewiscampbell.tech/blog/260609"/>
+      <id>https://lewiscampbell.tech/blog/260609</id>
+      <updated>2026-06-08T12:00:00.000Z</updated>
+      <summary>Enshittifcation is a blessing in disguise.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  The degradation of search engine capability is fairly undeniable at this
+  point. Google has been unusable for years, DuckDuckGo/Bing is steadily getting
+  worse, and while Yandex is looking more impressive by comparison, it&amp;#39;s
+  still a few steps behind the old state of the art. And youtube... oh my god
+  youtube. At this point I instinctively avoid searching youtube at all - the
+  visceral disgust I experience upon seeing the countless of variations of the
+  same empty face staring out at me against the same manicured titlecards, as if
+  everyone is following the same &amp;quot;How To Drive Engagement With Your
+  Videos&amp;quot; instruction guide (which they almost certainly are) is probably
+  best shared with a mental health professional (note to self: does my profile
+  picture trigger the same in others?).
+&lt;/p&gt;
+&lt;p&gt;
+  So, what is a long time netizen of the Information Super Highway to do? Kagi
+  is often recommended but AFAICT relies on the 3 providers mentioned above.
+  LLMs&lt;sup&gt;&lt;a
+      id=&quot;footnote-ref-1&quot;
+      href=&quot;#footnote-1&quot;
+      data-footnote-ref
+      aria-describedby=&quot;footnote-label&quot;
+    &gt;1&lt;/a&gt;&lt;/sup&gt;
+  can search for me, but a non-deterministic summary built on search results
+  which are often themselves slop is just a Mad Cow Disease for the Mind. No, if
+  we want to solve this, we need to think outside the textbox.
+&lt;/p&gt;
+&lt;p&gt;
+  Hyperlinks. The answer is hyperlinks. In my early days of the web I was
+  constantly finding cool sites by clicking on the ubiquitous &amp;quot;links&amp;quot;
+  page other cool sites always had. Sometimes they were irrelevant, sometimes
+  they were dead, but sometimes they really hit the mark and I found stuff I
+  still remember to this day.
+&lt;/p&gt;
+&lt;p&gt;
+  We&amp;#39;re constantly bemoaning the centralized web. But are we not Web
+  Masters? Can we not simply link to the websites we enjoy? Every search engine
+  turning to shit is an incredible opportunity if you look at it right.
+&lt;/p&gt;
+&lt;p&gt;
+  So with that I introduce my &lt;code&gt;&amp;lt;blink&amp;gt;NEW!&amp;lt;/blink&amp;gt;&lt;/code&gt;
+  &lt;a href=&quot;/links&quot;&gt;links page&lt;/a&gt;. This is not a &amp;quot;web ring&amp;quot;, I&amp;#39;m
+  not &amp;quot;following you back&amp;quot;. It&amp;#39;s just stuff I like. I don&amp;#39;t
+  expect any of these sites to link back to me. And if you decide to link to me,
+  please don&amp;#39;t expect me to link back either. But nonetheless, link! Link to
+  whatever you want! Make your own link page yours. Take back the World Wide
+  Web, one hyperlink at a time.
+&lt;/p&gt;
+&lt;section class=&quot;footnotes&quot; data-footnotes&gt;
+  &lt;h2 id=&quot;footnote-label&quot; class=&quot;sr-only&quot;&gt;Footnotes&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;footnote-1&quot;&gt;
+      &lt;p&gt;
+        This article has now been tagged &amp;quot;vibecoding&amp;quot; on lobste.rs.
+        &lt;a
+          href=&quot;#footnote-ref-1&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 1&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/section&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>The User Doesn&apos;t Care - But you should</title>
+      <link href="https://lewiscampbell.tech/blog/260607"/>
+      <id>https://lewiscampbell.tech/blog/260607</id>
+      <updated>2026-06-06T12:00:00.000Z</updated>
+      <summary>Debunking one of the most poisonous myths in programming.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  Throughout my career, I&amp;#39;ve heard the same cliche repeated again and again.
+  Here&amp;#39;s some examples from the wild:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &amp;quot;Customers don’t care about your testing at all. They care that the
+    product works.&amp;quot;
+  &lt;/li&gt;
+  &lt;li&gt;&amp;quot;Users Don’t Care About Your Tech Stack&amp;quot;&lt;/li&gt;
+  &lt;li&gt;
+    &amp;quot;First you must accept that engineering elegance != market value.&amp;quot;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &amp;quot;Users don’t care whether the code was written by AI or by hand, or
+    which framework you used. They care that the product works.&amp;quot;&lt;sup&gt;&lt;a
+        id=&quot;footnote-ref-1&quot;
+        href=&quot;#footnote-1&quot;
+        data-footnote-ref
+        aria-describedby=&quot;footnote-label&quot;
+      &gt;1&lt;/a&gt;&lt;/sup&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  They all have differences, but they&amp;#39;re variations on the same theme. The
+  grizzled pragmatist is telling us all how the world &lt;em&gt;really&lt;/em&gt; works.
+  He&amp;#39;s showing us a cold, hard truth we&amp;#39;re all just too idealistic or
+  short-sighted to see. &amp;quot;Why are you bothering with that? The customer
+  &lt;em&gt;won&amp;#39;t care&lt;/em&gt;&amp;quot;.
+&lt;/p&gt;
+&lt;p&gt;
+  The key issue here is it&amp;#39;s all a bunch of horseshit. Consider the same
+  kind of cliche, adapted for other fields:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    Road users don&amp;#39;t care if the bridge has had its final inspection or not.
+    They care that it holds up their car.
+  &lt;/li&gt;
+  &lt;li&gt;
+    Passengers don&amp;#39;t care whether the pilot is drunk or not. They care that
+    the plane arrives on time.
+  &lt;/li&gt;
+  &lt;li&gt;
+    Office workers don&amp;#39;t care if the skyscraper&amp;#39;s foundation is stable
+    or not. They care about making money.
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  All superficially true. All ignoring the obvious downstream effects. Because
+  of course it&amp;#39;s absolutely right that customers do not care at all about
+  the intrinsic properties of computer code. But then there are the downstream
+  effects:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Performance&lt;/li&gt;
+  &lt;li&gt;Presence of bugs&lt;/li&gt;
+  &lt;li&gt;How long it takes to fix bugs&lt;/li&gt;
+  &lt;li&gt;How long it takes to add features&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  The worse your code is, the harder - and slower - it is to resolve these
+  issues.
+&lt;/p&gt;
+&lt;p&gt;
+  Of course if you&amp;#39;re an AirBnB, OpenAI, or Meta you can absolutely
+  steamroll over these concerns through your incredible market capture, massive
+  VC backing, and questionable legality. You &lt;em&gt;are&lt;/em&gt; a company like that,
+  right?
+&lt;/p&gt;
+&lt;h2&gt;The Persistence of Folk Wisdom&lt;/h2&gt;
+&lt;p&gt;
+  It&amp;#39;s profoundly facile to think that only first order effects matter. Yet
+  this is an incredibly popular folk belief in software. Why?
+&lt;/p&gt;
+&lt;p&gt;
+  Many people have a tendency to discount or downplay things they themselves are
+  not good at. If one recognises their inability to produce good code, why not
+  adopt a view of software where not only does that not matter, it&amp;#39;s
+  actually the people &lt;strong&gt;with the ability&lt;/strong&gt; that are the real
+  problem? They&amp;#39;re the ones holding us back with things the customer
+  doesn&amp;#39;t even care about! Let me ship bro.
+&lt;/p&gt;
+&lt;p&gt;
+  So I think partly it&amp;#39;s an ego defence mechanism. It lets one avoid
+  one&amp;#39;s own shortcomings, and instead externalise it onto others. What are
+  you reading books for, nerd?
+&lt;/p&gt;
+&lt;h2&gt;We Live in a Society&lt;/h2&gt;
+&lt;p&gt;
+  Any serious software effort is a mixture of different concerns, and different
+  perspectives. From tech sales to tech stack, from user experience to unique
+  identifiers. And all of it contributes to success - or failure.
+&lt;/p&gt;
+&lt;section class=&quot;footnotes&quot; data-footnotes&gt;
+  &lt;h2 id=&quot;footnote-label&quot; class=&quot;sr-only&quot;&gt;Footnotes&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;footnote-1&quot;&gt;
+      &lt;p&gt;
+        Lobste.rs mods: please don&amp;#39;t tag this as &amp;quot;vibecoding&amp;quot;
+        because this article now contains the word &amp;quot;AI&amp;quot;
+        &lt;a
+          href=&quot;#footnote-ref-1&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 1&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/section&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Saying Goodbye to Agile</title>
+      <link href="https://lewiscampbell.tech/blog/260414"/>
+      <id>https://lewiscampbell.tech/blog/260414</id>
+      <updated>2026-04-13T12:00:00.000Z</updated>
+      <summary>Software's "Agile moment" has been and gone.</summary>
+      <content type="html">
+
+&lt;p&gt;RIP Agile, we hardly knew ye.&lt;/p&gt;
+&lt;p&gt;And I mean that literally - because no one was ever clear on what it was.&lt;/p&gt;
+&lt;p&gt;
+  Agile washed over our industry like a tsunami. But whenever it was questioned,
+  a voice (perhaps emanating from a gap in the clouds?) would invariably tell us
+  &amp;quot;ah, but that is not True Agile - The Manifesto sayeth naught of Daily
+  Standups, nor Agile Coaches&amp;quot;. Yet if one read the
+  &lt;a href=&quot;https://agilemanifesto.org/&quot;&gt;Agile Manifesto (2001)&lt;/a&gt;, this
+  wellspring of our enlightened New Era of Software, one inevitably found it
+  didn&amp;#39;t actually tell us much at all. At best it was a sequence of vague
+  platitudes (&amp;quot;Customer collaboration over contract negotiation&amp;quot;), and
+  at worst it was commercially unworkable (&amp;quot;Welcome changing requirements,
+  even late in development&amp;quot;).
+&lt;/p&gt;
+&lt;p&gt;
+  So if the Agile Industry was not doing Agile Properly, and the manifesto
+  itself was near devoid of meaning, then what exactly was it?
+&lt;/p&gt;
+&lt;h2&gt;&amp;quot;A spectre is haunting Software, the spectre of Waterfall&amp;quot;&lt;/h2&gt;
+&lt;p&gt;
+  Agile was always defined primarily in terms of what it wasn&amp;#39;t - and what
+  it wasn&amp;#39;t was Waterfall. If you were not doing Agile, you are doing
+  Waterfall, and Waterfall Did Not Work.
+&lt;/p&gt;
+&lt;p&gt;
+  Except we&amp;#39;d known Waterfall did not work since 1970; and
+  &lt;a href=&quot;https://www.praxisframework.org/files/royce1970.pdf&quot;
+  &gt;Winston W. Royce laid out exactly why&lt;/a&gt;, recommending we instead:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Start with a program design.&lt;/li&gt;
+  &lt;li&gt;
+    Make a prototype of the software to gather information to refine
+    requirements.
+  &lt;/li&gt;
+  &lt;li&gt;
+    Involve the customer (&amp;quot;the involvement should be formal, in depth, and
+    continuing&amp;quot;).
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  All of these things were later claimed as Agile innovations. In reality, they
+  were written the year after the moon landing.&lt;sup&gt;&lt;a
+      id=&quot;footnote-ref-1&quot;
+      href=&quot;#footnote-1&quot;
+      data-footnote-ref
+      aria-describedby=&quot;footnote-label&quot;
+    &gt;1&lt;/a&gt;&lt;/sup&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  And even in that decade it was not the only work moving away from Waterfall.
+  &lt;a
+    href=&quot;https://static.aminer.org/pdf/PDF/000/361/405/software_requirements_are_they_really_a_problem.pdf&quot;
+  &gt;A 1976 paper by Bell and Thayer&lt;/a&gt;
+  - which first coined the term &amp;quot;Waterfall&amp;quot;&lt;sup&gt;&lt;a
+      id=&quot;footnote-ref-2&quot;
+      href=&quot;#footnote-2&quot;
+      data-footnote-ref
+      aria-describedby=&quot;footnote-label&quot;
+    &gt;2&lt;/a&gt;&lt;/sup&gt;
+  - tells us at the end of an empirical study:
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    The types of problems detected in requirements changed during the life of a
+    software development project. The system developers often determined
+    requirement deficiency only when they attempted to meet the requirements
+    with a design.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  So it&amp;#39;s clear that iterative development was not new, and would continue
+  to be further refined in the decades before Agile&lt;sup&gt;&lt;a
+      id=&quot;footnote-ref-3&quot;
+      href=&quot;#footnote-3&quot;
+      data-footnote-ref
+      aria-describedby=&quot;footnote-label&quot;
+    &gt;3&lt;/a&gt;&lt;/sup&gt;. Waterfall was not the state of the art ere The Manifesto
+  liberated us. And no one serious doubted the effectiveness of requirements and
+  specifications.
+&lt;/p&gt;
+&lt;h2&gt;Spec-Driven Development&lt;/h2&gt;
+&lt;p&gt;
+  &lt;a href=&quot;https://lewiscampbell.tech/blog/260114.html&quot;&gt;For good or for ill&lt;/a&gt;,
+  the availability of cheap LLMs trained on massive programming datasets has
+  altered the way many of us program computers, and arguably shifted the
+  zeitgeist of software.
+&lt;/p&gt;
+&lt;p&gt;
+  One unambiguously positive development that&amp;#39;s followed is that software
+  professionals are writing specs again. LLMs - like many of us - do not perform
+  well with ambiguity, and specifying problems is proving to be an effective
+  tool for generating correct code. Agile told us &amp;quot;Working software over
+  comprehensive documentation&amp;quot;. Spec-Driven Development is telling us
+  &amp;quot;Comprehensive documentation creates working software&amp;quot;. And really,
+  LLMs or no, there is nothing new under the sun. Quoth Royce:
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Until coding begins these three nouns (documentation, specification, design)
+    denote a single thing. If the documentation is bad the design is bad. If the
+    documentation does not yet exist there is as yet no design, only people
+    thinking and talking about the design which if of some value, but not much.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  Reading 1970 and 1976, one has to ask what 2001 really brings us. Agile was
+  defined vaguely and marketed as solving something already solved half a
+  century ago by serious engineers whose papers made more sense. As our field
+  continues to change - and we hope evolve - it&amp;#39;s time to look at things
+  with a fresh perspective, and put Agile in the dustbin of history where it
+  belongs.
+&lt;/p&gt;
+&lt;section class=&quot;footnotes&quot; data-footnotes&gt;
+  &lt;h2 id=&quot;footnote-label&quot; class=&quot;sr-only&quot;&gt;Footnotes&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;footnote-1&quot;&gt;
+      &lt;p&gt;
+        One wonders how the programmers of the Apollo Guidance Computer managed
+        such a feat, programming as they were without Story Points, nor knowing
+        that &amp;quot;Continuous attention to technical excellence and good design
+        enhances agility&amp;quot;.
+        &lt;a
+          href=&quot;#footnote-ref-1&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 1&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;footnote-2&quot;&gt;
+      &lt;p&gt;
+        Used, of course, as an example of what not to do.
+        &lt;a
+          href=&quot;#footnote-ref-2&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 2&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;footnote-3&quot;&gt;
+      &lt;p&gt;
+        I very much wanted to squeeze some references to
+        &lt;a href=&quot;https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf&quot;
+        &gt;Freed Brook&amp;#39;s &amp;quot;No Silver Bullet&amp;quot;&lt;/a&gt;
+        here, but I try to keep these posts short. I also have Boehm&amp;#39;s
+        &lt;a href=&quot;https://www.cse.msu.edu/~cse435/Homework/HW3/boehm.pdf&quot;
+        &gt;Spiral Model&lt;/a&gt;
+        on my reading list.
+        &lt;a
+          href=&quot;#footnote-ref-3&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 3&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/section&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Reading English from 1000 AD</title>
+      <link href="https://lewiscampbell.tech/blog/260224"/>
+      <id>https://lewiscampbell.tech/blog/260224</id>
+      <updated>2026-02-23T11:00:00.000Z</updated>
+      <summary>The past was not as foreign as we think.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  &lt;a
+    href=&quot;https://www.deadlanguagesociety.com/p/how-far-back-in-time-understand-english&quot;
+  &gt;&amp;quot;How far back in time can you understand English?&amp;quot;&lt;/a&gt;, a post that
+  tells a story starting with the English of 2000 AD and ending with the English
+  of 1000 AD has gone viral, and gotten a lot of people interested in older
+  forms of English.
+&lt;/p&gt;
+&lt;p&gt;
+  A common sentiment expressed by readers is that the language starting from
+  1200 AD is a foreign and incomprehensible. I am not sure I would agree. While
+  Old English absolutely requires some effort to learn, I think with a little
+  analysis it is much closer to Modern English than we think - and certainly
+  closer to that than it is to say, Modern German.
+&lt;/p&gt;
+&lt;p&gt;
+  (Full disclaimer: I am by no means an expert in Old English, nor any kind of
+  linguist. I was able to read fairly comfortably to 1000 AD and get the gist of
+  it, though I did have to look up a few words to get the full meaning).
+&lt;/p&gt;
+&lt;h2&gt;The original text&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    And þæt heo sægde wæs eall soþ. Ic ƿifode on hire, and heo ƿæs ful
+    scyne ƿif, ƿis ond ƿælfæst. Ne gemette ic næfre ær sƿylce ƿifman.
+    Heo ƿæs on gefeohte sƿa beald swa ænig mann, and þeah hƿæþere hire
+    andƿlite wæs ƿynsum and fæger.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Ac ƿe naƿiht freo ne sindon, for þy þe ƿe næfre ne mihton fram
+    Ƿulfesfleote geƿitan, nefne ƿe þone Hlaford finden and hine ofslean. Se
+    Hlaford hæfþ þisne stede mid searocræftum gebunden, þæt nan man ne
+    mæg hine forlætan. Ƿe sindon her sƿa fuglas on nette, swa fixas on
+    ƿere.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    And ƿe hine secaþ git, begen ætsomne, ƿer ond ƿif, þurh þa deorcan
+    stræta þisses grimman stedes. Hƿæþere God us gefultumige!
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;More modern orthography&lt;/h2&gt;
+&lt;p&gt;
+  In our first pass, we will make the orthography more modern. In Old English
+  letters like g and c represent two different sounds, so where appropriate I
+  have replaced them with how Modern English renders them. The rules applied are
+  as follows:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;ģ → y&lt;/li&gt;
+  &lt;li&gt;ċ → ch&lt;/li&gt;
+  &lt;li&gt;sċ → sh&lt;/li&gt;
+  &lt;li&gt;ƿ → w&lt;/li&gt;
+  &lt;li&gt;þ → th&lt;/li&gt;
+  &lt;li&gt;ht → ght&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  I also put &amp;quot;-&amp;quot; between things that look like multiple words, but
+  would be written as one word today.
+&lt;/p&gt;
+&lt;p&gt;
+  Note these changes preserve pronounciation, but already some words are more
+  obvious:
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    And thæt heo sæyde wæs eall soth. Ich wifode on hire, and heo wæs ful
+    shyne wif, wis ond wælfæst. Ne yemette ich næfer ær swylche wifman. Heo
+    wæs on yefeoghte swa beald swa æniy mann, and theah hwæthere hire
+    andwlite wæs wynsum and fæyer.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Ac we nawight freo ne sindon, for-thy-the we næfer ne mighton fram
+    Wulfesfleote yewitan, nefne we thone Laford finden and hine ofslean. Se
+    Hlaford hæfth thisne stede mid searocræftum yebunden, thæt nan man ne
+    mæy hine forlætan. We sindon her swa fuglas on nette, swa fixas on were.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    And we hine sechath yit, beyen ætsomne, wer ond wif, thurgh tha deorcan
+    stræta thisses grimman stedes. Hwæthere God us yefultumige!
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Cognates - First Pass&lt;/h2&gt;
+&lt;p&gt;
+  In the next step, words that are Cognate with Modern English are replaced.
+  Note I am only replacing the cognates that are very obvious.
+&lt;/p&gt;
+&lt;p&gt;Some of these congates are cognate with only part of the word.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    &lt;strong&gt;And that&lt;/strong&gt; heo &lt;strong&gt;said was all sooth&lt;/strong&gt;. Ich
+    &lt;strong&gt;wifed on her&lt;/strong&gt;, &lt;strong&gt;and&lt;/strong&gt; heo
+    &lt;strong&gt;was full&lt;/strong&gt; shyne &lt;strong&gt;wife&lt;/strong&gt;,
+    &lt;strong&gt;wise and&lt;/strong&gt; wæl&lt;strong&gt;fast&lt;/strong&gt;. Ne ye&lt;strong
+    &gt;meet&lt;/strong&gt;
+    ich &lt;strong&gt;never ere&lt;/strong&gt; swylche &lt;strong&gt;wifeman&lt;/strong&gt;. Heo
+    &lt;strong&gt;was on&lt;/strong&gt; yefeoghte swa &lt;strong&gt;bold&lt;/strong&gt; swa
+    &lt;strong&gt;any man&lt;/strong&gt;, &lt;strong&gt;and&lt;/strong&gt; theah hwæthere
+    &lt;strong&gt;her&lt;/strong&gt; andwlite &lt;strong&gt;was winesome and fair&lt;/strong&gt;.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Ac &lt;strong&gt;we nought free&lt;/strong&gt; ne sindon, for-thy-the
+    &lt;strong&gt;we never&lt;/strong&gt; ne &lt;strong&gt;might&lt;/strong&gt;on
+    &lt;strong&gt;from Wulfsfleet&lt;/strong&gt; yewitan, nefne &lt;strong&gt;we&lt;/strong&gt; thone
+    Hlaford &lt;strong&gt;find&lt;/strong&gt;en and hine ofslean. Se Hlaford
+    &lt;strong&gt;hath this&lt;/strong&gt;ne stede mid searo&lt;strong&gt;craft&lt;/strong&gt;um
+    ye&lt;strong&gt;bound&lt;/strong&gt;en, &lt;strong&gt;that none&lt;/strong&gt; ne
+    &lt;strong&gt;may&lt;/strong&gt; hine &lt;strong&gt;forlet&lt;/strong&gt;an.
+    &lt;strong&gt;We&lt;/strong&gt; sindon &lt;strong&gt;here&lt;/strong&gt; swa fuglas
+    &lt;strong&gt;on net&lt;/strong&gt;e, swa fixas &lt;strong&gt;on&lt;/strong&gt; were.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    &lt;strong&gt;And we&lt;/strong&gt; hine &lt;strong&gt;seeketh yet&lt;/strong&gt;, beyen ætsomne,
+    wer &lt;strong&gt;and wife&lt;/strong&gt;, &lt;strong&gt;through the&lt;/strong&gt;
+    &lt;strong&gt;dark&lt;/strong&gt;an &lt;strong&gt;street&lt;/strong&gt;a &lt;strong&gt;this&lt;/strong&gt;ses
+    &lt;strong&gt;grim&lt;/strong&gt;man stedes. Hwæthere
+    &lt;strong&gt;God us&lt;/strong&gt; yefultumige!
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Cognates - Second Pass&lt;/h2&gt;
+&lt;p&gt;
+  The article is becoming slowly more understandable. At this point the
+  following words stand out as islands among english we already know. Were you
+  able to guess any from context?
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;heo → she&lt;/li&gt;
+  &lt;li&gt;ich → I&lt;/li&gt;
+  &lt;li&gt;swa → so&lt;/li&gt;
+  &lt;li&gt;swylch- → such&lt;/li&gt;
+  &lt;li&gt;-feoght- → fought&lt;/li&gt;
+  &lt;li&gt;wifeman → woman&lt;/li&gt;
+  &lt;li&gt;-slean → slain&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These are a bit more difficult:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;fixas → fishes&lt;/li&gt;
+  &lt;li&gt;wer → wer&lt;/li&gt;
+  &lt;li&gt;were → weir&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  &amp;quot;Fixas&amp;quot; was also written as &amp;quot;fiscas&amp;quot;; much like how modern
+  English speakers say both &amp;quot;ask&amp;quot; and &amp;quot;aks&amp;quot;. &amp;quot;Wer&amp;quot;
+  only survives in Modern English &amp;quot;werewolf&amp;quot;. And &amp;quot;were&amp;quot;
+  personally stumped me because I was too ignorant of fishing to know what a
+  &amp;quot;weir&amp;quot; was...
+&lt;/p&gt;
+&lt;p&gt;Regardless, we now have:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    &lt;strong&gt;And that she said was all sooth. I wifed on her, and she was
+      full&lt;/strong&gt;
+    shyne &lt;strong&gt;wife, wise and&lt;/strong&gt; wæl&lt;strong&gt;fast&lt;/strong&gt;. Ne
+    ye&lt;strong&gt;meet I never ere such&lt;/strong&gt;e &lt;strong&gt;woman&lt;/strong&gt;.
+    &lt;strong&gt;She was on&lt;/strong&gt; ye&lt;strong&gt;fought&lt;/strong&gt;e
+    &lt;strong&gt;so bold so any man&lt;/strong&gt;, &lt;strong&gt;and&lt;/strong&gt; theah hwæthere
+    &lt;strong&gt;her&lt;/strong&gt; andwlite &lt;strong&gt;was winesome and fair&lt;/strong&gt;.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Ac &lt;strong&gt;we nought free&lt;/strong&gt; ne sindon, for-thy-the
+    &lt;strong&gt;we never&lt;/strong&gt; ne &lt;strong&gt;might&lt;/strong&gt;on
+    &lt;strong&gt;from Wulfsfleet&lt;/strong&gt; yewitan, nefne &lt;strong&gt;we&lt;/strong&gt; thone
+    Hlaford &lt;strong&gt;find&lt;/strong&gt;en and hine of&lt;strong&gt;slain&lt;/strong&gt;. Se
+    Hlaford &lt;strong&gt;hath this&lt;/strong&gt;ne stede mid searo&lt;strong&gt;craft&lt;/strong&gt;um
+    ye&lt;strong&gt;bound&lt;/strong&gt;en, &lt;strong&gt;that none&lt;/strong&gt; ne
+    &lt;strong&gt;may&lt;/strong&gt; hine &lt;strong&gt;forlet&lt;/strong&gt;an.
+    &lt;strong&gt;We&lt;/strong&gt; sindon &lt;strong&gt;here so&lt;/strong&gt; fuglas
+    &lt;strong&gt;on net&lt;/strong&gt;e, &lt;strong&gt;so fishes on weir&lt;/strong&gt;.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    &lt;strong&gt;And we&lt;/strong&gt; hine &lt;strong&gt;seeketh yet&lt;/strong&gt;, beyen ætsomne,
+    &lt;strong&gt;wer and wife, through the dark&lt;/strong&gt;an &lt;strong&gt;street&lt;/strong&gt;a
+    &lt;strong&gt;this&lt;/strong&gt;ses &lt;strong&gt;grim&lt;/strong&gt;man stedes. Hwæthere
+    &lt;strong&gt;God us&lt;/strong&gt; yefultumige!
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Modernising phrases&lt;/h2&gt;
+&lt;p&gt;
+  At this point we can start to render some phrases into modern English
+  directly.
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    &lt;strong&gt;And what she said was all true. I married her, and she was a
+      very&lt;/strong&gt;
+    shyne &lt;strong&gt;woman, wise and&lt;/strong&gt; wæl&lt;strong&gt;fast&lt;/strong&gt;. Ne
+    ye&lt;strong&gt;meet I never before such a woman&lt;/strong&gt;.
+    &lt;strong&gt;She was in&lt;/strong&gt; ye&lt;strong&gt;fought&lt;/strong&gt;e
+    &lt;strong&gt;as bold as any man&lt;/strong&gt;, &lt;strong&gt;and though&lt;/strong&gt; hwæthere
+    &lt;strong&gt;her&lt;/strong&gt; andwlite &lt;strong&gt;was winesome and fair&lt;/strong&gt;.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Ac &lt;strong&gt;we not free&lt;/strong&gt; ne sindon, for-thy-the
+    &lt;strong&gt;we never&lt;/strong&gt; ne &lt;strong&gt;might&lt;/strong&gt;on
+    &lt;strong&gt;from Wulfsfleet&lt;/strong&gt; yewitan, n&lt;strong&gt;even we&lt;/strong&gt; thone
+    Hlaford &lt;strong&gt;find&lt;/strong&gt;en &lt;strong&gt;and&lt;/strong&gt; hine of&lt;strong
+    &gt;slain&lt;/strong&gt;. Se Hlaford &lt;strong&gt;has this&lt;/strong&gt;ne stede mid
+    searo&lt;strong&gt;craft&lt;/strong&gt;um ye&lt;strong&gt;bound&lt;/strong&gt;en,
+    &lt;strong&gt;that none&lt;/strong&gt; ne &lt;strong&gt;may&lt;/strong&gt; hine
+    &lt;strong&gt;forlet&lt;/strong&gt;an. &lt;strong&gt;We&lt;/strong&gt; sindon
+    &lt;strong&gt;here like&lt;/strong&gt; fuglas &lt;strong&gt;in a net&lt;/strong&gt;e,
+    &lt;strong&gt;like fishes in a weir&lt;/strong&gt;.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    &lt;strong&gt;And we&lt;/strong&gt; hine &lt;strong&gt;seek yet&lt;/strong&gt;, beyen
+    &lt;strong&gt;at-same&lt;/strong&gt;ne,
+    &lt;strong&gt;man and wife, through the dark&lt;/strong&gt;an &lt;strong&gt;street&lt;/strong&gt;a
+    &lt;strong&gt;this&lt;/strong&gt;ses &lt;strong&gt;grim&lt;/strong&gt;man stedes. Hwæthere
+    &lt;strong&gt;God us&lt;/strong&gt; yefultumige!
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;What&amp;#39;s left?&lt;/h2&gt;
+&lt;p&gt;
+  At this point, I think most English speakers can follow this passage, if not
+  understand the finer points. I imagine some more vocabulary like
+  &amp;quot;hine&amp;quot; may reveal itself to you purely through context.
+&lt;/p&gt;
+&lt;p&gt;
+  And for those who say Old English is more like German... look how far we got
+  without using it at all! Though at this point, it would be helpful:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;strong&gt;shyne&lt;/strong&gt; (Modern English &amp;quot;sheen&amp;quot; but German cognate
+    is closer)
+  &lt;/li&gt;
+  &lt;li&gt;the prefix to many verbs &lt;strong&gt;gė-&lt;/strong&gt; (ye-)&lt;/li&gt;
+  &lt;li&gt;the suffix &lt;strong&gt;-en&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;the verb form &lt;strong&gt;sindon&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;the preposition &lt;strong&gt;mid&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;strong&gt;fuglas&lt;/strong&gt; (Modern English &amp;quot;fowls&amp;quot; but German cognate
+    is closer)
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;stedes&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And lastly, things that really are Old English specific.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;strong&gt;ne&lt;/strong&gt; particle requires you to know that Old English used
+    negative concord
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;for-þy-þe&lt;/strong&gt; I think must be learned from scratch&lt;/li&gt;
+  &lt;li&gt;
+    &lt;strong&gt;searo&lt;/strong&gt; does not survive later stages of English, and
+    Wiktionary lists cognates with only other dead languages. Though I believe
+    Tolkien did borrow it for the character &lt;strong&gt;Saru&lt;/strong&gt;man
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;strong&gt;Hwæthere&lt;/strong&gt; is a false friend - related to modern
+    &amp;quot;whether&amp;quot;+e, but it means &amp;quot;nevertheless&amp;quot;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;strong&gt;þone&lt;/strong&gt; will require some grammar, though I could have just
+    said &amp;quot;the&amp;quot; and it would have made sense
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;gefultumige&lt;/strong&gt; good luck with this!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;So how foreign is Old English, really?&lt;/h2&gt;
+&lt;p&gt;
+  Old English is certainly its own language, with its own grammar, vocab, and
+  idioms. And it does need to be studied as a different language - even now I
+  feel like I have only scratched it&amp;#39;s surface.
+&lt;/p&gt;
+&lt;p&gt;Still, it is much closer Modern English than we might think.&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Rust is Just a Tool</title>
+      <link href="https://lewiscampbell.tech/blog/260204"/>
+      <id>https://lewiscampbell.tech/blog/260204</id>
+      <updated>2026-02-03T11:00:00.000Z</updated>
+      <summary>A programming language should not be your identity.</summary>
+      <content type="html">
+
+&lt;p&gt;I like Rust.&lt;/p&gt;
+&lt;p&gt;
+  It&amp;#39;s versatile enough that it can be used for application and systems
+  programming. It has the best tooling of any language I&amp;#39;ve seen. It has a
+  fairly pleasant type system. And I think most importantly it does a great job
+  in bringing higher level language features into an environment without a
+  garbage collector. Rust has arguably set the bar for &amp;quot;fast languages that
+  are also decently expressive&amp;quot;.
+&lt;/p&gt;
+&lt;p&gt;
+  But it&amp;#39;s just a programming language. Programming Rust does not mean I
+  have to:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;like every popular crate&lt;/li&gt;
+  &lt;li&gt;buy into their marketing hype&lt;/li&gt;
+  &lt;li&gt;follow community &amp;quot;best practices&amp;quot;&lt;/li&gt;
+  &lt;li&gt;attack someone who prefers to solve a particular problem in C, or Zig&lt;/li&gt;
+  &lt;li&gt;refuse to admit it has design flaws&lt;/li&gt;
+  &lt;li&gt;refuse to admit the language is complex&lt;/li&gt;
+  &lt;li&gt;refuse to admit there are alternatives to RAII&lt;/li&gt;
+  &lt;li&gt;
+    give the same smug lectures about &amp;quot;safety&amp;quot; we have all heard
+    dozens of times before
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  I&amp;#39;m picking on rust here because it&amp;#39;s no secret it has a long history
+  of having some very... enthusiastic users. But my broader point is that tools
+  are just tools. They&amp;#39;re not our identity, a mark of our wisdom, or a moral
+  choice. Other people have different perspectives, tastes, and skills - and
+  they may prefer different tools to us.
+&lt;/p&gt;
+&lt;p&gt;We would do well to accept this.&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>The Insecure Evangelism of LLM Maximalists</title>
+      <link href="https://lewiscampbell.tech/blog/260114"/>
+      <id>https://lewiscampbell.tech/blog/260114</id>
+      <updated>2026-01-13T11:00:00.000Z</updated>
+      <summary>I just can't help feeling these training wheels are getting in the way of my bicycle commute.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  &lt;em&gt;Author&amp;#39;s note: I made this article in the wake of a viral post, which
+    meant I was being bombarded with replies from the peanut gallery was feeling
+    spicy. I will not delete this article, but note I
+    &lt;strong&gt;do not&lt;/strong&gt; think everyone who codes with LLMs is a shill or
+    incompotent.&lt;/em&gt;
+&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;I am an LLM productivity skeptic.&lt;/p&gt;
+&lt;p&gt;
+  I find LLMs useful as a sort of digital clerk - searching the web for me,
+  finding documentation, looking up algorithms. I even find them useful&lt;sup&gt;&lt;a
+      id=&quot;footnote-ref-1&quot;
+      href=&quot;#footnote-1&quot;
+      data-footnote-ref
+      aria-describedby=&quot;footnote-label&quot;
+    &gt;1&lt;/a&gt;&lt;/sup&gt;
+  in a limited coding capacity; with a small context and clear guidelines.
+&lt;/p&gt;
+&lt;p&gt;
+  But doing &amp;quot;prompt-driven development&amp;quot; or &amp;quot;vibe coding&amp;quot;
+  with an Agentic LLM was an incredibly disapointing experience for me. It
+  required an immense amount of baby sitting, for small code changes, made
+  slowly, which were often wrong. All the while I sat there feeling dumber and
+  dumber, as my tokens drained away.
+&lt;/p&gt;
+&lt;p&gt;
+  Of course that was &lt;em&gt;my&lt;/em&gt; experience, and &lt;em&gt;my&lt;/em&gt; preference. I
+  genuinely don&amp;#39;t mind if other people vibe code. Go for it! I do not deny
+  this kind of coding is enabling a lot of people - who aren&amp;#39;t experienced
+  devs - to create things they would never otherwise be able to create. (Also,
+  sometimes they pay me to clean them up afterwards, which is nice.)
+&lt;/p&gt;
+&lt;p&gt;
+  But that is not enough for the vocal proponents. It&amp;#39;s the future!
+  You&amp;#39;ll be left behind! Software has changed forever! And then, inevitably,
+  comes the character evaluation, which goes something like this:
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    You - a senior dev - are resisting this change due to deeply held
+    psychological fears of being made irrelevant and/or having to learn new
+    things. You are stuck in your ways and unwilling to change them because you
+    are afraid.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  This has always baffled me, because quite frankly I &lt;em&gt;like&lt;/em&gt; the idea of
+  agentic coding. I often feel the actual implementation is a bottleneck to the
+  things I want to create. I would love it if I could just sit around making
+  specs (yes I am a programmer who enjoys this) and have little machines
+  implement it for me perfectly. It&amp;#39;s a wonderful fantasy world, and I wish
+  I could inhabit it. That&amp;#39;s why I was so disappointed.
+&lt;/p&gt;
+&lt;p&gt;
+  And it made me think - why are these people so insistent, and hostile? Why
+  can&amp;#39;t they live and let live? Why do they need to convince the rest of us?
+  And to be honest, I am developing my own character evaluation. It&amp;#39;s not
+  very charitable, but it is making a lot of sense to me:
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    You tried agentic coding. You realised it was better at programming than you
+    are. You see a lot of accomplished, prominent developers&lt;sup&gt;&lt;a
+        id=&quot;footnote-ref-2&quot;
+        href=&quot;#footnote-2&quot;
+        data-footnote-ref
+        aria-describedby=&quot;footnote-label&quot;
+      &gt;2&lt;/a&gt;&lt;/sup&gt;
+    claiming they are more productive without it. Could they just be that much
+    better at programming than I am? No! They are just threatened. They are the
+    ones who are insecure! I&amp;#39;m a great developer!
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It&amp;#39;s projection. Their evangelism is born of insecurity.&lt;/p&gt;
+&lt;h2&gt;An Open Question&lt;/h2&gt;
+&lt;p&gt;
+  I am still willing to admit I am wrong. That I&amp;#39;m not holding the agents
+  properly. That doing this is it&amp;#39;s own skill and I have not spent enough
+  time with it. I have changed my mind on tech before, and I&amp;#39;m sure I will
+  do so again.
+&lt;/p&gt;
+&lt;p&gt;
+  LLM evangelists - are you willing to admit that you just might not be that
+  good at programming computers? Maybe you once were. Maybe you never were.
+&lt;/p&gt;
+&lt;section class=&quot;footnotes&quot; data-footnotes&gt;
+  &lt;h2 id=&quot;footnote-label&quot; class=&quot;sr-only&quot;&gt;Footnotes&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;footnote-1&quot;&gt;
+      &lt;p&gt;
+        &lt;a
+          href=&quot;https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/&quot;
+        &gt;There is some evidence to suggest this is a placebo.&lt;/a&gt;
+        &lt;a
+          href=&quot;#footnote-ref-1&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 1&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;footnote-2&quot;&gt;
+      &lt;p&gt;
+        Just to forestall this; I am not claiming I am one of them.
+        &lt;a
+          href=&quot;#footnote-ref-2&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 2&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/section&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Strong Eventual Consistency - The Big Idea behind CRDTs</title>
+      <link href="https://lewiscampbell.tech/blog/250908"/>
+      <id>https://lewiscampbell.tech/blog/250908</id>
+      <updated>2025-09-07T12:00:00.000Z</updated>
+      <summary>Missing the Forest for the Sequence Trees.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  CRDTs. Data structures that can be replicated across multiple nodes, edited
+  independently, merged back together, and it all just works. But collaborative
+  document editing and multiplayer TODO lists are just the tip of the iceberg -
+  I believe the big application is distributed databases, and for that we need
+  to talk about consistency.
+&lt;/p&gt;
+&lt;p&gt;
+  CRDTs are a tool for &lt;strong&gt;Strong Eventual Consistency&lt;/strong&gt;. Let&amp;#39;s
+  start with the definition of normal Eventual Consistency&lt;sup&gt;&lt;a
+      id=&quot;footnote-ref-1&quot;
+      href=&quot;#footnote-1&quot;
+      data-footnote-ref
+      aria-describedby=&quot;footnote-label&quot;
+    &gt;1&lt;/a&gt;&lt;/sup&gt;:
+&lt;/p&gt;
+&lt;dl&gt;
+  &lt;dt&gt;Eventual Delivery&lt;/dt&gt;
+  &lt;dd&gt;
+    An update delivered to one node will &lt;i&gt;eventually&lt;/i&gt; reaches all nodes
+  &lt;/dd&gt;
+  &lt;dt&gt;Eventual Convergence&lt;/dt&gt;
+  &lt;dd&gt;
+    If two nodes have seen all the same updates, they will
+    &lt;i&gt;eventually&lt;/i&gt; have the same state.
+  &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+  Strong Eventual Consistency (SEC) replaces &lt;em&gt;Eventual Convergence&lt;/em&gt; with
+  &lt;em&gt;Strong Convergence&lt;/em&gt;:
+&lt;/p&gt;
+&lt;dl&gt;
+  &lt;dt&gt;Strong Convergence&lt;/dt&gt;
+  &lt;dd&gt;
+    If two nodes have seen all the same updates, they will have the same state.
+  &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+  Spot the difference! In SEC two replicas have the same state as soon as the
+  updates are processed, not &lt;em&gt;eventually&lt;/em&gt;. If multiple nodes are updated
+  independently, there will be conflicts - this is inevitable. What SEC
+  guarantees is that these conflicts are solved automatically and
+  deterministically.
+&lt;/p&gt;
+&lt;p&gt;
+  This has massive implications. SEC means low latency, because nodes don&amp;#39;t
+  need to coordinate to handle reads and writes. It means incredible fault
+  tolerance - every single node in the system bar one could simultaneously
+  crash, and reads and writes could still happen normally. And it means nodes
+  still function properly if they&amp;#39;re offline or split from the network for
+  arbitrary time periods.
+&lt;/p&gt;
+&lt;p&gt;
+  Strong Eventual Consistency is Eventual Consistency that works. If you&amp;#39;re
+  doing local first, or low latency geo-replicated systems - accept no
+  substitute. This is the context I think we should see CRDTs in - building
+  blocks of Strongly Eventually Consistent systems. CRDTs as application state
+  as one thing, CRDTs as entire databases are quite another.
+&lt;/p&gt;
+&lt;section class=&quot;footnotes&quot; data-footnotes&gt;
+  &lt;h2 id=&quot;footnote-label&quot; class=&quot;sr-only&quot;&gt;Footnotes&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;footnote-1&quot;&gt;
+      &lt;p&gt;
+        All definitions here are adapted from
+        &lt;a href=&quot;https://pages.lip6.fr/Marek.Zawirski/papers/RR-7687.pdf&quot;
+        &gt;Shapiro, Marc; Preguiça, Nuno; Baquero, Carlos; Zawirski, Marek
+          (2011). &amp;quot;Conflict-Free Replicated Data Types&amp;quot;&lt;/a&gt;.
+        &lt;a
+          href=&quot;#footnote-ref-1&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 1&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/section&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Basic Type System Terminology</title>
+      <link href="https://lewiscampbell.tech/blog/250817"/>
+      <id>https://lewiscampbell.tech/blog/250817</id>
+      <updated>2025-08-16T12:00:00.000Z</updated>
+      <summary>Sound more intelligent on the internet with these quick and easy tips.</summary>
+      <content type="html">
+
+&lt;p&gt;Type systems have terms with well defined meanings.&lt;/p&gt;
+&lt;p&gt;
+  Unfortunately many of the people who discuss them online are ignorant of these
+  terms, making what they say hard to understand, or in some cases, obscuring
+  their point entirely.
+&lt;/p&gt;
+&lt;h2&gt;Static vs Dynamic&lt;/h2&gt;
+&lt;p&gt;
+  Static typing means types are checked statically. Static type systems use the
+  programs source code as a static asset to perform type checking, without
+  executing said code. Typically - but not always - the environment will prevent
+  code that fails these static checks from running.
+&lt;/p&gt;
+&lt;p&gt;
+  Dynamic typing means types are checked on demand, at execution or run time.
+  Each value in the language has a type value associated with it that exists at
+  runtime.
+&lt;/p&gt;
+&lt;p&gt;
+  Note that dynamically typed is wholly distinct from &lt;strong&gt;un-typed&lt;/strong&gt;,
+  which is a term used to describe the complete absence of type checking, either
+  statically or dynamically.
+&lt;/p&gt;
+&lt;h2&gt;Strong vs Weak typing&lt;/h2&gt;
+&lt;p&gt;
+  This has to do with type coercion - to what extent the language will convert a
+  value to another type representation implicitly.
+&lt;/p&gt;
+&lt;p&gt;
+  C with its pointer arithmetic, is weakly &amp;amp; statically typed. Python which
+  requires you to explicitly convert between different object types to call the
+  appropriate method, is dynamically and strongly typed.
+&lt;/p&gt;
+&lt;h2&gt;Common mistakes&lt;/h2&gt;
+&lt;p&gt;
+  Dynamically typed languages are not languages which &amp;quot;don&amp;#39;t have
+  types&amp;quot;. They absolutely have types. It&amp;#39;s in the name.
+&lt;/p&gt;
+&lt;p&gt;
+  Strong Typing is not the same thing as Static Typing. Weak Typing is not the
+  same thing as Dynamic Typing. I chose the examples of C and Python
+  deliberately.
+&lt;/p&gt;
+&lt;p&gt;
+  Using ambiguous terms like &amp;quot;Strict Typing&amp;quot; and &amp;quot;Loose
+  Typing&amp;quot; seem to be made up by amateurs. It&amp;#39;s not clear if
+  &amp;quot;strict&amp;quot; mean static, strong, or both, something intangible.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Getting Started with Randomised Testing</title>
+      <link href="https://lewiscampbell.tech/blog/250805"/>
+      <id>https://lewiscampbell.tech/blog/250805</id>
+      <updated>2025-08-04T12:00:00.000Z</updated>
+      <summary>A small step to a massive improvement in software reliability.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  I&amp;#39;m somewhat obsessed with randomised testing. AFAIK, I&amp;#39;m the
+  &lt;a href=&quot;https://outdata.net&quot;
+  &gt;first consultant to do Deterministic Simulation Testing&lt;/a&gt;
+  for a client. But when I am approached about implementing DST we quickly
+  realize their existing codebase isn&amp;#39;t ready for it; DST requires
+  significant refactoring to isolate testable components from external
+  dependencies.
+&lt;/p&gt;
+&lt;p&gt;
+  A much easier starting point is Property-Based Testing, which is more amenable
+  to smaller slices of deterministic code (which can be slim pickings in a
+  legacy codebase!). While smaller in scope than DST it offers massive benefits
+  over traditional example-based tests, and is relatively easy to get started.
+&lt;/p&gt;
+&lt;h2&gt;Definitions&lt;/h2&gt;
+&lt;p&gt;
+  Let&amp;#39;s first define a &lt;strong&gt;unit test&lt;/strong&gt; as a test of internal
+  logic that does not interact with, mock, or simulate anything external like a
+  database or remote API. (For some this may overlap with your definition of
+  integration test; I ask you to bear with me)
+&lt;/p&gt;
+&lt;p&gt;
+  Most unit tests are &lt;strong&gt;example-based tests&lt;/strong&gt; - they encode
+  specific actual and expected values.
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;strong&gt;Property-based tests&lt;/strong&gt;, or PBTs, generalise this. Instead of
+  giving concrete values for your test, you describe a range of values. The test
+  runner then uses a seeded RNG value to sample from the range of values you
+  specify, and checks if any trigger your assertions.
+&lt;/p&gt;
+&lt;p&gt;Both example-based and property-based tests are a form of unit testing.&lt;/p&gt;
+&lt;h3&gt;A mathematical analogy&lt;/h3&gt;
+&lt;p&gt;
+  If you&amp;#39;re mathematically inclined, you can think of example based tests as
+  simple identities that lack variables, such as:
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1 + 1 = 2
+2² = 4
+sin(0) = 0
+cos(0) = 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  Property-based tests are analogous to mathematical identities that utilise
+  variables, which implicitly or explicitly belong to some set:
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;0 + n = n
+1ⁿ = 1
+sin²(t) + cos²(t) = 1
+-1 ≤ sin(x) ≤ 1
+(x * y) * z = x * (y * z) ∀ x,y,z ∈ S
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;An Example&lt;/h2&gt;
+&lt;p&gt;Let&amp;#39;s look at a basic shopping cart in Typescript.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;export type Item = {
+  id: string
+  name: string
+  price: number
+  quantity: number
+}
+
+export class ShoppingCart {
+  #items: Map&amp;lt;string, Item&amp;gt; = new Map()
+
+  add(item: Item): void {
+    const existing = this.#items.get(item.id)
+    if (existing) {
+      existing.quantity += item.quantity
+    } else {
+      this.#items.set(item.id, item)
+    }
+  }
+
+  remove(id: string, quantity: number): void {
+    const item = this.#items.get(id)
+    if (!item) return
+
+    item.quantity -= quantity
+    if (item.quantity &amp;lt;= 0) {
+      this.#items.delete(id)
+    }
+  }
+
+  getItem(id: string): Item | undefined {
+    return this.#items.get(id)
+  }
+
+  get items(): MapIterator&amp;lt;Item&amp;gt; {
+    return this.#items.values()
+  }
+
+  get totalPrice(): number {
+    return this.items.reduce(
+      (price, item) =&amp;gt; price + item.price * item.quantity,
+      0,
+    )
+  }
+
+  get itemCount(): number {
+    return this.items.reduce((total, item) =&amp;gt; total + item.quantity, 0)
+  }
+
+  clear(): void {
+    this.#items.clear()
+  }
+
+  get empty(): boolean {
+    return this.#items.size === 0
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  And here&amp;#39;s some example based unit tests to verify the behaviour (imports
+  elided for brevity):
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;test(&amp;quot;adding items to the cart&amp;quot;, () =&amp;gt; {
+  let cart = new ShoppingCart()
+  const item = { id: &amp;quot;1&amp;quot;, name: &amp;quot;Apple&amp;quot;, price: 1.5, quantity: 2 }
+  cart.add(item)
+  expect(cart.getItem(&amp;quot;1&amp;quot;)).toEqual(item)
+})
+
+test(&amp;quot;calculating totals&amp;quot;, () =&amp;gt; {
+  let cart = new ShoppingCart()
+  cart.add({ id: &amp;quot;1&amp;quot;, name: &amp;quot;Apple&amp;quot;, price: 1.5, quantity: 2 })
+  cart.add({ id: &amp;quot;2&amp;quot;, name: &amp;quot;Banana&amp;quot;, price: 0.75, quantity: 3 })
+  expect(cart.totalPrice).toBe(5.25)
+})
+
+test(&amp;quot;removing items from cart&amp;quot;, () =&amp;gt; {
+  let cart = new ShoppingCart()
+  cart.add({ id: &amp;quot;1&amp;quot;, name: &amp;quot;Apple&amp;quot;, price: 1.5, quantity: 3 })
+  cart.remove(&amp;quot;1&amp;quot;, 1)
+  expect(cart.getItem(&amp;quot;1&amp;quot;)?.quantity).toBe(2)
+})
+
+test(&amp;quot;empty cart should behave like it&amp;#39;s empty&amp;quot;, () =&amp;gt; {
+  let cart = new ShoppingCart()
+  expect(cart.empty).toBe(true)
+  expect(cart.totalPrice).toBe(0)
+  expect(cart.itemCount).toBe(0)
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  Wow, static typing AND unit tests? This code is indestructible... or is it!?
+&lt;/p&gt;
+&lt;h3&gt;Enter Property-Based Testing&lt;/h3&gt;
+&lt;p&gt;
+  One of the great things about PBT is they immediately demonstrate how broken
+  almost any piece of code is. To wit:
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;const arbItem: fc.Arbitrary&amp;lt;Item&amp;gt; = fc.record({
+  id: fc.string(),
+  name: fc.string(),
+  price: fc.double(),
+  quantity: fc.double(),
+})
+
+test(&amp;quot;total price should never be negative&amp;quot;, () =&amp;gt; {
+  fc.assert(
+    fc.property(fc.array(arbItem), items =&amp;gt; {
+      const cart = new ShoppingCart()
+
+      for (const item of items) {
+        cart.add(item)
+      }
+
+      expect(cart.totalPrice).toBeGreaterThanOrEqual(0)
+    }),
+  )
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  The test - which generates a random array of random Items - checks if the
+  following property holds true: is the total price of the shopping cart always
+  greater than or equal to 0?
+&lt;/p&gt;
+&lt;p&gt;
+  It does not! Our PBT library (in this case
+  &lt;a href=&quot;https://fast-check.dev/&quot;&gt;fast-check&lt;/a&gt;) finds a simple example of an
+  input that will trigger a failure:
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;[
+  {
+    &amp;quot;id&amp;quot;: &amp;quot;&amp;quot;,
+    &amp;quot;name&amp;quot;: &amp;quot;&amp;quot;,
+    &amp;quot;price&amp;quot;: -1.1890419245983166e-66,
+    &amp;quot;quantity&amp;quot;: 2.0775787447871207e-258
+  }
+]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Our shopping cart has no defense against items with negative prices.&lt;/p&gt;
+&lt;p&gt;
+  Note how &amp;quot;weird&amp;quot; the example is. Machines are fantastic at thinking
+  up inputs we ourselves would not even think of. Most PBT libraries will
+  heavily bias weird values (tiny numbers, zero, empty strings etc) that show up
+  in bug reports.
+&lt;/p&gt;
+&lt;p&gt;
+  Let&amp;#39;s update the &lt;code&gt;add&lt;/code&gt; to method reject negative prices. And
+  being clever, let&amp;#39;s also foresee that quantity must also be positive:
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;  add(item: Item): void {
+    if (0 &amp;gt; item.price) {
+      throw new Error(&amp;quot;Item price cannot be negative&amp;quot;)
+    }
+    if (0 &amp;gt; item.quantity) {
+      throw new Error(&amp;quot;Item quantity cannot be negative&amp;quot;)
+    }
+    const existing = this.#items.get(item.id)
+    if (existing) {
+      existing.quantity += item.quantity
+    } else {
+      this.#items.set(item.id, item)
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  And let&amp;#39;s update our PBT to make sure a failed add does not modify the
+  state of the cart:
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;test(&amp;quot;total price should never be negative&amp;quot;, () =&amp;gt; {
+  fc.assert(
+    fc.property(fc.array(arbItem), items =&amp;gt; {
+      const cart = new ShoppingCart()
+
+      for (const item of items) {
+        const empty = cart.empty
+        const totalPrice = cart.totalPrice
+        const itemCount = cart.itemCount
+
+        try {
+          cart.add(item)
+        } catch {
+          expect(cart.empty).toBe(empty)
+          expect(cart.totalPrice).toBe(totalPrice)
+          expect(cart.itemCount).toBe(itemCount)
+        }
+      }
+
+      expect(cart.totalPrice).toBeGreaterThanOrEqual(0)
+    }),
+  )
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Is all well? ROFL no. Here&amp;#39;s the next value that breaks the code.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;[
+  {
+    &amp;quot;id&amp;quot;: &amp;quot;&amp;quot;,
+    &amp;quot;name&amp;quot;: &amp;quot;&amp;quot;,
+    &amp;quot;price&amp;quot;: 0,
+    &amp;quot;quantity&amp;quot;: Number.POSITIVE_INFINITY
+  }
+]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  At this point, I would probably use a schema to validate any potential items,
+  so let&amp;#39;s replace our if statements with a
+  &lt;a href=&quot;https://docs.superstructjs.org/&quot;&gt;superstruct schema&lt;/a&gt;, and add some
+  more logic for quantity:
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-ts&quot;&gt;import * as ss from &amp;quot;superstruct&amp;quot;
+
+const ItemSchema = ss.object({
+  id: ss.string(),
+  name: ss.string(),
+  price: ss.refine(ss.number(), &amp;quot;non-negative&amp;quot;, n =&amp;gt; n &amp;gt;= 0),
+  quantity: ss.refine(ss.integer(), &amp;quot;positive&amp;quot;, n =&amp;gt; n &amp;gt; 0),
+})
+
+export type Item = ss.Infer&amp;lt;typeof ItemSchema&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And now &lt;code&gt;add&lt;/code&gt; reads like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;  add(item: Item): void {
+    ss.assert(item, ItemSchema, &amp;quot;Invalid Item&amp;quot;)
+    const existing = this.#items.get(item.id)
+    if (existing) {
+      existing.quantity += item.quantity
+    } else {
+      this.#items.set(item.id, item)
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally, our property-based test is silent!&lt;/p&gt;
+&lt;h2&gt;Findings&lt;/h2&gt;
+&lt;p&gt;Let&amp;#39;s consider what we&amp;#39;ve uncovered by using PBT:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    Even a straightforward, 50-line typescript class is riddled with bugs.
+  &lt;/li&gt;
+  &lt;li&gt;
+    Typescript&amp;#39;s static typing alone is wholly inadequate for writing safe
+    software. Even if Typescript is very poor in numeric types, most static type
+    systems cannot express things like non-negative or positive numbers.
+  &lt;/li&gt;
+  &lt;li&gt;
+    Example-based tests are simply not as powerful as property-based tests. We
+    could have written more regular tests. We could have remembered to test for
+    negatives, positives, non-safe integers... but would we have? How much
+    longer - and thus less maintainable - would that be?
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  Think also about how much more confident we are in our shopping cart
+  implementation. And how any future production bugs we get can now be
+  generalised as a property and added as a PBT (keen eyed readers may note we do
+  not handle duplicate Item IDs).
+&lt;/p&gt;
+&lt;h2&gt;My message - Embrace PBT&lt;/h2&gt;
+&lt;p&gt;
+  Confident developers iterate faster than developers riddled with doubt. PBT
+  brings us one step closer to verifying behaviour in terms of requirements. If
+  you&amp;#39;d rather find issues before your users do, PBT is a fantastic start.
+  Most languages have a PBT library, so give it a shot.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>NIH Is Far Cheaper Than The Wrong Dependency</title>
+      <link href="https://lewiscampbell.tech/blog/250718"/>
+      <id>https://lewiscampbell.tech/blog/250718</id>
+      <updated>2025-07-17T12:00:00.000Z</updated>
+      <summary>Frivilous dependencies are the enemy of maintainability.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  (Title written with apologies to
+  &lt;a href=&quot;https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction&quot;
+  &gt;Sandi Metz.&lt;/a&gt;)
+&lt;/p&gt;
+&lt;p&gt;
+  One of the biggest fallacies in coding is that dependencies have zero
+  downsides. It&amp;#39;s treated as free functionality you don&amp;#39;t have to write
+  yourself. Wow, what a deal!
+&lt;/p&gt;
+&lt;p&gt;But dependencies absolutely have a cost.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    They may require a significant time investment to learn to use. Often
+    they&amp;#39;re so large and complex that simply writing the functionality
+    yourself is faster than learning. Sometimes it&amp;#39;s easier to write it
+    yourself than &lt;em&gt;install&lt;/em&gt; the dependency...
+  &lt;/li&gt;
+  &lt;li&gt;
+    Their breaking changes can trigger expensive re-writes of your own code to
+    handle a new interface.
+  &lt;/li&gt;
+  &lt;li&gt;You need to ensure they end up on your clients&amp;#39; machine.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  Let us consider this last point; how many absurdly complicated
+  containerisation or bundling setups do we encounter in our work because
+  someone does not want to &amp;quot;reinvent the wheel&amp;quot; and instead opts to
+  use large, complex dependencies? How many times did people take the time to
+  appreciate they&amp;#39;ve re-invented an entirely different wheel that has
+  nothing to do with their apps core functionality, just to deploy and run the
+  bloody thing?
+&lt;/p&gt;
+&lt;p&gt;
+  Instructive here is
+  &lt;a
+    href=&quot;https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md?trk=public_post_comment-text#dependencies&quot;
+  &gt;Tigerbeetle&lt;/a&gt;, a financial database written entirely with Vanilla Zig:
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    TigerBeetle &lt;strong&gt;has a “zero dependencies” policy&lt;/strong&gt;, apart
+    from the Zig toolchain. Dependencies, in general, inevitably lead to supply
+    chain attacks, safety and performance risk, and slow install times. For
+    foundational infrastructure in particular, the cost of any dependency is
+    further amplified throughout the rest of the stack.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Similarly, tools have costs. A small standardized toolbox is simpler to
+    operate than an array of specialized instruments each with a dedicated
+    manual. Our primary tool is Zig. It may not be the best for everything, but
+    it&amp;#39;s good enough for most things. We invest into our Zig tooling to
+    ensure that we can tackle new problems quickly, with a minimum of accidental
+    complexity in our local development environment.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;A Framework for Evaluating Dependencies&lt;/h2&gt;
+&lt;p&gt;
+  I am aware this post is a &lt;em&gt;reductio ad absurdum&lt;/em&gt; magnet. &amp;quot;What so
+  you make your own silicon wafers?&amp;quot;, etc, etc. (Programmers of a certain
+  generation might bring up a webcomic and butterflies). Ultimately, we all
+  depend on something. But not all dependencies are created equal. Allow me to
+  introduce my Framework for Evaluating Dependencies.
+&lt;/p&gt;
+&lt;p&gt;We have five categories:&lt;/p&gt;
+&lt;dl&gt;
+  &lt;dt&gt;Ubiquity&lt;/dt&gt;
+  &lt;dd&gt;
+    How widely available is it? Are target environments likely to have it
+    pre-installed? Will we need to complicate deployment with containerisation
+    or bundling?
+  &lt;/dd&gt;
+  &lt;dt&gt;Stability&lt;/dt&gt;
+  &lt;dd&gt;
+    How frequent are breaking changes, deprecations, or shifts in the &quot;meta&quot;?
+  &lt;/dd&gt;
+  &lt;dt&gt;Depth&lt;/dt&gt;
+  &lt;dd&gt;
+    How much functionality lies beneath the API/interface? How much harder would
+    it be to do without the dependency?
+  &lt;/dd&gt;
+  &lt;dt&gt;Ergonomics&lt;/dt&gt;
+  &lt;dd&gt;Is the abstraction provided declarative? Is the API pleasant to use?&lt;/dd&gt;
+  &lt;dt&gt;Watertightness&lt;/dt&gt;
+  &lt;dd&gt;
+    Does the abstraction leak? How often must you consider the underlying
+    technology?
+  &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;
+  Dependency peddlers typically only talk about ergonomics, and ignore other
+  criteria.
+&lt;/p&gt;
+&lt;p&gt;With that in mind, let&amp;#39;s evaluate some dependencies:&lt;/p&gt;
+&lt;h2&gt;Good Dependencies&lt;/h2&gt;
+&lt;h3&gt;POSIX System Calls&lt;/h3&gt;
+&lt;dl&gt;
+  &lt;dt&gt;Ubiquity&lt;/dt&gt;
+  &lt;dd&gt;Can be used on Linux, Android, macOS, BSDs, etc.&lt;/dd&gt;
+  &lt;dt&gt;Stability&lt;/dt&gt;
+  &lt;dd&gt;Extremely stable, breaking changes are rare.&lt;/dd&gt;
+  &lt;dt&gt;Depth&lt;/dt&gt;
+  &lt;dd&gt;
+    Incredibly deep. A single &lt;code&gt;open&lt;/code&gt; call hides hundreds of thousands
+    of lines of kernel code.
+  &lt;/dd&gt;
+  &lt;dt&gt;Ergonomics&lt;/dt&gt;
+  &lt;dd&gt;
+    Mediocre. Uses many flags and old school C conventions, but not terrible.
+  &lt;/dd&gt;
+  &lt;dt&gt;Watertightness&lt;/dt&gt;
+  &lt;dd&gt;
+    Mostly good, though storage devices can have their own conception of what
+    &quot;persisted&quot; means.
+  &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;h3&gt;ECMA-48 Terminal Control Codes&lt;/h3&gt;
+&lt;dl&gt;
+  &lt;dt&gt;Ubiquity&lt;/dt&gt;
+  &lt;dd&gt;
+    Other than cmd.exe in windows I can&apos;t think of a major terminal emulator
+    that doesn&apos;t respond to these.
+  &lt;/dd&gt;
+  &lt;dt&gt;Stability&lt;/dt&gt;
+  &lt;dd&gt;No changes to the standard since 1991.&lt;/dd&gt;
+  &lt;dt&gt;Depth&lt;/dt&gt;
+  &lt;dd&gt;
+    The alternative I think would be to make your own standard for a character
+    framebuffer. Not an impossible task but a bit much to spin off for a
+    project.
+  &lt;/dd&gt;
+  &lt;dt&gt;Ergonomics&lt;/dt&gt;
+  &lt;dd&gt;
+    Not all that bad, if you can ignore the line noise of the Esc character.
+  &lt;/dd&gt;
+  &lt;dt&gt;Watertightness&lt;/dt&gt;
+  &lt;dd&gt;
+    Very good. Very rarely do you need to care about what hardware your terminal
+    emulator is running on.
+  &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;h3&gt;The Web Platform (Web APIs, HTML, JS, CSS etc)&lt;/h3&gt;
+&lt;dl&gt;
+  &lt;dt&gt;Ubiquity&lt;/dt&gt;
+  &lt;dd&gt;
+    The web browser is the most widely deployed document rendered/app
+    platform/virtual machine on earth. They&apos;re everywhere and these days largely
+    evergreen.
+  &lt;/dd&gt;
+  &lt;dt&gt;Stability&lt;/dt&gt;
+  &lt;dd&gt;Fairly big commitment to backwards compatibility.&lt;/dd&gt;
+  &lt;dt&gt;Depth&lt;/dt&gt;
+  &lt;dd&gt;
+    Very deep, writing your own browser to render your page or website is not
+    feasible.
+  &lt;/dd&gt;
+  &lt;dt&gt;Ergonomics&lt;/dt&gt;
+  &lt;dd&gt;
+    They&apos;re alright. Some cruft, but the documentation and developer tooling is
+    excellent.
+  &lt;/dd&gt;
+  &lt;dt&gt;Watertightness&lt;/dt&gt;
+  &lt;dd&gt;
+    Outside of maybe interacting with files, audio, video, it&apos;s a pretty water
+    tight abstraction.
+  &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;h2&gt;Bad Dependencies&lt;/h2&gt;
+&lt;p&gt;I will leave this as an exercise for the reader!&lt;/p&gt;
+&lt;p&gt;
+  But remember; think critically, evaluate the costs as well of the benefits,
+  and choose wisely.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Advanced Testing and Determinism</title>
+      <link href="https://lewiscampbell.tech/blog/250604"/>
+      <id>https://lewiscampbell.tech/blog/250604</id>
+      <updated>2025-06-03T12:00:00.000Z</updated>
+      <summary>Trying to elevate the testing discourse.</summary>
+      <content type="html">
+
+&lt;p&gt;If you care about software reliability, you should care about testing.&lt;/p&gt;
+&lt;p&gt;
+  Unfortunately, most discussions about testing online take the form of tiresome
+  discussions about:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;TDD and whether you should test first or last&lt;/li&gt;
+  &lt;li&gt;The exact delineations between unit, integration and end to end tests&lt;/li&gt;
+  &lt;li&gt;
+    Whether static typing (a form of static analysis) is a replacement for
+    testing (a form of dynamic analysis)
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  I no longer think these discussions are important or interesting. I will argue
+  here that the most important thing about testing is separating deterministic
+  from non-deterministic code.
+&lt;/p&gt;
+&lt;h2&gt;Deterministic VS Non-deterministic code.&lt;/h2&gt;
+&lt;p&gt;
+  A Deterministic program is one that - given the same inputs, will always
+  produce the same outputs. Every single time.
+&lt;/p&gt;
+&lt;p&gt;Some common things that break this property are:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;user IO&lt;/li&gt;
+  &lt;li&gt;network IO&lt;/li&gt;
+  &lt;li&gt;disk IO&lt;/li&gt;
+  &lt;li&gt;threads and async runtimes&lt;/li&gt;
+  &lt;li&gt;RNGs that aren&amp;#39;t seeded by the user&lt;/li&gt;
+  &lt;li&gt;many hash table implementations (as a consequence of the above)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  There are many different patterns for separating deterministic and
+  non-deterministic code. It&amp;#39;s widely regarded as a Good Idea across many
+  different paradigms and communities. And like most good ideas in computing,
+  techniques to separate deterministic and non-deterministic code have been
+  independently invented several times. Here is a non-exhaustive list:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Dependency Injection&lt;/li&gt;
+  &lt;li&gt;Functional Core, Imperative Shell&lt;/li&gt;
+  &lt;li&gt;Hexagon Architecture (Ports &amp;amp; Adapters)&lt;/li&gt;
+  &lt;li&gt;IO Monad&lt;/li&gt;
+  &lt;li&gt;Mock Objects&lt;/li&gt;
+  &lt;li&gt;Deterministic Simulation Testing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  We see that these techniques come from different tech communities - systems
+  programmers, functional programmers and object-oriented programmers. All cite
+  better testability as a side effect of these techniques.
+&lt;/p&gt;
+&lt;p&gt;
+  (Brief note: &lt;em&gt;deterministic&lt;/em&gt; is a broader concept than
+  &lt;em&gt;purely functional&lt;/em&gt;; you&amp;#39;re free to mutate memory as long as
+  you&amp;#39;re the only one who has access to it. In Haskell terms the ST monad is
+  deterministic, but the IO monad is not).
+&lt;/p&gt;
+&lt;h2&gt;What makes deterministic code good for advanced testing?&lt;/h2&gt;
+&lt;p&gt;
+  Deterministic code is isolated. Any unexpected outputs are a product of the
+  code, and the inputs you&amp;#39;ve provided; nothing else. The outside world does
+  not seep through. There are no timing issues, no errant threads or processes
+  mutating shared data, no random numbers outside of your control. Deterministic
+  code is its own computational black box. This narrows down the problem space
+  dramatically.
+&lt;/p&gt;
+&lt;p&gt;
+  It follows there is no reason to test the same inputs more than once. This
+  lets us explore the state space more very effectively by having the machine
+  generate the test inputs. I call techniques where the user describes the
+  inputs to the test (as opposed to the user providing specific examples to the
+  test) &amp;quot;Advanced Testing&amp;quot;.
+&lt;/p&gt;
+&lt;h2&gt;Advanced Testing Techniques&lt;/h2&gt;
+&lt;p&gt;
+  The two most prominent techniques are Property-Based Testing, and
+  Deterministic Simulation Testing.
+&lt;/p&gt;
+&lt;h3&gt;Property Based Testing&lt;/h3&gt;
+&lt;p&gt;
+  Property based testing comes from the functional programming world, and
+  involves tests that are described using equations that must be true, or
+  &lt;em&gt;properties&lt;/em&gt;.
+&lt;/p&gt;
+&lt;p&gt;Consider this trivial example of a Typescript function:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// statically typed, so it must be correct
+const add = (a: number, b: number) =&amp;gt; a * b
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  With an example based (ie, &amp;quot;normal&amp;quot;) test, one checks that it works
+  by providing a specific example known by the test author to be correct:
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// test passes, ship it
+test(&amp;quot;0 is the identity element for addition&amp;quot;, () =&amp;gt; {
+  expect(add(0, 0).toBe(0)
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  Property testing takes this one step further. Instead of providing a specific
+  example of a value to test for, one can provide a property or predicate, and
+  have the computer test this with various random numbers:
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// fast-check syntax
+test(&amp;quot;0 is the identity element for addition&amp;quot;, () =&amp;gt; {
+  fc.assert(
+    fc.property(fc.number(), a =&amp;gt; {
+      expect(add(a, 0)).toBe(a)
+    })
+  )
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  This will produce a large variety of failures that our manual test completely
+  failed to find. Note that these tests are seeded, i.e you can generate the
+  same random numbers as many times as you want to by providing the same seed.
+  As long as the code under test is deterministic, you always get the same
+  results for the same seed.
+&lt;/p&gt;
+&lt;h2&gt;Deterministic Simulation Testing&lt;/h2&gt;
+&lt;p&gt;
+  Deterministic simulation comes from the systems programming world, and has a
+  different emphasis. Instead of testing individual functions, you instead aim
+  to test a whole deterministic library and simulate its inputs. Disk IO,
+  Network IO, time, etc are all simulated such that they occasionally produce
+  buggy results (disk corruption, requests happening out of order etc).
+&lt;/p&gt;
+&lt;p&gt;
+  The simulations themselves are seeded, so if you discover a bug with them they
+  can be replayed to see if you&amp;#39;ve fixed it.
+&lt;/p&gt;
+&lt;p&gt;
+  A fully working example is beyond the scope of this article, but a general
+  comparison follows:
+&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Property Based Testing&lt;/th&gt;
+      &lt;th&gt;Deterministic Simulation Testing&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;External assertions&lt;/td&gt;
+      &lt;td&gt;Internal assertions&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Run using test runners&lt;/td&gt;
+      &lt;td&gt;Separate executable&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Seeks a state where property doesn&amp;#39;t hold&lt;/td&gt;
+      &lt;td&gt;Tries to crash the library&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Tends to be smaller scale&lt;/td&gt;
+      &lt;td&gt;Tends to be larger scale&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Short running&lt;/td&gt;
+      &lt;td&gt;Long running&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;
+  Does my codebase need to be re-written to take advantage of these advanced
+  testing techniques?
+&lt;/h2&gt;
+&lt;p&gt;No.&lt;/p&gt;
+&lt;p&gt;
+  In general, any deterministic section of your code, once identified, can be
+  tested with either technique. From experience there&amp;#39;s also hybrids between
+  the two approaches you can take.
+&lt;/p&gt;
+&lt;p&gt;
+  All code bases have deterministic and non-deterministic sections. In legacy
+  code bases, deterministic and non-deterministic code tend to be more
+  intermingled. &amp;quot;Islands&amp;quot; of determinism are small and scattered.
+&lt;/p&gt;
+&lt;p&gt;
+  In better designed code bases, the boundaries are more defined. If you do what
+  &lt;a href=&quot;https://apple.github.io/foundationdb/testing.html&quot;&gt;FoundationDB&lt;/a&gt;
+  and
+  &lt;a
+    href=&quot;https://tigerbeetle.com/blog/2023-07-11-we-put-a-distributed-database-in-the-browser/#a-deterministic-simulator-called-the-vopr&quot;
+  &gt;Tigerbeetle&lt;/a&gt;
+  did, your program is one big deterministic core, with everything
+  non-deterministic as a peripheral (these products were designed with
+  Deterministic Simulation Testing in mind).
+&lt;/p&gt;
+&lt;p&gt;
+  So any code base can take advantage of these techniques, but to differing
+  degrees. In general you will want larger and larger &amp;quot;clumps&amp;quot; of
+  determinism so you can increase the surface area of what you can extensively
+  test. It&amp;#39;s worth nothing that classic maintenance programming texts like
+  &amp;quot;Working Effectively with Legacy Code&amp;quot; effectively say as much.
+&lt;/p&gt;
+&lt;p&gt;In any case, some advanced testing is better than no advanced testing.&lt;/p&gt;
+&lt;h2&gt;What about testing non-deterministic code?&lt;/h2&gt;
+&lt;p&gt;
+  Your typical end to end test is drowning in non-determinism. Imagine a test
+  that starts at the web browser, and ends up with a database query over a
+  network, and returns the results to the browser. Network syscalls, file IO
+  syscalls, operating system page caches... non-determinism abounds. It may work
+  10 times in a row, or 100 times, but there&amp;#39;s no guarantee it will work on
+  the 101st.
+&lt;/p&gt;
+&lt;p&gt;Does this mean end to end tests are useless? Absolutely not!&lt;/p&gt;
+&lt;p&gt;
+  End to end tests are sanity checks. They&amp;#39;re automated versions of manual
+  user checking - performing these steps, as a user, does everything behave as
+  it ought to? They are by definition less likely to catch rare bugs. But they
+  absolutely have their role to play - every useful program must inevitably talk
+  to the outside world.
+&lt;/p&gt;
+&lt;p&gt;
+  Don&amp;#39;t let perfect be the enemy of good! Remember even the most advanced
+  tests cannot check everything.
+&lt;/p&gt;
+&lt;h2&gt;End&lt;/h2&gt;
+&lt;p&gt;
+  I hope I&amp;#39;ve convinced you of the importance and power of advanced testing
+  techniques. Boundaries between deterministic and non-deterministic code are
+  one the most important things to know if you really want to test rigorously.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>The Business Case for Vanilla JS</title>
+      <link href="https://lewiscampbell.tech/blog/250430"/>
+      <id>https://lewiscampbell.tech/blog/250430</id>
+      <updated>2025-04-29T12:00:00.000Z</updated>
+      <summary>Why the least enterprise solution may be the best for enterprise.</summary>
+      <content type="html">
+
+&lt;p&gt;I am no longer a proper front end web dev. And I love it.&lt;/p&gt;
+&lt;p&gt;
+  During COVID I was. I bundled, I transpiled. I reacted, and I source mapped. I
+  knew the rules of hooks, and was wise in the lore of tree renders. Now, I
+  can&amp;#39;t be bothered with any of that. If I need to write a web app in 2025,
+  I am using Vanilla JS and browser APIs directly.
+&lt;/p&gt;
+&lt;p&gt;
+  Here I will argue this is the pragmatic choice for anything that will be in
+  production for more than a few months. The maintenance story is much better;
+  browser APIs continue to improve, remain largely backwards compatible, and are
+  a less risky proposition than going all in on a single, rapidly moving JS
+  framework. Vanilla JS itself is excellently documented; great not only for
+  your own sanity, but for any LLMs you ask to generate code. And the developer
+  experience is a breath of fresh air! Gone are source maps and transpilers; you
+  are free to simply script the web page directly, as was intended.
+&lt;/p&gt;
+&lt;p&gt;
+  I came to this way of thinking by sheer accident. I was traditionally a
+  desktop business app developer, and by the time I saw the writing on the wall,
+  SPA frameworks were the dominant meta in front end. As I started getting
+  contracts, I worked on one project with such a tight deadline that I simply
+  had no time to bring a critical library into the cinematic React universe. So
+  I just... wrote JS. I modified the DOM. And you know what? It was fine. Not
+  only was it fine, it was &lt;em&gt;easier&lt;/em&gt;. I wrote a little stream object in
+  ~50 LoC to react to user inputs, and it worked flawlessly. I felt lied to. I
+  thought making a web page interactive was an insanely difficult task only SPA
+  framework authors were qualified to do? Yet here I was just... scripting the
+  page.
+&lt;/p&gt;
+&lt;p&gt;
+  Fast forward to this month, where I needed to present an HTML report as part
+  of a Deterministic Simulation Testing project. At this point I&amp;#39;d had a
+  long break from frontend, and my skills were rusty. My first instinct was to
+  follow so-called &amp;quot;best practices&amp;quot;, and I used Preact. But as I went
+  on I saw errors relating to &amp;quot;Hydration&amp;quot; and &amp;quot;Component
+  Trees&amp;quot; and I realised not only had I forgotten what these things meant, I
+  also no longer cared. I thought back to my old vanilla JS project, and once
+  again I just started using the platform. And once again... it was fine. It was
+  &lt;em&gt;better&lt;/em&gt;.
+&lt;/p&gt;
+&lt;h2&gt;The myth of React&lt;/h2&gt;
+&lt;p&gt;
+  But surely I&amp;#39;m being unprofessional. Surely one should use react, or
+  another modern framework&lt;sup&gt;&lt;a
+      id=&quot;footnote-ref-1&quot;
+      href=&quot;#footnote-1&quot;
+      data-footnote-ref
+      aria-describedby=&quot;footnote-label&quot;
+    &gt;1&lt;/a&gt;&lt;/sup&gt;. Surely &lt;em&gt;raw javascript&lt;/em&gt; is re-inventing the wheel!
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;em&gt;(As an aside &amp;quot;raw javascript&amp;quot; - and its cousin &amp;quot;raw
+    CSS&amp;quot; - strikes me as a silly term. I&amp;#39;m not toggling switches to
+    enter hex code on the front panel of a mini computer, I&amp;#39;m using a
+    garbage collected scripting language with closures and prototype chains to
+    manipulate an interactive document. But I digress)&lt;/em&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  To which I say: I don&amp;#39;t see it. React is talked about and marketed as an
+  abstraction on top of the DOM. This may be technically true, but it is not the
+  truth in spirit. React.js does not operate at an appreciably higher level of
+  abstraction than the underlying browser APIs, rather it presents an alternate
+  abstraction. A popular abstraction to be sure, one that comes with its own
+  debuggers, compilers, linters etc. But at the end of the day it&amp;#39;s just a
+  different way of looking at the same problem. In one you pretend you&amp;#39;re
+  writing a sort of pseudo-functional view model, in another you manipulate
+  html.
+&lt;/p&gt;
+&lt;p&gt;
+  And as a functional and &amp;quot;higher level&amp;quot; abstraction, React.js falls
+  short for one very simple reason; the abstraction leaks like a sieve. It&amp;#39;s
+  &amp;quot;declarative&amp;quot; right up until you&amp;#39;re debugging stateful hooks, or
+  resorting to &lt;code&gt;useRef&lt;/code&gt;, or trying to reason about when a
+  &amp;quot;component&amp;quot; re-renders. It&amp;#39;s for this reason I don&amp;#39;t
+  consider react particularly well suited to larger, more complex web apps - in
+  my experience things rapidly spiral out of control and relatively few people
+  in frontend - a field that trends very junior - are able to make sense of the
+  resulting problems. Of course, this happens with any technology, but if so -
+  why bother with the slower, less stable, and less fundamental abstraction?
+  Just use the platform. It&amp;#39;s got problems too, but it&amp;#39;ll always be
+  around.
+&lt;/p&gt;
+&lt;section class=&quot;footnotes&quot; data-footnotes&gt;
+  &lt;h2 id=&quot;footnote-label&quot; class=&quot;sr-only&quot;&gt;Footnotes&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;footnote-1&quot;&gt;
+      &lt;p&gt;
+        I am perhaps being unfair to other frameworks, of which I have limited
+        experience in. If their story here is substantially different, I&amp;#39;d
+        welcome feedback.
+        &lt;a
+          href=&quot;#footnote-ref-1&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 1&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/section&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Safety in Programming Languages is a Means to an End</title>
+      <link href="https://lewiscampbell.tech/blog/250202"/>
+      <id>https://lewiscampbell.tech/blog/250202</id>
+      <updated>2025-02-01T11:00:00.000Z</updated>
+      <summary>There are few meaningful guarantees ere the code is run.</summary>
+      <content type="html">
+
+&lt;p&gt;Let us assume our end goal is reliable software.&lt;/p&gt;
+&lt;p&gt;
+  Static analysis tools - that is advanced static type systems, borrow checkers
+  and the like - may help us reach this goal. If a machine can find our mistakes
+  early, if they can prevent us from even running code that will not behave how
+  we expect, then this is a good and useful thing.
+&lt;/p&gt;
+&lt;p&gt;
+  But while they can help with our goal, they cannot judge if we have achieved
+  it. For this goal static analysis is merely a tool; it is not an assurance.
+  The only way we can approach assurance is to use advanced testing techniques
+  that explore the state space of our program. Static analysis can help us get
+  to this, but it cannot stand in for this.
+&lt;/p&gt;
+&lt;p&gt;
+  Therefore, I will choose simplicity and expressiveness over strict static
+  analysis, every single time. Reliable software is extensively tested software,
+  and extensively tested software is running software. If static analysis helps
+  us get there, this is good. But if it too restrictive, too baroque, and gives
+  too many false positives, then nothing will be run. We&amp;#39;re left with no
+  software, just a bitter argument about dead code that a machine has won.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>How I think about Zig and Rust</title>
+      <link href="https://lewiscampbell.tech/blog/250117"/>
+      <id>https://lewiscampbell.tech/blog/250117</id>
+      <updated>2025-01-16T11:00:00.000Z</updated>
+      <summary>21st century systems languages, with fundamentally different philosophies.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  Zig and Rust are the two great systems languages of our time, and discussions
+  of their respective merits generate a lot interest.
+&lt;/p&gt;
+&lt;p&gt;But the usual arguments leave me wanting:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&amp;quot;Rust is safer, but Zig is simpler&amp;quot;&lt;/li&gt;
+  &lt;li&gt;&amp;quot;Zig is a C replacement, Rust is a C++ replacement&amp;quot;&lt;/li&gt;
+  &lt;li&gt;
+    &amp;quot;Zig is for super pragmatic people who want to get things done, and
+    Rust is for wizards&amp;quot;&lt;sup&gt;&lt;a
+        id=&quot;footnote-ref-1&quot;
+        href=&quot;#footnote-1&quot;
+        data-footnote-ref
+        aria-describedby=&quot;footnote-label&quot;
+      &gt;1&lt;/a&gt;&lt;/sup&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  These I think miss the big picture; Zig and Rust come from completely
+  different contexts.
+&lt;/p&gt;
+&lt;h2&gt;Zig&lt;/h2&gt;
+&lt;p&gt;
+  Zig is firmly a middle level&lt;sup&gt;&lt;a
+      id=&quot;footnote-ref-2&quot;
+      href=&quot;#footnote-2&quot;
+      data-footnote-ref
+      aria-describedby=&quot;footnote-label&quot;
+    &gt;2&lt;/a&gt;&lt;/sup&gt;
+  programming language. It is designed to be as expressive as possible when
+  doing &lt;em&gt;systems programming&lt;/em&gt; - however it has very little interest in
+  being expressive for &lt;em&gt;general purpose programming&lt;/em&gt;. It has no:
+&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;operator overloading&lt;/li&gt;
+  &lt;li&gt;implicit memory allocation&lt;/li&gt;
+  &lt;li&gt;multi-line comments&lt;/li&gt;
+  &lt;li&gt;compiler warnings&lt;/li&gt;
+  &lt;li&gt;closures&lt;/li&gt;
+  &lt;li&gt;for each loops&lt;/li&gt;
+  &lt;li&gt;async/await.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  Looking at their github issues, the reason usually stated is it makes the
+  language more &amp;quot;complex&amp;quot;, or can be done more &amp;quot;simply&amp;quot;
+  using other constructs.
+&lt;/p&gt;
+&lt;p&gt;
+  Case in point: most programming languages give you some way to constrain a
+  generic type; Rust&amp;#39;s traits, Ocaml&amp;#39;s signatures, C#&amp;#39;s interfaces,
+  etc. With Zig you get none of these - everything generic is statically
+  duck-typed with
+  &lt;a href=&quot;https://zig.guide/language-basics/comptime/&quot;&gt;Comptime&lt;/a&gt;; Zig&amp;#39;s,
+  simple, powerful, and somewhat brutalist solution that tackles the macro and
+  generic problem with a single language construct.
+&lt;/p&gt;
+&lt;p&gt;
+  This philosophy carries over to the standard library; Zig&amp;#39;s
+  &lt;a href=&quot;https://ziglang.org/documentation/0.13.0/std/#std.os&quot;&gt;std.os&lt;/a&gt;
+  offers functionality only available to Rustaceans in a
+  &lt;a href=&quot;https://docs.rs/rustix/latest/rustix/&quot;&gt;third party crate&lt;/a&gt;.
+  Zig&amp;#39;s concept of strings are that they are a slice of bytes that you
+  happen to be able to create with quotation marks, and are dealt with in
+  &lt;a href=&quot;https://ziglang.org/documentation/0.13.0/std/#std.mem&quot;&gt;std.mem&lt;/a&gt;.
+  And can you really call yourself a serious systems programming language if you
+  don&amp;#39;t have
+  &lt;a href=&quot;https://ziglang.org/documentation/0.13.0/std/#std.RingBuffer&quot;
+  &gt;ring buffers&lt;/a&gt;
+  in the std lib?
+&lt;/p&gt;
+&lt;p&gt;
+  Furthermore, Zig takes C interop very seriously. Most languages have an FFI,
+  some like Rust let you automatically generate the bindings. Zig simply
+  includes a C compiler so you can parse header files and call C code directly -
+  it&amp;#39;s basically seamless.
+&lt;/p&gt;
+&lt;h2&gt;Rust&lt;/h2&gt;
+&lt;p&gt;
+  Rust in contrast, comes from the world of high level languages. It&amp;#39;s an
+  attempt to have an expressive language, with a powerful type system, that can
+  nevertheless operate without a runtime, and be deployed where you&amp;#39;d
+  otherwise have to resort to C++.
+&lt;/p&gt;
+&lt;p&gt;This is evident in rust&amp;#39;s features:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;trait based polymorphism&lt;/li&gt;
+  &lt;li&gt;pattern matching&lt;/li&gt;
+  &lt;li&gt;closures&lt;/li&gt;
+  &lt;li&gt;operator overloading&lt;/li&gt;
+  &lt;li&gt;monadic error handling&lt;/li&gt;
+  &lt;li&gt;a macro system more akin to a LISP than to C&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  Everything Zig leaves out in the name of &amp;quot;simplicity&amp;quot;, Rust includes
+  to be more expressive. Even it&amp;#39;s much touted &amp;quot;safety&amp;quot; is
+  accomplished through an affine-like type system; sophisticated for any general
+  purpose programming language, let alone one without a garbage collector.
+&lt;/p&gt;
+&lt;p&gt;
+  Rust&amp;#39;s tooling is far more comfortable and usable than Zigs; the build
+  system is done through a concise configuration file (Zig uses itself to do
+  this imperatively), the test runner output is informative and colourful
+  (Zig&amp;#39;s displays nothing), and Rust boasts a large ecosystem of easily
+  installable packages (or &amp;quot;crates&amp;quot; as they call them). Everything a
+  high level language programmer needs to feel welcome is here, and usually to a
+  much higher standard than what they&amp;#39;re used to.
+&lt;/p&gt;
+&lt;h2&gt;What to use?&lt;/h2&gt;
+&lt;p&gt;
+  If I want to do something in the systems space; I want to make linux syscalls,
+  or explicitly control every single memory allocation - Zig is the obvious
+  choice. If I want to be more expressive and high level, but also be able to
+  address systems level concerns without &amp;quot;dropping down&amp;quot; to C - Rust
+  is fantastic for that.
+&lt;/p&gt;
+&lt;p&gt;
+  Of course it&amp;#39;s likely that one of the language philosophies I&amp;#39;ve
+  outlined resonates very strongly with you, and one repulses you. So choose
+  what makes you happy.
+&lt;/p&gt;
+&lt;p&gt;
+  Ultimately, I hope the question we start to ask ourselves is not &amp;quot;Zig VS
+  Rust&amp;quot;, but &amp;quot;Zig &lt;em&gt;or&lt;/em&gt; Rust&amp;quot;. That is to say, they are
+  both such massive improvements over C/C++&lt;sup&gt;&lt;a
+      id=&quot;footnote-ref-3&quot;
+      href=&quot;#footnote-3&quot;
+      data-footnote-ref
+      aria-describedby=&quot;footnote-label&quot;
+    &gt;3&lt;/a&gt;&lt;/sup&gt;
+  that the discussion should be which to use today, not which should replace the
+  systems languages of the late 20th century. They&amp;#39;re both better in almost
+  every way.
+&lt;/p&gt;
+&lt;section class=&quot;footnotes&quot; data-footnotes&gt;
+  &lt;h2 id=&quot;footnote-label&quot; class=&quot;sr-only&quot;&gt;Footnotes&lt;/h2&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;footnote-1&quot;&gt;
+      &lt;p&gt;
+        &lt;a
+          href=&quot;https://www.youtube.com/watch?v=kCmOfRcmkN0&amp;pp=ygUqemlnIGlzIHRoZSBDIHJlcGxhY2VtZW50IGxld2lzY2FtcGJlbGx0ZWNo&quot;
+        &gt;I am definitely guilty of this.&lt;/a&gt;
+        &lt;a
+          href=&quot;#footnote-ref-1&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 1&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;footnote-2&quot;&gt;
+      &lt;p&gt;
+        Here I use the taxonomy that machine code is low level, a garbage
+        collected language is high level, and C is somewhere in-between.
+        &lt;a
+          href=&quot;#footnote-ref-2&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 2&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;footnote-3&quot;&gt;
+      &lt;p&gt;
+        Yes I said &amp;quot;C/C++&amp;quot; deliberately.
+        &lt;a
+          href=&quot;#footnote-ref-3&quot;
+          data-footnote-backref
+          aria-label=&quot;Back to reference 3&quot;
+        &gt;↩&lt;/a&gt;
+      &lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/section&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Do Files want to be Actors?</title>
+      <link href="https://lewiscampbell.tech/blog/250104"/>
+      <id>https://lewiscampbell.tech/blog/250104</id>
+      <updated>2025-01-03T11:00:00.000Z</updated>
+      <summary>Is 1970s distributed systems theory finally meeting 2020s kernel development?</summary>
+      <content type="html">
+
+&lt;p&gt;
+  In the world of high performance linux apps,
+  &lt;a href=&quot;https://unixism.net/loti/what_is_io_uring.html#what-is-io-uring&quot;
+  &gt;io_uring&lt;/a&gt;
+  is changing how we communicate with the operating system.
+&lt;/p&gt;
+&lt;p&gt;The io_uring model is based on two queues:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;a submission queue, where you send the kernel an operation to execute&lt;/li&gt;
+  &lt;li&gt;a completions queue, where you read the result of the execution&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+  Combined with an event loop, we have a new way of doing IO on linux without
+  waiting on syscalls to complete before yielding back control to the program.
+  You simply put things on the queue, and then you get right back to computing.
+&lt;/p&gt;
+&lt;p&gt;
+  The async request sent to the kernel has this structure (see
+  &lt;code&gt;man 7 io_uring&lt;/code&gt;):
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;      struct io_uring_sqe {
+                   __u8    opcode;         /* type of operation for this sqe */
+                   __s32   fd;             /* file descriptor to do IO on */
+                   __u64   off;            /* offset into file */
+                   __u64   addr;           /* pointer to buffer or iovecs */
+                   __u32   len;            /* buffer size or number of iovecs */
+                   __u64   user_data;      /* data to be passed back at completion time */
+                   __u8    flags;          /* IOSQE_ flags */
+                   ...
+           };
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+  The &lt;code&gt;opcode&lt;/code&gt; represents the OS level syscall, ie &lt;code&gt;open&lt;/code&gt;,
+  &lt;code&gt;read&lt;/code&gt;, &lt;code&gt;write&lt;/code&gt; etc. So even function call semantics are
+  abstracted away by this OS interface.
+&lt;/p&gt;
+&lt;p&gt;
+  Re-wind back to the 1970s, where Carl Hewitt and Henry Baker wrote the first
+  paper about the actor model;
+  &lt;a
+    href=&quot;https://dspace.mit.edu/bitstream/handle/1721.1/41962/AI_WP_134A.pdf?sequence=1&amp;isAllowed=y&quot;
+  &gt;Laws for Communicating Parallel Processes&lt;/a&gt;. In it they describe a base
+  model for concurrent computations:
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;em&gt;The action in the actor model consists of objects called actors sending
+    messages to other actors, called the targets of those messages...an event E
+    is the receipt of the message &amp;quot;message(E)&amp;quot; by the actor
+    &amp;quot;target(E)&amp;quot;. Upon receipt of this message in the event E, the
+    target consults its script (the actor analogue of program text), and using
+    its current local state and the message as parameters, sends new messages to
+    other actors and computes a new local state for itself.&lt;/em&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  Is it just me, or are these two seemingly unrelated schools of computing
+  converging on the exact same idea? You send messages to some target (ie, the
+  file descriptor). You receive (or maybe you don&amp;#39;t receive) responses back
+  asynchronously. We&amp;#39;re not concerned with function calls, or mutexes, or
+  spinlocks - they&amp;#39;re implementation details. We&amp;#39;re concerned with
+  sending messages concurrently.
+&lt;/p&gt;
+&lt;p&gt;
+  The game has changed. Our operating systems want to do things asynchronously,
+  on their own terms. They&amp;#39;ll tell you when they&amp;#39;re done. Maybe this is
+  a new era. Maybe making syscalls from 1970s Unix directly is like a remote
+  procedure call to another machine - a leaky abstraction, a feeble attempt to
+  impose your old mental model onto a new reality.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Shared Data Services or Sending Messages?</title>
+      <link href="https://lewiscampbell.tech/blog/240624"/>
+      <id>https://lewiscampbell.tech/blog/240624</id>
+      <updated>2024-06-23T12:00:00.000Z</updated>
+      <summary>Supply chain visibility happens node by node.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  COVID exposed the world&amp;#39;s lack of supply chain resilience. To have
+  &lt;em&gt;resilience&lt;/em&gt; one needs &lt;em&gt;visibility&lt;/em&gt;, and to have
+  &lt;em&gt;visibility&lt;/em&gt; one needs data. This presents a challenge in an industry
+  dominated by &lt;em&gt;data silos&lt;/em&gt;; that is information systems that struggle to
+  communicate with other information systems.
+&lt;/p&gt;
+&lt;p&gt;
+  These data silos exist not only at the organisational level, but also within
+  an organisation, or even within a facility. In the latter case different
+  departments, under the same roof, use humans to exchange data between systems
+  - editing files, printing paper, and inputting data at the keyboard.
+&lt;/p&gt;
+&lt;p&gt;So what can be done?&lt;/p&gt;
+&lt;h2&gt;Data Standards&lt;/h2&gt;
+&lt;p&gt;
+  I am a huge proponent of data standards (&lt;a href=&quot;https://dfmdata.com/tuidwg/&quot;
+  &gt;I&amp;#39;m even working on one!&lt;/a&gt;). Machines, like people, need a common
+  speech to communicate. Data Standards provide a shared vocabulary usable by
+  multiple parties. When sharing data with another organisation, much needless
+  discussion can be eliminated by use of a preexisting standard - there&amp;#39;s no
+  debate or different interpretations of what something means, the standard
+  itself has the final word.
+&lt;/p&gt;
+&lt;p&gt;
+  But data standards are only the beginning. Agreeing on the meaning of the data
+  does not mean it can be shared.
+&lt;/p&gt;
+&lt;h2&gt;Public Digital Infrastructure&lt;/h2&gt;
+&lt;p&gt;
+  One way to share data is to persuade companies to jointly interact with a
+  third data service. Indeed this is the approach taken by
+  &lt;a href=&quot;https://www.bts.gov/flow&quot;
+  &gt;Freight Logistics Optimization Works (&amp;quot;FLOW&amp;quot;)&lt;/a&gt;, and seems to be
+  &lt;a href=&quot;https://www.youtube.com/watch?v=NTQZLy1mfMM&quot;&gt;bearing fruit&lt;/a&gt;. The
+  companies involved would struggle to even have the conversation of
+  coordinating a third party platform between them. But with an actual, neutral
+  third party they all communicate with - the US Federal Government - they can
+  all be brought to the table.
+&lt;/p&gt;
+&lt;h2&gt;Conway&amp;#39;s Law&lt;/h2&gt;
+&lt;p&gt;
+  The success of FLOW is in many ways a realisation of Conway&amp;#39;s Law, first
+  coined by computer scientist Melvin Conway in the 1960s. To wit:
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;em&gt;&amp;quot;Any organization that designs a system (defined broadly) will
+    produce a design whose structure is a copy of the organization&amp;#39;s
+    communication structure.&amp;quot;&lt;/em&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  And hence FLOW. All companies involved communicate with the US Federal
+  Government. And so all of them can be persuaded to communicate with a data
+  service provided by the US Federal Government.
+&lt;/p&gt;
+&lt;p&gt;
+  However, by Conway&amp;#39;s law, in the absence of a suitable third party, third
+  party data services are unlikely to succeed. And it&amp;#39;s impractical to
+  expect governments or NGOs to provide all the public digital infrastructure
+  needed
+&lt;/p&gt;
+&lt;h2&gt;Messages&lt;/h2&gt;
+&lt;p&gt;So what other communication structures exist in supply chain?&lt;/p&gt;
+&lt;p&gt;
+  Well, your node (in the supply chain) talks with upstream and downstream, by
+  necessity. But it&amp;#39;s not necessarily the case that your upstream talks with
+  your downstream - so a shared data service is unlikely to succeed here.
+&lt;/p&gt;
+&lt;p&gt;
+  But what can succeed is a decentralized approach. Each data service is still
+  an island to itself, but unlike a Data Silo they are islands with a postal
+  service (or indeed, a submarine internet cable!). They are set up to send and
+  receive data, machine to machine, system to system. They are no longer Data
+  Silos, but Data Services. To quote
+  &lt;a href=&quot;https://www.cidrdb.org/cidr2005/papers/P12.pdf&quot;&gt;Pat Helland&lt;/a&gt;:
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;em&gt;&amp;quot;Services are different than the classic application living in a silo
+    and interacting only with humans in that they are interconnected with
+    messages to other services. Services communicate with each other exclusively
+    through messages. No knowledge of the partner service is shared other than
+    the message formats and the sequences of the messages that are
+    expected&amp;quot;&lt;/em&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  Messages are pieces of data send between machines, usually representing
+  something that has happened, or an event that has occurred. Well designed
+  messages have a globally unique ID, mention where/when/what/why and are self
+  contained - in that they are a useful piece of data on their own within having
+  to reference too much else. Supply chain is &lt;em&gt;full&lt;/em&gt; of natural messages;
+  Purchase Orders, Bills of Lading, Customs Declarations, Production Orders,
+  Inventory Reports. When these are standardised, they become the Lingua Franca
+  of messages sent across the supply chain.
+&lt;/p&gt;
+&lt;p&gt;
+  (The concept of distinct services sending messages to each other is not a new
+  one. Pat Helland wrote the above in 2005, but I would argue the pioneering
+  research was Carl Hewitt &amp;amp; Henry Baker&amp;#39;s paper
+  &lt;a
+    href=&quot;https://dspace.mit.edu/bitstream/handle/1721.1/41962/AI_WP_134A.pdf?sequence=1&amp;isAllowed=y&quot;
+  &gt;from 1977&lt;/a&gt;.)
+&lt;/p&gt;
+&lt;p&gt;
+  So how does this work in practice? Machines send each other messages, and each
+  node in the supply chain becomes enriched with its neighbours&amp;#39; data,
+  empowering local decision making. This can have a compounding effect - Node B
+  is enriched by messages from Node A, which subsequently improves the messages
+  it can send to Node C. This allows data sharing to develop in an organic,
+  piecemeal way, in the absence of a central authority.
+&lt;/p&gt;
+&lt;h2&gt;Shared Data Services and Sending Messages Compared&lt;/h2&gt;
+&lt;p&gt;
+  In many ways, shared data services like FLOW are the ideal solution. It&amp;#39;s
+  a simple, powerful model. But while I do see the success of FLOW as a welcome
+  development, and I hope to see its model be more widely adopted, I don&amp;#39;t
+  think it will ever fully bring us the end-to-end supply chain visibility we
+  all aim for.
+&lt;/p&gt;
+&lt;p&gt;
+  Message sending, on the other hand, is organic. It can start small, be
+  developed piecemeal, and expand through a supply chain to the benefit of
+  everyone, without the need for a trusted, neutral and resourceful third party.
+  The methodology and mechanics of message passing are well established and well
+  studied. Let us not wait around and let perfect be the enemy of good.
+  Let&amp;#39;s work on data standards and start exchanging those messages - one
+  supply chain link at a time.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>A Taxonomy of Supply Chain Data Capture</title>
+      <link href="https://lewiscampbell.tech/blog/240324"/>
+      <id>https://lewiscampbell.tech/blog/240324</id>
+      <updated>2024-03-23T11:00:00.000Z</updated>
+      <summary>How to make sense of the chaos, and what direction to go in.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  Most of my tech career has been in and around supply chain; from procurement
+  to operations, from traceability to manufacturing. I&amp;#39;ve seen many
+  different ways of getting data into systems, some simple, some complex, some
+  ingenious and some horrifying. But I believe all these ways fall into four
+  categories, and that these categories are understandable to both business and
+  technical stakeholders.
+&lt;/p&gt;
+&lt;h2&gt;The Four Kinds of Data Capture&lt;/h2&gt;
+&lt;p&gt;
+  We&amp;#39;ll start from the top:
+  &lt;img
+    src=&quot;/img/scmdatacapture.webp&quot;
+    alt=&quot;A 4 by 4 grid showing the combinations described below&quot;
+  /&gt;
+&lt;/p&gt;
+&lt;p&gt;From worst to best, these are:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Manual/Indirect&lt;/li&gt;
+  &lt;li&gt;Manual/Direct&lt;/li&gt;
+  &lt;li&gt;Automatic/Indirect&lt;/li&gt;
+  &lt;li&gt;Automatic/Direct&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Let&amp;#39;s dive into these definitions.&lt;/p&gt;
+&lt;h2&gt;Data System&lt;/h2&gt;
+&lt;p&gt;
+  Most supply chain organizations will have a data system they consider
+  &amp;quot;theirs&amp;quot;. Usually this is something like an ERP/TMS/WMS, but it
+  could also be in-house business software. Whatever form it takes, it&amp;#39;s
+  where your data lives, and where value can be added to it - your own
+  forecasts, analysis etc take place here.
+&lt;/p&gt;
+&lt;p&gt;For the purpose of this article, I will call this your Data System.&lt;/p&gt;
+&lt;h2&gt;Data, Near &amp;amp; Far&lt;/h2&gt;
+&lt;p&gt;
+  Your Data System stores data in a specific &lt;em&gt;format&lt;/em&gt;; you might think of
+  this as the &amp;#39;shape&amp;#39; of the data; more technical readers will know this
+  as a &amp;#39;schema&amp;#39;.
+&lt;/p&gt;
+&lt;p&gt;
+  Data flows into your system from suppliers, customers, and your own staff.
+  When this data has a format similar to what&amp;#39;s in your data system, we call
+  it &lt;em&gt;Near Data&lt;/em&gt;; when the format differs greatly, we call this
+  &lt;em&gt;Far Data&lt;/em&gt;. This is a spectrum; we can talk of data being
+  &lt;em&gt;nearer&lt;/em&gt; and &lt;em&gt;further&lt;/em&gt; to your own data system. The further data
+  is, the more work is needed to make it usable in your Data System - and by
+  extension useful to your organization.
+&lt;/p&gt;
+&lt;p&gt;
+  &amp;quot;Near &amp;amp; Far&amp;quot; is independent of physical distance. A node in the
+  supply chain may purchase materials from a facility right next door, but find
+  the accompanying data to be Far Data. Conversely, it may be sourced from the
+  opposite end of the earth, but happen to use the same data standards, and it
+  would be Near Data.
+&lt;/p&gt;
+&lt;h2&gt;Indirect, Direct, Manual &amp;amp; Automatic&lt;/h2&gt;
+&lt;p&gt;And now come to the core taxonomy.&lt;/p&gt;
+&lt;p&gt;
+  First we ask - is the data coming into our system Far Data? If it is, we call
+  this &lt;em&gt;Indirect&lt;/em&gt;. If not, and little transformation is needed, then we
+  call it &lt;em&gt;Direct&lt;/em&gt;. As Near &amp;amp; Far is a spectrum, so too is Direct
+  &amp;amp; Indirect
+&lt;/p&gt;
+&lt;p&gt;
+  Secondly, we ask - is there a human being needed in this process? Does this
+  come into our Data System due to someone manually typing or clicking? If yes,
+  we call it manual. If not, we classify it as automatic.
+&lt;/p&gt;
+&lt;h2&gt;Examples &amp;amp; Characteristics of the Four Kinds&lt;/h2&gt;
+&lt;h3&gt;Manual/Indirect&lt;/h3&gt;
+&lt;p&gt;
+  The supply chain classic. Get an email with an attachment (Far Data), print it
+  out, and type it manually into the Data System. Slow, error prone, and
+  expensive.
+&lt;/p&gt;
+&lt;p&gt;
+  Transforming these processes to Manual/Direct or Automatic/Indirect is step
+  one in supply chain digitization.
+&lt;/p&gt;
+&lt;h3&gt;Manual/Direct&lt;/h3&gt;
+&lt;p&gt;
+  Data is entered manually, but it comes in directly, not through a middle man.
+  A great example of this is a customer ordering through an e-commerce site
+  integrated with your Data System. Another example is an ERP set up where staff
+  can enter data directly, without needing to use paper.
+&lt;/p&gt;
+&lt;h3&gt;Automatic/Indirect&lt;/h3&gt;
+&lt;p&gt;
+  Something less often seen, but a powerful technique. Far Data is automatically
+  captured, processed, then loaded into your main Data System (the more
+  technical among you will recognize this as
+  &lt;a
+    href=&quot;https://learn.microsoft.com/en-us/azure/architecture/data-guide/relational-data/etl&quot;
+  &gt;ETL&lt;/a&gt;).
+&lt;/p&gt;
+&lt;p&gt;
+  This can be a pragmatic choice when fully digitizing the &amp;#39;edges&amp;#39; of
+  your system is impractical, say when suppliers or customers insist on sending
+  you data in their own formats.
+&lt;/p&gt;
+&lt;p&gt;
+  A note here on data quality. We could introduce another axis here,
+  representing how structured the data is, from &amp;quot;completely digital and in
+  a standardized format&amp;quot; to &amp;quot;off-centre photocopy of a doctor&amp;#39;s
+  handwriting&amp;quot;. Increasingly machines can use AI techniques for the latter,
+  but this is more brittle, more complicated and dramatically slower than having
+  a machine reading a format it knows.
+&lt;/p&gt;
+&lt;h3&gt;Automatic, Direct&lt;/h3&gt;
+&lt;p&gt;
+  The gold standard of data capture. Data comes directly into your system, with
+  no human interaction necessarily.
+&lt;/p&gt;
+&lt;p&gt;
+  This can be achieved between supply chain nodes if both parties 1) agree on an
+  automated, electronic method of communication (likely an API) and 2) agree to
+  the same data standard; if the same EDI is used, then no transformation to
+  Near Data formats is needed.
+&lt;/p&gt;
+&lt;p&gt;
+  Another way is to record data from your own IoT deployments, and load that
+  information directly into your Data System; if you can control the data flow
+  from Electronic Sensor to ERP, you can keep transformations to a minimum.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Does Supply Chain Know what a Blockchain is?</title>
+      <link href="https://lewiscampbell.tech/blog/231115"/>
+      <id>https://lewiscampbell.tech/blog/231115</id>
+      <updated>2023-11-14T11:00:00.000Z</updated>
+      <summary>Must the gulf between supply chain professionals and software technologists remain forever vast?</summary>
+      <content type="html">
+
+&lt;p&gt;
+  The more I read of what supply chain says of blockchain, the less I think they
+  understand it.
+&lt;/p&gt;
+&lt;h2&gt;The core of Blockchain&lt;/h2&gt;
+&lt;p&gt;
+  I will set out to explain - as briefly as I can - the core of what blockchain
+  is. There are blocks - which are just data. A block may link to another block.
+  So long as the data in a block does not change from the time it is first made,
+  a link to it will remain valid. If the data of a block is modified, deleted,
+  or otherwise tampered with, the link will be invalid.
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;img src=&quot;/img/blockchain.png&quot; alt=&quot;Diagram illustrating blockchain&quot; /&gt;
+&lt;/p&gt;
+&lt;p&gt;
+  Each block may link to one other block, and that block can link to yet
+  another, and so on - hence block &lt;em&gt;chain&lt;/em&gt;. If any one link is broken in
+  this chain - meaning if any block in the chain is altered - the blockchain
+  split in twain.
+&lt;/p&gt;
+&lt;p&gt;
+  Think of a hypothetical web page using this technology. This web page has a
+  link back to the previous page. If that previous page is altered, the link no
+  longer works.
+&lt;/p&gt;
+&lt;p&gt;
+  And that is the core of what blockchain is. The blocks can hold any data. The
+  links between them can represent anything. And the blockchain itself can be
+  stored - and copied - anywhere. However writing from the SCM world embellishes
+  this core - as we shall see.
+&lt;/p&gt;
+&lt;h2&gt;Blockchain according to HBR&lt;/h2&gt;
+&lt;p&gt;
+  To begin with we&amp;#39;ll look at an article from the Harvard Business Review,
+  entitled
+  &lt;a href=&quot;https://hbr.org/2020/05/building-a-transparent-supply-chain&quot;&gt;Building
+    a Transparent Supply Chain
+  &lt;/a&gt;:
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    &amp;quot;When blockchain record keeping is used, assets such as units of
+    inventory, orders, loans, and bills of lading are given unique identifiers,
+    which serve as digital tokens (similar to bitcoins). Additionally,
+    participants in the blockchain are given unique identifiers, or digital
+    signatures, which they use to sign the blocks they add to the blockchain.
+    Every step of the transaction is then recorded on the blockchain as a
+    transfer of the corresponding token from one participant to another.&amp;quot;
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  Referring back to our definition, we see there&amp;#39;s nothing inherent in
+  blockchain that provides any of these benefits. Everything they listed -
+  unique identifiers, digital signatures, recording every step of the
+  transaction - is both possible and much faster with conventional databases.
+&lt;/p&gt;
+&lt;h2&gt;Blockchain according to Planet Tracker&lt;/h2&gt;
+&lt;p&gt;
+  Let&amp;#39;s move on to
+  &lt;a
+    href=&quot;https://planet-tracker.org/wp-content/uploads/2022/06/Lifting-the-Rug.pdf&quot;
+  &gt;How Traceability in Textiles Improves Financial and Sustainability
+    Performance&lt;/a&gt;. This is from Planet Track, which describes itself as
+  &amp;quot;a non-profit financial think tank&amp;quot;. To their credit, they have a
+  much more restrained description:
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Blockchain databases are similar to traditional traceability databases;
+    however, they create a decentralized, peer-to-peer network that connects all
+    the stakeholders in a textile value chain – from farmers, designing
+    houses, raw material suppliers, manufacturers, transporter, distributors,
+    retail outlets to consumers.&amp;quot;*
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  Planet Tracker at least sounds like it&amp;#39;s on Planet Earth, but still
+  attributes things to blockchain which are available elsewhere. There&amp;#39;s no
+  reason that a non-blockchain database cannot create a
+  &lt;em&gt;decentralized, peer-to-peer network&lt;/em&gt;. Nothing inherent in blockchain
+  will help you create a &lt;em&gt;decentralized, peer-to-peer network&lt;/em&gt;. Of course
+  there are solutions utilising blockchain that can help you do this - but the
+  blockchain aspect is incidental.
+&lt;/p&gt;
+&lt;h2&gt;Blockchain according to Deloitte&lt;/h2&gt;
+&lt;p&gt;
+  And now, to the darkest portion of this article,
+  &lt;a
+    href=&quot;https://www2.deloitte.com/us/en/pages/operations/articles/blockchain-supply-chain-innovation.html&quot;
+  &gt;Using blockchain to drive supply chain transparency
+  &lt;/a&gt;
+  by Deloitte. Trying to find useful data in this piece was like trying to find
+  purchase while climbing a sheer wall of glass, or trying to sub-divide water
+  with a knife. It just kept slipping by even as I worked at it.
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Imagine a world where you can replace the currently fragmented tracking of
+    your supply chain with an interoperable solution, one that can significantly
+    reduce the risk of unethical sourcing, shipping delays, inadequate storage,
+    or ineffective distribution of your goods. Imagine a world where you can
+    provide visibility into your supply chain to your customers and regulators
+    and furnish irrefutable proof that you are meeting supply chain standards
+    and expectations. And imagine a world, where, by addressing these
+    considerations, you foster deeper trust and efficiency among all the
+    stakeholders within your supply chain.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  Here I no longer assume good faith and we enter the realm of fantasy. Imagine
+  a world where cryptographic hashes linking blocks can make the sun shine
+  brighter, chocolate taste sweeter, and make all cats and dogs fast friends.
+  Needless to say Deloitte have embellished the capabilities of this technology
+  for their own nefarious ends.
+&lt;/p&gt;
+&lt;h2&gt;Blockchain according to Reddit&amp;#39;s /r/supplychain&lt;/h2&gt;
+&lt;p&gt;
+  And now a fact-finding technique so effective wikipedia had to outlaw it -
+  original research.
+  &lt;a
+    href=&quot;https://old.reddit.com/r/supplychain/comments/17k9gxl/i_have_no_idea_what_this_industry_actually_hopes/&quot;
+  &gt;Here&amp;#39;s some responses from the supply chain subreddit when I broached the
+    subject&lt;/a&gt;:
+&lt;/p&gt;
+&lt;p&gt;These range from the jaded:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;What ppl think SCM&amp;#39;s want: AI, Blockchain, IoT&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    What SCM actually wants: for the love of fuck, can you please get this
+    invoice paid before they delete our account — ChaoticxSerenity
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    I would be more optimistic about blockchain if almost all companies were
+    currently using EDI, a technology that’s 20 years old and still not widely
+    used. — scmsteve
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Blockchain is an energy-sucking Rube Goldberg machine. — escapingdarwin
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;... to the curious:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Isn&amp;#39;t blockchain a safer way to store data? Years ago people were
+    talking about it for food safety. Having logs of everything that has
+    happened to a food product would greatly enhance traceability of bad
+    batches. — LodarII
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;...to the true believers&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Payments can easily happen via smart contracts — OMG_WTF_ATH&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    The benefit of a blockchain over a simple log is what you mentioned - it
+    doesn&amp;#39;t require trusting a central party and is tamper resistant. —
+    FaithlessnessDull737
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;...and even the insightful&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    All of the purported benefits of blockchain for supply chain can be done
+    with existing technology. Cooperation is the issue, not the tech. —
+    Comfortable-Owl309
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    There’s loads of tech even less sophisticated than block chain that could
+    make supply chain and logistics better, but the lack of standardization and
+    the stubbornness of many hold outs prevents even complete electronic
+    transactions. — Horangi1987
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    The benefits of blockchain are most apparent when there is no trusted party
+    in a system.... It&amp;#39;s generally clearly a bad idea when there&amp;#39;s a
+    single trusted party or all partys are trusted. — YodelingVeterinarian
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Blockchains can have some useful applications in smart contract management
+    and proof of storage for legal arbitration in transactional disputes but yes
+    of course the impact is limited. — avirup2008
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    Trustless data validation, ZKProof or zero knowledge proof is where I see
+    the value.
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    There are numerous instances in complex supply chains where actually sharing
+    the data would be harmful to the competitiveness of a company, but if you
+    have a way to say Yes / No without seeing the actual data across the board,
+    it drives market efficiencies and transparency to the customer. —
+    panthoreon
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  I learned a lot of from this - both regarding uses I was hitherto ignorant of,
+  and also assumptions I did not know people had. But it&amp;#39;s fair to say
+  there&amp;#39;s a lot of misunderstanding.
+&lt;/p&gt;
+&lt;h2&gt;Why is blockchain so misunderstood?&lt;/h2&gt;
+&lt;p&gt;
+  The chief reason, I would say, is this - the gulf between software
+  technologists and supply chain specialists is vast. The landscape of supply
+  chain software is marked by spreadsheet emailing, ancient legacy ERP systems,
+  and printing things out so that it can be input by hand onto another system.
+  This is repulsive to modern software professionals. Mention SPA to an SCM
+  consultant, and he&amp;#39;ll smile with glee. Mention SPA to a software
+  developer, and he&amp;#39;ll recoil in disgust.
+&lt;/p&gt;
+&lt;p&gt;
+  As someone on the software side, I am not blameless. I recently found out
+  there&amp;#39;s such a thing as fifth party logistics. This surprised me. I had no
+  idea that N-Party logistics space even had that many dimensions.
+&lt;/p&gt;
+&lt;p&gt;
+  But the end result is that the gap between one who understands blockchain and
+  one who understands the SCM at a broader level is likely multiple people. Can
+  this gap be bridged? Would anyone in SCM, with their head-spinning from glossy
+  articles, like to &lt;a href=&quot;/contact.html&quot;&gt;talk?&lt;/a&gt; I&amp;#39;ll do my best on my
+  side, and I look forward to seeing more people on the SCM doing the same.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Wisdom from Computing&apos;s Past</title>
+      <link href="https://lewiscampbell.tech/blog/231112"/>
+      <id>https://lewiscampbell.tech/blog/231112</id>
+      <updated>2023-11-11T11:00:00.000Z</updated>
+      <summary>Learning from the past without trying to live in it.</summary>
+      <content type="html">
+
+&lt;blockquote&gt;
+  &lt;p&gt;Shake yourself out of this parochialism of time! — J.R.R. Tolkien&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;
+    I don&amp;#39;t think computing is a real field. It acts like a pop culture, it
+    deals in fads, and it doesn&amp;#39;t even know its own roots. And worse than
+    that it does not know about the really good things that were done in the
+    past. — Alan Kay
+  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  Real field or not, computing is young. The world&amp;#39;s first computer science
+  qualification began in 1953 at Cambridge. The United States had no computer
+  science department until the 1960&amp;#39;s. We like to talk of
+  &amp;#39;engineering&amp;#39;, but chemical engineering was alchemy in an earlier
+  life, and I believe our field is no different.
+&lt;/p&gt;
+&lt;p&gt;
+  And so for the most part, we have two reactions to the past of computing.
+  Either we love the retro aesthetic; admiring the machines of an earlier age,
+  and feeling a nostalgia for the tech of our youth. Or we sneer at it; looking
+  down on people with primitive hardware who &amp;quot;didn&amp;#39;t know what we know
+  now&amp;quot;. Almost never do we think that they might know what we have now
+  forgotten.
+&lt;/p&gt;
+&lt;p&gt;
+  I&amp;#39;ve been watching an old British TV series -
+  &lt;a
+    href=&quot;https://www.youtube.com/watch?v=5dIcOXx3Exc&amp;list=PLOtimvwAoYtnCtLiLspq_Gnng1XusYwPU&quot;
+  &gt;The Computer Programme&lt;/a&gt;. Made in 1982 and opening with Kraftwerk&amp;#39;s &lt;em
+  &gt;Computerwelt&lt;/em&gt;, it&amp;#39;s a fascinating look into the technology of the
+  time. But what&amp;#39;s most striking to me is peoples relationship and
+  conception of computers. It&amp;#39;s very information-centric - focusing on the
+  input, processing, transmission of information. There&amp;#39;s an episode on
+  graphics, but for the most part this is relegated to the background. The
+  graphical display is the servant of information, not the master of it.
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;img src=&quot;/img/phyillis1982.png&quot; alt=&quot;Phyllis Arandale at her computer&quot; /&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;I find the computer business much more exciting — Phyllis Arandale&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+  The other thing is how ordinary people were able to utilise the cutting edge
+  of affordable technology. In the first episode we see the story of Phyllis, an
+  elderly lady who is using a home computer to track business data in her shop.
+  Phyllis - who might well have been born during WWI - has not only shaved hours
+  off her own work with technology, she&amp;#39;s also started up a &amp;#39;computer
+  service&amp;#39; to help other businesses do the same.
+&lt;/p&gt;
+&lt;p&gt;
+  Computing being about information first, and the computer being a tool we use
+  to better our lives. 40 years on these these ideas have been pushed to the
+  fringes. Can these ancient ideas be re-learned, and re-imagined with the
+  incredible hardware of today? Can we treat the past with honesty, setting
+  aside what we no longer need, and recalling what is useful but forgotten once
+  more?
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Software Maintenance for Business Owners</title>
+      <link href="https://lewiscampbell.tech/blog/221001"/>
+      <id>https://lewiscampbell.tech/blog/221001</id>
+      <updated>2022-09-30T11:00:00.000Z</updated>
+      <summary>Software maintenance defined in terms of cars.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  So you&amp;#39;re in charge of a software product, but you don&amp;#39;t understand
+  software?
+&lt;/p&gt;
+&lt;p&gt;
+  That&amp;#39;s fine. I&amp;#39;m in charge of my bank account and I don&amp;#39;t
+  understand international finance.
+&lt;/p&gt;
+&lt;p&gt;So, here&amp;#39;s a car analogy.&lt;/p&gt;
+&lt;div style=&quot;text-align: center&quot;&gt;
+  &lt;img alt=&quot;Wrecked Vintage Car&quot; src=&quot;/img/wrecked_car-8e77b06de79630.jpg&quot; /&gt;
+&lt;/div&gt;
+&lt;p&gt;
+  Imagine your car runs fine, but it&amp;#39;s having trouble starting. You apply
+  the typical software maintenance strategy:
+&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;You ignore it. Damn warning light, my customers are waiting for me!&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;
+      Eventually it refuses to start. You now have to jump start it every time.
+      This gets really annoying, especially when you&amp;#39;re parked outside in
+      the rain.
+    &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;
+      One day (typically a weekend) the battery explodes in your face. Your car
+      is now a &amp;quot;legacy&amp;quot; car.
+    &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;
+      In a panic, you buy another car. A slick man in a tacky suit sells you one
+      with a much nicer infotainment system - however you soon discover it
+      doesn&amp;#39;t have enough seats (cars are complicated). So you pay the hefty
+      repair bill to get the old one working again.
+    &lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;p&gt;You are now maintaining two cars.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;
+  Here&amp;#39;s the kicker. You probably could&amp;#39;ve pulled over, taken the car
+  into a shop, and had a new battery installed for a fraction of the cost.
+&lt;/p&gt;
+&lt;p&gt;Don&amp;#39;t you wish you&amp;#39;d done that at step 1?&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>95% Programming</title>
+      <link href="https://lewiscampbell.tech/blog/220509"/>
+      <id>https://lewiscampbell.tech/blog/220509</id>
+      <updated>2022-05-08T12:00:00.000Z</updated>
+      <summary>Static Analysis as a useful tool, not a moral imperative.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  If there&amp;#39;s one thing that characterises the zeitgeist of 2022 programming
+  discussions, it&amp;#39;s the celebration of static analysis.
+&lt;/p&gt;
+&lt;p&gt;
+  Our tools are more and more focused on telling us what we can&amp;#39;t do. This
+  code isn&amp;#39;t well-typed, it&amp;#39;s unsafe, the style is &lt;em&gt;wrong&lt;/em&gt;. The
+  argument is that increasingly sophisticated static code analysis can eliminate
+  your bugs one by one. You - the programmer - are soft and biological and
+  irrational, but if you can plead your case to the spirits of the machine,
+  maybe it will all be OK.
+&lt;/p&gt;
+&lt;p&gt;And to be honest, I agree with this... 95% of the time.&lt;/p&gt;
+&lt;p&gt;
+  But sometimes the static analysis is wrong. And it&amp;#39;s fine to to slip in a
+  &lt;code&gt;void*&lt;/code&gt;or a &lt;code&gt;//@ts-ignore&lt;/code&gt; or an &lt;code&gt;unsafe&lt;/code&gt;.
+  Because some fraction of the time you&amp;#39;ll run into an issue where you have
+  to spend hours either convincing the machine of your edge case, or
+  complicating your code to make it happy. Escape the safety hatch, write a
+  comment explaining why, test it, and move on.
+&lt;/p&gt;
+&lt;p&gt;
+  Because of course, we still have to write a tests. Faithfulness to static
+  analysis doesn&amp;#39;t mean we can ignore what happens when the code actually
+  runs. But I&amp;#39;m not an absolutist, I&amp;#39;m not saying you need full 100%
+  coverage of your code. Just maybe, say... 95%.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>A Sheep Ate My Internet</title>
+      <link href="https://lewiscampbell.tech/blog/220205"/>
+      <id>https://lewiscampbell.tech/blog/220205</id>
+      <updated>2022-02-04T11:00:00.000Z</updated>
+      <summary>The reality of rural internet for software development.</summary>
+      <content type="html">
+
+&lt;p&gt;
+  It was May, 2021. I was living on a farm in rural New Zealand (total ag-tech
+  immersion). It was beautiful, even the internet was decent... until this
+  scoundrel chewed through the cable connecting me to the satellite dish.
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;img src=&quot;/img/angus_cropped.jpg&quot; alt=&quot;Large white ram looking up&quot; /&gt;
+  &lt;em&gt;&lt;a href=&quot;https://www.instagram.com/angus.the.sheep/&quot;&gt;Angus the sheep&lt;/a&gt;,
+    defending himself against accusations.&lt;/em&gt;
+&lt;/p&gt;
+&lt;p&gt;I was now offline.&lt;/p&gt;
+&lt;h2&gt;Agricultural Web Users&lt;/h2&gt;
+&lt;p&gt;
+  A lot of people have connectivity issues in rural areas - and thanks to this
+  ravenous ram I became one of them. Sure they&amp;#39;ll have internet at the
+  farmhouse, and it may even be decent. But many areas have no effective mobile
+  coverage at all - once you&amp;#39;re outside the range of the WiFi router
+  it&amp;#39;s game over. (I was half an hours drive from 2G mobile internet when
+  this happened).
+&lt;/p&gt;
+&lt;p&gt;
+  So if you&amp;#39;re in ag your customers may be offline, online, or in that
+  insidious packet-dropping border region in-between. This is not something
+  mainstream web dev really considers - and fair enough. Most software is
+  written by people in air-conditioned offices for other people in
+  air-conditioned offices. If you have ubiquitous fast internet and 4G mobile as
+  a backup, these edge cases don&amp;#39;t merit much attention.
+&lt;/p&gt;
+&lt;p&gt;
+  But agriculture is different. For one thing, your typical &amp;quot;modern&amp;quot;
+  SPA with multiple megabytes of ECMAScript is going to take an eternity to load
+  (if it even does). Hitting API end points returning mountains of JSON with
+  &lt;code&gt;very_descriptive_field_names&lt;/code&gt; makes matters worse. And as for
+  third party tracking scripts - there&amp;#39;s going to be nothing to track as
+  your users give up in frustration.
+&lt;/p&gt;
+&lt;h2&gt;Designing around Limited Bandwidths&lt;/h2&gt;
+&lt;p&gt;So, what&amp;#39;s the solution?&lt;/p&gt;
+&lt;p&gt;
+  With slow connections, recognise you&amp;#39;re in a
+  &lt;strong&gt;constrained environment&lt;/strong&gt;. You can&amp;#39;t use all your favourite
+  front-end toys, or send data for the hell of it.
+  &lt;a href=&quot;https://bundlephobia.com/&quot;&gt;Bundlephobia&lt;/a&gt; is your new best friend,
+  as is the network throttle in dev tools. Your app needs to be lean and mean -
+  which means so does your &lt;code&gt;package.json&lt;/code&gt; (if it even makes sense to
+  have one).
+&lt;/p&gt;
+&lt;p&gt;
+  That covers bad connections - but what about no connections? For read-only
+  apps, service workers will solve a lot of your problems. But if your customers
+  are inputting data - welcome to the world of conflicts. If your app instances
+  are writing data independently from each other, then you&amp;#39;re writing a
+  distributed system.
+&lt;/p&gt;
+&lt;p&gt;
+  In this case, the most important thing is to
+  &lt;strong&gt;accept that conflicts will happen&lt;/strong&gt;, and you have to deal with
+  them. A lot of software claims to &amp;quot;solve&amp;quot; this problem for you. The
+  solution is usually last-write wins - which customers tend to interpret as
+  &amp;quot;randomly losing my data&amp;quot;. So make sure your software is aware of
+  conflicts, and can either resolve them automatically (i.e, CRDTs) or surface
+  them to the user.
+&lt;/p&gt;
+</content>
+    </entry>
+  
+</feed>

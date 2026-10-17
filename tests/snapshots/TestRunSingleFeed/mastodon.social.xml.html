@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-4FOWUm8C1mDWtkwdg7eqWERLQv9idDVm4g3kAG9zGmu9wkvYTaq6mjSnBco7rf_DxChwmQn706Lel-or9SKFG-KT3mEuvBaDXm_NJl2EL4_3YMAJ2xhy7j0grZAeHLDpWc_XY0UCcBGyBs8q_p_f1VrKI1E-SSvLkAiuoYXySgSthUFVUJ1QvFjgwsRPK8jH3IWJcVS340ltYqB8cbTNUrNezHC9M19m6CQEx-nPXFNx-1aYuaQ9t0hpKKiWt4om-MBT12oryoXdcNQTns6yOgU-u--cFwYVvPiLFRlmRECEKWXN_JA5G8blzXHqxH_MyAcbutjUjcIq1qgVrAUYbg==' ;
+		script-src 'nonce-4FOWUm8C1mDWtkwdg7eqWERLQv9idDVm4g3kAG9zGmu9wkvYTaq6mjSnBco7rf_DxChwmQn706Lel-or9SKFG-KT3mEuvBaDXm_NJl2EL4_3YMAJ2xhy7j0grZAeHLDpWc_XY0UCcBGyBs8q_p_f1VrKI1E-SSvLkAiuoYXySgSthUFVUJ1QvFjgwsRPK8jH3IWJcVS340ltYqB8cbTNUrNezHC9M19m6CQEx-nPXFNx-1aYuaQ9t0hpKKiWt4om-MBT12oryoXdcNQTns6yOgU-u--cFwYVvPiLFRlmRECEKWXN_JA5G8blzXHqxH_MyAcbutjUjcIq1qgVrAUYbg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="4FOWUm8C1mDWtkwdg7eqWERLQv9idDVm4g3kAG9zGmu9wkvYTaq6mjSnBco7rf_DxChwmQn706Lel-or9SKFG-KT3mEuvBaDXm_NJl2EL4_3YMAJ2xhy7j0grZAeHLDpWc_XY0UCcBGyBs8q_p_f1VrKI1E-SSvLkAiuoYXySgSthUFVUJ1QvFjgwsRPK8jH3IWJcVS340ltYqB8cbTNUrNezHC9M19m6CQEx-nPXFNx-1aYuaQ9t0hpKKiWt4om-MBT12oryoXdcNQTns6yOgU-u--cFwYVvPiLFRlmRECEKWXN_JA5G8blzXHqxH_MyAcbutjUjcIq1qgVrAUYbg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114102723564645085 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-04">2025-03-04</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114085714252370629 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-03-01">2025-03-01</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114082435391652190 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-28">2025-02-28</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114077709420889845 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-27">2025-02-27</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114077579088527318 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-27">2025-02-27</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114077007196904067 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-27">2025-02-27</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114077003933415545 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-27">2025-02-27</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114074439202777353 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-27">2025-02-27</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114068589792680019 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-26">2025-02-26</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114068510497537763 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-26">2025-02-26</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114068183521443861 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-26">2025-02-26</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114065977777446890 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-25">2025-02-25</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114062829844375249 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-25">2025-02-25</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114040640036287171 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-21">2025-02-21</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114032467828997391 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-19">2025-02-19</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114015426739698804 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-16">2025-02-16</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114010889637828044 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-16">2025-02-16</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114010868742540185 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-16">2025-02-16</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114010824057659145 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-16">2025-02-16</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://mastodon.social/@hytradboi/114010795855113480 target="_blank">
+					<h2>Untitled</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-16">2025-02-16</time>
+					|
+					<a href="https://mastodon.social" target="_blank">mastodon.social</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://mastodon.social/@hytradboi" target="_blank">hytradboi</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="4FOWUm8C1mDWtkwdg7eqWERLQv9idDVm4g3kAG9zGmu9wkvYTaq6mjSnBco7rf_DxChwmQn706Lel-or9SKFG-KT3mEuvBaDXm_NJl2EL4_3YMAJ2xhy7j0grZAeHLDpWc_XY0UCcBGyBs8q_p_f1VrKI1E-SSvLkAiuoYXySgSthUFVUJ1QvFjgwsRPK8jH3IWJcVS340ltYqB8cbTNUrNezHC9M19m6CQEx-nPXFNx-1aYuaQ9t0hpKKiWt4om-MBT12oryoXdcNQTns6yOgU-u--cFwYVvPiLFRlmRECEKWXN_JA5G8blzXHqxH_MyAcbutjUjcIq1qgVrAUYbg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

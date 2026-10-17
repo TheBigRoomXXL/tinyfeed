@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-mkalduUrU4iJe18gezHCuYssGjmDdZDUvSIE-lhrUvSFPd_SQFbVwJhL8H1NMwJqwv5hyhk1KGoLJV8fvFjT0O7ERFNSF5LBkpuTFz5ItZKU_J7fJkSm64dAKgztW2Bhmih1XjJjDTQkOU5AYfoA2bNecN8nc_PtXo_R_tZhd-vE9wEEHGCJtoxCry8qD0pkE0Q41q0IDMI5Gn8aSLC_M0C8O9inBJgmXe2BEocv-O4yJG55aB8LYabXRemuzM2_1q56t4baBE4QZ2fGtVhTqu8E5jSswPPV13gyQIMh_36uyBTkyHBOgWTiEt_VOuEZPYkpIgcL1GmqVRWQ9MQjmw==' ;
+		script-src 'nonce-mkalduUrU4iJe18gezHCuYssGjmDdZDUvSIE-lhrUvSFPd_SQFbVwJhL8H1NMwJqwv5hyhk1KGoLJV8fvFjT0O7ERFNSF5LBkpuTFz5ItZKU_J7fJkSm64dAKgztW2Bhmih1XjJjDTQkOU5AYfoA2bNecN8nc_PtXo_R_tZhd-vE9wEEHGCJtoxCry8qD0pkE0Q41q0IDMI5Gn8aSLC_M0C8O9inBJgmXe2BEocv-O4yJG55aB8LYabXRemuzM2_1q56t4baBE4QZ2fGtVhTqu8E5jSswPPV13gyQIMh_36uyBTkyHBOgWTiEt_VOuEZPYkpIgcL1GmqVRWQ9MQjmw==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="mkalduUrU4iJe18gezHCuYssGjmDdZDUvSIE-lhrUvSFPd_SQFbVwJhL8H1NMwJqwv5hyhk1KGoLJV8fvFjT0O7ERFNSF5LBkpuTFz5ItZKU_J7fJkSm64dAKgztW2Bhmih1XjJjDTQkOU5AYfoA2bNecN8nc_PtXo_R_tZhd-vE9wEEHGCJtoxCry8qD0pkE0Q41q0IDMI5Gn8aSLC_M0C8O9inBJgmXe2BEocv-O4yJG55aB8LYabXRemuzM2_1q56t4baBE4QZ2fGtVhTqu8E5jSswPPV13gyQIMh_36uyBTkyHBOgWTiEt_VOuEZPYkpIgcL1GmqVRWQ9MQjmw==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://wickstrom.tech/2026-08-07-bombadil-race-condition-antithesis.html target="_blank">
+					<h2>How Antithesis Found and Explained a Bombadil Race Condition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-06">2026-08-06</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2026-05-16-coding-on-paper.html target="_blank">
+					<h2>Coding on Paper</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-15">2026-05-15</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2026-05-13-catching-typos-website-browser-testing.html target="_blank">
+					<h2>Catching Typos on My Website with Browser Testing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-05-12">2026-05-12</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2026-04-30-bombadil-terminal-experiment.html target="_blank">
+					<h2>The Bombadil Terminal Experiment</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-04-29">2026-04-29</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2026-01-28-there-and-back-again-from-quickstrom-to-bombadil.html target="_blank">
+					<h2>There and Back Again: From Quickstrom to Bombadil</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-01-27">2026-01-27</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2025-11-01-error-reporting-linear-temporal-logic.html target="_blank">
+					<h2>Computer Says No: Error Reporting for LTL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-31">2025-10-31</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2025-10-10-programming-in-the-sun-a-year-with-the-daylight-computer.html target="_blank">
+					<h2>Programming in the Sun: A Year with the Daylight Computer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-09">2025-10-09</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2025-08-28-findings-bugs-coding-agent-lightweight-dst.html target="_blank">
+					<h2>Finding Bugs in a Coding Agent with Lightweight DST</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-27">2025-08-27</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2025-02-11-machine-learning-human-unlearning.html target="_blank">
+					<h2>Machine: Learning; Human: Unlearning;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-10">2025-02-10</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2024-09-26-how-i-built-the-monospace-web.html target="_blank">
+					<h2>How I Built &#34;The Monospace Web&#34;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-09-25">2024-09-25</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2024-08-12-a-flexible-minimalist-neovim.html target="_blank">
+					<h2>A Flexible Minimalist Neovim for 2024</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-11">2024-08-11</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2024-05-23-statically-typed-functional-programming-python-312.html target="_blank">
+					<h2>Statically Typed Functional Programming with Python 3.12</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-05-22">2024-05-22</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2021-05-03-specifying-state-machines-with-temporal-logic.html target="_blank">
+					<h2>Specifying State Machines with Temporal Logic</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-05-04">2021-05-04</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2021-03-01-first-winter-clearing-weeds-planting-trees.html target="_blank">
+					<h2>The First Winter: Clearing Weeds and Planting Trees</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-02-25">2021-02-25</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2020-08-27-introducing-quickstrom-high-confidence-browser-testing.html target="_blank">
+					<h2>Introducing Quickstrom: High-confidence browser testing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-08-26">2020-08-26</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2020-07-02-the-todomvc-showdown-testing-with-webcheck.html target="_blank">
+					<h2>The TodoMVC Showdown: Testing with WebCheck</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-01">2020-07-01</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2019-11-17-time-travelling-and-fixing-bugs-with-property-based-testing.html target="_blank">
+					<h2>Time Travelling and Fixing Bugs with Property-Based Testing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-11-16">2019-11-16</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2019-06-02-property-based-testing-in-a-screencast-editor-case-study-3.html target="_blank">
+					<h2>Property-Based Testing in a Screencast Editor, Case Study 3: Integration Testing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-06-01">2019-06-01</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2019-04-17-property-based-testing-in-a-screencast-editor-case-study-2.html target="_blank">
+					<h2>Property-Based Testing in a Screencast Editor, Case Study 2: Video Scene Classification</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-04-16">2019-04-16</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2019-03-24-property-based-testing-in-a-screencast-editor-case-study-1.html target="_blank">
+					<h2>Property-Based Testing in a Screencast Editor, Case Study 1: Timeline Flattening</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-03-23">2019-03-23</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2019-03-02-property-based-testing-in-a-screencast-editor-introduction.html target="_blank">
+					<h2>Property-Based Testing in a Screencast Editor: Introduction</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-03-01">2019-03-01</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2018-12-29-why-im-no-longer-taking-donations.html target="_blank">
+					<h2>Why I&#39;m No Longer Taking Donations</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-12-28">2018-12-28</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2018-10-26-writing-a-screencast-video-editor-in-haskell.html target="_blank">
+					<h2>Writing a Screencast Video Editor in Haskell</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-10-25">2018-10-25</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2018-09-04-declarative-gtk-programming-with-haskell.html target="_blank">
+					<h2>Declarative GTK&#43; Programming with Haskell</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-09-03">2018-09-03</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2017-11-19-finite-state-machines-part-2.html target="_blank">
+					<h2>Finite-State Machines, Part 2: Explicit Typed State Transitions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-11-18">2017-11-18</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2017-11-10-finite-state-machines-part-1-modeling-with-haskell.html target="_blank">
+					<h2>Finite-State Machines, Part 1: Modeling with Haskell Data Types</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-11-09">2017-11-09</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2017-10-27-motor-finite-state-machines-haskell.html target="_blank">
+					<h2>Motor: Finite-State Machines in Haskell</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-10-26">2017-10-26</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2017-09-24-automating-the-build-of-your-technical-presentation.html target="_blank">
+					<h2>Automating the Build of your Technical Presentation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-09-23">2017-09-23</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2017-06-05-tagless-final-encoding-of-a-test-language.html target="_blank">
+					<h2>Tagless Final Encoding of a Test Language</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-06-04">2017-06-04</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2017-01-06-hyper-elegant-weapons-for-a-more-civilized-page.html target="_blank">
+					<h2>Hyper: Elegant Weapons for a More Civilized Page</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-01-05">2017-01-05</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2016-10-10-taking-a-step-back-from-oden.html target="_blank">
+					<h2>Taking a Step Back from Oden</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-10-09">2016-10-09</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2016-07-10-custom-formatting-in-html-and-latex-code-listings-using-pandoc.html target="_blank">
+					<h2>Custom Formatting in HTML and LaTeX Code Listings using Pandoc</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-07-09">2016-07-09</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://wickstrom.tech/2016-05-15-paramount-color-scheme-for-vim.html target="_blank">
+					<h2>Paramount Color Scheme for Vim</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2016-05-14">2016-05-14</time>
+					|
+					<a href="https://wickstrom.tech" target="_blank">wickstrom.tech</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://wickstrom.tech/" target="_blank">Oskar Wickström</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="mkalduUrU4iJe18gezHCuYssGjmDdZDUvSIE-lhrUvSFPd_SQFbVwJhL8H1NMwJqwv5hyhk1KGoLJV8fvFjT0O7ERFNSF5LBkpuTFz5ItZKU_J7fJkSm64dAKgztW2Bhmih1XjJjDTQkOU5AYfoA2bNecN8nc_PtXo_R_tZhd-vE9wEEHGCJtoxCry8qD0pkE0Q41q0IDMI5Gn8aSLC_M0C8O9inBJgmXe2BEocv-O4yJG55aB8LYabXRemuzM2_1q56t4baBE4QZ2fGtVhTqu8E5jSswPPV13gyQIMh_36uyBTkyHBOgWTiEt_VOuEZPYkpIgcL1GmqVRWQ9MQjmw==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

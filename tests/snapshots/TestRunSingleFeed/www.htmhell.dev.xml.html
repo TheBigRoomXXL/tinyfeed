@@ -1,0 +1,1973 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-4SAS8tj2ED9Aor74pUiZREO5jk59skl0UikXqeZXAiyF5TpI28D4N5s5013bFJsVjDta1H2MBKqAHqia1fWqWyez9UzGMlV3NsDHakauDLsyrrF8nxy5Xa0AbZs5-64Q8yh-eKQ3piJAy7cqwPPyHuxmBuq8cuj4Duuubfgi3f5I_xpSGcGoBGdo6t0JmCT5GINCyk3jEICCFbSAv_C0TFn6aPiIp39oA5D69rt4Wn-FhKdmnuevkpuNF4jVCjBQDihBu3jckOja5bDzVj51DtiZYXAcxT9Wsn4ev2tRg79RP1u3EB8Yi8casArp1aqORlMilNR8fpmBqEEAF-Wf5A==' ;
+		script-src 'nonce-4SAS8tj2ED9Aor74pUiZREO5jk59skl0UikXqeZXAiyF5TpI28D4N5s5013bFJsVjDta1H2MBKqAHqia1fWqWyez9UzGMlV3NsDHakauDLsyrrF8nxy5Xa0AbZs5-64Q8yh-eKQ3piJAy7cqwPPyHuxmBuq8cuj4Duuubfgi3f5I_xpSGcGoBGdo6t0JmCT5GINCyk3jEICCFbSAv_C0TFn6aPiIp39oA5D69rt4Wn-FhKdmnuevkpuNF4jVCjBQDihBu3jckOja5bDzVj51DtiZYXAcxT9Wsn4ev2tRg79RP1u3EB8Yi8casArp1aqORlMilNR8fpmBqEEAF-Wf5A==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="4SAS8tj2ED9Aor74pUiZREO5jk59skl0UikXqeZXAiyF5TpI28D4N5s5013bFJsVjDta1H2MBKqAHqia1fWqWyez9UzGMlV3NsDHakauDLsyrrF8nxy5Xa0AbZs5-64Q8yh-eKQ3piJAy7cqwPPyHuxmBuq8cuj4Duuubfgi3f5I_xpSGcGoBGdo6t0JmCT5GINCyk3jEICCFbSAv_C0TFn6aPiIp39oA5D69rt4Wn-FhKdmnuevkpuNF4jVCjBQDihBu3jckOja5bDzVj51DtiZYXAcxT9Wsn4ev2tRg79RP1u3EB8Yi8casArp1aqORlMilNR8fpmBqEEAF-Wf5A==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/28/ target="_blank">
+					<h2>HTML Input Validation is (maybe) Good</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-28">2025-12-28</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/27/ target="_blank">
+					<h2>Replacing JS with just HTML</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-27">2025-12-27</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/26/ target="_blank">
+					<h2>Class names for content not design</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-26">2025-12-26</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/25/ target="_blank">
+					<h2>Abbreviations done right: The &lt;abbr&gt; element and why not use it</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-25">2025-12-25</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/24/ target="_blank">
+					<h2>The three semantics of HTML</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-24">2025-12-24</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/23/ target="_blank">
+					<h2>For the Love of &lt;details&gt;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-23">2025-12-23</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/22/ target="_blank">
+					<h2>The HTML Elements Time Forgot</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-22">2025-12-22</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/21/ target="_blank">
+					<h2>Styling by Language: Using the lang Attribute for Multilingual Design</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-21">2025-12-21</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/20/ target="_blank">
+					<h2>The many lives of the page title</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-20">2025-12-20</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/19/ target="_blank">
+					<h2>Semantics beyond the tag name</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-19">2025-12-19</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/18/ target="_blank">
+					<h2>Forms are a badly designed part of HTML</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-18">2025-12-18</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/17/ target="_blank">
+					<h2>Don&#39;t leave the screen reader hungry</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-17">2025-12-17</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/16/ target="_blank">
+					<h2>Giving pages a clear shape by using headings</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-16">2025-12-16</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/15/ target="_blank">
+					<h2>Them’s the Breaks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-15">2025-12-15</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/14/ target="_blank">
+					<h2>The Wonderful World of Web Feeds</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-14">2025-12-14</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/13/ target="_blank">
+					<h2>Hell is other people&#39;s markup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-13">2025-12-13</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/12/ target="_blank">
+					<h2>A11y Considerations in Math on the Web</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-12">2025-12-12</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/11/ target="_blank">
+					<h2>How HTML changes in ePub</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-11">2025-12-11</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/10/ target="_blank">
+					<h2>a11y freedom beaver</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-10">2025-12-10</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/9/ target="_blank">
+					<h2>Discover Dialog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-09">2025-12-09</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/8/ target="_blank">
+					<h2>What&#39;s wrong with this HTML, and is it valid?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-08">2025-12-08</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/7/ target="_blank">
+					<h2>Controlling dialogs and popovers with the Invoker Commands API</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-07">2025-12-07</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/6/ target="_blank">
+					<h2>Accessible by Design: The Role of the &#39;lang&#39; Attribute</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-06">2025-12-06</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/5/ target="_blank">
+					<h2>IDREFs: What they are and how to use them</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-05">2025-12-05</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/4/ target="_blank">
+					<h2>Referencing HTML elements inside Shadow DOM</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-04">2025-12-04</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/3/ target="_blank">
+					<h2>Speculation rules improvements</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-03">2025-12-03</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/2/ target="_blank">
+					<h2>Using the Ancient Evils for Debugging</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-02">2025-12-02</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2025/1/ target="_blank">
+					<h2>Top layer troubles: popover vs. dialog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-01">2025-12-01</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/29/ target="_blank">
+					<h2>datalists are more powerful than you think</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-29">2024-12-29</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/28/ target="_blank">
+					<h2>Boost website speed with prefetching and the Speculation Rules API</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-28">2024-12-28</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/27/ target="_blank">
+					<h2>Misleading Icons: Icon-Only-Buttons and Their Impact on Screen Readers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-27">2024-12-27</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/26/ target="_blank">
+					<h2>The underrated &lt;dl&gt; element</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-26">2024-12-26</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/25/ target="_blank">
+					<h2>Preloading fonts for web performance with link rel=&#34;preload&#34;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-25">2024-12-25</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/24/ target="_blank">
+					<h2>The search input: They almost got it right</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-24">2024-12-24</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/23/ target="_blank">
+					<h2>The devil is in the &lt;details&gt;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-23">2024-12-23</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/22/ target="_blank">
+					<h2>PSA: Stop using the title attribute as tooltip!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-22">2024-12-22</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/21/ target="_blank">
+					<h2>Grouping form fields</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-21">2024-12-21</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/20/ target="_blank">
+					<h2>My favourite colour is Chuck Norris red</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-20">2024-12-20</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/19/ target="_blank">
+					<h2>Getting Oriented with HTML Video</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-19">2024-12-19</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/18/ target="_blank">
+					<h2>Microdata for books</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-18">2024-12-18</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/17/ target="_blank">
+					<h2>How I gained a new perspective on ARIA</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-17">2024-12-17</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/16/ target="_blank">
+					<h2>You don’t need the isOpen class</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-16">2024-12-16</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/15/ target="_blank">
+					<h2>The Gift You Do NOT Want: A Div in a Button&#39;s Clothing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-15">2024-12-15</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/14/ target="_blank">
+					<h2>Page by Page: How Pagination Makes the Web Accessible</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-14">2024-12-14</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/13/ target="_blank">
+					<h2>Improving User Experience for Multilingual Web Browsing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-13">2024-12-13</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/12/ target="_blank">
+					<h2>HTML and CSS I didn&#39;t even know about before I started creating content in Japanese</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-12">2024-12-12</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/11/ target="_blank">
+					<h2>Makeshift hot reload</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-11">2024-12-11</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/10/ target="_blank">
+					<h2>Submit to the Quirks of HTML</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-10">2024-12-10</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/9/ target="_blank">
+					<h2>Native HTML light and dark color scheme switching</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-09">2024-12-09</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/8/ target="_blank">
+					<h2>Past HTML, Future HTML?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-08">2024-12-08</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/7/ target="_blank">
+					<h2>Almost, but not quite, entirely unlike...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-07">2024-12-07</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/6/ target="_blank">
+					<h2>aria-labelledby = self</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-06">2024-12-06</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/5/ target="_blank">
+					<h2>Forced Colors Mode Futility</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-05">2024-12-05</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/4/ target="_blank">
+					<h2>Control the Viewport Resize Behavior on mobile with `interactive-widget`</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-04">2024-12-04</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/3/ target="_blank">
+					<h2>Smooth Multi-Page Experiences with Just a Few Lines of CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-03">2024-12-03</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/2/ target="_blank">
+					<h2>Starting off right: Where autofocus shines</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-02">2024-12-02</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2024/1/ target="_blank">
+					<h2>A link on a logo in the header, what should the alt-text be?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-01">2024-12-01</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/34-a-button-is-not-a-link/ target="_blank">
+					<h2>#34 a button is not a link</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-11-26">2024-11-26</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/33-make-me-one-%28input%29-with-everything/ target="_blank">
+					<h2>#33 make me one (input) with everything</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-08-27">2024-08-27</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/24/ target="_blank">
+					<h2>Never underestimate HTML</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-24">2023-12-24</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/23/ target="_blank">
+					<h2>The devil is in the details: a look into a disclosure widget markup</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-23">2023-12-23</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/22/ target="_blank">
+					<h2>ARIA Live Regions</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-22">2023-12-22</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/21/ target="_blank">
+					<h2>The Implied Web</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-21">2023-12-21</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/20/ target="_blank">
+					<h2>Design pattern for custom tooltips</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-20">2023-12-20</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/19/ target="_blank">
+					<h2>Boosting testing efficiency: how semantic HTML transforms End-to-End testing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-19">2023-12-19</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/18/ target="_blank">
+					<h2>The road to HTMHell is paved with semantics</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-18">2023-12-18</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/17/ target="_blank">
+					<h2>Revisiting Fundamentals - Semantic lists for Improved Accessibility</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-17">2023-12-17</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/16/ target="_blank">
+					<h2>Swallowing camels</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-16">2023-12-16</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/15/ target="_blank">
+					<h2>The Ghosts of Markup Past</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-15">2023-12-15</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/14/ target="_blank">
+					<h2>Getting started with Web Performance 🚀</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-14">2023-12-14</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/13/ target="_blank">
+					<h2>HTML: The Bad Parts</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-13">2023-12-13</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/12/ target="_blank">
+					<h2>Test-driven HTML and accessibility</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-12">2023-12-12</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/11/ target="_blank">
+					<h2>The hidden attribute in HTML</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-11">2023-12-11</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/10/ target="_blank">
+					<h2>Template for accessibility guidelines</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-10">2023-12-10</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/9/ target="_blank">
+					<h2>What the slot?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-09">2023-12-09</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/8/ target="_blank">
+					<h2>The hidden depths of the input element</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-08">2023-12-08</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/7/ target="_blank">
+					<h2>Security Headers using &lt;meta&gt;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-07">2023-12-07</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/6/ target="_blank">
+					<h2>Web Components FTW!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-06">2023-12-06</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/5/ target="_blank">
+					<h2>The Hellish History of HTML: An incomplete and personal account</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-05">2023-12-05</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/4/ target="_blank">
+					<h2>Back to Basics: 5 HTML attributes for improved accessibility and user experience</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-04">2023-12-04</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/3/ target="_blank">
+					<h2>The Form Attribute - Enhancing Form Layout Flexibility</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-03">2023-12-03</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/2/ target="_blank">
+					<h2>You don&#39;t need JavaScript for that</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-02">2023-12-02</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2023/1/ target="_blank">
+					<h2>The UX of HTML</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-01">2023-12-01</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/24/ target="_blank">
+					<h2>Preventing form submission with zero Javascript</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-24">2022-12-24</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/23/ target="_blank">
+					<h2>Enforcing better HTML markup with Eleventy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-23">2022-12-23</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/22/ target="_blank">
+					<h2>What is the Difference Between Alternative Text, Long Description, and Caption?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-22">2022-12-22</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/21/ target="_blank">
+					<h2>A Theory of Web Relativity</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-21">2022-12-21</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/20/ target="_blank">
+					<h2>Common nesting issues in HTML</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-20">2022-12-20</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/19/ target="_blank">
+					<h2>Do you know color-scheme?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-19">2022-12-19</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/18/ target="_blank">
+					<h2>Mini-guide to add an image</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-18">2022-12-18</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/17/ target="_blank">
+					<h2>Modern HTML as a foundation for progressive enhancement</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-17">2022-12-17</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/16/ target="_blank">
+					<h2>5 HTML elements, And a partridge in a despair tree</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-16">2022-12-16</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/15/ target="_blank">
+					<h2>Get that marquee ✨AeStHeTiC✨</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-15">2022-12-15</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/14/ target="_blank">
+					<h2>Table Like It&#39;s 2023</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-14">2022-12-14</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/13/ target="_blank">
+					<h2>One day we&#39;ll have a fully customisable select</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-13">2022-12-13</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/12/ target="_blank">
+					<h2>DOM Clobbering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-12">2022-12-12</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/11/ target="_blank">
+					<h2>There can be only one: Options for building “choose one” fields</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-11">2022-12-11</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/10/ target="_blank">
+					<h2>Dear developer, your assumptions are wrong</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-10">2022-12-10</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/9/ target="_blank">
+					<h2>You don&#39;t need HTML!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-09">2022-12-09</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/8/ target="_blank">
+					<h2>Improving SEO without knowing where to start</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-08">2022-12-08</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/7/ target="_blank">
+					<h2>Meaningful labels using ARIA – or not.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-07">2022-12-07</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/6/ target="_blank">
+					<h2>Adding Complementary Performance Data to Your Site</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-06">2022-12-06</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/5/ target="_blank">
+					<h2>Reading the meter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-05">2022-12-05</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/4/ target="_blank">
+					<h2>Landmarks and where to put them</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-04">2022-12-04</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/3/ target="_blank">
+					<h2>Using SRI to protect from malicious JavaScript</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-03">2022-12-03</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/2/ target="_blank">
+					<h2>You Don&#39;t Need ARIA For That</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-02">2022-12-02</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/adventcalendar/2022/1/ target="_blank">
+					<h2>How to transfigure wireframes into HTML</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-12-01">2022-12-01</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/32-almost-a-proper-close-button/ target="_blank">
+					<h2>#32 almost a proper close button</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-07-18">2022-07-18</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/31-additional-assistance/ target="_blank">
+					<h2>#31 additional “assistance”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-04-12">2022-04-12</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/30-bullet-list/ target="_blank">
+					<h2>#30 Bullet “list”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-01-13">2022-01-13</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/29-randomly-grouping-content/ target="_blank">
+					<h2>#29 Randomly grouping content</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-10">2021-12-10</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/28-alert-level-1/ target="_blank">
+					<h2>#28 alert level 1</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-28">2021-11-28</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/27-a6/ target="_blank">
+					<h2>#27 &lt;a6&gt;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-11-21">2021-11-21</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/26-tasty-buttons/ target="_blank">
+					<h2>#26 HTMHell special: tasty buttons</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-10-25">2021-10-25</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/25-a-link-is-a-button-is-a-link/ target="_blank">
+					<h2>#25 A link is a button is a link</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-04-30">2021-04-30</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/24-a-placeholder-is-not-a-label/ target="_blank">
+					<h2>#24 A placeholder is not a label</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-29">2020-11-29</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/23-card-pattern/ target="_blank">
+					<h2>#23 A card pattern</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-12">2020-11-12</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/22-the-good-ol-div-link/ target="_blank">
+					<h2>#22 the good ol’ div link</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-10-14">2020-10-14</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/21-legendary-legend/ target="_blank">
+					<h2>#21 Legendary legend!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-07-24">2020-07-24</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/20-close-buttons/ target="_blank">
+					<h2>#20 HTMHell special: close buttons</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-23">2020-05-23</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/19-heading-in-the-wrong-direction/ target="_blank">
+					<h2>#19 heading in the wrong direction</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-05-14">2020-05-14</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/18-main-divigation/ target="_blank">
+					<h2>#18 main divigation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-03-22">2020-03-22</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/17-inaccessible-cards/ target="_blank">
+					<h2>#17 inaccessible cards</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-03-14">2020-03-14</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/16-alt-no-aria-label-no-alt/ target="_blank">
+					<h2>#16 alt, no wait…, aria-label, no wait…, alt</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-09">2020-02-09</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/15-letter-by-letter/ target="_blank">
+					<h2>#15 letter by letter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-01-24">2020-01-24</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/14-not-my-type/ target="_blank">
+					<h2>#14 not my type</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-01-17">2020-01-17</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/13-link-or-label/ target="_blank">
+					<h2>#13 link or label</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-01-15">2020-01-15</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/12-accessible-poll-yesno/ target="_blank">
+					<h2>#12 accessible poll yes/no</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-12-03">2019-12-03</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/11-the-trigram-for-heaven/ target="_blank">
+					<h2>#11 The trigram for heaven</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-11-29">2019-11-29</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/10-section-is-no-replacement-for-div/ target="_blank">
+					<h2>#10 &lt;section&gt; is no replacement for &lt;div&gt;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-11-22">2019-11-22</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/9-cookie-consent-from-hell/ target="_blank">
+					<h2>#9 Cookie Consent from Hell</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-11-08">2019-11-08</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/8-anchor-tag-used-as-button/ target="_blank">
+					<h2>#8 anchor tag used as button</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-30">2019-10-30</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/7-multiple-duplicate-ids-and-table-layout/ target="_blank">
+					<h2>#7 multiple duplicate ids and table layout</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-29">2019-10-29</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/6-link-with-void-operator-as-href-value/ target="_blank">
+					<h2>#6 link with void operator as href value</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-25">2019-10-25</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/5-button-like-link/ target="_blank">
+					<h2>#5 button-like-link</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-22">2019-10-22</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/4-link-also-button/ target="_blank">
+					<h2>#4 link-also-button</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-22">2019-10-22</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/3-image-buttons/ target="_blank">
+					<h2>#3 image-buttons</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-22">2019-10-22</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/2-div-with-button-role/ target="_blank">
+					<h2>#2 div with button role</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-17">2019-10-17</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmhell.dev/1-button-disguised-as-a-link/ target="_blank">
+					<h2>#1 button disguised as a link</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-10-17">2019-10-17</time>
+					|
+					<a href="https://htmhell.dev" target="_blank">htmhell.dev</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://htmhell.dev" target="_blank">HTMHell</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="4SAS8tj2ED9Aor74pUiZREO5jk59skl0UikXqeZXAiyF5TpI28D4N5s5013bFJsVjDta1H2MBKqAHqia1fWqWyez9UzGMlV3NsDHakauDLsyrrF8nxy5Xa0AbZs5-64Q8yh-eKQ3piJAy7cqwPPyHuxmBuq8cuj4Duuubfgi3f5I_xpSGcGoBGdo6t0JmCT5GINCyk3jEICCFbSAv_C0TFn6aPiIp39oA5D69rt4Wn-FhKdmnuevkpuNF4jVCjBQDihBu3jckOja5bDzVj51DtiZYXAcxT9Wsn4ev2tRg79RP1u3EB8Yi8casArp1aqORlMilNR8fpmBqEEAF-Wf5A==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

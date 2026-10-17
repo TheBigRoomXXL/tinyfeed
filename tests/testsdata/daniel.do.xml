@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Daniel Immke</title>
+    <description>Daniel Immke's personal blog</description>
+    <link>https://daniel.do</link>
+    <atom:link href="https://daniel.do/rss.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Wed, 03 Jun 2026 23:17:39 GMT</lastBuildDate>
+    
+    <item>
+      <title><![CDATA[My favorite thing to do with AI doesn't really have a label]]></title>
+      <link>https://daniel.do/article/my-favorite-thing-to-do-with-ai</link>
+      <guid isPermaLink="true">https://daniel.do/article/my-favorite-thing-to-do-with-ai</guid>
+      <pubDate>Tue, 17 Mar 2026 00:00:00 GMT</pubDate>
+      
+    </item>
+    <item>
+      <title><![CDATA[Making noisy SVGs]]></title>
+      <link>https://daniel.do/article/making-noisy-svgs</link>
+      <guid isPermaLink="true">https://daniel.do/article/making-noisy-svgs</guid>
+      <pubDate>Thu, 30 Nov 2023 00:00:00 GMT</pubDate>
+      <description><![CDATA[Adding noise texture with only code]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Manifest V3’s foibles]]></title>
+      <link>https://daniel.do/article/chromes-manifest-v3-foibles</link>
+      <guid isPermaLink="true">https://daniel.do/article/chromes-manifest-v3-foibles</guid>
+      <pubDate>Sat, 04 Mar 2023 00:00:00 GMT</pubDate>
+      <description><![CDATA[Beyond the wailing and gnashing of teeth]]></description>
+    </item>
+    <item>
+      <title><![CDATA[It’s the future — you can stop using JPEGs]]></title>
+      <link>https://daniel.do/article/its-the-future-stop-using-jpegs</link>
+      <guid isPermaLink="true">https://daniel.do/article/its-the-future-stop-using-jpegs</guid>
+      <pubDate>Wed, 18 Jan 2023 00:00:00 GMT</pubDate>
+      <description><![CDATA[An overview of some compelling alternatives.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Laying myself off from Amazon]]></title>
+      <link>https://daniel.do/article/laying-myself-off-from-amazon</link>
+      <guid isPermaLink="true">https://daniel.do/article/laying-myself-off-from-amazon</guid>
+      <pubDate>Wed, 16 Nov 2022 00:00:00 GMT</pubDate>
+      
+    </item>
+    <item>
+      <title><![CDATA[The “je ne sais quoi” of TikTok]]></title>
+      <link>https://daniel.do/article/the-je-ne-sais-quoi-of-TikTok</link>
+      <guid isPermaLink="true">https://daniel.do/article/the-je-ne-sais-quoi-of-TikTok</guid>
+      <pubDate>Fri, 02 Sep 2022 00:00:00 GMT</pubDate>
+      <description><![CDATA[How a misunderstood platform has completely taken over the world.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[On being “currently based anywhere”]]></title>
+      <link>https://daniel.do/article/currently-based-anywhere</link>
+      <guid isPermaLink="true">https://daniel.do/article/currently-based-anywhere</guid>
+      <pubDate>Sat, 11 Jun 2022 00:00:00 GMT</pubDate>
+      <description><![CDATA[A pithy slogan for an unusual lifestyle.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Building a new personal website]]></title>
+      <link>https://daniel.do/article/building-a-new-personal-site</link>
+      <guid isPermaLink="true">https://daniel.do/article/building-a-new-personal-site</guid>
+      <pubDate>Mon, 15 Feb 2021 00:00:00 GMT</pubDate>
+      
+    </item>
+    <item>
+      <title><![CDATA[Hacktoberfest 2020: Government edition]]></title>
+      <link>https://daniel.do/article/hacktoberfest-2020-govcon-edition</link>
+      <guid isPermaLink="true">https://daniel.do/article/hacktoberfest-2020-govcon-edition</guid>
+      <pubDate>Thu, 15 Oct 2020 00:00:00 GMT</pubDate>
+      <description><![CDATA[Focusing entirely on government contributions this year.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[My time fighting COVID-19 as a CDC software engineer]]></title>
+      <link>https://daniel.do/article/my-time-fighting-covid-19-as-a-cdc-software-engineer</link>
+      <guid isPermaLink="true">https://daniel.do/article/my-time-fighting-covid-19-as-a-cdc-software-engineer</guid>
+      <pubDate>Sat, 05 Sep 2020 00:00:00 GMT</pubDate>
+      <description><![CDATA[The most stressful period of my career.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[2019: Lessons learned]]></title>
+      <link>https://daniel.do/article/2019-lessons-learned</link>
+      <guid isPermaLink="true">https://daniel.do/article/2019-lessons-learned</guid>
+      <pubDate>Fri, 13 Dec 2019 00:00:00 GMT</pubDate>
+      <description><![CDATA[Looks like I've got it all figured out.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[My Hacktoberfest 2019]]></title>
+      <link>https://daniel.do/article/my-hacktoberfest-2019</link>
+      <guid isPermaLink="true">https://daniel.do/article/my-hacktoberfest-2019</guid>
+      <pubDate>Sat, 26 Oct 2019 00:00:00 GMT</pubDate>
+      <description><![CDATA[Hardest I've ever worked for a free t-shirt.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[What it’s like open sourcing code created for the government]]></title>
+      <link>https://daniel.do/article/what-its-like-open-sourcing-software-created-for-the-government</link>
+      <guid isPermaLink="true">https://daniel.do/article/what-its-like-open-sourcing-software-created-for-the-government</guid>
+      <pubDate>Mon, 09 Sep 2019 00:00:00 GMT</pubDate>
+      <description><![CDATA[Bureaucracy? You betcha!]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Building and launching my first iPhone app]]></title>
+      <link>https://daniel.do/article/building-launching-first-iphone-app</link>
+      <guid isPermaLink="true">https://daniel.do/article/building-launching-first-iphone-app</guid>
+      <pubDate>Sat, 29 Jun 2019 00:00:00 GMT</pubDate>
+      <description><![CDATA[(And doing it the hard way.)]]></description>
+    </item>
+    <item>
+      <title><![CDATA[2018: A year in review]]></title>
+      <link>https://daniel.do/article/2018-a-year-in-review</link>
+      <guid isPermaLink="true">https://daniel.do/article/2018-a-year-in-review</guid>
+      <pubDate>Sat, 22 Dec 2018 00:00:00 GMT</pubDate>
+      <description><![CDATA[It's the end of the year, time for some reflection on how things went!]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Behind the syntax: let and const variables]]></title>
+      <link>https://daniel.do/article/behind-es6s-syntax-changes-let-and-const</link>
+      <guid isPermaLink="true">https://daniel.do/article/behind-es6s-syntax-changes-let-and-const</guid>
+      <pubDate>Wed, 11 Jul 2018 00:00:00 GMT</pubDate>
+      <description><![CDATA[There is a lot more going under the hood than simple syntax changes.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[How I write blog posts every month]]></title>
+      <link>https://daniel.do/article/how-i-write-blog-posts</link>
+      <guid isPermaLink="true">https://daniel.do/article/how-i-write-blog-posts</guid>
+      <pubDate>Sat, 17 Feb 2018 00:00:00 GMT</pubDate>
+      <description><![CDATA[What I've learned after writing regularly for half a year.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Improving my productivity in 2018]]></title>
+      <link>https://daniel.do/article/leveling-up-with-productivity</link>
+      <guid isPermaLink="true">https://daniel.do/article/leveling-up-with-productivity</guid>
+      <pubDate>Sat, 13 Jan 2018 00:00:00 GMT</pubDate>
+      <description><![CDATA[Here's how I'm tackling becoming a lot more productive in the new year.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Handling advanced product imports in WooCommerce]]></title>
+      <link>https://daniel.do/article/handling-advanced-product-imports-in-woocommerce</link>
+      <guid isPermaLink="true">https://daniel.do/article/handling-advanced-product-imports-in-woocommerce</guid>
+      <pubDate>Sat, 09 Dec 2017 00:00:00 GMT</pubDate>
+      <description><![CDATA[Learn how to handle advanced things like core fees when importing products into WooCommerce.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Beginner interaction design with Principle]]></title>
+      <link>https://daniel.do/article/beginner-interaction-design-with-principle</link>
+      <guid isPermaLink="true">https://daniel.do/article/beginner-interaction-design-with-principle</guid>
+      <pubDate>Thu, 30 Nov 2017 00:00:00 GMT</pubDate>
+      <description><![CDATA[I was able to pick up this powerful motion design tool in about 10 minutes and you can too!]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Tips for a successful WooCommerce project]]></title>
+      <link>https://daniel.do/article/tips-for-a-successful-woocommerce-build</link>
+      <guid isPermaLink="true">https://daniel.do/article/tips-for-a-successful-woocommerce-build</guid>
+      <pubDate>Sun, 29 Oct 2017 00:00:00 GMT</pubDate>
+      <description><![CDATA[Building your first WooCommerce site? Here are 4 things to consider.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Selectively disabling payment gateways in WooCommerce]]></title>
+      <link>https://daniel.do/article/selectively-disabling-payment-forms-in-woocommerce</link>
+      <guid isPermaLink="true">https://daniel.do/article/selectively-disabling-payment-forms-in-woocommerce</guid>
+      <pubDate>Wed, 20 Sep 2017 00:00:00 GMT</pubDate>
+      
+    </item>
+    <item>
+      <title><![CDATA[My Pardot landing page starter kit]]></title>
+      <link>https://daniel.do/article/pardot-starter-kit</link>
+      <guid isPermaLink="true">https://daniel.do/article/pardot-starter-kit</guid>
+      <pubDate>Tue, 05 Sep 2017 00:00:00 GMT</pubDate>
+      <description><![CDATA[Because building Pardot landing pages sucks.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[How I quit social media]]></title>
+      <link>https://daniel.do/article/quitting-social-media</link>
+      <guid isPermaLink="true">https://daniel.do/article/quitting-social-media</guid>
+      <pubDate>Sat, 02 Sep 2017 00:00:00 GMT</pubDate>
+      <description><![CDATA[Earlier this year I quit social media. I would recommend trying it.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[So why write a blog?]]></title>
+      <link>https://daniel.do/article/so-why-write-a-blog</link>
+      <guid isPermaLink="true">https://daniel.do/article/so-why-write-a-blog</guid>
+      <pubDate>Fri, 01 Sep 2017 00:00:00 GMT</pubDate>
+      <description><![CDATA[I want to share my knowledge and help others the way people helped me.]]></description>
+    </item>
+  </channel>
+</rss>

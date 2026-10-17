@@ -1,0 +1,3794 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-IGCUEie9SOZwpKdDF4nXbCQxcVGtsf6Z34yQGWofu879wTpTmF8kxChvdhoYdEcyEChGI9HTxo_5QUxS8tXWM0PainW3QTgbXHzfRpxTYGkUAAhhjb5SblYpCkj8c3zzgm8onVRB0p9ZeromEdS4iSS3pV36Z_vJXt6-JLMmrtgOUzZVBIpSgjMgO0L4JbV1JjBMANIozeefAOK6-_hcMTq44ebvFZVOE6FPrggKYPZoonoB6XGnBceNmXSRi3kVx5RkrToIjFR5cQG8LPYwEQqlieZFSDUKoO0MifzgE47r5gBJn7hsxzNTqxOsaq3G_1o55GXvh4kTEHTnf0Unbg==' ;
+		script-src 'nonce-IGCUEie9SOZwpKdDF4nXbCQxcVGtsf6Z34yQGWofu879wTpTmF8kxChvdhoYdEcyEChGI9HTxo_5QUxS8tXWM0PainW3QTgbXHzfRpxTYGkUAAhhjb5SblYpCkj8c3zzgm8onVRB0p9ZeromEdS4iSS3pV36Z_vJXt6-JLMmrtgOUzZVBIpSgjMgO0L4JbV1JjBMANIozeefAOK6-_hcMTq44ebvFZVOE6FPrggKYPZoonoB6XGnBceNmXSRi3kVx5RkrToIjFR5cQG8LPYwEQqlieZFSDUKoO0MifzgE47r5gBJn7hsxzNTqxOsaq3G_1o55GXvh4kTEHTnf0Unbg==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="IGCUEie9SOZwpKdDF4nXbCQxcVGtsf6Z34yQGWofu879wTpTmF8kxChvdhoYdEcyEChGI9HTxo_5QUxS8tXWM0PainW3QTgbXHzfRpxTYGkUAAhhjb5SblYpCkj8c3zzgm8onVRB0p9ZeromEdS4iSS3pV36Z_vJXt6-JLMmrtgOUzZVBIpSgjMgO0L4JbV1JjBMANIozeefAOK6-_hcMTq44ebvFZVOE6FPrggKYPZoonoB6XGnBceNmXSRi3kVx5RkrToIjFR5cQG8LPYwEQqlieZFSDUKoO0MifzgE47r5gBJn7hsxzNTqxOsaq3G_1o55GXvh4kTEHTnf0Unbg==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/munger-on-musk target="_blank">
+					<h2>The Late Charlie Munger on Elon Musk and Tesla</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-17">2026-10-17</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/app-store-guidelines-nudification target="_blank">
+					<h2>Apple: ‘Strengthening App Review Guidelines Against Nonconsensual Intimate Imagery and Bait-And-Switch Apps’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-17">2026-10-17</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/apple-tv-69 target="_blank">
+					<h2>Apple TV Started at $69 in 2015</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-17">2026-10-17</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/strange-times-make-for-strange-bedfellows target="_blank">
+					<h2>Strange Times Make for Strange Bedfellows</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/take-control-of-photos-fifth-edition/ target="_blank">
+					<h2>‘Take Control of Photos, Fifth Edition’ ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/10/this-week-in-apple-the-pre-order-thrill-is-gone/ target="_blank">
+					<h2>This Week in Apple: The pre-order thrill is gone (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/how-they-got-duo-support-in-netnewswire target="_blank">
+					<h2>How They Got Duo Support in NetNewsWire</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/10/real_artists_ship_tesla_edition target="_blank">
+					<h2>★ Real Artists Ship, Tesla Edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/seeds-solved/ target="_blank">
+					<h2>The NIST Elliptic Curves Seeds Bounty Has Been Claimed</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22805 target="_blank">
+					<h2>Ranking proposals for Interop 2027</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/a-299-apple-tv-is-that-all-there-is/ target="_blank">
+					<h2>A $299 Apple TV: Is that all there is?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/sankar-ai-researchers-smoking target="_blank">
+					<h2>Shyam Sankar, CTO of Palantir, Says AI Researchers Have Started Smoking Because They’re Convinced AI (Claude, Probably) Is Going to Cure Cancer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/16/duo-preorders-sellout target="_blank">
+					<h2>iPhone Duo Pre-Orders Launched, and Three Hours Later It’s Sold Out Through the End of January</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22802 target="_blank">
+					<h2>The Tusks Of Extinction by Ray Nayler</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/fun-with-preorders/ target="_blank">
+					<h2>Fun! With! Preorders! ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;1DGT2s8o2L8 target="_blank">
+					<h2>Adam Savage Stunned by 3D Printed Rubber!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/10/thoughts_on_new_apple_tv_4k_and_homepod_mini_2 target="_blank">
+					<h2>★ Initial Thoughts on This Week’s New Apple TV 4K (4th Generation) and HomePod Mini 2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-16">2026-10-16</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22801 target="_blank">
+					<h2>The Mountain In The Sea by Ray Nayler</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-15">2026-10-15</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/15/trump-ballroom-donor-list target="_blank">
+					<h2>Secret Documents Reveal Donors Behind $330 Million for Trump’s Ballroom — Apple and Nvidia Top the List at $25 Million Each</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-15">2026-10-15</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;-irEzY_vLuk target="_blank">
+					<h2>Adam Savage Upgrades His Gibson Les Paul Guitar!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-15">2026-10-15</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/6U6Z6pb6ewI target="_blank">
+					<h2>When you lose weight where does it go?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-15">2026-10-15</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/time-traveling-agents/ target="_blank">
+					<h2>Your agent can now ship reliable distributed systems</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-15">2026-10-15</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/homeview-is-simple-and-thats-a-good-thing/ target="_blank">
+					<h2>HomeView is simple, and that’s a good thing ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/clockwise-678-sliced-by-the-bleeding-edge/ target="_blank">
+					<h2>(Podcast) Clockwise 678: Sliced by the Bleeding Edge</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/feeds/sponsors/2026/10/workos_authkit_auth_for_your_a target="_blank">
+					<h2>[Sponsor] WorkOS AuthKit: Auth for Your App, Free Up to 1M Monthly Active Users</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/14/fbi-saudi-arrested-openai target="_blank">
+					<h2>The FBI Arrested a Saudi National OpenAI Employee for Planting a Recording Device in the Company’s Executive Conference Room</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/share-your-location-in-messages-now-for-a-custom-period/ target="_blank">
+					<h2>Share your location in Messages, now for a custom period</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/new-siri-remotes-find-my-feature-limited-to-n1-equipped-iphones/ target="_blank">
+					<h2>New Siri Remote’s Find My feature limited to N1-equipped iPhones ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;gQKQLC-Z4jQ target="_blank">
+					<h2>$700 Formlabs Form Studio 1 3D Printer Review</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/designed-in-california-13-the-mp3-revolution-part-1-origin-of-the-ipod/ target="_blank">
+					<h2>(Podcast) Designed in California 13: The MP3 Revolution (Part 1, Origin of the iPod)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/the-rebound-620-giant-honkin-things-in-the-back/ target="_blank">
+					<h2>(Podcast) The Rebound 620: Giant Honkin’ Things in the Back</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22798 target="_blank">
+					<h2>Zero</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-14">2026-10-14</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/third-party-homeview-apps-think-carplay/ target="_blank">
+					<h2>Third-party HomeView apps? Think CarPlay</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/upgrade-641-a-fashion-chimney/ target="_blank">
+					<h2>(Podcast) Upgrade 641: A Fashion Chimney</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/airtag-silencer-silenced/ target="_blank">
+					<h2>AirTag Silencer, Silenced ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/13/homeview target="_blank">
+					<h2>Apple HomeView</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;kqxsRuJ7hiU target="_blank">
+					<h2>Adam Savage Unboxes the Crown of Bethmora!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/13/archived-tweets/ target="_blank">
+					<h2>Archived Tweets</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/new-home-collection-banner-offers-apple-influenced-accessories/ target="_blank">
+					<h2>New Home Collection banner offers Apple-influenced accessories</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/new-apple-tv-4k-adds-siri-ai-support/ target="_blank">
+					<h2>New Apple TV 4K adds Siri AI support</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/new-homepod-mini-2-offers-siri-ai-but-not-yet/ target="_blank">
+					<h2>New HomePod mini 2 offers Siri AI–but not yet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/apple-announces-homeview-smart-display/ target="_blank">
+					<h2>Apple announces HomeView smart display</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.troyhunt.com/weekly-update-525/ target="_blank">
+					<h2>Weekly Update 525: AI Data Breach Hyperbole</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://troyhunt.com" target="_blank">troyhunt.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sethmlarson.dev/gaming-all-digital-future-and-creative-constraint?utm_campaign&#61;rss target="_blank">
+					<h2>Gaming’s all-digital future doesn’t include “Sonic the Hedgehog 3” and “Pikmin 2”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://sethmlarson.dev" target="_blank">sethmlarson.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/flex-model-an-event-driven-feature-engineering-system/ target="_blank">
+					<h2>Flex Model: an event-driven feature engineering system</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/announcing-victorialogs-lts-release/ target="_blank">
+					<h2>VictoriaLogs Has Now a Long Term Support (LTS) Release</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-13">2026-10-13</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/12/atomic-wall-clocks/ target="_blank">
+					<h2>Atomic Wall Clocks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/app-report-apps-worth-grabbing/ target="_blank">
+					<h2>App Report: Apps worth grabbing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lukeplant.me.uk/blog/posts/git-is-still-awful/ target="_blank">
+					<h2>Git is still awful</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://lukeplant.me.uk" target="_blank">lukeplant.me.uk</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;NiCgcUTL9_Q target="_blank">
+					<h2>The Absurd Engineering Behind the Internet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/12/cringely-rip target="_blank">
+					<h2>Mark Stephens, a.k.a. Robert X. Cringely, Died at 73</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/12/eps/ target="_blank">
+					<h2>EPS?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;p8NFfCNXLRo target="_blank">
+					<h2>Humanity&#39;s Greatest Engineering Feat?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://words.filippo.io/right-answers/ target="_blank">
+					<h2>(Post-Quantum) Cryptographic Right Answers</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://words.filippo.io" target="_blank">words.filippo.io</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-namespaces/ target="_blank">
+					<h2>Namespaces</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/go/patch-field-mask/ target="_blank">
+					<h2>Partial updates with field masks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/victoriametrics-september-ecosystem-updates/ target="_blank">
+					<h2>VictoriaMetrics September 2026 Ecosystem Updates</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-12">2026-10-12</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/10/x_once_again_marks_the_spot target="_blank">
+					<h2>★ X Once Again Marks the Spot</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/11/apple-only-started-suggesting-ios-26-users-upgrade-to-27-three-days-ago target="_blank">
+					<h2>Apple Only Started Suggesting iOS 26 Users Upgrade to 27 Three Days Ago</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/apples-new-home-hub-is-homeview/ target="_blank">
+					<h2>Apple’s new home hub is ‘HomeView’ ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;q_2Vrljn3F0 target="_blank">
+					<h2>The Tiny Mistake That Proved How This Movie Prop Was Built</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/11/daves-rule-of-life/ target="_blank">
+					<h2>Dave’s Rule of Life</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://nobloat.org/articles/2026-10-11-nobloat-poll.html target="_blank">
+					<h2>][✓ nobloat/poll</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://nobloat.org" target="_blank">nobloat.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lea.verou.me/blog/2026/icons/ target="_blank">
+					<h2>The best way to use icons in Web UIs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-11">2026-10-11</time>
+					|
+					<a href="https://lea.verou.me" target="_blank">lea.verou.me</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;ikSV27xQ_7Q target="_blank">
+					<h2>How many engineers does it take to deprecate a struct?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/10/media-diet-11/ target="_blank">
+					<h2>Media Diet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/is-apple-coming-home-to-stay/ target="_blank">
+					<h2>Is Apple coming home to stay?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/10/sunnny target="_blank">
+					<h2>Sunnny</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/10/proof-of-human target="_blank">
+					<h2>‘Proof-of-Human’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;kl1qohqDw1k target="_blank">
+					<h2>How many engineers does it take to deprecate a struct?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;8RwRwyxMmQY target="_blank">
+					<h2>Movie Quotes That Reshaped Adam Savage&#39;s Worldview</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://lewiscampbell.tech/blog/261011 target="_blank">
+					<h2>Waterfall Reconsidered</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://lewiscampbell.tech" target="_blank">lewiscampbell.tech</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/09/multipage/ target="_blank">
+					<h2>Multipage</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-10">2026-10-10</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/VcaCwGFN-bU target="_blank">
+					<h2>Meet an Androgynous Space Docking Module</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/10/this-week-in-apple-spooky-season-is-upon-us/ target="_blank">
+					<h2>This Week in Apple: Spooky season is upon us (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/09/justice-for-css/ target="_blank">
+					<h2>Justice for CSS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;fOJQ0MNPZjI target="_blank">
+					<h2>🌁 Cup o&#39; Go LIVE in SF with Bill Kennedy! Hosted by Antithesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/podcast/686 target="_blank">
+					<h2>Changelog Interviews 686: From zero to NanoClaw</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;kiQh0zl2feM target="_blank">
+					<h2>🌁 Cup o&#39; Go LIVE in SF with Bill Kennedy! Hosted by Antithesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/designed-in-california-12-ron-johnson-and-the-genius-of-the-apple-store/ target="_blank">
+					<h2>(Podcast) Designed in California 12: Ron Johnson and the Genius of the Apple Store</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;wGxzcsSf7to target="_blank">
+					<h2>The Best Thing Adam Savage Found in Aircraft Salvage</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/j9p3Sn8ROL4 target="_blank">
+					<h2>What is edge dislocation?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;5rh_DswKRqM target="_blank">
+					<h2>Photo-ablative Micromachining (and Other Contagious Diseases)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-09">2026-10-09</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/08/lets-check-in-on-trumps-blog target="_blank">
+					<h2>Let’s Check In on Trump’s Blog</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/openai-silences-familiar-voices/ target="_blank">
+					<h2>OpenAI silences familiar voices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/08/apple-is-slow-rolling-ios-27-adoption-so-far target="_blank">
+					<h2>Apple Is Slow-Rolling iOS 27 Adoption, So Far</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/08/joz-welcome-home target="_blank">
+					<h2>Joz Announces ‘Welcome Home’ Keynote Coming Tuesday, 13 October</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/apple-sets-homecoming-for-oct-13/ target="_blank">
+					<h2>Apple sets homecoming for Oct. 13 ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;xd8Fqs-j0gw target="_blank">
+					<h2>Uncovering the Secrets of a Rare WWI Fabric Biplane</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-10-08-deepthi-sigireddi-from-supabase.html target="_blank">
+					<h2>Deepthi Sigireddi from Supabase</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-08">2026-10-08</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/07/jaguar-type-01 target="_blank">
+					<h2>Jaguar Type 01</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/07/gurman-apple-lg-smart-home target="_blank">
+					<h2>Gurman Strikes Again: ‘Apple’s Smart Home Push Includes Doorbell, Lock, Thermostat Codeveloped With LG’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/clockwise-677-a-nice-cave-somewhere/ target="_blank">
+					<h2>(Podcast) Clockwise 677: A Nice Cave Somewhere</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/app-report-all-that-jazz/ target="_blank">
+					<h2>App Report: All that Jazz</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/07/glasses/ target="_blank">
+					<h2>Glasses</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;FEDaFVvygbw target="_blank">
+					<h2>Adam Savage Upgrades His Workshop Lathe!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/fcc-filings-for-lg-apple-smart-home-devices-uncovered/ target="_blank">
+					<h2>FCC filings for LG/Apple smart home devices uncovered ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/designed-in-california-11-apples-mac-os-crisis-advisor-to-the-chairman-part-7/ target="_blank">
+					<h2>(Podcast) Designed in California 11: Apple’s Mac OS Crisis: Advisor to the Chairman (Part 7)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-07">2026-10-07</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/spotify-opens-new-front-in-war-on-fair-use/ target="_blank">
+					<h2>Spotify opens new front in war on fair use</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/lex-authors-the-apps-but-claude-writes-the-code/ target="_blank">
+					<h2>Lex authors the apps, but Claude writes the code ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/06/cli-tool-removes-apple-intelligence-from-macos-27 target="_blank">
+					<h2>Unofficial Command-Line Tool Removes Apple Intelligence From MacOS 27</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/06/kelsey/ target="_blank">
+					<h2>Kelsey</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22790 target="_blank">
+					<h2>Lake Of Souls by Ann Leckie</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/is-your-secure-imessage-conversation-actually-secure/ target="_blank">
+					<h2>Is your secure iMessage conversation actually secure?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;V5FfRfIm_4Q target="_blank">
+					<h2>Adam Savage Meets The Smile Machine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/apples-new-parental-controls-are-having-a-messy-roll-out/ target="_blank">
+					<h2>Apple’s new parental controls are having a messy roll out ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/the-rebound-619-how-am-i-supposed-to-launder-this-money/ target="_blank">
+					<h2>(Podcast) The Rebound 619: How Am I Supposed To Launder This Money?!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/05/jobs-walking-through-mockup target="_blank">
+					<h2>Steve Jobs, Walking Through a Mockup for Apple Park in 2010</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/config-management-orchestrator-for-windows/ target="_blank">
+					<h2>Building and testing a config management orchestrator for Windows</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/http-race-condition/ target="_blank">
+					<h2>The Data Race That Wasn&#39;t a Bug (and the One That Was)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-06">2026-10-06</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/feeds/sponsors/2026/10/sunnny target="_blank">
+					<h2>[Sponsor] Sunnny</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/05/openai-announces-their-text-watermarking-plans target="_blank">
+					<h2>OpenAI Announces Their Text Watermarking Plans</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/05/ternus-cook-jobs-15th-anniversary target="_blank">
+					<h2>Ternus and Cook Tweet Brief Remembrances on the 15th Anniversary of Steve Jobs’s Death</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/10/upgrade-640-moving-through-space/ target="_blank">
+					<h2>(Podcast) Upgrade 640: Moving Through Space</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/secretive-helps-you-keep-your-ssh-keys-secret-keep-them-safe/ target="_blank">
+					<h2>Secretive helps you keep your SSH keys secret, keep them safe</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;130c5_6tecs target="_blank">
+					<h2>Why It&#39;s Harder to Build a Mini Suit of Armor</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/05/wordpress-mcp/ target="_blank">
+					<h2>WordPress MCP</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/apple-is-changing-full-disk-access-in-macos/ target="_blank">
+					<h2>Apple is changing Full Disk Access in macOS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/hooking-into-the-go-toolchain/ target="_blank">
+					<h2>Hooking into the Go Toolchain</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/scaling-and-benchmarking-a-critical-message-bus/ target="_blank">
+					<h2>Scaling and benchmarking a critical message bus using a new indexing strategy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://joshcollinsworth.com/blog/tupo target="_blank">
+					<h2>The story of Tupo, my new daily logic puzzle</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://joshcollinsworth.com" target="_blank">joshcollinsworth.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/year-2-price-cliff-observability-tco/ target="_blank">
+					<h2>The Year-2 Price Cliff: What Your Observability Stack Really Costs Over 3 Years</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-05">2026-10-05</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;PGYcEISGWJA target="_blank">
+					<h2>Adam Savage’s Exhausting MythBusters Spinoff Experience</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-04">2026-10-04</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/10/04/im-water/ target="_blank">
+					<h2>im Water</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-04">2026-10-04</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.troyhunt.com/weekly-update-524/ target="_blank">
+					<h2>Weekly Update 524: Live From Copenhagen</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-04">2026-10-04</time>
+					|
+					<a href="https://troyhunt.com" target="_blank">troyhunt.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/10/04/encoders.html target="_blank">
+					<h2>Strands Decider: Why Not an Encoder?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-04">2026-10-04</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-10-04-compression-and-concatenation-on-the-web.html target="_blank">
+					<h2>Compression and concatenation on the web</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-04">2026-10-04</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/03/workos-sso target="_blank">
+					<h2>WorkOS</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-03">2026-10-03</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/03/iphone-18-pro-max-att-issues target="_blank">
+					<h2>Apple Confirms iPhone 18 Pro Max AT&amp;T Cellular Issues, Affected Devices Require Hardware Replacement</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-03">2026-10-03</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;kewL6XmW4wo target="_blank">
+					<h2>Adam Savage&#39;s Worst Workshop Injury</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-03">2026-10-03</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/41-states target="_blank">
+					<h2>I’ve been to 41 US states</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-03">2026-10-03</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/10/this-week-in-apple-feeding-the-rumor-monster/ target="_blank">
+					<h2>This Week in Apple: Feeding the rumor monster (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/10/apple_full_disk_access target="_blank">
+					<h2>★ Apple Is Going to Further Tighten the Screws on Full Disk Access on MacOS, in Response to Agentic AI Apps Running Amok</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/support-st-jude-and-watch-the-2026-relay-podcastathon-2/ target="_blank">
+					<h2>Support St. Jude and watch the 2026 Relay Podcastathon ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/how-and-why-fork-uses-copy-on-write target="_blank">
+					<h2>How and Why fork() Uses Copy-on-Write</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/10/01/yankees-sweep-sox target="_blank">
+					<h2>Yankees Sweep Boston in Two Games, by Combined Score of 18-2</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/how-recurring-network-maintenance-exposed-6-bugs/ target="_blank">
+					<h2>How recurring network maintenance exposed 6 bugs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/asic-puzzle-results/ target="_blank">
+					<h2>Results from the ASIC puzzle</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-02">2026-10-02</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/10/amazon-introduces-new-kindles-and-accessories/ target="_blank">
+					<h2>Amazon introduces new Kindles and accessories ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/IHkp5Kq72ro target="_blank">
+					<h2>How Dangerous Are Non-Stick Pans?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/10/silencing-airtags-enables-stalkers-and-domestic-violence/ target="_blank">
+					<h2>Silencing AirTags enables stalkers and domestic violence</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.wsj.com/business/retail/shop-different-review-the-genius-of-retail-e66f192b target="_blank">
+					<h2>‘Shop Different’ Review: The Genius of Retail (The Wall Street Journal/Jason Snell)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://wsj.com" target="_blank">wsj.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/linux-engineering-kernel-reporter-index/ target="_blank">
+					<h2>A resilient kernel log reporter</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/linux-engineering-depot-fuse-index/ target="_blank">
+					<h2>A FUSE server for our in-house storage backend</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-10-01">2026-10-01</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/09/the-back-page-know-when-to-fold-em/ target="_blank">
+					<h2>The Back Page: Know when to fold ’em (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/30/gurman-october-13-smart-home target="_blank">
+					<h2>Gurman Reports Apple Is Launching New ‘Smart Home’ Products on October 13</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/30/reuters-anthropic-ipo-prospectus target="_blank">
+					<h2>Anthropic’s IPO Prospectus Is a Fucking Doozy</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;ONAuUyml0yI target="_blank">
+					<h2>We&#39;re trying something new...</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/clockwise-676-mad-at-a-supermarket/ target="_blank">
+					<h2>(Podcast) Clockwise 676: Mad at a Supermarket</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://chriscoyier.net/2026/09/30/experience-with-nectar-beds/ target="_blank">
+					<h2>Experience with Nectar Beds</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://chriscoyier.net" target="_blank">chriscoyier.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/what-tla-can-and-cant-check/ target="_blank">
+					<h2>What TLA&#43; can and can&#39;t check</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/numbers-update-get-statistical-and-trigonometry-functions-and-apple-tells-you-what-they-all-are/ target="_blank">
+					<h2>Numbers update get statistical and trigonometry functions, and Apple tells you what they all are ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22781 target="_blank">
+					<h2>Twenty five years of writing on adactio.com</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/designed-in-california-10-apples-mac-os-crisis-the-bake-off-part-6/ target="_blank">
+					<h2>(Podcast) Designed in California 10: Apple’s Mac OS Crisis: The Bake-Off (Part 6)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bell.bz/in-response-to-the-death-of-web-development-education/ target="_blank">
+					<h2>In response to “The death of web development education”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://bell.bz" target="_blank">bell.bz</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/the-rebound-618-green-man-and-the-lime/ target="_blank">
+					<h2>(Podcast) The Rebound 618: Green Man and The Lime</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sethmlarson.dev/python-language-summit-blogging?utm_campaign&#61;rss target="_blank">
+					<h2>Blogging for the Python Language Summit</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://sethmlarson.dev" target="_blank">sethmlarson.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/wrought-2026/ target="_blank">
+					<h2>What the interns have wrought, special jumbo 2026 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/wrought-2026-sp/ target="_blank">
+					<h2>What the SP interns have wrought, 2026 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/trading-off-compute-for-memory-with-activation-checkpointing/ target="_blank">
+					<h2>Trading off compute for memory with activation checkpointing</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/tdoe-intern-projects-2026/ target="_blank">
+					<h2>What the TDOE interns have wrought, 2026 edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/mitigating-memorization-in-llms/ target="_blank">
+					<h2>Mitigating memorization in LLMs</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/can-you-use-autoregressive-diffusion-to-generate-market-data/ target="_blank">
+					<h2>Can you use autoregressive diffusion to generate market data?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-30">2026-09-30</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/29/fu-october-spitball target="_blank">
+					<h2>Follow-Up on my Spitballed Predictions for Apple’s October</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/29/destroy-any-website target="_blank">
+					<h2>Destroy Any Website</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/datadog/ target="_blank">
+					<h2>Testing Datadog&#39;s Next-Generation Event Platform Intake with Antithesis</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/bastardic target="_blank">
+					<h2>Bastardica</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/google-is-fing-weird target="_blank">
+					<h2>‘When Did Google Get So F-Ing Weird?’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/stern-pickle-poke target="_blank">
+					<h2>Joanna Stern Pokes the Pickle</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/donald-decodes-federighi target="_blank">
+					<h2>‘Donald Decodes’ Interview Craig Federighi Regarding the iPhone Duo</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/stolen-device-protection-fleishman target="_blank">
+					<h2>Why Stolen Device Protection Makes Passwords Safer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/linux-readahead-and-fadvise/ target="_blank">
+					<h2>How Linux readahead works, and the two ways to change it</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://victoriametrics.com/blog/announcing-victoriatraces-in-cloud/ target="_blank">
+					<h2>VictoriaTraces in VictoriaMetrics Cloud: Complete Observability is Here</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-29">2026-09-29</time>
+					|
+					<a href="https://victoriametrics.com" target="_blank">victoriametrics.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/stern-zuck-colossus target="_blank">
+					<h2>Jeremy Stern’s Profile of Mark Zuckerberg for Colossus</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/upgrade-639-i-know-how-to-go-to-sleep/ target="_blank">
+					<h2>(Podcast) Upgrade 639: I Know How to Go to Sleep</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/lookalike-ripoffs-mac-app-store target="_blank">
+					<h2>Muse, Instagram, and VLC Lookalike Rip-Offs in the Mac App Store</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/09/spitballing_predictions_for_apples_october target="_blank">
+					<h2>★ Spitballing Predictions for Apple’s October</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/stolen-device-protection-passwords-glenn/ target="_blank">
+					<h2>Why Stolen Device Protection makes Passwords safer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/28/duo-man target="_blank">
+					<h2>Duo-Man</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.troyhunt.com/weekly-update-523/ target="_blank">
+					<h2>Weekly Update 523: Live From a Norwegian Fjord</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://troyhunt.com" target="_blank">troyhunt.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/kronk-model-server/ target="_blank">
+					<h2>The Model Server</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://brooker.co.za/blog/2026/09/28/engineering-system-one.html target="_blank">
+					<h2>Small Decisions: Engineering a Leading Model</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-28">2026-09-28</time>
+					|
+					<a href="https://brooker.co.za" target="_blank">brooker.co.za</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/27/mux target="_blank">
+					<h2>Mux: Turn Your Video Into Context</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/linked/2026/09/27/notopoulos-wang target="_blank">
+					<h2>Katie Notopoulos on Alexandr Wang’s ‘Faux-Hallmark Pap’</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.codingconfessions.com/p/how-copy-on-write-works-with-memory target="_blank">
+					<h2>How Copy-on-Write Works with Memory-Mapped Files</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://blog.codingconfessions.com" target="_blank">blog.codingconfessions.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://jvns.ca/blog/2026/09/27/replacing-the-old-battery-on-rechargeable-bike-lights/ target="_blank">
+					<h2>Replacing the old battery on rechargeable bike lights</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://jvns.ca" target="_blank">jvns.ca</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-09-27-full-text-search-and-postgresql.html target="_blank">
+					<h2>Full text search and PostgreSQL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-27">2026-09-27</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;pXypQ6d_iDg target="_blank">
+					<h2>INSIDE a Nuclear Reactor Core - Smarter Every Day 317</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-26">2026-09-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;YhdAKwhFaXU target="_blank">
+					<h2>We&#39;re taking a fall break</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-26">2026-09-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;y81FKR840kg target="_blank">
+					<h2>We&#39;re taking a fall break</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-26">2026-09-26</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/40-states target="_blank">
+					<h2>I’ve been to 40 US states</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-26">2026-09-26</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/09/this-week-in-apple-siri-ous-money/ target="_blank">
+					<h2>This Week in Apple: Siri-ous money (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/imagining-the-next-macbook-neo/ target="_blank">
+					<h2>Imagining the next MacBook Neo</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://daringfireball.net/2026/09/ill_wait target="_blank">
+					<h2>★ I’ll Wait</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://daringfireball.net" target="_blank">daringfireball.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/sponsor/2026/09/coherence-x6/ target="_blank">
+					<h2>(Sponsor) Coherence X6</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22778 target="_blank">
+					<h2>Think local</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/one-week-with-apple-watch-series-12-and-just-getting-started/ target="_blank">
+					<h2>One week with Apple Watch Series 12 (and just getting started)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/the-history-of-apple-cards/ target="_blank">
+					<h2>The history of Apple Cards ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/mutation-testing/ target="_blank">
+					<h2>Why we taught agents to break distributed safety properties</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-25">2026-09-25</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;YJVYX8tllj4 target="_blank">
+					<h2>How to blur images at 20,000 FPS (or 50 microseconds)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://antithesis.com/blog/2026/retrologging/ target="_blank">
+					<h2>Free log storage with a time machine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://antithesis.com" target="_blank">antithesis.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/apple-renews-qualcomm-patent-deal/ target="_blank">
+					<h2>Apple renews Qualcomm patent deal ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22774 target="_blank">
+					<h2>The summer of ’26</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/VKlulHwMxgU target="_blank">
+					<h2>What happens to these balloons when you open the valve?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://solar.lowtechmagazine.com/2026/09/out-now-low-tech-magazine-volume-iv/ target="_blank">
+					<h2>Out Now: Low-tech Magazine Volume IV</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-24">2026-09-24</time>
+					|
+					<a href="https://solar.lowtechmagazine.com" target="_blank">solar.lowtechmagazine.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/support-st-jude-and-watch-the-2026-relay-podcastathon/ target="_blank">
+					<h2>Support St. Jude and watch the 2026 Relay Podcastathon ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/app-report-tiny-delights/ target="_blank">
+					<h2>App Report: Tiny delights</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/clockwise-675-im-very-used-to-suffering/ target="_blank">
+					<h2>(Podcast) Clockwise 675: I’m Very Used to Suffering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/the-rebound-617-hairtag/ target="_blank">
+					<h2>(Podcast) The Rebound 617: HairTag</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.bitecode.dev/p/whats-all-this-noise-about-jev target="_blank">
+					<h2>What’s all this noise about Jev?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://bitecode.dev" target="_blank">bitecode.dev</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/designed-in-california-9-apples-mac-os-crisis-whos-next-part-5/ target="_blank">
+					<h2>(Podcast) Designed in California 9: Apple’s Mac OS Crisis: Who’s NeXT? (Part 5)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.troyhunt.com/weekly-update-522/ target="_blank">
+					<h2>Weekly Update 522: Live From Oslo with Scott Helme</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-23">2026-09-23</time>
+					|
+					<a href="https://troyhunt.com" target="_blank">troyhunt.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/when-your-mac-just-wont-let-go-of-the-wi-fi-connection/ target="_blank">
+					<h2>When your Mac just won’t let go of the Wi-Fi connection</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-22">2026-09-22</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/upgrade-638-i-stared-directly-into-the-m6/ target="_blank">
+					<h2>(Podcast) Upgrade 638: I Stared Directly into the M6</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;JsBZOcqZerk target="_blank">
+					<h2>The Insane Real Engineering of the Nazi Enigma Machine</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/feed-only/2026/09/coherence-x6-turn-websites-into-chromium-powered-mac-apps-that-behave-like-mac-apps/ target="_blank">
+					<h2>(Sponsor) COHERENCE X6: Turn websites into Chromium-powered Mac apps that behave like Mac apps</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/apple-adds-mode-to-temporarily-limit-the-iphone-18-pro-max-battery-for-shipping/ target="_blank">
+					<h2>Apple adds mode to temporarily limit the iPhone 18 Pro Max battery for shipping ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/m6-mac-mini-review-tiny-pricey-and-powerful/ target="_blank">
+					<h2>M6 Mac mini review: Tiny, pricey, and powerful</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/linux-kernel-numa/ target="_blank">
+					<h2>NUMA</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://htmx.org/essays/markdown-in-src/ target="_blank">
+					<h2>Markdown in /src</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-21">2026-09-21</time>
+					|
+					<a href="https://htmx.org" target="_blank">htmx.org</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/log/0061/ target="_blank">
+					<h2>0061: i&#39;m not a cat, artificial adventures, synthetic sagas, anthropic, sponsors</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-20">2026-09-20</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.scattered-thoughts.net/writing/synthetic-sagas/ target="_blank">
+					<h2>Synthetic sagas</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-20">2026-09-20</time>
+					|
+					<a href="https://scattered-thoughts.net" target="_blank">scattered-thoughts.net</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://shows.acast.com/software-unscripted/episodes/casey-muratori-the-big-oops target="_blank">
+					<h2>Casey Muratori on his &#34;The Big OOPs&#34; Talk</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-19">2026-09-19</time>
+					|
+					<a href="https://shows.acast.com" target="_blank">shows.acast.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;mUnk-H0mpLY target="_blank">
+					<h2>A totally racist episode so cache(sh) me outside how bout dah?!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-19">2026-09-19</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;KwE2wq2JkmQ target="_blank">
+					<h2>A totally racist episode so cache(sh) me outside how bout dah?!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-19">2026-09-19</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://rednafi.com/zephyr/no-skin-in-the-game/ target="_blank">
+					<h2>Why do we listen to people with no skin in the game?</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-19">2026-09-19</time>
+					|
+					<a href="https://rednafi.com" target="_blank">rednafi.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/member/2026/09/this-week-in-apple-with-beta-ed-breath/ target="_blank">
+					<h2>This Week in Apple: With beta-ed breath (Member Post)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/sponsor/2026/09/soundsource-by-rogue-amoeba/ target="_blank">
+					<h2>(Sponsor) SoundSource by Rogue Amoeba</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/unsealed-documents-show-microsoft-openai-executives-all-too-aware-of-ethical-concerns/ target="_blank">
+					<h2>Unsealed documents show Microsoft, OpenAI executives all too aware of ethical concerns ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/hPoJWjJ9Ao8 target="_blank">
+					<h2>Heating A Ball Just By Squeezing It</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bell.bz/youll-miss-publishers-when-theyre-gone/ target="_blank">
+					<h2>You’ll miss publishers when they’re gone</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-18">2026-09-18</time>
+					|
+					<a href="https://bell.bz" target="_blank">bell.bz</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/david-pogue-tests-siri-ai/ target="_blank">
+					<h2>David Pogue tests Siri AI ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-17">2026-09-17</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/link/2026/09/apple-showing-off-iphone-18-pro-at-final-friday-night-baseball-game-of-season/ target="_blank">
+					<h2>Apple showing off iPhone 18 Pro at final ‘Friday Night Baseball’ game of season ↦</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-17">2026-09-17</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/your-corner-of-the-internet target="_blank">
+					<h2>Your corner of the internet</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-17">2026-09-17</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/clockwise-674-the-eyes-will-be-pretzels/ target="_blank">
+					<h2>(Podcast) Clockwise 674: The Eyes Will Be Pretzels</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://buttondown.com/hillelwayne/archive/the-llms-yearn-for-the-spines/ target="_blank">
+					<h2>The LLMs yearn for the spines</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://buttondown.com" target="_blank">buttondown.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/the-rebound-616-im-down-with-a-p-p/ target="_blank">
+					<h2>(Podcast) The Rebound 616: I’m Down With A P P</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bell.bz/an-rss-feed-for-a-daily-album-recommendation/ target="_blank">
+					<h2>An RSS feed for a daily album recommendation</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://bell.bz" target="_blank">bell.bz</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/designed-in-california-8-apples-mac-os-crisis-to-be-or-not-part-4/ target="_blank">
+					<h2>(Podcast) Designed in California 8: Apple’s Mac OS Crisis: To Be, or Not? (Part 4)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-16">2026-09-16</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/app-report-the-apps-that-go-with-you/ target="_blank">
+					<h2>App Report: The apps that go with you</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/post/2026/09/apple-ties-icloud-pricing-to-video-summaries/ target="_blank">
+					<h2>Apple ties iCloud&#43; pricing to video summaries</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22761 target="_blank">
+					<h2>What We Can Know by Ian McEwan</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://adactio.com/journal/22759 target="_blank">
+					<h2>Movie mashups</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://adactio.com" target="_blank">adactio.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/iFaNAQh-q_A target="_blank">
+					<h2>Modern Go Guidelines - Cup o&#39; Go E172</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://internals-for-interns.com/posts/kronk-model-management/ target="_blank">
+					<h2>Model Management</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-15">2026-09-15</time>
+					|
+					<a href="https://internals-for-interns.com" target="_blank">internals-for-interns.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://sixcolors.com/podcast/2026/09/upgrade-637-my-job-is-to-eat-the-marshmallow/ target="_blank">
+					<h2>(Podcast) Upgrade 637: My Job Is to Eat the Marshmallow</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://sixcolors.com" target="_blank">sixcolors.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://bell.bz/removing-algorithmic-feed-slop-from-my-life/ target="_blank">
+					<h2>Removing algorithmic feed slop from my life</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://bell.bz" target="_blank">bell.bz</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://changelog.com/posts/changelog-irl-sf26-planetscale target="_blank">
+					<h2>Changelog IRL @ PlanetScale (Sept 17, 2026)</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://changelog.com" target="_blank">changelog.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/mondays-like-fridays target="_blank">
+					<h2>Enjoying Mondays as much as Fridays</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://petemillspaugh.com/run-write target="_blank">
+					<h2>Run, write</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://petemillspaugh.com" target="_blank">petemillspaugh.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://blog.janestreet.com/a-study-of-sequence-weighting-at-scale/ target="_blank">
+					<h2>A study of sequence weighting at scale</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-14">2026-09-14</time>
+					|
+					<a href="https://blog.janestreet.com" target="_blank">blog.janestreet.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=http://notes.eatonphil.com/2026-09-13-query-plan-rewriting-in-postgresql.html target="_blank">
+					<h2>Query plan rewriting in PostgreSQL</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-13">2026-09-13</time>
+					|
+					<a href="https://notes.eatonphil.com" target="_blank">notes.eatonphil.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/shorts/GHuYloKnwFI target="_blank">
+					<h2>Better than Vibes - Cup o&#39; Go E172</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-12">2026-09-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;LTPleLI43VQ target="_blank">
+					<h2>A big episode about tiny things</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-12">2026-09-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.youtube.com/watch?v&#61;LthrAaBByX4 target="_blank">
+					<h2>A big episode about tiny things</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-12">2026-09-12</time>
+					|
+					<a href="https://youtube.com" target="_blank">youtube.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://www.troyhunt.com/weekly-update-521/ target="_blank">
+					<h2>Weekly Update 521: Breach Perception v. Reality</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-09-11">2026-09-11</time>
+					|
+					<a href="https://troyhunt.com" target="_blank">troyhunt.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:17:06&#43;02:00">
+				Saturday, 2026-10-17 11:17:06
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://nobloat.org" target="_blank">][ nobloat.org</a>
+			</div>
+			
+			<div>
+				<a href="https://doughellmann.com/" target="_blank">Doug Hellmann</a>
+			</div>
+			
+			<div>
+				<a href="https://paravoce.bearblog.dev/" target="_blank">ParaVocê Dev Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://adactio.com/journal/" target="_blank">Adactio: Journal</a>
+			</div>
+			
+			<div>
+				<a href="https://joshcollinsworth.com" target="_blank">Josh Collinsworth</a>
+			</div>
+			
+			<div>
+				<a href="https://blog.danslimmon.com" target="_blank">Dan Slimmon</a>
+			</div>
+			
+			<div>
+				<a href="https://serversfor.dev/" target="_blank">serversfor.dev</a>
+			</div>
+			
+			<div>
+				<a href="https://www.safjan.com/" target="_blank">Krystian Safjan&#39;s Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://samcurry.net" target="_blank">Blog | Sam Curry</a>
+			</div>
+			
+			<div>
+				<a href="https://blog.janestreet.com" target="_blank">Jane Street Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://blog.isosceles.com/" target="_blank">Isosceles Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://btao.org/" target="_blank">Tao Bojlén</a>
+			</div>
+			
+			<div>
+				<a href="https://tonsky.me/" target="_blank">tonsky.me</a>
+			</div>
+			
+			<div>
+				<a href="https://solar.lowtechmagazine.com/posts/" target="_blank">LOW←TECH MAGAZINE English</a>
+			</div>
+			
+			<div>
+				<a href="https://sethmlarson.dev/" target="_blank">Seth Larson</a>
+			</div>
+			
+			<div>
+				<a href="https://virtualzone.de/posts/" target="_blank">Posts on Virtualzone Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://wizardzines.com" target="_blank">Wizard Zines</a>
+			</div>
+			
+			<div>
+				<a href="https://buttondown.com/hillelwayne" target="_blank">Computer Things</a>
+			</div>
+			
+			<div>
+				<a href="https://val.packett.cool/blog/" target="_blank">Val Packett&#39;s Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://jakelazaroff.com/" target="_blank">jakelazaroff.com</a>
+			</div>
+			
+			<div>
+				<a href="https://www.jsonfeed.org/" target="_blank">JSON Feed</a>
+			</div>
+			
+			<div>
+				<a href="https://victoriametrics.com/" target="_blank">VictoriaMetrics: Simple, Reliable &amp; Efficient Observability on VictoriaMetrics</a>
+			</div>
+			
+			<div>
+				<a href="https://sirupsen.com/" target="_blank">Simon Eskildsen</a>
+			</div>
+			
+			<div>
+				<a href="http://journal.stuffwithstuff.com/" target="_blank">journal.stuffwithstuff.com</a>
+			</div>
+			
+			<div>
+				<a href="https://blog.codingconfessions.com" target="_blank">Confessions of a Code Addict</a>
+			</div>
+			
+			<div>
+				<a href="https://words.filippo.io/" target="_blank">Filippo Valsorda</a>
+			</div>
+			
+			<div>
+				<a href="https://www.scattered-thoughts.net/" target="_blank">Scattered Thoughts</a>
+			</div>
+			
+			<div>
+				<a href="https://www.willem.dev/articles/" target="_blank">Boost Your Go/Golang Skills, One Article at a Time.</a>
+			</div>
+			
+			<div>
+				<a href="https://www.somethingsimilar.com/" target="_blank">Something Similar</a>
+			</div>
+			
+			<div>
+				<a href="https://sixcolors.com/?feed=json" target="_blank">Six Colors</a>
+			</div>
+			
+			<div>
+				<a href="https://www.bitecode.dev" target="_blank">Bite code!</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCHnyfMqiRRG1u-2MsSQLbXA" target="_blank">Veritasium</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UC6107grRI4m0o2-emgoDnAA" target="_blank">SmarterEveryDay</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCQG40havu4kNpB4pxUDQhYQ" target="_blank">Acerola</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCXh9mHdcBD-3aGCiECZMP1Q" target="_blank">Not An Engineer</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCRSg-mANRvOGLkV30EyW4jw" target="_blank">Blue Turtle</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCgy9FjzTQ3wJ32JlkqcLU1g" target="_blank">Cup O&#39; Go</a>
+			</div>
+			
+			<div>
+				<a href="https://www.youtube.com/channel/UCiDJtJKMICpb9B1qf7qjEOA" target="_blank">Adam Savage’s Tested</a>
+			</div>
+			
+			<div>
+				<a href="https://www.openmymind.net/" target="_blank">openmymind.net</a>
+			</div>
+			
+			<div>
+				<a href="https://mastodon.social/@hytradboi" target="_blank">hytradboi</a>
+			</div>
+			
+			<div>
+				<a href="https://wickstrom.tech/" target="_blank">Oskar Wickström</a>
+			</div>
+			
+			<div>
+				<a href="https://cargocollective.com" target="_blank">Sage Jenson</a>
+			</div>
+			
+			<div>
+				<a href="https://jvns.ca" target="_blank">Julia Evans</a>
+			</div>
+			
+			<div>
+				<a href="https://changelog.com/" target="_blank">Changelog</a>
+			</div>
+			
+			<div>
+				<a href="https://raphaelkabo.com/" target="_blank">Raphael Kabo&#39;s blog</a>
+			</div>
+			
+			<div>
+				<a href="https://daniel.do" target="_blank">Daniel Immke</a>
+			</div>
+			
+			<div>
+				<a href="https://lewiscampbell.tech/" target="_blank">Lewis Campbell&#39;s Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://chriscoyier.net" target="_blank">Chris Coyier</a>
+			</div>
+			
+			<div>
+				<a href="https://lukeplant.me.uk/blog/" target="_blank">Luke Plant&#39;s home page</a>
+			</div>
+			
+			<div>
+				<a href="https://daringfireball.net/" target="_blank">Daring Fireball</a>
+			</div>
+			
+			<div>
+				<a href="" target="_blank">Feed</a>
+			</div>
+			
+			<div>
+				<a href="https://example.com" target="_blank">Feed</a>
+			</div>
+			
+			<div>
+				<a href="https://bitbashing.io/" target="_blank">Bit Bashing</a>
+			</div>
+			
+			<div>
+				<a href="https://example.com" target="_blank">Feed</a>
+			</div>
+			
+			<div>
+				<a href="https://developer.mozilla.org/en-US/blog/" target="_blank">MDN Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://rhodesmill.org/brandon/feed/" target="_blank">Let&#39;s Discuss the Matter Further</a>
+			</div>
+			
+			<div>
+				<a href="https://hamvocke.com/" target="_blank">Ham Vocke</a>
+			</div>
+			
+			<div>
+				<a href="https://dave.cheney.net" target="_blank">Dave Cheney</a>
+			</div>
+			
+			<div>
+				<a href="https://www.troyhunt.com/" target="_blank">Troy Hunt&#39;s Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://j3s.sh/" target="_blank">j3s.sh</a>
+			</div>
+			
+			<div>
+				<a href="https://bell.bz/" target="_blank">Andy Bell</a>
+			</div>
+			
+			<div>
+				<a href="https://rednafi.com/" target="_blank">Redowan&#39;s Reflections</a>
+			</div>
+			
+			<div>
+				<a href="https://ferd.ca/" target="_blank">Ferd.ca</a>
+			</div>
+			
+			<div>
+				<a href="https://antithesis.com/" target="_blank">Antithesis blog</a>
+			</div>
+			
+			<div>
+				<a href="https://internals-for-interns.com/" target="_blank">Internals for Interns</a>
+			</div>
+			
+			<div>
+				<a href="https://petemillspaugh.com" target="_blank">Pete Millspaugh</a>
+			</div>
+			
+			<div>
+				<a href="https://neopythonic.blogspot.com/" target="_blank">Neopythonic</a>
+			</div>
+			
+			<div>
+				<a href="https://feeds.acast.com/public/shows/software-unscripted" target="_blank">Software Unscripted</a>
+			</div>
+			
+			<div>
+				<a href="https://cliffle.com" target="_blank">Cliffle</a>
+			</div>
+			
+			<div>
+				<a href="" target="_blank">research!rsc</a>
+			</div>
+			
+			<div>
+				<a href="https://grantslatton.com/" target="_blank">Grant Slatton&#39;s Blog</a>
+			</div>
+			
+			<div>
+				<a href="http://brooker.co.za/blog/" target="_blank">Marc Brooker&#39;s Blog</a>
+			</div>
+			
+			<div>
+				<a href="https://htmx.org" target="_blank">&lt;/&gt; htmx - high power tools for html</a>
+			</div>
+			
+			<div>
+				<a href="https://lea.verou.me/" target="_blank">Lea Verou’s blog</a>
+			</div>
+			
+			<div>
+				<a href="https://htmhell.dev" target="_blank">HTMHell</a>
+			</div>
+			
+			<div>
+				<a href="http://notes.eatonphil.com/" target="_blank">Notes on software development</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="IGCUEie9SOZwpKdDF4nXbCQxcVGtsf6Z34yQGWofu879wTpTmF8kxChvdhoYdEcyEChGI9HTxo_5QUxS8tXWM0PainW3QTgbXHzfRpxTYGkUAAhhjb5SblYpCkj8c3zzgm8onVRB0p9ZeromEdS4iSS3pV36Z_vJXt6-JLMmrtgOUzZVBIpSgjMgO0L4JbV1JjBMANIozeefAOK6-_hcMTq44ebvFZVOE6FPrggKYPZoonoB6XGnBceNmXSRi3kVx5RkrToIjFR5cQG8LPYwEQqlieZFSDUKoO0MifzgE47r5gBJn7hsxzNTqxOsaq3G_1o55GXvh4kTEHTnf0Unbg==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>

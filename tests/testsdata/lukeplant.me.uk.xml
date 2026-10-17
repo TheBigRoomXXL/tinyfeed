@@ -1,0 +1,1168 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet href="https://lukeplant.me.uk/assets/xml/atom.xsl" type="text/xsl media="all"?>
+<feed xml:lang="en" xmlns="http://www.w3.org/2005/Atom">
+  <title>Luke Plant's home page</title>
+  <id>https://lukeplant.me.uk/blog/atom/index.xml</id>
+  <updated>2026-10-13T09:27:15Z</updated>
+  <author>
+    <name>Luke Plant</name>
+  </author>
+  <link rel="self" type="application/atom+xml" href="https://lukeplant.me.uk/blog/atom/index.xml"/>
+  <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/"/>
+  <generator uri="https://getnikola.com/">Nikola</generator>
+  <entry>
+    <title>Git is still awful</title>
+    <id>https://lukeplant.me.uk/blog/posts/git-is-still-awful/</id>
+    <updated>2026-10-12T20:42:39+01:00</updated>
+    <published>2026-10-12T20:42:39+01:00</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/git-is-still-awful/"/>
+    <summary type="html">&lt;p&gt;In which I complain about the amount of time I spend apologising to my team about git.&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;In case it’s not obvious from the title, this is mostly just a rant.&lt;/p&gt;
+&lt;p&gt;For the longest time, I was a &lt;a class="reference external" href="https://www.mercurial-scm.org/"&gt;Mercurial&lt;/a&gt; holdout and used it for every personal project where the choice didn’t affect other people.&lt;/p&gt;
+&lt;p&gt;After a long time, I finally switched when:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;p&gt;git had won (GitHub etc.) and,&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://magit.vc/"&gt;Magit&lt;/a&gt; gave me a decent interface, better than the Mercurial CLI.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;But it is still awful. We can forget.&lt;/p&gt;
+&lt;p&gt;I consult for a team of developers, and it involves people who are not software developers by trade who are learning to program and therefore also learning to use git. Trying to help them through this is the most embarrassing part of my job – the part that makes me feel like we, as software developers, are a bunch of amateurs.&lt;/p&gt;
+&lt;p&gt;The other day I coached a work colleague through a problem. He is a very intelligent guy and a talented mechanical engineer, who is now picking up coding. The part he struggles with most of all is not all the coding, but git, to the point that he was ready to “throw the computer out of the window”, in his words.&lt;/p&gt;
+&lt;p&gt;This is what he did:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Started a new branch for his work (good)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Did some work and committed (good)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Pushed to GitHub (good, we don’t like losing work)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Did some more work to fix up his previous, unfinished work, and did &lt;code class="docutils literal"&gt;git commit &lt;span class="pre"&gt;--amend&lt;/span&gt;&lt;/code&gt; (good, we don’t like dozens of commit messages like “oops I forgot this bit”, and squashing at the end is more complicated).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Tried to push again, and got this message:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;error: failed to push some refs to 'github.com:…'&lt;/p&gt;
+&lt;p&gt;hint: Updates were rejected because the tip of your current branch is behind
+its remote counterpart. If you want to integrate the remote changes, use
+'git pull' before pushing again.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is of course completely wrong: the &lt;strong&gt;local&lt;/strong&gt; branch is &lt;strong&gt;ahead&lt;/strong&gt;, it’s the remote branch that is behind. And &lt;code class="docutils literal"&gt;git pull&lt;/code&gt; is the wrong solution. What he actually wants is &lt;code class="docutils literal"&gt;git push &lt;span class="pre"&gt;--force-with-lease&lt;/span&gt;&lt;/code&gt; (duh!).&lt;/p&gt;
+&lt;p&gt;He did everything right, and nothing out of the ordinary, and yet faced this nonsense.&lt;/p&gt;
+&lt;p&gt;Git &lt;strong&gt;ought&lt;/strong&gt; to have enough information to do something sensible here. It &lt;strong&gt;knows&lt;/strong&gt; that the user has “amended” a commit (or should know, the user typed &lt;code class="docutils literal"&gt;git commit &lt;span class="pre"&gt;--amend&lt;/span&gt;&lt;/code&gt;). But its internal model doesn’t have a place to store that info, so it just throws it away. It then treats the old and new version of the commit as just two commits with a common parent, makes a guess about the relationship between the remote and local branches, and comes up with a bogus error message.&lt;/p&gt;
+&lt;p&gt;Git is trying to be safe, but just causing confusion. Confusion can cause almost as much lost time and work as caution.&lt;/p&gt;
+&lt;p&gt;The problems git has are not just to do with the user interface, although that aspect is bad in many ways. The interface can be improved a lot, with things like Magit, and in fact my colleague was using a VSCode port of Magit called &lt;a class="reference external" href="https://github.com/kahole/edamagit"&gt;edamagit&lt;/a&gt;, on my recommendation, because it takes a fair amount of pain out of common tasks.&lt;/p&gt;
+&lt;p&gt;Git is still suffering from the fact that is a “stupid content tracker”, &lt;a class="reference external" href="https://man.uex.se/1/git"&gt;as it calls itself&lt;/a&gt;. It doesn’t track things at the level it actually needs to, and so provides only basic support for the common things that developers need to do with it.&lt;/p&gt;
+&lt;p&gt;I don’t know what a better solution is. Some of the things we try to do in software development are kind of hard (branchy development, keeping track of changes in logical commits etc.), and so I think it’s reasonable that it might take a considerable amount of effort to get the mental model needed to support this work. But there are a lot of things here which are not to do with that.&lt;/p&gt;
+&lt;p&gt;I’d like to look into &lt;a class="reference external" href="https://github.com/jj-vcs/jj"&gt;jujutsu&lt;/a&gt;, but I’m very concerned that I might make the hardest part of software development even harder, especially as it won’t be mature right now. Even if I look at it for myself, I could end up distancing myself from the git pain that everyone else has in the team, and thereby make things worse.&lt;/p&gt;
+&lt;p&gt;So, there is no call to action here. I’m just reminding everyone that the current situation is not good.&lt;/p&gt;</content>
+    <category term="rants" label="Rants"/>
+    <category term="software-development" label="Software development"/>
+  </entry>
+  <entry>
+    <title>Inverse Sapir-Whorf and programming languages</title>
+    <id>https://lukeplant.me.uk/blog/posts/inverse-sapir-whorf-and-programming-languages/</id>
+    <updated>2026-05-01T09:40:36+01:00</updated>
+    <published>2026-05-01T09:40:36+01:00</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/inverse-sapir-whorf-and-programming-languages/"/>
+    <summary type="html">&lt;p&gt;A discussion on how features of programming languages can make it hard to avoid expressing or talking about things you may or may not care about as a programmer.&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;The &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Linguistic_relativity"&gt;Sapir-Whorf hypothesis&lt;/a&gt;, in its simplest form, is the idea that the language you speak influences the thoughts you think. This post is about a twist on this idea, that I’m calling “Inverse Sapir-Whorf” (for want of a better term), and how we see it in computer programming languages.&lt;/p&gt;
+&lt;p&gt;Sapir-Whorf is one of those ideas that has been popularised in general culture in a rather misrepresented and &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Arrival_(film)"&gt;exaggerated form&lt;/a&gt;. In the field of linguistics, not many people today take seriously the “strong” forms of Sapir-Whorf, such as “linguistic determinism” – the idea that a language controls your thoughts or limits what you can think, or that you even need certain languages to think certain thoughts.&lt;/p&gt;
+&lt;p&gt;For example, just because a language might lack grammatical tenses, it doesn’t at all follow that the speakers will be more limited in how they think about time – there are always other ways you can express time.&lt;/p&gt;
+&lt;p&gt;There is a fair amount of evidence that spoken languages can affect perception, skill and attitudes in certain areas, but it’s usually hard to demonstrate a large direct effect.&lt;/p&gt;
+&lt;p&gt;Inverse Sapir-Whorf is a bit different. I haven’t been able to track down where I first came across the idea, but it goes like this: if classic Sapir-Whorf says your language limits what you can say or think, or makes it hard to say some things, inverse Sapir-Whorf says your language limits what you &lt;strong&gt;can’t&lt;/strong&gt; say, or makes it hard &lt;strong&gt;not&lt;/strong&gt; to say some things, or even hard not to think about some things. Some examples might clear things up.&lt;/p&gt;
+&lt;section id="examples-in-natural-language"&gt;
+&lt;h2&gt;Examples in natural language&lt;/h2&gt;
+&lt;p&gt;There are many examples to choose from, but they are not always obvious to native speakers of a language. I’ll pick just a few.&lt;/p&gt;
+&lt;section id="english-temporary-or-permanent-present-tense"&gt;
+&lt;h3&gt;English: temporary or permanent present tense&lt;/h3&gt;
+&lt;p&gt;What’s the difference between someone saying “I’m living in London” and “I live in London”? A non-native speaker may not pick this up at all, and a native speaker may pick it up only subconsciously, but “I’m living in London” reveals that the arrangement is temporary.&lt;/p&gt;
+&lt;p&gt;Now, this might not even be to do with the actual length of time you have been living there, because “temporary” is pretty relative. It might be more about how much you &lt;em&gt;like&lt;/em&gt; London. You have to choose a tense, and because you typically do so subconsciously, the language is forcing you to reveal things – either the period of time you’ve been living somewhere, or how you feel about it.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="english-turkish-french-gendered-pronouns-and-nouns"&gt;
+&lt;h3&gt;English/Turkish/French: gendered pronouns and nouns&lt;/h3&gt;
+&lt;p&gt;In English, in normal speech you are going to use “he” or “she” when referring to a specific person. “Singular they” does exist, but it’s very unnatural if you are talking about a specific person of known or assumed sex.&lt;/p&gt;
+&lt;p&gt;You can compare this to another language which doesn’t have gendered pronouns, such as Turkish, which just has “o” for he/she/it. The lack of gendered pronouns in Turkish doesn’t stop you from thinking or talking about a person’s sex, or produce a “less gendered society”, or anywhere close, so it would be difficult to find support for normal Sapir-Whorf here. But the inverse Sapir-Whorf is obvious – English pronouns push you to talk about it whether you want to or not. If you are trying to talk about someone you know, but do so anonymously, it can be very hard to avoid making their identification easier by revealing their sex with an inadvertent “him” or “her”.&lt;/p&gt;
+&lt;p&gt;Different again is French, in which &lt;em&gt;nouns&lt;/em&gt; are gendered, which in some cases can force you to reveal information. If you translate “my friend” into French, you have to choose between “mon ami” (male friend) and “mon amie” (female friend), which are distinct, at least in written form, or “mon copain” vs “ma copine”. Possessive pronouns are also interesting – they are gendered in both English and French (his/her, son/sa), but refer to the gender of the possessor and possessee respectively, and so reveal different information.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="turkish-mis-tense"&gt;
+&lt;h3&gt;Turkish: “mış” tense&lt;/h3&gt;
+&lt;p&gt;With some simplifications, Turkish has two main past tenses: there is the normal one that is similar to “simple past” in English, and then there is the “mış” form (you can pronounce that “mish” if you want).&lt;/p&gt;
+&lt;p&gt;This has &lt;a class="reference external" href="https://www.turkishtextbook.com/beginner-mis-forms/"&gt;various functions&lt;/a&gt;, but when describing a past event, this form is used when you have second hand or unreliable information. If someone asks you “Did Fred come to work on Monday?”, then if you saw him you would use the normal past tense “geldi” (he came), but if you only &lt;em&gt;heard&lt;/em&gt; that he came you would instead say “gelmiş” (he came, but second hand information).&lt;/p&gt;
+&lt;p&gt;The interesting thing to me as a non-native speaker was the effect of having these options, in contrast to English where you can just use simple past tense without any specific indication of reliability or where the information came from. In certain circumstances, Turkish forces you to include information about your level of certainty or whether you witnessed something –  the simple past form is not neutral, because the existence of the “mış” form makes it an unnatural choice if it is not the most appropriate of the two.&lt;/p&gt;
+&lt;p&gt;Interestingly, having learned to think that way, my wife and I have noticed an effect on our English. Often in Turkish the “mış” suffix would come at the end of the last word in a sentence, so now quite frequently we get to the end of an English sentence and notice that we haven’t put in any marker for “this-is-second-hand-info-I-didn’t-actually-witness-it”, and so we tack “mış” on the end.&lt;/p&gt;
+&lt;p&gt;Of course, you can easily express the same thing in English, using words like “apparently” and other means, but English doesn’t &lt;strong&gt;force&lt;/strong&gt; you to specify, while Turkish pretty much does.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="comments"&gt;
+&lt;h3&gt;Comments&lt;/h3&gt;
+&lt;p&gt;You often don’t notice these things until you learn another language, or attempt to teach your language to a foreigner. You kind of just understand them subconsciously. The vast majority of times you choose simple present over present continuous, for example, you won’t be &lt;strong&gt;consciously&lt;/strong&gt; thinking about what that implies.&lt;/p&gt;
+&lt;p&gt;I should also note that when a language forces you express something, it might not be in the form of something &lt;em&gt;included&lt;/em&gt;, but in something &lt;em&gt;omitted&lt;/em&gt;. For example, I might say “I love cake” or “I love the cake”. In the first case, I’m talking about cake generally, in the second about a specific cake. It is the absence of the word “the” in the first case that makes it unambiguous that I’m referring to all cake, because if I’m referring to a specific cake, I &lt;strong&gt;must&lt;/strong&gt; use the word “the” or some other marker like “this”. In another language, there might not be a direct equivalent to this distinction.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="examples-in-programming"&gt;
+&lt;h2&gt;Examples in programming&lt;/h2&gt;
+&lt;p&gt;When it comes to programming languages, I think that the “straight” version of  Sapir-Whorf is closer to being true - in some programming languages it is simply hard to express certain concepts. For example, in a language like Python or Haskell it’s hard (though not impossible) to talk about memory allocations. We often talk about the limitations of a language in terms of “things that are hard to express” in that language. Hillel Wayne has some more discussion of this in his post &lt;a class="reference external" href="https://buttondown.com/hillelwayne/archive/sapir-whorf-does-not-apply-to-programming/"&gt;Sapir-Whorf does not apply to Programming Languages&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;But I want to talk more about Inverse Sapir-Whorf. What is the language forcing you to talk about, even if you don’t actually care about it?&lt;/p&gt;
+&lt;p&gt;I think there are actually many, many examples of this, but seeing them can be quite hard, and often requires the “foreigner perspective” that comes from learning multiple languages.&lt;/p&gt;
+&lt;p&gt;Here are a few:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Most languages force you to express the order in which computation should be done. For example, in Python:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_ea291132fa85456aac4ea2e06fc9bebf-1" name="rest_code_ea291132fa85456aac4ea2e06fc9bebf-1" href="https://lukeplant.me.uk/blog/posts/inverse-sapir-whorf-and-programming-languages/#rest_code_ea291132fa85456aac4ea2e06fc9bebf-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;some_func&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Here you are saying:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;first compute &lt;code class="docutils literal"&gt;y + 1&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;then compute &lt;code class="docutils literal"&gt;z + 2&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;then pass these two values as arguments to &lt;code class="docutils literal"&gt;some_func&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You might not be very conscious of specifying this ordering, but you are doing it, and in Python, there isn’t a way to express the above computation which doesn’t also specify order. Most languages are similar, although in some &lt;a class="reference external" href="https://en.cppreference.com/w/c/language/eval_order.html"&gt;it gets very complicated&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;A few languages are very different, however. In Haskell, in an equivalent expression like &lt;code class="docutils literal"&gt;some_func (y + 1) (z + 2)&lt;/code&gt;, due to &lt;a class="reference external" href="https://wiki.haskell.org/Non-strict_semantics"&gt;non-strict semantics&lt;/a&gt; you are not specifying an order of evaluation at all. This enables some clever tricks, like referring to values you haven’t defined yet (see &lt;a class="reference external" href="https://wiki.haskell.org/Tying_the_Knot"&gt;Tying the knot&lt;/a&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/"&gt;Function colouring for async&lt;/a&gt; is another good example. In languages like Javascript or Python with an explicit &lt;code class="docutils literal"&gt;async&lt;/code&gt; keyword, you have to talk about whether code is sync or async.&lt;/p&gt;
+&lt;p&gt;In the case of “sync” functions, you do it by omission of the &lt;code class="docutils literal"&gt;async&lt;/code&gt; keyword, but you are still choosing between the two options, and there is no way to write code that is ambivalent on the subject.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Most languages without &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)"&gt;garbage collection&lt;/a&gt; force you to talk about memory allocation and de-allocation.&lt;/p&gt;
+&lt;p&gt;For languages like C, you normally do this fairly explicitly – or implicitly use stack allocation, but you’ve still got to make that choice.  In other languages, it can become more hidden, but doesn’t really go away. In Rust, for example, it gets converted into talk about lifetimes or explicit reference counting. Saying “I just don’t care about when the memory for this gets allocated or de-allocated, please deal with it” is not really one of your options.&lt;/p&gt;
+&lt;p&gt;Of course, not talking about memory allocation also has a cost. In that case, the language will almost certainly need to put a lot of things on &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Memory_management#HEAP"&gt;the heap&lt;/a&gt; and have a runtime garbage collector. However it may also have significant freedom to choose for you – Haskell will often be able to do this using &lt;a class="reference external" href="https://wiki.haskell.org/Performance/Strictness"&gt;strictness analysis&lt;/a&gt;, for example.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;All modern languages I’m aware of force you to think about “scope”. In many cases, scope is expressed by the physical place in which you put a variable, with some additional syntax if you want something different (like &lt;a class="reference external" href="https://docs.python.org/3/reference/simple_stmts.html#the-global-statement"&gt;global&lt;/a&gt; or &lt;a class="reference external" href="https://docs.python.org/3/reference/simple_stmts.html#the-nonlocal-statement"&gt;nonlocal&lt;/a&gt; in Python). If you never want to think about scope, you probably have to drop to assembly and live with a single global address space.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Statically typed languages often force you to think about and talk about the type of every variable. This is lessened somewhat by type inference, as the “conversation” involves a more “intelligent” listener who can pick up more things from context, but it’s still there.&lt;/p&gt;
+&lt;p&gt;Pure dynamically typed languages still allow you to talk about types – for example, using things like &lt;code class="docutils literal"&gt;isinstance&lt;/code&gt; checks in Python, but it is more unnatural (and technically it’s a different thing anyway).&lt;/p&gt;
+&lt;p&gt;In contrast to both of them, one of the attractions of &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Gradual_typing"&gt;gradually typed languages&lt;/a&gt; is that they genuinely avoid the inverse Sapir-Whorf problem, and allow you the freedom to talk about types, or not, at your preference. I’m not sure how well this works in practice - the existing code base conventions and the linters in use always put pressure in some direction.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I suspect that many of the features of more “approachable” or “readable” programming languages could be analysed in these terms – they have a low inverse Sapir-Whorf barrier, and don’t force you to talk about things you don’t have an opinion on, and may not even understand yet.&lt;/p&gt;
+&lt;p&gt;Are there more examples of this that you’ve come across? How do they affect the programming languages we use, or how we perceive them?&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="links"&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://lobste.rs/s/hb9tdr/inverse_sapir_whorf_programming"&gt;Discussion of this post on Lobsters&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;</content>
+    <category term="haskell" label="Haskell"/>
+    <category term="python" label="Python"/>
+    <category term="software-development" label="Software development"/>
+  </entry>
+  <entry>
+    <title>Announcing: NT/OT Bible quotation database</title>
+    <id>https://lukeplant.me.uk/blog/posts/announcing-nt-ot-bible-quotation-database/</id>
+    <updated>2026-04-18T16:56:36+01:00</updated>
+    <published>2026-04-18T16:56:36+01:00</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/announcing-nt-ot-bible-quotation-database/"/>
+    <summary type="html"></summary>
+    <content type="html">&lt;p&gt;To scratch a personal itch, I created a small, &lt;a class="reference external" href="https://lukeplant.me.uk/bible-quotation-database/"&gt;easily browse-able database of NT/OT quotations&lt;/a&gt; – that is, places where the New Testament quotes the Old Testament. I pulled this together from existing sources I found online, just adding some usability:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Source code and database in SQLite and other forms - see &lt;a class="reference external" href="https://github.com/spookylukey/bible-quotation-database"&gt;the GitHub page&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A &lt;a class="reference external" href="https://lukeplant.me.uk/bible-quotation-database/"&gt;simple web interface&lt;/a&gt; with filters and hyperlinked verses that bring up the text in the NET version in a popover, with links to the full context in &lt;a class="reference external" href="https://netbible.org/"&gt;netbible.org&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For similar efforts online, I found &lt;a class="reference external" href="https://www.openbible.info/labs/cross-references/"&gt;Bible Cross References from openbible.info&lt;/a&gt;, which has a much larger database of more general references and allusions. My page is limited to things that are direct quotations only.&lt;/p&gt;</content>
+    <category term="christianity" label="Christianity"/>
+  </entry>
+  <entry>
+    <title>When perfection is table stakes</title>
+    <id>https://lukeplant.me.uk/blog/posts/when-perfection-is-table-stakes/</id>
+    <updated>2026-03-16T15:37:13Z</updated>
+    <published>2026-03-16T15:37:13Z</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/when-perfection-is-table-stakes/"/>
+    <summary type="html">&lt;p&gt;Some perspectives on approaching a rewrite of a software project.&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;For a rewrite or a replacement of existing software, very often you will find that the minimum you must achieve is something that works at least as good as the previous system in every respect, for all your users all of the time. Perfection is &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Table_stakes"&gt;table stakes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This is quite annoying if you happen to have the job of doing the rewrite, and not understanding this is a source of agro.&lt;/p&gt;
+&lt;p&gt;Here are a couple of examples from the Open Source world:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://www.freedesktop.org/wiki/Software/PulseAudio/"&gt;Pulseaudio&lt;/a&gt; is a
+“sound server” for Linux. A sound server is the part of your audio system that
+manages the multiple input/output sound devices you might be using, and the
+fact that multiple applications might all want to be playing at once.&lt;/p&gt;
+&lt;p&gt;Before Pulseaudio there was a different system, and the first time my system
+was “upgraded” to Pulseaudio, it had poor sound quality for some apps. I’m not
+an audiophile, but the cracks and pops and hissing were very obvious to me.&lt;/p&gt;
+&lt;p&gt;Now, compared to the previous system, Pulseaudio also came with a bunch of new
+features, like the ability to have a per-application volume control, and do
+sound over Bluetooth more easily. But I didn’t care about those features I had
+been given (I didn’t need them), while I certainly cared about music sounding
+bad. Perfect sound quality, all the time, is the minimum you have to achieve
+as a sound server.&lt;/p&gt;
+&lt;p&gt;I also found that if I uninstalled Pulseaudio, then I got back to the previous
+state where I had ALSA which just worked, and everything sounded fine. So I
+was pretty annoyed at this “upgrade”.&lt;/p&gt;
+&lt;p&gt;That was some years ago, and these days Pulseaudio has now apparently been
+replaced by &lt;a class="reference external" href="https://pipewire.org/"&gt;Pipewire&lt;/a&gt; in my current Linux system.
+This happened without me knowing it, and in fact this is one of the highest
+compliments you can give to a rewrite or replacement system: &lt;strong&gt;the users
+didn’t notice&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;More ambitiously in Linux world, there is &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Wayland_(protocol)"&gt;Wayland&lt;/a&gt;, a project started in
+2008 which is attempting to replace the &lt;a class="reference external" href="https://en.wikipedia.org/wiki/X_Window_System"&gt;X Window System&lt;/a&gt; as the protocol for how to
+do a windowing system, graphics output and keyboard/mouse input (so, almost
+everything you consciously interact with on a computer). Unsurprisingly, this
+is a lot of work, and &lt;a class="reference external" href="https://michael.stapelberg.ch/posts/2026-01-04-wayland-sway-in-2026/"&gt;there are still lots of things that don’t work for some
+people&lt;/a&gt;, and
+&lt;a class="reference external" href="https://www.semicomplete.com/blog/xdotool-and-exploring-wayland-fragmentation/"&gt;lots of problems that people didn’t have before&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Such reports are going to be pretty frustrating for the creators of the new
+system, whose only reward for decades of work, usually done for free, is a
+long list of complaints.&lt;/p&gt;
+&lt;p&gt;But for anyone who is forced to switch, if they find any regression in
+anything at any level, they are going to say “this sucks”. And fair enough -
+why should they care about all the work you did when the end result for them
+is worse? Why should they care about all the new features, which they don’t
+yet need (or don’t know they need), when some of the existing features they
+definitely do need are now broken?&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, what is the lesson? Don’t bother?&lt;/p&gt;
+&lt;p&gt;Rather, I think it is this: go ahead and do the rewrite, just buckle up, and set your expectations properly.&lt;/p&gt;
+&lt;p&gt;Until it has reached 100% of what it is supposed to replace, you will mostly get complaints. Don’t expect to be thanked for all your work, whether it is paid and commercial or free Open Source development. Nobody cares about the fantastic architectural improvements (which mainly help you, not them), nor about the new features they aren’t using yet. Don’t complain about the complainers and the naysayers, or ask them to shut up, or pretend that their problems don’t exist - why shouldn’t they complain, when you made their life worse?&lt;/p&gt;
+&lt;p&gt;(Do the complainers actually have a right to complain? As a side note, when talking about this with my wife, her view was that they really don’t, and maybe they should think about paying for this free software before complaining. This is coming from the perspective of “a wife of an Open Source project maintainer who spends a lot of hours on projects for which he is not thanked (or paid)”. But however much truth there is in that perspective, people &lt;strong&gt;will&lt;/strong&gt; complain, and I don’t think it is sensible to assume otherwise).&lt;/p&gt;
+&lt;p&gt;I’m writing this down partly for myself, as I start a project rewriting a
+working piece of software for a client. This rewrite will include a large
+interface overhaul as well as a lot of internal architecture changes, and I’m
+hoping that the interface changes will be welcome.&lt;/p&gt;
+&lt;p&gt;However, I have to prepare for the fact that initial reactions will likely be
+negative, or not nearly as positive as we might expect, because just by
+&lt;strong&gt;changing anything&lt;/strong&gt; I’ve already made someone’s life worse: having to relearn
+how to do something they used to know is not most people’s idea of fun. To make
+up for that, if I want them to be positively enthusiastic, not only do I have to
+cater for every need and fulfil every previous expectation, the improvements
+have also got to be both large and obvious — it’s got to be an absolute slam
+dunk, from the very first time they try it.&lt;/p&gt;
+&lt;p&gt;We’ve got a tiny number of current users for this application, so compared to the other projects I mentioned, the stakes are much lower and we should be able to accommodate everyone’s needs. But getting my expectations right, having empathy with the user, is essential.&lt;/p&gt;</content>
+    <category term="software-development" label="Software development"/>
+  </entry>
+  <entry>
+    <title>Announcing fluent-codegen</title>
+    <id>https://lukeplant.me.uk/blog/posts/announcing-fluent-codegen/</id>
+    <updated>2026-03-10T12:33:49Z</updated>
+    <published>2026-03-10T12:33:49Z</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/announcing-fluent-codegen/"/>
+    <summary type="html"></summary>
+    <content type="html">&lt;p&gt;This post announces &lt;a class="reference external" href="https://github.com/spookylukey/fluent-codegen"&gt;fluent-codegen&lt;/a&gt;, a Python library for generating Python code. Not everyone needs this, but when you need it, you’ll probably know, and you’ll want probably want a decent solution that is not based on string concatenation.&lt;/p&gt;
+&lt;p&gt;The history of this project is that it started out as a &lt;code class="docutils literal"&gt;codegen&lt;/code&gt; module in &lt;a class="reference external" href="https://github.com/django-ftl/fluent-compiler"&gt;fluent-compiler&lt;/a&gt;, which is an implementation of &lt;a class="reference external" href="https://projectfluent.org/"&gt;Project Fluent&lt;/a&gt;, Mozilla’s internationalisation solution. So the word “fluent” referred to that originally, but now it refers to a set of nice APIs for building up Python expressions.&lt;/p&gt;
+&lt;p&gt;As I needed a code generation library for another purpose, I pulled out this library and fleshed it out into a relatively complete, standalone project. It has also evolved quite a bit since its earlier form, and is a pretty well rounded library now. You can check out &lt;a class="reference external" href="https://fluent-codegen.readthedocs.io/en/latest/"&gt;the nice docs&lt;/a&gt;, which include a nice little toy example of a “SVG to Python Turtle” compiler. Enjoy!&lt;/p&gt;</content>
+    <category term="python" label="Python"/>
+  </entry>
+  <entry>
+    <title>Help my website is too small</title>
+    <id>https://lukeplant.me.uk/blog/posts/help-my-website-is-too-small/</id>
+    <updated>2025-12-19T13:45:33Z</updated>
+    <published>2025-12-19T13:45:33Z</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/help-my-website-is-too-small/"/>
+    <summary type="html">&lt;p&gt;How can it be a real website if it’s less than 7k?&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;A jobs web site I belong to just emailed me, telling me that some of the links in my public profile on their site are “broken” and “thus have been removed”.&lt;/p&gt;
+&lt;p&gt;The evidence that these sites are broken? They are too small:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://www.djangoproject.com/"&gt;https://www.djangoproject.com/&lt;/a&gt;: response body too small (6220 bytes)&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://www.cciw.co.uk/"&gt;https://www.cciw.co.uk/&lt;/a&gt;: response body too small (3033 bytes)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The first is the home page of the Django web framework, and is, unsurprisingly, implemented using Django (see the &lt;a class="reference external" href="https://github.com/django/djangoproject.com"&gt;djangoproject.com source code&lt;/a&gt;). The second is one of my own projects, and also implemented using Django (source &lt;a class="reference external" href="https://github.com/cciw-uk/cciw.co.uk/"&gt;also available&lt;/a&gt; for anyone who cares).&lt;/p&gt;
+&lt;p&gt;Checking in webdev tools on these sites gives very similar numbers to the above for the over-the-wire size of the initial HTML (though I get slightly higher figures), so this wasn’t a blip caused by downtime, as far as I can see.&lt;/p&gt;
+&lt;p&gt;Apparently, if your HTML is less than 7k, that obviously can’t be a real website, let alone something as ridiculously small as 3k. Even with compression turned up all the way, it’s clearly impossible to return more than an error message with less than &lt;a class="reference external" href="https://minime.stephan-brumme.com/react/18.0.0/"&gt;at least 4k&lt;/a&gt;, right?&lt;/p&gt;
+&lt;p&gt;So please can Django get it sorted and add some bloat to their home page, and to their framework, and can someone also send me tips on bloating my own sites, so that my profile links can be counted as real websites? Thanks!&lt;/p&gt;
+&lt;section id="links"&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://lobste.rs/s/3vdhci/help_my_website_is_too_small"&gt;Discussion of this post on Lobsters&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://news.ycombinator.com/item?id=46373559"&gt;Discussion of this post on Hacker News&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;</content>
+    <category term="django" label="Django"/>
+    <category term="python" label="Python"/>
+    <category term="web-development" label="Web development"/>
+  </entry>
+  <entry>
+    <title>Breaking “provably correct” Leftpad</title>
+    <id>https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/</id>
+    <updated>2025-10-03T21:00:00+01:00</updated>
+    <published>2025-10-03T21:00:00+01:00</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/"/>
+    <summary type="html">&lt;p&gt;Why? Because it’s fun.&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;I don’t know much about about formal methods, so a while back I read Hillel Wayne’s post &lt;a class="reference external" href="https://www.hillelwayne.com/post/lpl/"&gt;Let’s prove Leftpad&lt;/a&gt; with interest. However:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;I know Donald Knuth’s famous quote: “Beware of bugs in the above code; I have only proved it correct, not tried it”&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I also know how it turned out that &lt;a class="reference external" href="https://research.google/blog/extra-extra-read-all-about-it-nearly-all-binary-searches-and-mergesorts-are-broken/"&gt;code that had been proved correct harboured a bug not found for decades&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So I thought I’d take a peek and do some testing on these &lt;a class="reference external" href="https://github.com/hwayne/lets-prove-leftpad"&gt;Leftpad implementations&lt;/a&gt; that are all “provably correct”.&lt;/p&gt;
+&lt;nav class="contents" id="contents" role="doc-toc"&gt;
+&lt;p class="topic-title"&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#top"&gt;Contents&lt;/a&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#methodology" id="toc-entry-1"&gt;Methodology&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#implementations" id="toc-entry-2"&gt;Implementations&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#liquid-haskell" id="toc-entry-3"&gt;Liquid Haskell&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#java" id="toc-entry-4"&gt;Java&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#lean4" id="toc-entry-5"&gt;Lean4&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#rust" id="toc-entry-6"&gt;Rust&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#some-competition" id="toc-entry-7"&gt;Some competition!&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#results" id="toc-entry-8"&gt;Results&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#comments" id="toc-entry-9"&gt;Comments&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#explanation" id="toc-entry-10"&gt;Explanation&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#what-is-a-character" id="toc-entry-11"&gt;What is a character?&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#how-does-a-programming-language-handle-strings" id="toc-entry-12"&gt;How does a programming language handle strings?&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#putting-them-together" id="toc-entry-13"&gt;Putting them together&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#what-went-wrong" id="toc-entry-14"&gt;What went wrong?&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#lies-damned-lies-and-natural-language" id="toc-entry-15"&gt;Lies, damned lies and natural language&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#what-is-correct" id="toc-entry-16"&gt;What is correct?&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#confessions-and-corrections" id="toc-entry-17"&gt;Confessions and corrections&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#response" id="toc-entry-18"&gt;Response&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;
+&lt;section id="methodology"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-1" role="doc-backlink"&gt;Methodology&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;I’ll pick a few, simple, perfectly ordinary inputs at random, and work out what
+I think the output should be. This is a pretty trivial problem so I’m expecting
+that all the implementations will match my output. &lt;em&gt;[narrator: He is is expecting no such thing]&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I’m also expecting that, even if for some reason I’ve made a mistake, all the implementations will at least match each other. &lt;em&gt;[narrator: More lies]&lt;/em&gt;  They’ve all been proved correct, right?&lt;/p&gt;
+&lt;p&gt;Here are my inputs and expected outputs. I’m going to pad to a length of 10, and use &lt;code class="docutils literal"&gt;-&lt;/code&gt; as padding so it can be seen and counted more easily than spaces.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class="header"&gt;
+&lt;th&gt;Item&lt;/th&gt;
+&lt;th&gt;Input&lt;/th&gt;
+&lt;th&gt;Length&lt;/th&gt;
+&lt;th&gt;Expected padding&lt;/th&gt;
+&lt;th&gt;Expected Output&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;𝄞&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;9&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;---------𝄞&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Å&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;9&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;---------Å&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;𓀾&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;9&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;---------𓀾&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;אֳֽ֑&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;9&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;---------אֳֽ֑&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="odd"&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;résumé&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;----résumé&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class="even"&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;résumé&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;----résumé&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;em&gt;[“ordinary”, “random” - I think my work here is done…]&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I’ve used a monospace font so that the right hand side of the outputs all line up as you’d expect.&lt;/p&gt;
+&lt;p&gt;Entry 6 is not a mistake, by the way, it just does “e acute” in a different way to entry 5. Nothing to see here, move along…&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="implementations"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-2" role="doc-backlink"&gt;Implementations&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Not all of the &lt;a class="reference external" href="https://github.com/hwayne/lets-prove-leftpad/tree/master"&gt;implementations&lt;/a&gt; were that easy to run. In fact, many of them didn’t take any kind of “string” as input, but vectors or lists or such things, and it wasn’t obvious to me how to pass strings in. So I discounted them.&lt;/p&gt;
+&lt;p&gt;For the ones I could run, I attempted to do so by embedding the test inputs directly in the program, if possible.&lt;/p&gt;
+&lt;section id="liquid-haskell"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-3" role="doc-backlink"&gt;Liquid Haskell&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Embedding the characters directly in Haskell source code kept getting me “lexical error in string/character literal”, so I wrote a small driver program that read from a file.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="java"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-4" role="doc-backlink"&gt;Java&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The &lt;a class="reference external" href="https://github.com/hwayne/lets-prove-leftpad/blob/ea9c0f09a2d3e981d82118497c307844fc7b1f49/java/LeftPad.java#L7"&gt;leftpad function provided&lt;/a&gt; didn’t take a string, but a &lt;code class="docutils literal"&gt;char[]&lt;/code&gt;. Thankfully, it’s easy to convert from &lt;code class="docutils literal"&gt;String&lt;/code&gt; objects, using the &lt;code class="docutils literal"&gt;.toCharArray()&lt;/code&gt; function. So I did that.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="lean4"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-5" role="doc-backlink"&gt;Lean4&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;There is a handy &lt;a class="reference external" href="https://live.lean-lang.org/"&gt;online playground&lt;/a&gt;, and the implementation had a helpful &lt;code class="docutils literal"&gt;#eval&lt;/code&gt; block that I could modify to get output. You can &lt;a class="reference external" href="https://live.lean-lang.org/#codez=PQWgBAsg9gTgpmAzgSwLYAcA2zEBdkDGYAhgHYAmSuMxyA5gBa4BmsA7sTJQG5wwpRSYKMzC4GcAFBgZmOM1zpilROjgFkzQsXyCSFMOhhQRiMMiG42UML37JBiAFzSZrGCRgAjZNU4BPMGw8MwswOjhSPmJMfUp3KhgLOjNVdU1tTEx/aRBgSUluTmRiLzkwAG9ARuAwJzAAFX81AF8C8nkg+UVlMAAKITqAOR0ASj7iWrAqsd7YuoAZHFwpsYWlqdqAXldFvAA6eCxtXAR+sHBMPblSOnExiYBqB6CC8ThYOFROhSVyAH1rrcGH0BmBhrgZhM6tM+nMwLtljCXDIZLMur8wEIJpgRldIkCwJswKhiAAPTGwvE3O5bMBeHIyFAYMAAbTkP2UABowTo9ogAK5eP7Kf5wACOfxJpIAugVJG8Pl92d1/kZ5MhySyAEIAUTFU2lrPmxDYzH5mF1+qqhrOQ1G40mMNmkwRK1qrlRCIOcCOBB0pyEFypQPuuJwAAV4FpSQB5URojmULFBVZE+muJnoVnK36y14SRXfFV/AXMaOsy0Go0ms0WvVV208iEO6EzOGupEeoJ7HAAZX5ZY1cdh6J6yZxtPTjLQWbZo/IeckpGIqDgqmIBAQveoyUQbQ6OZ6jfBkMmAGEGJwZmY6tukjdVmA78ktq4AERvvbofmIBjJs7gIgwY0k8SAFAAxHARSxIelAAIwAAxgAA5CAyFgG+gAsG4AeLtvvm7zwEq84Avi4ggnaza9MQdQXlefTOE+O4Pl2dQJiqFITIguKAmRRJShSvRATxDCpq49JIDO2bzty4J8oKwrkKKEpSnmCqEYx950Hs5A6MQfzfr+QiCbeTF0DMBA0ZeMAzKQFEjCx9Ffj+f5gEQpC4jpuATESQGeY8zy9F6hzYH6JwUgQqZ0gyYD8qQrCYJQz43E5hmuFGFgIKQ3oEDGQgAPwAF5gHle4yH6iAIEVmwAHwScyLKyYccA6LKZXEBVSCEtVXYWNQNhGcgDCsY1PrNcsvQAO0pcCEUUlx2m6YSSALV5YCgUFPohf64X2SidWziNag6Nyg2tSicCkhuyx6ny/ioF8G2+v6Jb8gQBDIfhhawfp6Xkv0dnjJZdHGRpyS7SirGPVtYUActwmhmAAA8DysbBHFIB5i1OGm0WxfFlCwRmkksklWl+cK6BqBQ3KkytekGX+qkFup32luW/1NpCQPWfRJmaeDMh1L5i2I04AVo8m81+ZOuNxVACVFr8RP1bT5PEJTkTkDTpl0/pzmkNKQA"&gt;play with it here&lt;/a&gt;.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="rust"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-6" role="doc-backlink"&gt;Rust&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://github.com/hwayne/lets-prove-leftpad/blob/ea9c0f09a2d3e981d82118497c307844fc7b1f49/creusot%20(rust)/src/lib.rs"&gt;The code here&lt;/a&gt; had loads of extra lines regarding specs etc. which I stripped so I could easily run it, which worked fine.&lt;/p&gt;
+&lt;p&gt;More tricky was that the code didn’t take a string, but some &lt;code class="docutils literal"&gt;Vec&amp;lt;Thingy&amp;gt;&lt;/code&gt;. As I know nothing about Rust, I got ChatGPT to tell me how to convert from a string to that. It gave me two options, I picked the one that looked simpler and less &amp;lt;&amp;lt;angry&amp;gt;&amp;gt;. I didn’t deliberately pick the one which made Rust look even worse than all the others, out of peevish resentment for every time someone has rewritten some Python code (my go-to language) in Rust and made it a million times faster – that’s a ridiculous suggestion.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="some-competition"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-7" role="doc-backlink"&gt;Some competition!&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;To make things interesting, let’s compare these provably correct implementations with one vibe-coded by ChatGPT, in some random language, like, say, um, Swift. It gave me this code:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code swift"&gt;&lt;a id="rest_code_01436f3585ee41f18b92225a7131a680-1" name="rest_code_01436f3585ee41f18b92225a7131a680-1" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#rest_code_01436f3585ee41f18b92225a7131a680-1"&gt;&lt;/a&gt;&lt;span class="kd"&gt;import&lt;/span&gt; &lt;span class="nc"&gt;Foundation&lt;/span&gt;
+&lt;a id="rest_code_01436f3585ee41f18b92225a7131a680-2" name="rest_code_01436f3585ee41f18b92225a7131a680-2" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#rest_code_01436f3585ee41f18b92225a7131a680-2"&gt;&lt;/a&gt;
+&lt;a id="rest_code_01436f3585ee41f18b92225a7131a680-3" name="rest_code_01436f3585ee41f18b92225a7131a680-3" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#rest_code_01436f3585ee41f18b92225a7131a680-3"&gt;&lt;/a&gt;&lt;span class="kd"&gt;func&lt;/span&gt; &lt;span class="nf"&gt;leftPad&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;_&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;String&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;Int&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pad&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;Character&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s"&gt;" "&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;String&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a id="rest_code_01436f3585ee41f18b92225a7131a680-4" name="rest_code_01436f3585ee41f18b92225a7131a680-4" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#rest_code_01436f3585ee41f18b92225a7131a680-4"&gt;&lt;/a&gt;    &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nv"&gt;paddingCount&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;max&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="bp"&gt;count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_01436f3585ee41f18b92225a7131a680-5" name="rest_code_01436f3585ee41f18b92225a7131a680-5" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#rest_code_01436f3585ee41f18b92225a7131a680-5"&gt;&lt;/a&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;String&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;repeating&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pad&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;count&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;paddingCount&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;
+&lt;a id="rest_code_01436f3585ee41f18b92225a7131a680-6" name="rest_code_01436f3585ee41f18b92225a7131a680-6" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#rest_code_01436f3585ee41f18b92225a7131a680-6"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can &lt;a class="reference external" href="https://swiftfiddle.com/6x45qsd74jasbj4buruikqivne"&gt;play with it online here&lt;/a&gt;.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="results"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-8" role="doc-backlink"&gt;Results&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Here are the results, green for correct and red for … less correct.&lt;/p&gt;
+&lt;style&gt;
+  table.results {
+      font-family: monospace;
+  }
+  td.result-pass {
+      background-color: light-dark(#00ff00, #004000);
+      color: light-dark(black, white);
+  }
+  td.result-fail {
+      background-color: light-dark(#ff8080, #400000);
+      color: light-dark(black, white);
+  }
+&lt;/style&gt;&lt;table class="results"&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Input&lt;/th&gt;
+    &lt;th&gt;Reference&lt;/th&gt;
+    &lt;th&gt;Java&lt;/th&gt;
+    &lt;th&gt;Haskell&lt;/th&gt;
+    &lt;th&gt;Lean&lt;/th&gt;
+    &lt;th&gt;Rust&lt;/th&gt;
+    &lt;th&gt;Swift&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;𝄞&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𝄞&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------𝄞&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𝄞&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𝄞&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------𝄞&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𝄞&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Å&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------Å&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------Å&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------Å&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------Å&lt;/td&gt;
+    &lt;td class="result-fail"&gt;-------Å&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------Å&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;𓀾&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𓀾&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------𓀾&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𓀾&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𓀾&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------𓀾&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𓀾&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------אֳֽ֑&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;résumé&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--résumé&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;résumé&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--résumé&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--résumé&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--résumé&lt;/td&gt;
+    &lt;td class="result-fail"&gt;résumé&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;p&gt;And pivoted the other way around so you can compare individual inputs more easily:&lt;/p&gt;
+&lt;table class="results"&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Language&lt;/th&gt;
+    &lt;th&gt;𝄞&lt;/th&gt;
+    &lt;th&gt;Å&lt;/th&gt;
+    &lt;th&gt;𓀾&lt;/th&gt;
+    &lt;th&gt;אֳֽ֑&lt;/th&gt;
+    &lt;th&gt;résumé&lt;/th&gt;
+    &lt;th&gt;résumé&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Reference&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𝄞&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------Å&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𓀾&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Java&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------𝄞&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------Å&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------𓀾&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--résumé&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Haskell&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𝄞&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------Å&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𓀾&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--résumé&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Lean&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𝄞&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--------Å&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𓀾&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--résumé&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Rust&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------𝄞&lt;/td&gt;
+    &lt;td class="result-fail"&gt;-------Å&lt;/td&gt;
+    &lt;td class="result-fail"&gt;------𓀾&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-fail"&gt;--résumé&lt;/td&gt;
+    &lt;td class="result-fail"&gt;résumé&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Swift&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𝄞&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------Å&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------𓀾&lt;/td&gt;
+    &lt;td class="result-pass"&gt;---------אֳֽ֑&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+    &lt;td class="result-pass"&gt;----résumé&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/section&gt;
+&lt;section id="comments"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-9" role="doc-backlink"&gt;Comments&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Rust, as expected, gets &lt;a class="reference external" href="https://en.wiktionary.org/wiki/nul_points"&gt;nul points&lt;/a&gt;. What can I say?&lt;/p&gt;
+&lt;p&gt;Vibe-coding with Swift: 💯&lt;/p&gt;
+&lt;p&gt;Other that, we can see:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;The only item that all implementations (apart from Rust) get correct is entry 5, the first of the two &lt;code class="docutils literal"&gt;résumé&lt;/code&gt; options.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Java is mostly consistent with the others, but it appears it doesn’t like musical notation, or Egyptian hieroglyphics (item 3 is “standing mummy”), which seems a little rude.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The score so far:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Fancy-pants languages and formal verification: 0&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Vibe-coding it with ChatGPT: 1&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="explanation"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-10" role="doc-backlink"&gt;Explanation&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;OK, I’ve had my fun now :-)&lt;/p&gt;
+&lt;p&gt;(The original “Let’s Prove Leftpad” project was done “because it is funny”, and this post is in the same spirit. I want to be especially clear that &lt;a class="reference external" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/"&gt;I’m not actually a fan of vibe-coding&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;What’s actually going on here? There are two main issues, both tied up with the concept of “the length of a string”.&lt;/p&gt;
+&lt;p&gt;(If you already know enough about Unicode, or don’t care about the details, you can skip to the “What went wrong?” section to continue discussion regarding formal verification).&lt;/p&gt;
+&lt;p&gt;First:&lt;/p&gt;
+&lt;section id="what-is-a-character"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-11" role="doc-backlink"&gt;What is a character?&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Strings are composed of “characters”, but what are they?&lt;/p&gt;
+&lt;p&gt;Most modern computer languages, and all the ones I included above, use Unicode as the basis for answering this. Unicode, at its heart, is a list of “code points” (although it is bit more than this). A code point, however, is not exactly a character.&lt;/p&gt;
+&lt;p&gt;Many of the code points you use most often, like &lt;a class="reference external" href="https://unicodeplus.com/U+0041"&gt;Latin Capital Letter A U+0041&lt;/a&gt;, are exactly what you think of as a character. But many are not. These include:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Combining_character"&gt;combining characters&lt;/a&gt;, which are used to add accents and marks to other characters. These have some complexity:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;First, whether you regard the accent as part of the character or not can be a matter of debate. For example, in &lt;code class="docutils literal"&gt;é&lt;/code&gt;, “e acute”, you might think of this as a different letter to &lt;code class="docutils literal"&gt;e&lt;/code&gt;, or an &lt;code class="docutils literal"&gt;e&lt;/code&gt; plus an acute accent. In some languages, this distinction is critical e.g. in Turkish &lt;code class="docutils literal"&gt;ç&lt;/code&gt; is not just “c with some decoration”, it’s an entirely distinct letter.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Second, Unicode often has multiple ways of generating these accented characters, either “pre-composed” as a single code point, or as a combination of multiple code points. So, there is both:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;é: &lt;code class="docutils literal"&gt;Latin Small Letter E With Acute U+00E9&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;é: &lt;code class="docutils literal"&gt;Latin Small Letter E U+0065&lt;/code&gt; + &lt;code class="docutils literal"&gt;Combining Acute Accent U+0301&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://unicode-explorer.com/articles/space-characters"&gt;various spacing characters&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/Unicode_control_characters"&gt;control characters&lt;/a&gt; such as bidi isolation characters.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;and probably more&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, Unicode has another concept, called the “extended grapheme cluster”, or “user-perceived character”, which more closely maps to what you might think of as a “character”. That’s the concept I’m implicitly using for my claim of what leftpad should output.&lt;/p&gt;
+&lt;p&gt;Secondly, there is the question of:&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="how-does-a-programming-language-handle-strings"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-12" role="doc-backlink"&gt;How does a programming language handle strings?&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Different languages have different fundamental answers to the question of “what is a string?”, different internal representations of them (how the data is actually stored), and different ways of exposing strings to the programmer.&lt;/p&gt;
+&lt;p&gt;Some languages, especially performance oriented ones, provide little to zero insulation from the internal representation, while others provide a fairly strong abstraction. Some languages, like Haskell, provide &lt;a class="reference external" href="https://hasufell.github.io/posts/2024-05-07-ultimate-string-guide.html#string-types"&gt;multiple string types&lt;/a&gt; (which can be used with string literals in your code with the &lt;a class="reference external" href="https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/overloaded_strings.html"&gt;OverloadedStrings extension&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;At this point, as well as “code points”, we’ve got to consider “encodings”. If you have a code point, even a “simple” one like &lt;code class="docutils literal"&gt;U+0041&lt;/code&gt; (&lt;code class="docutils literal"&gt;A&lt;/code&gt;), you have said nothing about how you are going to store or transmit that data. An encoding is a system for doing that. Two relevant ones here:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/UTF-8"&gt;UTF-8&lt;/a&gt; is probably the most common/popular one. It uses anything from 1 to 4 bytes to express code points. It has lots of useful properties, but an important one is backwards compatibility with ASCII - if you happen to be limited to the 127 characters found in ASCII, then UTF-8 encoded Unicode text is one-byte-per-codepoint, and is byte-for-byte the the same as ASCII.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference external" href="https://en.wikipedia.org/wiki/UTF-16"&gt;UTF-16&lt;/a&gt; is an encoding where most code points (specifically those in the &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane"&gt;Basic Multilingual Plane or BMP&lt;/a&gt;) take up 2 bytes, and the remainder can be specified using 4 bytes and a system called “surrogate pairs”.&lt;/p&gt;
+&lt;p&gt;UTF-16 exists because originally Unicode had less than 65,536 code points, meaning you could represent all points with just two bytes, and it was thought we would never need more.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In terms of languages today, with some simplification we can say the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;In Haskell, Lean, Python, and many other languages, &lt;strong&gt;strings are sequences of Unicode code points&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;There is little attempt to hide the idea of code points from you, although in some, like Python, the internal representation itself might be hidden (see &lt;a class="reference external" href="https://peps.python.org/pep-0393/"&gt;PEP 393&lt;/a&gt;).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In Java and Javascript, &lt;strong&gt;strings are sequences of UTF-16 items&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Originally strings were intended to be sequences of code points, but when Unicode grew, to avoid breaking all existing Java code, it morphed into the UTF-16 compromise.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In Rust, &lt;strong&gt;strings are UTF-8 encoded Unicode code points&lt;/strong&gt; (see &lt;a class="reference external" href="https://doc.rust-lang.org/std/string/struct.String.html"&gt;String&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Rust does also have an easily accessible &lt;a class="reference external" href="https://doc.rust-lang.org/std/primitive.str.html#method.chars"&gt;chars&lt;/a&gt; method/concept, which corresponds to a Unicode code point. I didn’t use this above - Rust would have behaved the same as Haskell/Lean if I had.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In Swift, &lt;strong&gt;strings are sequences of user-perceived characters&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;I’m not a user of Swift, but &lt;a class="reference external" href="https://developer.apple.com/documentation/swift/string"&gt;from the docs&lt;/a&gt; it appears to do a pretty good job of abstracting away from the “sequence of code point” paradigm. For example, iterating over a string gets you the “characters” (i.e. extended grapheme clusters) one by one, and the &lt;code class="docutils literal"&gt;.count&lt;/code&gt; property gives you the number of such characters. It does also have a &lt;code class="docutils literal"&gt;.length&lt;/code&gt; property that gives you the number of code points.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="putting-them-together"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-13" role="doc-backlink"&gt;Putting them together&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;These differences, between them, explain the differences in output above. In more detail:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;the treble clef &lt;code class="docutils literal"&gt;𝄞&lt;/code&gt; is a single code point, but it is outside the BMP and requires 2 UTF-16 items. So Java considers the length to be 2, and only 8 padding characters were added, in contrast to other languages.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I created the &lt;code class="docutils literal"&gt;Å&lt;/code&gt; using two code points (although there is a pre-composed version of this character).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;code class="docutils literal"&gt;&lt;span class="pre"&gt;אֳֽ֑&lt;/span&gt;&lt;/code&gt; is Hebrew, and is composed an Aleph followed by multiple vowel marks and a cantillation mark, bringing it up to 4 code points.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal"&gt;résumé&lt;/code&gt; was spelled in two different ways, one with precomposed &lt;code class="docutils literal"&gt;é&lt;/code&gt; which is one code point, the other with combining characters where each &lt;code class="docutils literal"&gt;é&lt;/code&gt; requires two code points.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;None of the inputs was wholly in the ASCII range, so encoding them as UTF-8 requires more bytes, which is why Rust (as I used it) behaved as it did.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="what-went-wrong"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-14" role="doc-backlink"&gt;What went wrong?&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;For me, the biggest issue is not the “code points” vs “characters” debate, which is responsible for most of the variation shown, but the issue that resulted in the difference in the Java output i.e. UTF-16. All of the others (if I hadn’t stitched up Rust) would have resulted in the same output at least.&lt;/p&gt;
+&lt;p&gt;Apparently, nothing in the process of doing the formal verification forced the implementations to converge, and I think it is pretty fair to conclude that that at least one of the implementations must be faulty, given that they produce different output.&lt;/p&gt;
+&lt;p&gt;So what went wrong?&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="lies-damned-lies-and-natural-language"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-15" role="doc-backlink"&gt;Lies, damned lies and natural language&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;English (or any natural language) is at the heart of the problem here. We should start with the phrase “provably correct”. It has a technical definition, but I’m not convinced those English words help us. The post accompanying the &lt;a class="reference external" href="https://ucsd-progsys.github.io/liquidhaskell-blog/2018/05/17/hillel-verifier-rodeo-I-leftpad.lhs/"&gt;LiquidHaskell entry for Leftpad&lt;/a&gt; puts it this way:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;My eyes roll whenever I read the phrase “proved X (a function, a program) correct”.&lt;/p&gt;
+&lt;p&gt;There is no such thing as “correct”.&lt;/p&gt;
+&lt;p&gt;There are only “specifications” or “properties”, and proofs that ensures that your code matches those specifications or properties.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;For these reasons, I think I’d prefer talking about “formally verified” functions – it at least prompts you to ask “what does that mean”, and maybe suggests that you should be thinking about what, specifically, has been verified.&lt;/p&gt;
+&lt;p&gt;The next bit of English to trip us up is “the length of a string”. It’s extremely easy to imagine this is an easy concept, but in the presence of Unicode it really isn’t.&lt;/p&gt;
+&lt;p&gt;Hillel’s original informal requirements don’t actually use that phrase, instead they use the pseudo-code &lt;code class="docutils literal"&gt;max(n, len(str))&lt;/code&gt;. Looking at the implementations, it appears people have subconsciously interpreted this as “the length of the string”, and then assumed that the functions like &lt;code class="docutils literal"&gt;length&lt;/code&gt; or &lt;code class="docutils literal"&gt;size&lt;/code&gt; that their language provides do “the right thing”.&lt;/p&gt;
+&lt;p&gt;We could conclude this is in fact a problem with informal requirements – it was at the level of interpreting those requirements that this went wrong. Therefore, we need &lt;strong&gt;more&lt;/strong&gt; formal specifications and verification, &lt;strong&gt;not less&lt;/strong&gt;. But I don’t think this gets round the fact that we’ve got to translate at some point, and at that point you’ve got trouble.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="what-is-correct"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-16" role="doc-backlink"&gt;What is correct?&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The issue I haven’t addressed so far is whether my reference output and the Swift implementation are actually “correct”. The reality is that you can make arguments for different things.&lt;/p&gt;
+&lt;p&gt;Implicitly, I’m arguing that &lt;strong&gt;left pad should be used for visual alignment in a fixed width context&lt;/strong&gt;, and the implementation that does the best at that is the best one. I think that is a pretty reasonable case. But I’m sure you could make a case for other output – there isn’t actually anything that says &lt;strong&gt;what&lt;/strong&gt; left pad should be used for. It’s possible that there are use cases where “the language’s underlying concept of the length of a string, whatever that may be” is the most important thing.&lt;/p&gt;
+&lt;p&gt;In addition, I was hiding the fact that “fixed width” is yet another lie:&lt;/p&gt;
+&lt;p&gt;I was originally going to use a flag character like 🏴󠁧󠁢󠁥󠁮󠁧󠁿 as one of my inputs, which is a single “extended grapheme cluster” that uses no less then &lt;strong&gt;7 code points&lt;/strong&gt;. It also results in 14 UTF-16 units in Java. The problem was that this character, like most emojis and many other characters from wide scripts like Chinese, takes up a &lt;strong&gt;double width&lt;/strong&gt; even with a monospace font.&lt;/p&gt;
+&lt;p&gt;To maintain the subterfuge of “look how these all line up neatly in the correct output”, I was forced to use other examples. In other words, the example use case I was relying on to prove that these leftpad implementations were broken, is itself a broken concept. But I would still maintain that my reference output is closer to what you would expect leftpad to do.&lt;/p&gt;
+&lt;p&gt;A big point is this: even if we argue that a give implementation is “correct” (in that it does what its specifications say it does), that doesn’t mean you are &lt;strong&gt;using&lt;/strong&gt; it correctly. Are you using it for its intended purpose and context? That seems like a really hard question to answer even for leftpad, and many other real world functions are similar.&lt;/p&gt;
+&lt;p&gt;So, I’m not sure what my final conclusion is, other than “programming is hard, &lt;span class="strike"&gt;let’s go shopping&lt;/span&gt;  let’s eat chocolate” (alternative suggested by my wife, that’s my plan for the evening then).&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="confessions-and-corrections"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-17" role="doc-backlink"&gt;Confessions and corrections&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The Swift implementation was indeed written by ChatGPT, and it got it right first time, with just the prompt “Implement leftpad in Swift”. However:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Swift is the only language I know where an implementation that does what I wanted it to do is that simple.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I followed up by getting ChatGPT to produce a Python version, and it had all the same problems as Haskell/Lean and similar.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I noticed that Swift doesn’t calculate strings lengths the way I would need for my use case for some characters, such as &lt;a class="reference external" href="https://unicodeplus.com/U+200B"&gt;Zero Width Space U+200B&lt;/a&gt; and  &lt;a class="reference external" href="https://unicodeplus.com/U+2067"&gt;Right-To-Left Isolate U+2067&lt;/a&gt;, which I would need to count for zero length.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;As mentioned, the other way to use the Rust version has the same behaviour as the Haskell/Lean/etc versions. ChatGPT did actually point out to me that this way was better, and the other way (the one I used) was adequate only if the input was limited to ASCII.&lt;/p&gt;
+&lt;p&gt;I do feel &lt;strong&gt;slightly&lt;/strong&gt; justified in my treatment of this solution however - &lt;a class="reference external" href="https://github.com/hwayne/lets-prove-leftpad/blob/ea9c0f09a2d3e981d82118497c307844fc7b1f49/creusot%20(rust)/src/lib.rs#L8"&gt;the provided code&lt;/a&gt; didn’t give a function that actually took a string, nor did it force you to use it in a specific way. It dodged the hard part, so I punished it.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="response"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/breaking-provably-correct-leftpad/#toc-entry-18" role="doc-backlink"&gt;Response&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Hillel was kind enough to look at this post, and had this response to add:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In general, formally verified code can “go wrong” in two ways: the proven properties that don’t match what we need, or the proof depends on assumptions that are not true in practice. This is a good example of the former. An example of the latter would be the assumption that the output string is storable in memory. None of the formally verified functions will correctly render &lt;code class="docutils literal"&gt;&lt;span class="pre"&gt;leftpad(“-“,&lt;/span&gt; 1e300, “foo”)&lt;/code&gt;. This is why we always need to be careful when talking about “proving correctness”. In formal methods, “correct” &lt;strong&gt;always&lt;/strong&gt; means “conforms to a certain specification under certain assumptions”, which is very different from the colloquial use of “correct” (does what you want and doesn’t have bugs).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;He also pointed out that padding/alignment functionality available in standard libraries, like Python’s &lt;a class="reference external" href="https://docs.python.org/3/library/string.html#formatspec"&gt;Format Specification Mini-Language&lt;/a&gt; and Javascript’s &lt;a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart"&gt;padStart&lt;/a&gt;, have similar issues.&lt;/p&gt;
+&lt;/section&gt;</content>
+    <category term="haskell" label="Haskell"/>
+    <category term="python" label="Python"/>
+    <category term="software-development" label="Software development"/>
+  </entry>
+  <entry>
+    <title>Devotions on 1 Thessalonians 1, August 2025</title>
+    <id>https://lukeplant.me.uk/blog/posts/devotions-on-1-thessalonians-1-august-2025/</id>
+    <updated>2025-09-13T15:03:01+01:00</updated>
+    <published>2025-09-13T15:03:01+01:00</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/devotions-on-1-thessalonians-1-august-2025/"/>
+    <summary type="html">&lt;p&gt;Devotions that I gave on “CCiW Purple camp” this summer&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;A few weeks ago on &lt;a class="reference external" href="https://www.cciw.co.uk/camps/2025/purple/"&gt;CCiW Purple Camp&lt;/a&gt;, I led devotions one morning, speaking from 1 Thessalonians 1. A few days ago I was asked if I had a written form, and since I did prepare a full script, here it is.&lt;/p&gt;
+&lt;p&gt;I must mention, however, that 100% of the inspiration and insight from these devotions came from an excellent paper by Wayne Grudem, &lt;a class="reference external" href="https://lukeplant.me.uk/blogmedia/Pleasing-God-by-Our-Obedience.pdf"&gt;Pleasing God by Our Obedience&lt;/a&gt;. This paper has been hugely helpful and influential for me over about the past 10 years, and I highly recommend it. Also, &lt;a class="reference external" href="https://www.icmbooks.co.uk/product/17989/The-Hole-in-Our-Holiness"&gt;The Hole in Our Holiness&lt;/a&gt; by Kevin DeYoung has several chapters that enlarge very helpfully on these subjects, and it is again very highly recommended.&lt;/p&gt;
+&lt;hr class="docutils"&gt;
+&lt;p&gt;We’re going to look briefly at 1 Thessalonians chapter 1, especially v2-3, and some verses from chapter 4.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;2 We always thank God for all of you and continually mention you in our prayers. 3 We remember before our God and Father your work produced by faith, your labour prompted by love, and your endurance inspired by hope in our Lord Jesus Christ.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now I cannot claim that I am as faithful in my praying for all of you as the apostle Paul was in his prayers for the Thessalonians. However, when I think of you – some of whom I know better than others – when I think of the people here I do feel the same way as Paul did. I think of people who love God and have been faithfully following him and serving him, and it brings me great joy.&lt;/p&gt;
+&lt;p&gt;The apostle Paul had confidence that these people were real believers because of the way that they accepted the message, and then changed in their behaviour - v4-10. The Holy Spirit had so obviously been active among them, and continued to be active – especially in producing faith, love and hope, which were very visible in the lives of the Thessalonians.&lt;/p&gt;
+&lt;p&gt;When I look around at the people here, I see the same things:&lt;/p&gt;
+&lt;p&gt;I see work produced by faith - God has promised to build his kingdom through the proclamation of his word, and you believe that, and that’s a huge part of why you bother with all this. I see labour prompted by love – I see people who make sacrifices in order to come on camp, giving up time and holiday and money, and I know that many of you do much more throughout the year. You do it because you love Jesus and his people and love the world who need to hear the message. And I see endurance inspired by hope in our Lord Jesus – many of you have been doing this for many years.&lt;/p&gt;
+&lt;p&gt;When we see the same graces that Paul saw in the Thessalonians, we should come to the same conclusion. As evangelicals, sometimes we are very quick to talk about all the ways we fail, but much less quick to recognise that God is at work in us, and that he is succeeding.&lt;/p&gt;
+&lt;p&gt;1 Thessalonians 4:1, a little later, says this:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;As for other matters, brothers and sisters, we instructed you how to live in order to please God, as in fact you are living. Now we ask you and urge you in the Lord Jesus to do this more and more.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Paul is saying you are already living in a way that pleases God.&lt;/p&gt;
+&lt;p&gt;There are multiple ways in which God is pleased with his people. When you wake up in the morning, before you’ve done anything good or bad, you can say “God is pleased with me today, because I’m in Christ, and all his righteousness is counted to me.” That’s justification, it’s absolutely wonderful and foundational.&lt;/p&gt;
+&lt;p&gt;But that’s not what I’m talking about here. God is also pleased with us because of our behaviour. And sometimes we struggle with this a bit more. Sometimes we even say “nothing we do pleases God, all our works are like filthy rags”. That may be true for the unbeliever, but it’s not for the believer. Our good works are described in the Bible as &lt;strong&gt;good&lt;/strong&gt; works, not bad works. That doesn’t mean they are perfect. There may be some sin in them, there may be mixed motives, or failure of various kinds. But they are still good works, and they bring God pleasure.&lt;/p&gt;
+&lt;p&gt;The Holy Spirit is active in us just as he was in the Thessalonians to produce things that are genuinely good, that bring pleasure to our Father in heaven. And he’s a heavenly Father who is so much better than any human father. That means for one that he’s never a nit-picker. He’s not a fault finder. &lt;strong&gt;He’s not hard to please.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;One of the really importance consequences of this will be joy and motivation.&lt;/p&gt;
+&lt;p&gt;Imagine, for a second, the gender-stereotypical married couple, where the wife stays at home and puts a lot of effort into looking after the house and cooking meals, and the husband goes out to work. Imagine that the husband, after finishing the meal the wife has prepared, every single time, says “I want you to know that, despite the meal you have made me, I will always love you”. How’s she going to feel? Isn’t she going to be very depressed? If she thinks that with all her efforts no meal she makes ever brings him any pleasure, that he doesn’t enjoy it at all – isn’t she going to be miserable? Where will she get motivation from?&lt;/p&gt;
+&lt;p&gt;In the same way, we will live miserable Christian lives if we think our service of God is never good enough to please Him. No! We need to understand that our labour prompted by love does bring God pleasure, by God’s power we are succeeding in our aim! (Even if not perfectly). It is the normal Christian life to lie down at the end of a day and think “I’m living the way my heavenly Father wants, and he is pleased with my service today”. And then, you’ll be motivated to do the “more and more” bit.&lt;/p&gt;
+&lt;p&gt;The message is this - God is pleased with all your love and faith at work this week, it has brought a smile to his face. So &lt;strong&gt;enjoy that smile&lt;/strong&gt;, and let the joy of knowing that smile motivate you to keep going, and do more and more.&lt;/p&gt;</content>
+    <category term="christianity" label="Christianity"/>
+  </entry>
+  <entry>
+    <title>Why I’m not letting the juniors use GenAI for coding</title>
+    <id>https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/</id>
+    <updated>2025-07-26T21:30:00+01:00</updated>
+    <published>2025-07-26T21:30:00+01:00</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/"/>
+    <summary type="html">&lt;p&gt;TLDR: because I want them to become seniors one day, and I want them to enjoy being developers&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;In my current project, I am training some junior developers — some of them pretty much brand new developers — and one of the first rules I gave them was “ensure that &lt;a class="reference external" href="https://code.visualstudio.com/docs/copilot/overview"&gt;Copilot&lt;/a&gt; (or any other &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Generative_artificial_intelligence"&gt;Generative AI&lt;/a&gt; assistant that will write code for you in your editor) is turned off”. This post explains why. The long and short of it is this: it’s because I want the junior developers to become senior developers, and I want them to enjoy programming as well.&lt;/p&gt;
+&lt;p&gt;Other people might also be interested in my reasons, so I’m writing this as a blog post.&lt;/p&gt;
+&lt;p&gt;I’ve read many, many other posts that are &lt;a class="reference external" href="https://lucumr.pocoo.org/2025/6/4/changes/"&gt;for&lt;/a&gt; and &lt;a class="reference external" href="https://blog.glyph.im/2025/06/i-think-im-done-thinking-about-genai-for-now.html"&gt;against&lt;/a&gt;, or just plain &lt;a class="reference external" href="https://nolanlawson.com/2025/04/02/ai-ambivalence/"&gt;depressed&lt;/a&gt;, and some of this is about personal preference, but as I’m making rules for other people, I feel I ought to justify those rules just a little.&lt;/p&gt;
+&lt;p&gt;I’m also attempting to write this up in a way that hopefully non-programmers can understand. I don’t want to write a whole load of posts about this increasingly tedious subject, so I’m making one slightly broader one that I can just link to if anyone asks my opinion.&lt;/p&gt;
+&lt;p&gt;Rather than talk generalities, I’ll build my case using a single very concrete example of real output from an &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Large_language_model"&gt;LLM&lt;/a&gt; on a real task.&lt;/p&gt;
+&lt;nav class="contents" id="contents" role="doc-toc"&gt;
+&lt;p class="topic-title"&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#top"&gt;Contents&lt;/a&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#the-problem" id="toc-entry-1"&gt;The problem&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#what-i-did" id="toc-entry-2"&gt;What I did&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#how-it-went" id="toc-entry-3"&gt;How it went&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#the-main-point" id="toc-entry-4"&gt;The main point&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#so-what" id="toc-entry-5"&gt;So what?&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#scenario-1" id="toc-entry-6"&gt;Scenario 1&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#scenario-2" id="toc-entry-7"&gt;Scenario 2&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#scenario-3" id="toc-entry-8"&gt;Scenario 3&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#what-about-the-mid-level-programmer" id="toc-entry-9"&gt;What about the mid-level programmer?&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#and-what-about-the-senior-programmer" id="toc-entry-10"&gt;And what about the senior programmer?&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a class="reference internal" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#updates" id="toc-entry-11"&gt;Updates&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/nav&gt;
+&lt;section id="the-problem"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-1" role="doc-backlink"&gt;The problem&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;This example comes from a one-off problem I created when I accidentally ended up with data in two separate &lt;a class="reference external" href="https://www.sqlite.org/"&gt;SQLite&lt;/a&gt; databases, when I wanted it one. The data wasn’t &lt;strong&gt;that&lt;/strong&gt; important – it was all just test data for the project I’m currently working on – so I could have just thrown one of these databases away. But the data had &lt;strong&gt;some&lt;/strong&gt; value to me, so I decided to see if I could use an LLM to quickly create a one-off script to merge the two databases.&lt;/p&gt;
+&lt;p&gt;Merging databases sounds like something so common there would be a generic tool to do it, but in reality the devil is in the details, and every &lt;a class="reference external" href="https://www.ibm.com/think/topics/database-schema"&gt;database schema&lt;/a&gt; has specifics that mean you need a custom solution.&lt;/p&gt;
+&lt;p&gt;The specific databases in question were pretty small, with a pretty simple schema. The only big problem with the schema, common to many databases schemas, is how you deal with &lt;strong&gt;ID&lt;/strong&gt; fields:&lt;/p&gt;
+&lt;p&gt;This database schema has multiple tables, and records in one table are related to records in another table using an ID column, which in my case was just a unique number starting at one: 1, 2, 3 etc. To make it concrete, let’s say my database stored a list of houses, and a list of rooms in each house (it didn’t, but it works as an example).&lt;/p&gt;
+&lt;p&gt;So you have a &lt;code class="docutils literal"&gt;houses&lt;/code&gt; table:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;&lt;th class="head"&gt;&lt;p&gt;id&lt;/p&gt;&lt;/th&gt;
+&lt;th class="head"&gt;&lt;p&gt;address&lt;/p&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;1&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;45 Main St&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;2&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;67 Mayfair&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;3&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;2 Bag End&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;…&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;…&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;And a &lt;code class="docutils literal"&gt;rooms&lt;/code&gt; table:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;&lt;th class="head"&gt;&lt;p&gt;id&lt;/p&gt;&lt;/th&gt;
+&lt;th class="head"&gt;&lt;p&gt;house_id&lt;/p&gt;&lt;/th&gt;
+&lt;th class="head"&gt;&lt;p&gt;name&lt;/p&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;1&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;1&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;Dining room&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;2&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;1&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;Living room&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;3&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;2&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;The Library&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;p&gt;…&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;…&lt;/p&gt;&lt;/td&gt;
+&lt;td&gt;&lt;p&gt;…&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The &lt;code class="docutils literal"&gt;house_id&lt;/code&gt; column above links each room with a specific house from the &lt;code class="docutils literal"&gt;houses&lt;/code&gt; table. In the example above, the rooms with ids &lt;code class="docutils literal"&gt;1&lt;/code&gt; and &lt;code class="docutils literal"&gt;2&lt;/code&gt; both belong to house with ID &lt;code class="docutils literal"&gt;1&lt;/code&gt;, aka “45 Main St”.&lt;/p&gt;
+&lt;p&gt;Due to the database merge, we’ve got multiple instances of each of these tables, and they could very easily be using the same ID values to refer to different things. When I come to merge the tables:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;I’ve got to assign new values in the &lt;code class="docutils literal"&gt;id&lt;/code&gt; columns for each table&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;for the &lt;code class="docutils literal"&gt;rooms&lt;/code&gt; table, I’ve got to remember the mapping of old-to-new IDs from the &lt;code class="docutils literal"&gt;houses&lt;/code&gt; table and apply the same mapping to the &lt;code class="docutils literal"&gt;house_id&lt;/code&gt; column.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If I get this wrong, the data will be horribly confused and corrupted.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="what-i-did"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-2" role="doc-backlink"&gt;What I did&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;I used &lt;a class="reference external" href="https://aider.chat/"&gt;aider.chat&lt;/a&gt;, which is a pretty good project with a good reputation, and one that I’m used to, to the point of being reasonably competent (although I can’t claim I use any of these tools a massive amount). This was a while back, and I can’t remember which LLM model I was using, but I think it was one of the best ones from Claude, or maybe DeepSeek-R1, both of which are (or were) well regarded.&lt;/p&gt;
+&lt;p&gt;I fed it the database schema as a SQL file, then prompted it similar to below:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Write a script that takes a list of db files as command line args, and merges the contents. The output will have a single ’metadata’ table copied from one of the input files. The ’rooms’ and ’houses’ tables will be merged, being careful to update ’id’ and ’house_id’ columns correctly, so that they refer to new values.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I’m not going to spend time arguing about whether this was the best possible tool/model/prompt, that’s an endless time sink – I’m happy that I did a decent enough job on all fronts for my comments to be fair.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="how-it-went"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-3" role="doc-backlink"&gt;How it went&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The results were basically great in most ways that most people would care about: the LLM created a mostly working script of a few hundred lines of code in a few minutes. If I remember correctly it was pretty much there on the first attempt.&lt;/p&gt;
+&lt;p&gt;I did actually care about the data, so I carefully checked the script, especially the code that mapped the IDs.&lt;/p&gt;
+&lt;p&gt;There was one bit of code that created the mapping, and a second bit of code that then used it. For this second part, correct code would have looked something like this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_054cacf7909c4f1998a27db4ff51291a-1" name="rest_code_054cacf7909c4f1998a27db4ff51291a-1" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#rest_code_054cacf7909c4f1998a27db4ff51291a-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;new_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;id_mapping&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;old_id&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Here:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal"&gt;id_mapping&lt;/code&gt; is a mapping (dictionary) that contains the “old ID” as keys, and the “new ID” as values&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code class="docutils literal"&gt;old_id&lt;/code&gt; is a variable containing an old ID value.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the brackets syntax &lt;code class="docutils literal"&gt;[old_id]&lt;/code&gt; does a dictionary lookup and returns the value found – in other words, given the old ID it returns the new ID.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There is a crucial question with mappings like this: what happens if, for some reason, the mapping doesn’t contain the &lt;code class="docutils literal"&gt;old_id&lt;/code&gt; value?  With the code as written above, the dictionary lookup will raise an exception, which will cause the code to abort at this point. &lt;strong&gt;This is a good thing&lt;/strong&gt; – since somehow we are missing a value, there is nothing we can do with the current data, and obviously there is some serious problem with our code which means that aborting loudly is the best of our options, or at least the most sensible default.&lt;/p&gt;
+&lt;p&gt;However, what the LLM actually wrote was like this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_a2ed15c86abe4ebdaa1d21e4ee059d7d-1" name="rest_code_a2ed15c86abe4ebdaa1d21e4ee059d7d-1" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#rest_code_a2ed15c86abe4ebdaa1d21e4ee059d7d-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;new_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;id_mapping&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;old_id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;old_id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This code also does a dictionary lookup, but it uses the &lt;a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict.get"&gt;get method&lt;/a&gt; to supply a default value. If the lookup fails because the value is missing, the default is returned instead of raising an exception. The default given here is &lt;code class="docutils literal"&gt;old_id&lt;/code&gt;, which is &lt;strong&gt;the original value&lt;/strong&gt;.  This is, of course, &lt;strong&gt;disastrously wrong&lt;/strong&gt;.  If, for whatever reason, the new ID value is missing, the old ID value is not a good enough fallback – that’s just going to create horribly corrupted data. Worst of all, it will do so absolutely silently – it could just fill the output data with essentially garbage, with no warning that something had gone wrong.&lt;/p&gt;
+&lt;p&gt;We might ask where this idea came from — the LLM has written extra code to produce a much worse result, why? The answer is most likely found, in part, in the way the LLM was trained – that is, on mediocre code.&lt;/p&gt;
+&lt;p&gt;A better answer to “why” the AI wrote this is much more troubling, but I’ll come back to that.&lt;/p&gt;
+&lt;p&gt;We might also ask, “does it matter?”&lt;/p&gt;
+&lt;p&gt;Part of the answer to that is context. For the project I’m currently working on, “silently wrong output” is one of the very worst things we can do. There are projects with different priorities, and there are even a few where quality barely matters at all, for which we really wouldn’t care about things like this. There are also lots of projects where you might expect people &lt;strong&gt;would&lt;/strong&gt; care about this, but they actually don’t, which is fairly sad. Anyway, I’m glad not to be currently working on any projects like that – correct output matters, and I like that.&lt;/p&gt;
+&lt;p&gt;In this case, there is a second reason you might say it doesn’t matter: the rest of the code was actually correct. This meant that the mapping dictionary was complete, so the incorrect behaviour would never get triggered – the problem I’ve found is actually hypothetical. So what am I worrying about?&lt;/p&gt;
+&lt;p&gt;The problem is that in real code, the hypothetical could become reality very quickly. For example:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Some change to the code could introduce a bug which means that the mapping is now missing entries.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A refactoring means the code gets used in a slightly different situation.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;There is some change to the context in which the code is used. For example, if other processes were writing to one of these databases while the merge operation was happening, it would be entirely possible for the mapping dictionary to be missing entries.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So we find ourselves in an interesting situation:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;The code, as written by the LLM, appears on the one hand to be perfectly adequate, if measured according to the metric of “does it work right now”.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;On the other hand, the code is disastrously inadequate if measured by the standard of letting it go anywhere near important data, or anything you would want to live long term in your code base.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id="the-main-point"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-4" role="doc-backlink"&gt;The main point&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Writing correct code is hard. The difference between correct and disastrously bad can be extremely subtle. These differences are easily missed by the untrained eye, and you might not even be able to come up with an example where the bad code fails, because in its initial context it does not.&lt;/p&gt;
+&lt;p&gt;There are many, many other examples of this in programming, and there are many examples of LLMs tripping up like this. Often it is not what is present that is even the problem, but what is absent.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="so-what"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-5" role="doc-backlink"&gt;So what?&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;OK, so LLMs sometimes write horribly flawed code that appears to work. Couldn’t we say the same about junior programmers?&lt;/p&gt;
+&lt;p&gt;Yes, we could. I think the big difference comes when you think about what happens next, after this bad code is written. So, I’ll think about this under 3 scenarios.&lt;/p&gt;
+&lt;section id="scenario-1"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-6" role="doc-backlink"&gt;Scenario 1&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;In this scenario, I, as a senior developer, am the person who got the LLM to write the code, and I’m now tasked with code review in order to find potential flaws and time-bombs like the above.&lt;/p&gt;
+&lt;p&gt;First, in this scenario, the temptation to not check carefully is &lt;strong&gt;very strong&lt;/strong&gt;. The whole reason I’m tempted to use an LLM in the first place is that I don’t want to devote much time to the task. For me this happens when:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;I can’t &lt;strong&gt;justify&lt;/strong&gt; much time, because I consider it’s not that important - it’s just something I need to do to get back to the main thing I’m doing.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I don’t think I will &lt;strong&gt;enjoy&lt;/strong&gt; spending that time.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For both of these cases, the “must go faster” mindset means it’s psychologically very hard to slow down and do the careful review needed.&lt;/p&gt;
+&lt;p&gt;So, I’m unlikely to review this code as carefully as I should. For me, assuming that the code matters at all, this is a killer problem.&lt;/p&gt;
+&lt;p&gt;Maybe someone else would review it and catch this? That’s not good enough for me – &lt;strong&gt;I don’t rely on other people reviewing my code&lt;/strong&gt;. I’m a professional software developer who works on important projects. Sometimes I work alone, with no-one else doing effective review. My clients expect and deserve that I write code that actually works.&lt;/p&gt;
+&lt;p&gt;Of course I also know that I’m far from perfect, and welcome any code review I can get. But even when I think there is review going on, I treat it as a backup, an extra safety measure, and not a reason to justify being sloppy and careless.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="scenario-2"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-7" role="doc-backlink"&gt;Scenario 2&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;In this scenario, the code was written by a junior developer. In contrast to the previous section, I don’t expect junior developers to produce code that works. But I do expect them to &lt;strong&gt;learn&lt;/strong&gt; to do so. And I hope that that I will be rightly suspicious and do a thorough review.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://blog.glyph.im/2025/06/i-think-im-done-thinking-about-genai-for-now.html"&gt;Like Glyph&lt;/a&gt;, I actually quite enjoy doing code review for junior developers, as long as they actually have both the willingness and capacity to improve (which they usually do, but not always). Code review can be a great opportunity to actually train someone.&lt;/p&gt;
+&lt;p&gt;So what happens in this scenario when I, hopefully, after careful review spot the flaw and point it out?&lt;/p&gt;
+&lt;p&gt;If I have time to properly mentor a developer, the process would be a conversation (preferably in person or a video call) that starts something like this:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;When you wrote &lt;code class="docutils literal"&gt;new_id = old_id_to_new_id.get(old_id, old_id)&lt;/code&gt;, can you explain &lt;strong&gt;what was going through your mind&lt;/strong&gt;? Why did you choose to write &lt;code class="docutils literal"&gt;.get(old_id, old_id)&lt;/code&gt;, rather than the simpler and shorter &lt;code class="docutils literal"&gt;[old_id]&lt;/code&gt;?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It’s possible the reason was them thinking “doing something is better than crashing”. We can then address that disastrously wrong (but quite common) mindset. This will hopefully be a very fruitful discussion, because it will actually correct the issue &lt;strong&gt;at the root&lt;/strong&gt;, and so stop it happening again, or at least make it much less likely.&lt;/p&gt;
+&lt;p&gt;In some cases, there isn’t a reason “why” they wrote the code they did –  sometimes junior developers just don’t understand a lot of the code they are writing, they are just guessing until something seems to work. In that case, we can address that problem:&lt;/p&gt;
+&lt;p&gt;The developer needs to go back to basics of things like assignments and function calls etc. The developer must reach the point where they can explain and justify every last jot and tittle of code they produce. It seems pretty obvious to me that the best way to achieve that is to make them write pretty much all their code, at least at the level of choosing each “token” that they add (e.g. choosing from a list of methods with auto-complete is OK, but not more than that). If I want them to be able to justify each token choice, it is essential to make them engage their brain and choose each token.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="scenario-3"&gt;
+&lt;h3&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-8" role="doc-backlink"&gt;Scenario 3&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The third scenario is again that the junior developer “produced” the code, and I’m now reviewing it, but it turns out they just prompted some LLM assistant.&lt;/p&gt;
+&lt;p&gt;At this point, the first step in the root cause analysis – the question “what was your thought process in producing this code” – fails immediately.&lt;/p&gt;
+&lt;p&gt;There is no real answer to the question “why” the LLM wrote the bad code in the first place. You can’t ask it “what were you were thinking” and get a meaningful answer – &lt;a class="reference external" href="https://lukeplant.me.uk/blog/posts/chatgpt-no-inner-monologue-or-meta-cognition/"&gt;it’s pointless to ask so don’t even try&lt;/a&gt;. It lacks the meta-cognition needed for self-improvement, and much of the time &lt;a class="reference external" href="https://machinelearning.apple.com/research/illusion-of-thinking"&gt;when it looks like it is reasoning, it is actually just pattern matching&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The next problem is that the LLM basically can’t learn, at least not deeply enough to make a significant difference. You can tell it “don’t do that again”, and it might partly work, but you can’t really change how it thinks, just what the current instructions are.&lt;/p&gt;
+&lt;p&gt;So we can’t address the root cause.&lt;/p&gt;
+&lt;p&gt;What about the junior developer learning from this, in this scenario – is there something they could take away which would prevent the mistake in the future?&lt;/p&gt;
+&lt;p&gt;If their own mind wasn’t engaged in making the mistake, I think it is quite unlikely that they will be able to effectively learn from the LLM’s mistakes. For the junior dev, the possible take-aways about changes to &lt;strong&gt;their own behaviour&lt;/strong&gt; are:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;Check the LLM’s output more carefully. But I’m not convinced they are equipped at this point to really do checking – they first need practice in the careful thinking about what correct code looks like, to gain the trained eye that can spot subtle issues.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Don’t use LLMs to write code (which is what I’m arguing here)&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id="what-about-the-mid-level-programmer"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-9" role="doc-backlink"&gt;What about the mid-level programmer?&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;At what point do I suggest the junior developers should start using LLMs for some of the more boring tasks? Once they are “mid-level” (whatever that means), is it appropriate?&lt;/p&gt;
+&lt;p&gt;There is obviously a point at which you let people make their own decisions.&lt;/p&gt;
+&lt;p&gt;For myself, I’m pretty firmly convinced that the software I’ve just recently
+created with 25+ years’ professional experience, I simply couldn’t have created
+with only 15 years experience. Not because I’m a poor programmer – I think I’ve got good reason to believe I’m significantly above average (for example, I taught myself machine code and assembly as a young teenager, and I’ve been part of the core team of &lt;a class="reference external" href="https://www.djangoproject.com/"&gt;top open-source projects&lt;/a&gt;). There is just a lot to learn, and always a
+lot further you could go.&lt;/p&gt;
+&lt;p&gt;In this most recent project, we’ve seen a lot of success because of certain key architectural decisions that I made right at the beginning. Some of these used advanced patterns that 10 years I would not have instinctively reached for, or wouldn’t even have known well enough to attempt them.&lt;/p&gt;
+&lt;p&gt;For example, due to difficulties with manual testing of the output in my
+current project, we depend critically on regression tests that make heavy use of
+a version of &lt;a class="reference external" href="https://en.wikipedia.org/wiki/Command_pattern"&gt;the Command pattern&lt;/a&gt; or &lt;a class="reference external" href="https://mmapped.blog/posts/29-plan-execute"&gt;plan-execute pattern&lt;/a&gt;. In fact we use multiple
+levels of it, one level being essentially an embedded DSL that has both
+an evaluator and compiler. This code is not trivial, and it’s also quite far
+from the simplest thing that you would think of, but it has proven critical to
+success.&lt;/p&gt;
+&lt;p&gt;How did I know I needed these? Well, I can tell you one thing for sure: I would never have got the experience and judgement necessary if I hadn’t been doing a lot of the coding myself over the past 25 years.&lt;/p&gt;
+&lt;p&gt;In his video &lt;a class="reference external" href="https://www.youtube.com/watch?v=ltLUadnCyi0"&gt;A tale of two problem solvers&lt;/a&gt;, youtuber &lt;a class="reference external" href="https://www.youtube.com/@3blue1brown"&gt;3Blue1Brown&lt;/a&gt; has a section that is hugely relevant here, especially from 36 minutes onwards. In it, he describes how practising mathematicians will often do hundreds of concrete examples in order to build up intuition and sharpen their skills so that they can tackle more general and harder problems. What particularly struck me was that famous mathematicians throughout history have done this – “they all have this seemingly infinite patience for doing tedious calculations”.&lt;/p&gt;
+&lt;p&gt;Computer programming may seem different, in that we deliberately don’t do the tedious calculations, but teach the computer to do that. However, there are huge similarities. Programming, like mathematics, involves a &lt;strong&gt;formal notation&lt;/strong&gt; and &lt;strong&gt;problem solving&lt;/strong&gt;. In the case pf programming, the formal notation is aimed at a machine that will mechanically interpret it to produce a desired behaviour.&lt;/p&gt;
+&lt;p&gt;Obviously we do avoid doing lots of long multiplication once we’ve taught the computer to do that. However, given the similarities of the mental processes involved in maths and programming, when it comes to any of the higher level things about how to structure programs, I think we are absolutely fooling ourselves if we think we can avoid doing all the “grunt work” of writing code, organising code bases, slowly improving code structure, etc. and still end up magically knowing all the patterns that we need to use, understanding their trade-offs, and all the reasons why certain architectures or patterns would or wouldn’t be appropriate.&lt;/p&gt;
+&lt;p&gt;If you ever want to progress beyond mid-level, I strongly suspect that offloading significant parts of programming to an LLM will greatly reduce your growth. You may be much &lt;strong&gt;faster&lt;/strong&gt; at outputting things of a similar level to what you can currently handle, but I doubt you’ll be able to tackle fundamentally harder projects in the future.&lt;/p&gt;
+&lt;p&gt;While I’m talking about youtubers, the video &lt;a class="reference external" href="https://www.youtube.com/watch?v=5eW6Eagr9XA"&gt;The Expert Myth&lt;/a&gt; by &lt;a class="reference external" href="https://www.youtube.com/@veritasium"&gt;Veritasium&lt;/a&gt; is also really helpful here. He describes how expertise requires the following ingredients:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;&lt;p&gt;Valid environment&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Many repetitions&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Timely feedback&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Deliberate practice&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;As far as I can see, heavy use of LLMs to write code for you will destroy points 2 and 3 – neither the repetitions nor the feedback are really happening if you don’t actually write the code yourself. I doubt that the “deliberate practice and study, in an uncomfortable zone” is going to happen either if you never get happy with the manual bits of coding.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="and-what-about-the-senior-programmer"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-10" role="doc-backlink"&gt;And what about the senior programmer?&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;To complete this post, we of course want to ask, should the “senior programmer” use LLMs to do a lot of the grunt programming? By senior, I do mean significantly more than the 5 years that many “seniors” have. Does there come a point where you have “arrived” and the arguments in the previous section no longer apply? A time when you basically don’t need to do much more learning and sharpening of skills?&lt;/p&gt;
+&lt;p&gt;My answer to that is “I hope not”. Like others, I’m still hoping that by the end of my career I could be at least &lt;a class="reference external" href="https://www.scattered-thoughts.net/writing/speed-matters/"&gt;10x faster&lt;/a&gt; than I am now (without an LLM writing the code for me), maybe even more. Computers are mental levers, so I don’t think that’s ridiculous. I’m hoping not just to be 10x faster, but 10x better in other ways – in terms of reliability, or in terms of being able to tackle problems that would just stump me today, or to which my solutions today would be massively inferior.&lt;/p&gt;
+&lt;p&gt;Everything I know about learning says that outsourcing my actual thinking to LLMs is unlikely to produce that result.&lt;/p&gt;
+&lt;p&gt;In addition, there are at least some people who, after actively using LLMs integrated into their editor (like Copilot and Cursor), &lt;a class="reference external" href="https://lucianonooijen.com/blog/why-i-stopped-using-ai-code-editors/"&gt;have now stopped doing so because they noticed their skills were rusting&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;These arguments, plus the small amount of evidence I have, are enough that I don’t feel the need to make a guinea pig out of myself to collect more data.&lt;/p&gt;
+&lt;p&gt;So, for myself, I choose to use LLMs &lt;strong&gt;very rarely&lt;/strong&gt; for actually writing code. Rarely enough that if they were to disappear completely, it would make little difference to me.&lt;/p&gt;
+&lt;p&gt;But, aside from the practical arguments regarding becoming a better programmer, one of the big reasons for this is that I &lt;strong&gt;simply enjoy programming&lt;/strong&gt;.  I enjoy the challenge and the process of getting the computer to do exactly what I want it to do, in a reasonable amount of time, expressing myself both precisely and concisely.&lt;/p&gt;
+&lt;p&gt;When you are programming at the optimal level of abstraction, it is actually &lt;strong&gt;much nicer&lt;/strong&gt; to express yourself in code compared to English, and often much faster too. Natural language is truly horrible for times when you want precision. And in computer programming, you usually are able to &lt;strong&gt;create the abstractions you need&lt;/strong&gt;, so you can often get close to that optimal level of abstraction.&lt;/p&gt;
+&lt;p&gt;Obviously there are times when there is a bad fit between the abstractions you want and the abstractions you have, resulting in a lot of redundancy. You can’t always rewrite everything to make it all as ideal as you want. But if I’m writing large amounts of code at the wrong abstraction level, that’s bad, and I don’t really want a system that helps me to write more and more code like that.&lt;/p&gt;
+&lt;p&gt;The point of this section is really for the benefit of the junior developers that I’m forcing to do things “the hard way”. What I’m saying is this: I’m not withholding some special treat that I reserve just for myself. I willingly code in exactly the same way as you, and I really enjoy it. I believe that I’m sparing you the miserable existence of never becoming good at programming, while you keep trying to cajole something that doesn’t understand what it’s doing into producing something you don’t understand either. That just doesn’t sound like my idea of fun.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id="updates"&gt;
+&lt;h2&gt;&lt;a class="toc-backref" href="https://lukeplant.me.uk/blog/posts/why-im-not-letting-the-juniors-use-genai-for-coding/#toc-entry-11" role="doc-backlink"&gt;Updates&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;March 2026:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;It looks like Carson Gross, of whom I’m a big fan, &lt;a class="reference external" href="https://htmx.org/essays/yes-and/"&gt;agrees with this stance when it comes to his students&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Since writing the above, I have successfully used coding agents to produce &lt;a class="reference external" href="https://github.com/spookylukey/planegcs/"&gt;significant, high quality projects&lt;/a&gt; where I have done extremely little of the actual coding. However, I stand by what I’ve written above: while the agent was coding away, I never relegated myself to merely managing it. I was coding away just as hard, but on a different, related bit of work. I still don’t use AI integrated into my editor.&lt;/p&gt;
+&lt;p&gt;I’m not letting my skills stagnate, and if I get an agent to work outside my area of competency, I do it consciously. For example, in the planegcs library linked above, I was quite happy to not improve my understanding of C++ and its build tools. On the other hand, I think I’m going to need to do a Rust project, and I’m intending to do all the coding myself, even though I know an agent could make much more rapid progress, because I actually want to get good at Rust.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;</content>
+    <category term="artificial-intelligence" label="Artificial Intelligence"/>
+    <category term="python" label="Python"/>
+    <category term="software-development" label="Software development"/>
+  </entry>
+  <entry>
+    <title>Statically checking Python dicts for completeness</title>
+    <id>https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/</id>
+    <updated>2025-06-27T11:09:03+01:00</updated>
+    <published>2025-06-27T11:09:03+01:00</published>
+    <author>
+      <name>Luke Plant</name>
+    </author>
+    <link rel="alternate" type="text/html" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/"/>
+    <summary type="html">&lt;p&gt;A Pythonic way to ensure that your statically-defined dicts are complete, with full source code.&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;In Python, I often have the situation where I create a dictionary, and want to ensure that it is &lt;strong&gt;complete&lt;/strong&gt; – it has an entry for every valid key.&lt;/p&gt;
+&lt;p&gt;Let’s say for my (currently hypothetical) automatic squirrel-deterring water gun system, I have a number of different states the water tank can be in, defined using an enum:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_e3b92173a5f0474b89aa0802cdf31855-1" name="rest_code_e3b92173a5f0474b89aa0802cdf31855-1" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_e3b92173a5f0474b89aa0802cdf31855-1"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;enum&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;StrEnum&lt;/span&gt;
+&lt;a id="rest_code_e3b92173a5f0474b89aa0802cdf31855-2" name="rest_code_e3b92173a5f0474b89aa0802cdf31855-2" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_e3b92173a5f0474b89aa0802cdf31855-2"&gt;&lt;/a&gt;
+&lt;a id="rest_code_e3b92173a5f0474b89aa0802cdf31855-3" name="rest_code_e3b92173a5f0474b89aa0802cdf31855-3" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_e3b92173a5f0474b89aa0802cdf31855-3"&gt;&lt;/a&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TankState&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;StrEnum&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;a id="rest_code_e3b92173a5f0474b89aa0802cdf31855-4" name="rest_code_e3b92173a5f0474b89aa0802cdf31855-4" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_e3b92173a5f0474b89aa0802cdf31855-4"&gt;&lt;/a&gt;    &lt;span class="n"&gt;FULL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"FULL"&lt;/span&gt;
+&lt;a id="rest_code_e3b92173a5f0474b89aa0802cdf31855-5" name="rest_code_e3b92173a5f0474b89aa0802cdf31855-5" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_e3b92173a5f0474b89aa0802cdf31855-5"&gt;&lt;/a&gt;    &lt;span class="n"&gt;HALF_FULL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"HALF_FULL"&lt;/span&gt;
+&lt;a id="rest_code_e3b92173a5f0474b89aa0802cdf31855-6" name="rest_code_e3b92173a5f0474b89aa0802cdf31855-6" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_e3b92173a5f0474b89aa0802cdf31855-6"&gt;&lt;/a&gt;    &lt;span class="n"&gt;NEARLY_EMPTY&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"NEARLY_EMPTY"&lt;/span&gt;
+&lt;a id="rest_code_e3b92173a5f0474b89aa0802cdf31855-7" name="rest_code_e3b92173a5f0474b89aa0802cdf31855-7" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_e3b92173a5f0474b89aa0802cdf31855-7"&gt;&lt;/a&gt;    &lt;span class="n"&gt;EMPTY&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"EMPTY"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In a separate bit of code, I define an RGB colour for each of these states, using a simple dict.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_b8cf6f255be5405da20a3f8426f0e320-1" name="rest_code_b8cf6f255be5405da20a3f8426f0e320-1" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_b8cf6f255be5405da20a3f8426f0e320-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;TANK_STATE_COLORS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a id="rest_code_b8cf6f255be5405da20a3f8426f0e320-2" name="rest_code_b8cf6f255be5405da20a3f8426f0e320-2" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_b8cf6f255be5405da20a3f8426f0e320-2"&gt;&lt;/a&gt;    &lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FULL&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mh"&gt;0x00FF00&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_b8cf6f255be5405da20a3f8426f0e320-3" name="rest_code_b8cf6f255be5405da20a3f8426f0e320-3" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_b8cf6f255be5405da20a3f8426f0e320-3"&gt;&lt;/a&gt;    &lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;HALF_FULL&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mh"&gt;0x28D728&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_b8cf6f255be5405da20a3f8426f0e320-4" name="rest_code_b8cf6f255be5405da20a3f8426f0e320-4" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_b8cf6f255be5405da20a3f8426f0e320-4"&gt;&lt;/a&gt;    &lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NEARLY_EMPTY&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mh"&gt;0xFF9900&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_b8cf6f255be5405da20a3f8426f0e320-5" name="rest_code_b8cf6f255be5405da20a3f8426f0e320-5" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_b8cf6f255be5405da20a3f8426f0e320-5"&gt;&lt;/a&gt;    &lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;EMPTY&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mh"&gt;0xFF0000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_b8cf6f255be5405da20a3f8426f0e320-6" name="rest_code_b8cf6f255be5405da20a3f8426f0e320-6" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_b8cf6f255be5405da20a3f8426f0e320-6"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This is deliberately distinct from my &lt;code class="docutils literal"&gt;TankState&lt;/code&gt; code and related definitions, because it relates to a different part of the project - the user interface. The UI concerns shouldn’t be mixed up with the core logic.&lt;/p&gt;
+&lt;p&gt;This dict is fine, and currently complete. But I’d like to ensure that if I add a new item to &lt;code class="docutils literal"&gt;TankState&lt;/code&gt;, I don’t forget to update the &lt;code class="docutils literal"&gt;TANK_STATE_COLORS&lt;/code&gt; dict.&lt;/p&gt;
+&lt;p&gt;With a growing ability to do static type checks in Python, &lt;a class="reference external" href="https://stackoverflow.com/questions/72022403/type-hint-for-an-exhaustive-dictionary-with-enum-literal-keys"&gt;some people have asked how we can ensure this using static type checks&lt;/a&gt;. The short answer is, we can’t (at least at the moment).&lt;/p&gt;
+&lt;p&gt;But the better question is “how can we (somehow) ensure we don’t forget?” It doesn’t have to be a static type check, as long as it’s very hard to forget, and if it preferably runs as early as possible.&lt;/p&gt;
+&lt;p&gt;Instead of shoe-horning everything into static type checks, let’s just make use of the fact that this is Python and we can write any code we want at module level. All we need to do is this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_ebc769b710ff414a828735cf76d69018-1" name="rest_code_ebc769b710ff414a828735cf76d69018-1" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_ebc769b710ff414a828735cf76d69018-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;TANK_STATE_COLORS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a id="rest_code_ebc769b710ff414a828735cf76d69018-2" name="rest_code_ebc769b710ff414a828735cf76d69018-2" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_ebc769b710ff414a828735cf76d69018-2"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;# …&lt;/span&gt;
+&lt;a id="rest_code_ebc769b710ff414a828735cf76d69018-3" name="rest_code_ebc769b710ff414a828735cf76d69018-3" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_ebc769b710ff414a828735cf76d69018-3"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a id="rest_code_ebc769b710ff414a828735cf76d69018-4" name="rest_code_ebc769b710ff414a828735cf76d69018-4" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_ebc769b710ff414a828735cf76d69018-4"&gt;&lt;/a&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a id="rest_code_ebc769b710ff414a828735cf76d69018-5" name="rest_code_ebc769b710ff414a828735cf76d69018-5" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_ebc769b710ff414a828735cf76d69018-5"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;TANK_STATE_COLORS&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"TANK_STATE_COLORS is missing an entry for &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;val&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;That’s it, that’s the whole technique. I’d argue that this is a pretty much optimal, Pythonic solution to the problem. No clever type tricks to debug later, just 2 lines of plain simple code, and it’s impossible to import your code until you fix the problem, which means you get the early checking you want.
+Plus you get &lt;strong&gt;exactly the error message you want&lt;/strong&gt;, not some obscure compiler output, which is also really important.&lt;/p&gt;
+&lt;p&gt;It can also be extended if you want to do something more fancy (e.g. allow some values of the enum to be missing), and if it does get in your way, you can turn it off temporarily by just commenting out a couple of lines.&lt;/p&gt;
+&lt;section id="thats-not-quite-it"&gt;
+&lt;h2&gt;That’s not quite it&lt;/h2&gt;
+&lt;p&gt;OK, in a project where I’m using this &lt;strong&gt;a lot&lt;/strong&gt;, I did eventually get bored of this small bit of boilerplate. So, as a Pythonic extension of this Pythonic solution, I now do this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_92e7c9499aba47fbac2310608a002230-1" name="rest_code_92e7c9499aba47fbac2310608a002230-1" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_92e7c9499aba47fbac2310608a002230-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;TANK_STATE_COLORS&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a id="rest_code_92e7c9499aba47fbac2310608a002230-2" name="rest_code_92e7c9499aba47fbac2310608a002230-2" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_92e7c9499aba47fbac2310608a002230-2"&gt;&lt;/a&gt;    &lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FULL&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mh"&gt;0x00FF00&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_92e7c9499aba47fbac2310608a002230-3" name="rest_code_92e7c9499aba47fbac2310608a002230-3" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_92e7c9499aba47fbac2310608a002230-3"&gt;&lt;/a&gt;    &lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;HALF_FULL&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mh"&gt;0x28D728&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_92e7c9499aba47fbac2310608a002230-4" name="rest_code_92e7c9499aba47fbac2310608a002230-4" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_92e7c9499aba47fbac2310608a002230-4"&gt;&lt;/a&gt;    &lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NEARLY_EMPTY&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mh"&gt;0xFF9900&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_92e7c9499aba47fbac2310608a002230-5" name="rest_code_92e7c9499aba47fbac2310608a002230-5" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_92e7c9499aba47fbac2310608a002230-5"&gt;&lt;/a&gt;    &lt;span class="n"&gt;TankState&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;EMPTY&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mh"&gt;0xFF0000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_92e7c9499aba47fbac2310608a002230-6" name="rest_code_92e7c9499aba47fbac2310608a002230-6" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_92e7c9499aba47fbac2310608a002230-6"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a id="rest_code_92e7c9499aba47fbac2310608a002230-7" name="rest_code_92e7c9499aba47fbac2310608a002230-7" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_92e7c9499aba47fbac2310608a002230-7"&gt;&lt;/a&gt;&lt;span class="n"&gt;assert_complete_enumerations_dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TANK_STATE_COLORS&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Specifically, I’m adding:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;a type hint on the constant&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;a call to a clever utility function that does just the right amount of Python magic.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This function needs to be “magical” because we want it to produce good error messages, like we had before. This means it needs to get hold of the name of the dict in the calling module, but functions don’t usually have access to that.&lt;/p&gt;
+&lt;p&gt;In addition, it wants to get hold of the type hint (although there would be other ways to infer it without a type hint, there are advantages this way), for which we also need the name.&lt;/p&gt;
+&lt;p&gt;The specific magic we need is:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;p&gt;the clever function needs to get hold of the module that &lt;strong&gt;called it&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;it then looks through the module dictionary to get the name of the object that has been passed in&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;then it can find type hints, and do the checking.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, because you don’t want to write all that yourself, the code is below. It also supports:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;having a tuple of &lt;code class="docutils literal"&gt;Enum&lt;/code&gt; types as the key&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;allowing some items to be missing&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;using &lt;code class="docutils literal"&gt;Literal&lt;/code&gt; as the key. So you can do things like this:&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_43dffe504c24474bae463e035898536f-1" name="rest_code_43dffe504c24474bae463e035898536f-1" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_43dffe504c24474bae463e035898536f-1"&gt;&lt;/a&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;typing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Literal&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;a id="rest_code_43dffe504c24474bae463e035898536f-2" name="rest_code_43dffe504c24474bae463e035898536f-2" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_43dffe504c24474bae463e035898536f-2"&gt;&lt;/a&gt;    &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"negative"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_43dffe504c24474bae463e035898536f-3" name="rest_code_43dffe504c24474bae463e035898536f-3" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_43dffe504c24474bae463e035898536f-3"&gt;&lt;/a&gt;    &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"zero"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_43dffe504c24474bae463e035898536f-4" name="rest_code_43dffe504c24474bae463e035898536f-4" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_43dffe504c24474bae463e035898536f-4"&gt;&lt;/a&gt;    &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"positive"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_43dffe504c24474bae463e035898536f-5" name="rest_code_43dffe504c24474bae463e035898536f-5" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_43dffe504c24474bae463e035898536f-5"&gt;&lt;/a&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;a id="rest_code_43dffe504c24474bae463e035898536f-6" name="rest_code_43dffe504c24474bae463e035898536f-6" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_43dffe504c24474bae463e035898536f-6"&gt;&lt;/a&gt;&lt;span class="n"&gt;assert_complete_enumerations_dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It’s got a ton of error checking, because once you get magical then you really don’t want to be debugging obscure messages.&lt;/p&gt;
+&lt;p&gt;Enjoy!&lt;/p&gt;
+&lt;p&gt;I hereby place the following code into the public domain - &lt;a class="reference external" href="https://creativecommons.org/publicdomain/zero/1.0/"&gt;CC0 1.0 Universal&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="code"&gt;&lt;pre class="code python"&gt;&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-1" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-1" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-1"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;inspect&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-2" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-2" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-2"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;itertools&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-3" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-3" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-3"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-4" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-4" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-4"&gt;&lt;/a&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-5" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-5" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-5"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;collections.abc&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Mapping&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Sequence&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-6" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-6" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-6"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;enum&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Enum&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-7" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-7" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-7"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-8" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-8" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-8"&gt;&lt;/a&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;frozendict&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;frozendict&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-9" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-9" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-9"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-10" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-10" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-10"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-11" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-11" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-11"&gt;&lt;/a&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;assert_complete_enumerations_dict&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="n"&gt;the_dict&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Mapping&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;object&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;allowed_missing&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Sequence&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;()):&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-12" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-12" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-12"&gt;&lt;/a&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;"""&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-13" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-13" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-13"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    Magically assert that the dict in the calling module has a&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-14" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-14" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-14"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    value for every item in an enumeration.&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-15" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-15" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-15"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    The dict object must be bound to a name in the module.&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-16" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-16" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-16"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    It must be type hinted, with the key being an Enum subclass, or Literal.&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-17" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-17" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-17"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    The key may also be a tuple of Enum subclasses&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-18" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-18" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-18"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-19" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-19" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-19"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    If you expect some values to be missing, pass them in `allowed_missing`&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-20" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-20" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-20"&gt;&lt;/a&gt;&lt;span class="sd"&gt;    """&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-21" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-21" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-21"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="nb"&gt;isinstance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;the_dict&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Mapping&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;the_dict&lt;/span&gt;&lt;span class="si"&gt;!r}&lt;/span&gt;&lt;span class="s2"&gt; is not a dict or mapping, it is a &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="nb"&gt;type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;the_dict&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-22" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-22" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-22"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-23" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-23" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-23"&gt;&lt;/a&gt;    &lt;span class="n"&gt;frame_up&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_getframe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# type: ignore[reportPrivateUsage]&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-24" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-24" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-24"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;frame_up&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-25" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-25" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-25"&gt;&lt;/a&gt;    &lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;inspect&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getmodule&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;frame_up&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-26" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-26" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-26"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"Couldn't get module for frame &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;frame_up&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-27" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-27" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-27"&gt;&lt;/a&gt;    &lt;span class="n"&gt;msg_prefix&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"In module `&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;`,"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-28" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-28" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-28"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-29" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-29" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-29"&gt;&lt;/a&gt;    &lt;span class="n"&gt;module_dict&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;frame_up&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;f_locals&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-30" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-30" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-30"&gt;&lt;/a&gt;    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-31" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-31" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-31"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;# Find the object:&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-32" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-32" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-32"&gt;&lt;/a&gt;    &lt;span class="n"&gt;names&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;module_dict&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;val&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;the_dict&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-33" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-33" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-33"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;msg_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; there is no name for &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;the_dict&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;, please check"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-34" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-34" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-34"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-35" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-35" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-35"&gt;&lt;/a&gt;    &lt;span class="c1"&gt;# Any name that has a type hint will do, there will usually be one.&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-36" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-36" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-36"&gt;&lt;/a&gt;    &lt;span class="n"&gt;hints&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;typing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_type_hints&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;module&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-37" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-37" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-37"&gt;&lt;/a&gt;    &lt;span class="n"&gt;hinted_names&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;hints&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-38" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-38" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-38"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-39" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-39" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-39"&gt;&lt;/a&gt;        &lt;span class="n"&gt;hinted_names&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-40" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-40" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-40"&gt;&lt;/a&gt;    &lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;msg_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; no type hints were found for &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;', '&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;, they are needed to use assert_complete_enumerations_dict"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-41" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-41" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-41"&gt;&lt;/a&gt;    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;hinted_names&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-42" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-42" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-42"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-43" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-43" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-43"&gt;&lt;/a&gt;    &lt;span class="n"&gt;hint&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;hints&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-44" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-44" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-44"&gt;&lt;/a&gt;    &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;typing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_origin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hint&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-45" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-45" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-45"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;msg_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; type hint for &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; must supply arguments"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-46" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-46" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-46"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-47" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-47" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-47"&gt;&lt;/a&gt;        &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-48" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-48" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-48"&gt;&lt;/a&gt;        &lt;span class="n"&gt;typing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Mapping&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-49" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-49" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-49"&gt;&lt;/a&gt;        &lt;span class="n"&gt;Mapping&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-50" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-50" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-50"&gt;&lt;/a&gt;        &lt;span class="n"&gt;frozendict&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-51" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-51" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-51"&gt;&lt;/a&gt;    &lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;msg_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; type hint for &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; must be dict/frozendict/Mapping with arguments to use assert_complete_enumerations_dict, not &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;origin&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-52" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-52" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-52"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-53" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-53" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-53"&gt;&lt;/a&gt;    &lt;span class="n"&gt;args&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;typing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_args&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hint&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-54" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-54" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-54"&gt;&lt;/a&gt;    &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;msg_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; type hint for &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; must have two args"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-55" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-55" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-55"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-56" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-56" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-56"&gt;&lt;/a&gt;    &lt;span class="n"&gt;arg0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-57" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-57" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-57"&gt;&lt;/a&gt;    &lt;span class="n"&gt;arg0_origin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;typing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_origin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-58" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-58" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-58"&gt;&lt;/a&gt;    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;arg0_origin&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="nb"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-59" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-59" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-59"&gt;&lt;/a&gt;        &lt;span class="c1"&gt;# tuple of Enums&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-60" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-60" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-60"&gt;&lt;/a&gt;        &lt;span class="n"&gt;enum_list&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;typing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_args&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-61" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-61" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-61"&gt;&lt;/a&gt;        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;enum_cls&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;enum_list&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-62" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-62" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-62"&gt;&lt;/a&gt;            &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="nb"&gt;issubclass&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-63" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-63" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-63"&gt;&lt;/a&gt;                &lt;span class="n"&gt;enum_cls&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Enum&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-64" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-64" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-64"&gt;&lt;/a&gt;            &lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;msg_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; type hint must be an Enum to use assert_complete_enumerations_dict, not &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;enum_cls&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-65" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-65" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-65"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-66" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-66" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-66"&gt;&lt;/a&gt;        &lt;span class="n"&gt;items&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;itertools&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;product&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;enum_cls&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;enum_cls&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;enum_list&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-67" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-67" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-67"&gt;&lt;/a&gt;    &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;arg0_origin&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;typing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Literal&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-68" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-68" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-68"&gt;&lt;/a&gt;        &lt;span class="n"&gt;items&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;typing&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_args&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-69" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-69" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-69"&gt;&lt;/a&gt;    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-70" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-70" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-70"&gt;&lt;/a&gt;        &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="nb"&gt;issubclass&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-71" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-71" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-71"&gt;&lt;/a&gt;            &lt;span class="n"&gt;arg0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Enum&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-72" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-72" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-72"&gt;&lt;/a&gt;        &lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;msg_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; type hint must be an Enum to use assert_complete_enumerations_dict, not &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;arg0&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-73" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-73" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-73"&gt;&lt;/a&gt;        &lt;span class="n"&gt;items&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arg0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-74" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-74" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-74"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-75" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-75" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-75"&gt;&lt;/a&gt;    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-76" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-76" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-76"&gt;&lt;/a&gt;        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;allowed_missing&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-77" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-77" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-77"&gt;&lt;/a&gt;            &lt;span class="k"&gt;continue&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-78" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-78" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-78"&gt;&lt;/a&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-79" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-79" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-79"&gt;&lt;/a&gt;        &lt;span class="c1"&gt;# This is the assert we actually want to do, everything else is just error checking:&lt;/span&gt;
+&lt;a id="rest_code_7efcc2725ed74da6a64e5400a05aee4c-80" name="rest_code_7efcc2725ed74da6a64e5400a05aee4c-80" href="https://lukeplant.me.uk/blog/posts/statically-checking-python-dicts-for-completeness/#rest_code_7efcc2725ed74da6a64e5400a05aee4c-80"&gt;&lt;/a&gt;        &lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;the_dict&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;msg_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; needs an entry for &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/section&gt;</content>
+    <category term="python" label="Python"/>
+    <category term="python-type-hints" label="Python type hints"/>
+  </entry>
+</feed>

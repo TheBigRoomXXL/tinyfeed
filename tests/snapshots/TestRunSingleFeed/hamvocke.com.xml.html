@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<meta http-equiv="Content-Security-Policy" content="
+		default-src 'none';
+		base-uri 'self';
+		img-src 'self' data: ;
+		style-src 'nonce-NamZcptuILpaqLiv3EDi1sDeJkkDX1cWgcpJpeGZYbZlwd4cm3vjRHstVkqVhmpvEdczgM9hPR2i6yuWYDf0sjf9MYeaTSQsDuexA-N0iq5dy3IsqdjDlJFnN6u9eU2sj4vpsrXMXW1Q8yb0WgWdzWG3bxMZuhSlW3rgD19FzL3MPInNmtlEk2vKf0_pPQvgWgti6-z6j3jQ_WXUhoEX8p7OphMBjdhjOI2ZM_XPsCnlYXEtfup4erXJ4g5-jmjN8xNc8hJKbgUGX6_Ber43ydlHKqVNIAtjXB0cPxT9rQQZfLvPEMynSmnTcYQNHvrjmOzHxPgb8vibY5MCRw9ULQ==' ;
+		script-src 'nonce-NamZcptuILpaqLiv3EDi1sDeJkkDX1cWgcpJpeGZYbZlwd4cm3vjRHstVkqVhmpvEdczgM9hPR2i6yuWYDf0sjf9MYeaTSQsDuexA-N0iq5dy3IsqdjDlJFnN6u9eU2sj4vpsrXMXW1Q8yb0WgWdzWG3bxMZuhSlW3rgD19FzL3MPInNmtlEk2vKf0_pPQvgWgti6-z6j3jQ_WXUhoEX8p7OphMBjdhjOI2ZM_XPsCnlYXEtfup4erXJ4g5-jmjN8xNc8hJKbgUGX6_Ber43ydlHKqVNIAtjXB0cPxT9rQQZfLvPEMynSmnTcYQNHvrjmOzHxPgb8vibY5MCRw9ULQ==' 'strict-dynamic' ;
+    ">
+	<meta name="application-name" content="tinyfeed">
+	<meta name="application-source" content="https://github.com/TheBigRoomXXL/tinyfeed">
+	<meta name="author" content="Sebastien LOVERGNE">
+	<meta name="description" content="RSS, Atom and JSON feeds aggregator">
+	<meta name="referrer" content="same-origin">
+
+	<style nonce="NamZcptuILpaqLiv3EDi1sDeJkkDX1cWgcpJpeGZYbZlwd4cm3vjRHstVkqVhmpvEdczgM9hPR2i6yuWYDf0sjf9MYeaTSQsDuexA-N0iq5dy3IsqdjDlJFnN6u9eU2sj4vpsrXMXW1Q8yb0WgWdzWG3bxMZuhSlW3rgD19FzL3MPInNmtlEk2vKf0_pPQvgWgti6-z6j3jQ_WXUhoEX8p7OphMBjdhjOI2ZM_XPsCnlYXEtfup4erXJ4g5-jmjN8xNc8hJKbgUGX6_Ber43ydlHKqVNIAtjXB0cPxT9rQQZfLvPEMynSmnTcYQNHvrjmOzHxPgb8vibY5MCRw9ULQ==">
+		:root {
+			color-scheme: dark light;
+
+			--primary: #0AC8F5;
+			--secondary: #D2F00F;
+			 
+			--text: var(--txt, #cfcfcf);
+			--border: var(--bd, #c0c0c0);
+			--background: var(--bg, #1D1F21);
+			font-size: min(calc(.5rem + 0.75vw), 16px);
+		}
+
+		@media (prefers-color-scheme: light) {
+			:root {
+				--text: var(--txt, #444444);
+				--border: var(--bd, #333333);
+				--background: var(--bg, white);
+				--primary: #207D92;
+				--secondary: #6A7A06;
+			}
+		}
+
+		body {
+			font-family: Calibri, 'Trebuchet MS', 'Lucida Sans', Arial, sans-serif;
+			color: var(--text);
+			background: var(--background);
+			max-width: 50rem;
+			width: 100%;
+			margin: 0.5em auto 2em;
+			line-height: 1.25em;
+		}
+
+		header {
+			border-bottom: 1px solid var(--border);
+			margin-bottom: 0.25em;
+		}
+
+		header>h1 {
+			display: inline-block;
+			padding: 0 0.5em;
+		}
+
+		h2 {
+			font-size: 1rem;
+			display: inline;
+		}
+
+		ol {
+			padding-left: 5ch;
+		}
+
+		li {
+			margin-block-start: 1em;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:link {
+			color: var(--primary)
+		}
+
+		a:visited {
+			color: var(--secondary)
+		}
+
+		a:hover {
+			opacity: 0.8
+		}
+
+		small {
+			padding-top: 0.25rem;
+			font-size: 0.95rem;
+		}
+
+		small>a:link,
+		small>a:visited {
+			color: var(--text);
+		}
+
+		footer {
+			padding: 1rem;
+			margin-top: 2rem;
+			border-top: 1px solid var(--border);
+		}
+
+		.feed-list {
+			display: flex;
+			flex-wrap: wrap;
+			border: 0.5px solid var(--border);
+		}
+
+		.feed-list>div {
+			flex-grow: 1;
+			padding: 0.5em 0.5em 0.35em 0.5em;
+			text-align: center;
+			vertical-align: middle;
+			border: 0.5px solid var(--border);
+		}
+	</style>
+
+	
+
+	
+</head>
+
+<body>
+	<header>
+		<h1></h1>
+		
+	</header>
+	<main>
+		<ol>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/git-revisions-by-text/ target="_blank">
+					<h2>Find Git Commits by Commit Message Text</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-22">2026-08-22</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/task-runners/ target="_blank">
+					<h2>Use Task Runners for Common Coding Tasks</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-08-03">2026-08-03</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/home-cooked-software/ target="_blank">
+					<h2>Home-cooked software</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2026-02-17">2026-02-17</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/2025-in-review/ target="_blank">
+					<h2>Looking Back at 2025</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-31">2025-12-31</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/reviving-a-dead-pet-project/ target="_blank">
+					<h2>Reviving a Dead Pet Project</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-12-12">2025-12-12</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/introducing-moments/ target="_blank">
+					<h2>Introducing “Moments”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-10-08">2025-10-08</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/better-programmer/ target="_blank">
+					<h2>This Blog Will Make You a Better Programmer</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-19">2025-08-19</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/important-things/ target="_blank">
+					<h2>The Important Things in Life</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-08-17">2025-08-17</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/fresh-coat-of-paint/ target="_blank">
+					<h2>A Fresh Coat of Paint</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-04-06">2025-04-06</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/ansi-vim-color-scheme/ target="_blank">
+					<h2>A 16-Color Vim Color Scheme</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-24">2025-02-24</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/making-ham-2025/ target="_blank">
+					<h2>Making Ham, 2025 Edition</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-02-02">2025-02-02</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/gloomy-season/ target="_blank">
+					<h2>Gloomy Season</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-21">2025-01-21</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/kind-engineering/ target="_blank">
+					<h2>Kind Engineering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-17">2025-01-17</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/under-engineering/ target="_blank">
+					<h2>The Joy of Under-Engineering</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2025-01-03">2025-01-03</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/2024-in-review/ target="_blank">
+					<h2>Looking Back at 2024</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-31">2024-12-31</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/airhorn/ target="_blank">
+					<h2>Need an Air Horn? Say No More.</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-12-30">2024-12-30</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/i-am-so-happy/ target="_blank">
+					<h2>&#34;I&#39;m so happy&#34;</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-10-16">2024-10-16</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/piggie-went-to-the-pub/ target="_blank">
+					<h2>This Little Piggie Went to the Pub</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-07-28">2024-07-28</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/lets-create-a-terminal-color-scheme/ target="_blank">
+					<h2>Let&#39;s Create a Terminal Color Scheme</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-06-16">2024-06-16</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/trip-to-athens/ target="_blank">
+					<h2>A Short Trip to Athens</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-03-28">2024-03-28</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/better-off-without-pull-requests/ target="_blank">
+					<h2>You Might Be Better Off Without Pull Requests</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-27">2024-01-27</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/how-i-made-my-own-ham/ target="_blank">
+					<h2>How I Made My Own Ham</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2024-01-17">2024-01-17</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/2023-in-review/ target="_blank">
+					<h2>A Year in Review: 2023</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-31">2023-12-31</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/time-to-get-personal/ target="_blank">
+					<h2>It&#39;s Time to Get Personal!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-21">2023-12-21</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/hyperion-cantos/ target="_blank">
+					<h2>The Hyperion Cantos</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-13">2023-12-13</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/tidy-first-review/ target="_blank">
+					<h2>Book Review: “Tidy First?”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-12-12">2023-12-12</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/path-to-production/ target="_blank">
+					<h2>Path to Production Mapping</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2023-03-08">2023-03-08</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/lnks-command-line-bookmarks/ target="_blank">
+					<h2>Browser Bookmarks on the Command Line</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2022-10-31">2022-10-31</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/learning-tdd-review/ target="_blank">
+					<h2>Book Review: “Learning Test-Driven Development”</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2021-12-15">2021-12-15</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/remote-work-changed-my-life/ target="_blank">
+					<h2>How Remote Work Changed my Life</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-12-21">2020-12-21</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/doppelkopf-3-years/ target="_blank">
+					<h2>Doppelkopf — 3 Years Later</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-11-11">2020-11-11</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/distraction-free-writing/ target="_blank">
+					<h2>Distraction-free writing with vim</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2020-02-02">2020-02-02</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/ham/ target="_blank">
+					<h2>Ham</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-04-05">2019-04-05</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/moving-on/ target="_blank">
+					<h2>Moving On</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2019-04-05">2019-04-05</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/local-ansible-testing/ target="_blank">
+					<h2>Testing Ansible Provisioning Locally</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2018-09-14">2018-09-14</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/doppelkopf/ target="_blank">
+					<h2>A &#34;Doppelkopf&#34; Browser Game</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-11-26">2017-11-26</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/ebook-testing-microservices/ target="_blank">
+					<h2>E-book Release of Testing Microservices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-09-28">2017-09-28</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/testing-java-microservices/ target="_blank">
+					<h2>Testing Microservices - Java &amp; Spring Boot</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-09-19">2017-09-19</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/testing-microservices/ target="_blank">
+					<h2>Testing Microservices</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2017-09-18">2017-09-18</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/remote-pair-programming-with-tmux/ target="_blank">
+					<h2>Remote Pair Programming With SSH &amp; tmux</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-11-03">2015-11-03</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/commandline-fun/ target="_blank">
+					<h2>Fun and Useless Tools for Your Command Line</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-10-25">2015-10-25</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/ target="_blank">
+					<h2>Make tmux Pretty and Usable</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-08-17">2015-08-17</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/ target="_blank">
+					<h2>A Quick and Easy Guide to tmux</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-08-16">2015-08-16</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/retrospective-moving/ target="_blank">
+					<h2>The &#39;Moving Apartments&#39; Retrospective</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-06-20">2015-06-20</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/tweetrospective/ target="_blank">
+					<h2>The Tweetrospective - spice up your next Agile Retrospective</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-05-10">2015-05-10</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/import-dkb-accounts-into-homebank/ target="_blank">
+					<h2>Import your DKB account into Homebank</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2015-04-07">2015-04-07</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/three-months-tw/ target="_blank">
+					<h2>Working at ThoughtWorks, a three month retrospective</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-11-22">2014-11-22</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+			<li>
+				<a href=https://hamvocke.com/blog/goodbye-guetersloh/ target="_blank">
+					<h2>Goodbye Gütersloh, Hello Hamburg!</h2>
+				</a>
+				<br>
+				<small>
+					<time datetime="2014-08-19">2014-08-19</time>
+					|
+					<a href="https://hamvocke.com" target="_blank">hamvocke.com</a>
+				</small>
+
+			</li>
+			
+		</ol>
+	</main>
+	<footer>
+		<p>Last Updated On:
+			<time id="update-at" datetime="2026-10-17T11:12:48&#43;02:00">
+				Saturday, 2026-10-17 11:12:48
+			</time>
+		</p>
+		<p>This page aggregate the following feeds:</p>
+		<div class="feed-list">
+			
+			<div>
+				<a href="https://hamvocke.com/" target="_blank">Ham Vocke</a>
+			</div>
+			
+		</div>
+	</footer>
+</body>
+
+<script type="module" nonce="NamZcptuILpaqLiv3EDi1sDeJkkDX1cWgcpJpeGZYbZlwd4cm3vjRHstVkqVhmpvEdczgM9hPR2i6yuWYDf0sjf9MYeaTSQsDuexA-N0iq5dy3IsqdjDlJFnN6u9eU2sj4vpsrXMXW1Q8yb0WgWdzWG3bxMZuhSlW3rgD19FzL3MPInNmtlEk2vKf0_pPQvgWgti6-z6j3jQ_WXUhoEX8p7OphMBjdhjOI2ZM_XPsCnlYXEtfup4erXJ4g5-jmjN8xNc8hJKbgUGX6_Ber43ydlHKqVNIAtjXB0cPxT9rQQZfLvPEMynSmnTcYQNHvrjmOzHxPgb8vibY5MCRw9ULQ==">
+	const updatedAtElement = document.getElementById("update-at");
+	const date = new Date(updatedAtElement.dateTime);
+	updatedAtElement.innerText = date.toLocaleString(undefined, {
+		dateStyle: "full",
+		timeStyle: "medium",
+	})
+</script>
+
+</html>
