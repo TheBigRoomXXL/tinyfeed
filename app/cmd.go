@@ -154,8 +154,8 @@ func parseCmd() (*Config, error) {
 	fs.Int64Var(&config.Interval, "interval", DefaultConfig.Interval, "Duration in minutes between execution. Ignored if not in daemon mode")
 	fs.Int64Var(&config.Interval, "I", DefaultConfig.Interval, "Duration in minutes between execution. Ignored if not in daemon mode")
 
-	fs.StringVar(&config.OrderBy, "order-by", DefaultConfig.OrderBy, "How to order the articles")
-	fs.StringVar(&config.OrderBy, "O", DefaultConfig.OrderBy, "How to order the articles")
+	fs.StringVar(&config.OrderBy, "order-by", DefaultConfig.OrderBy, "How to order the articles (publication-date, update-date, feed-name, author)")
+	fs.StringVar(&config.OrderBy, "O", DefaultConfig.OrderBy, "How to order the articles (publication-date, update-date, feed-name, author)")
 
 	args, err := parseFlagsToTheEnd(fs)
 	if err != nil {
