@@ -107,23 +107,28 @@ func TestRunAllFeeds(t *testing.T) {
 		feedsUrl[i] = server.URL + "/" + feed
 	}
 
-	dir := t.TempDir()
-	outputPath := filepath.Join(dir, "index.html")
+	sorts := []string{"publication-date", "update-date", "feed-name", "author"}
+	for _, sort := range sorts {
+		t.Run(sort, func(t *testing.T) {
+			dir := t.TempDir()
+			outputPath := filepath.Join(dir, "index.html")
 
-	config := BaseConfig()
-	config.Urls = feedsUrl
-	config.Output = outputPath
+			config := BaseConfig()
+			config.Urls = feedsUrl
+			config.Output = outputPath
 
-	err := tinyfeed.Run(&config)
+			err := tinyfeed.Run(&config)
 
-	if err != nil {
-		t.Fatal(err)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			output, err := os.ReadFile(outputPath)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			Snapshot(t, output)
+		})
 	}
-
-	output, err := os.ReadFile(outputPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	Snapshot(t, output)
 }
