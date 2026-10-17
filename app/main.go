@@ -33,7 +33,7 @@ type Item struct {
 }
 
 func Main() {
-	config, err := parseCmd()
+	config, err := parseCmd(os.Args[1:], pipedStdin())
 	if err != nil {
 		if errors.Is(err, flag.ErrHelp) {
 			printHelp()

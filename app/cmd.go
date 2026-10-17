@@ -104,7 +104,7 @@ For the full tinyfeed manual, please visit: https://feed.lovergne.dev/`,
 	os.Exit(0)
 }
 
-func parseCmd() (*Config, error) {
+func parseCmd(args []string, stdin io.Reader) (*Config, error) {
 	config := DefaultConfig
 	config.Scripts = make(StringRepeatable, 0)
 	config.Stylesheets = make(StringRepeatable, 0)
@@ -157,17 +157,21 @@ func parseCmd() (*Config, error) {
 	fs.StringVar(&config.OrderBy, "order-by", DefaultConfig.OrderBy, "How to order the articles (publication-date, update-date, feed-name, author)")
 	fs.StringVar(&config.OrderBy, "O", DefaultConfig.OrderBy, "How to order the articles (publication-date, update-date, feed-name, author)")
 
-	args, err := parseFlagsToTheEnd(fs)
+	urls, err := parseFlagsToTheEnd(fs, args)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse flags: %w", err)
 	}
 
 	// We get the inputs stdin at the start to that it can be reused by the daemon
-	strdinArgs, err := stdinToArgs()
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse stdin: %w", err)
+	// stdin is nil when nothing is piped to the program.
+	if stdin != nil {
+		stdinArgs, err := readerToArgs(stdin)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse stdin: %w", err)
+		}
+		urls = append(urls, stdinArgs...)
 	}
-	config.Urls = append(args, strdinArgs...)
+	config.Urls = urls
 
 	err = validateOrderBy(config.OrderBy)
 	if err != nil {
@@ -185,32 +189,33 @@ func parseCmd() (*Config, error) {
 //
 // But not using the std flag package.
 // Adapted from https://github.com/golang/go/issues/36744 by thinkerbot
-func parseFlagsToTheEnd(fs *flag.FlagSet) ([]string, error) {
-	err := fs.Parse(os.Args[1:])
+func parseFlagsToTheEnd(fs *flag.FlagSet, args []string) ([]string, error) {
+	err := fs.Parse(args)
 	if err != nil {
 		return nil, err
 	}
-	args := make([]string, 0)
-	for i := len(os.Args) - len(fs.Args()) + 1; i < len(os.Args); {
-		if i > 1 && os.Args[i-2] == "--" {
+	positionals := make([]string, 0)
+	for i := len(args) - len(fs.Args()) + 1; i < len(args); {
+		if i > 1 && args[i-2] == "--" {
 			break
 		}
-		args = append(args, fs.Arg(0))
-		err = fs.Parse(os.Args[i:])
+		positionals = append(positionals, fs.Arg(0))
+		err = fs.Parse(args[i:])
 		if err != nil {
 			return nil, err
 		}
-		i += 1 + len(os.Args[i:]) - len(fs.Args())
+		i += 1 + len(args[i:]) - len(fs.Args())
 	}
-	return append(args, fs.Args()...), nil
+	return append(positionals, fs.Args()...), nil
 }
 
-func stdinToArgs() ([]string, error) {
-	fi, _ := os.Stdin.Stat()
-	if (fi.Mode() & os.ModeCharDevice) == 0 {
-		return readerToArgs(os.Stdin)
+// Return os.Stdin if something is piped to the program, nil otherwise
+func pipedStdin() io.Reader {
+	fi, err := os.Stdin.Stat()
+	if err != nil || (fi.Mode()&os.ModeCharDevice) != 0 {
+		return nil
 	}
-	return []string{}, nil
+	return os.Stdin
 }
 
 func fileToArgs(filepath string) ([]string, error) {
