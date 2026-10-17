@@ -1,6 +1,9 @@
 package tinyfeed
 
 import (
+	"errors"
+	"flag"
+	"os"
 	"slices"
 	"strings"
 	"testing"
@@ -109,6 +112,21 @@ func TestValidateOrderBy(t *testing.T) {
 
 			if (err != nil) != test.wantErr {
 				t.Errorf("validateOrderBy() error = %v, wantErr %v", err, test.wantErr)
+			}
+		})
+	}
+}
+
+func TestParseCmdHelp(t *testing.T) {
+	originalArgs := os.Args
+	t.Cleanup(func() { os.Args = originalArgs })
+
+	for _, arg := range []string{"-h", "-help", "--help"} {
+		t.Run(arg, func(t *testing.T) {
+			os.Args = []string{"tinyfeed", arg}
+			_, err := parseCmd()
+			if !errors.Is(err, flag.ErrHelp) {
+				t.Errorf("parseCmd() error = %v, want flag.ErrHelp", err)
 			}
 		})
 	}

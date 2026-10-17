@@ -2,6 +2,7 @@ package tinyfeed
 
 import (
 	_ "embed"
+	"errors"
 	"flag"
 	"fmt"
 	"html"
@@ -34,7 +35,7 @@ type Item struct {
 func Main() {
 	config, err := parseCmd()
 	if err != nil {
-		if err == flag.ErrHelp {
+		if errors.Is(err, flag.ErrHelp) {
 			printHelp()
 			os.Exit(0)
 		}
