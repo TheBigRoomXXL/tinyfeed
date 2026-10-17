@@ -93,3 +93,11 @@ docker build .
 - When writing tests, favor table-driven tests to cover more cases
 - Don't just test the happy path, test the failure cases.
 - Unit tests live in `app/`, integration tests live in `tests`
+
+Once you are finished, you can check that the code you modified or added is covered by
+your test with go cover:
+
+```bash
+go test -coverpkg=./... -coverprofile=coverprof ./...
+go tool cover -func=coverprof   # or -html=coverprof
+```
