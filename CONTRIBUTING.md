@@ -94,6 +94,11 @@ docker build .
 - Don't just test the happy path, test the failure cases.
 - Unit tests live in `app/`, integration tests live in `tests`
 
+> ⚠ A note on integration tests
+> We use snapshots to check that we don't make any unwanted changes to the output of the program.
+> Our snapshot system, unlike most, always updates the snapshot, so running the tests twice
+> will always succeed. This is intended, but it can trip you up if you don't know about it.
+
 Once you are finished, you can check that the code you modified or added is covered by
 your test with go cover:
 
