@@ -9,17 +9,7 @@ permissions: {}
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: setup-repos
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: setup-go
-        uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b
-
-      - name: run-tests
-        run: |
-          go test -v app/*.go
+    uses: ./.github/workflows/test.yml
 
   build-and-release:
     needs: test
@@ -36,17 +26,14 @@ jobs:
       - name: cross-platform-build
         run: |
           mkdir ./builds/
-          GO_LDFLAGS="-s -w" # strip debug info
-          GOARCH=arm64
-          GOOS=linux   go build -o ./builds/tinyfeed_linux_arm64
-          GOOS=freebsd go build -o ./builds/tinyfeed_freebsd_arm64
-          GOOS=darwin  go build -o ./builds/tinyfeed_darwin_arm64
-          GOOS=windows go build -o ./builds/tinyfeed_windows_arm64
-          GOARCH=amd64
-          GOOS=linux   go build -o ./builds/tinyfeed_linux_amd64
-          GOOS=freebsd go build -o ./builds/tinyfeed_freebsd_amd64
-          GOOS=darwin  go build -o ./builds/tinyfeed_darwin_amd64
-          GOOS=windows go build -o ./builds/tinyfeed_windows_amd64
+          GOOS=linux   GOARCH=arm64 go build -ldflags="-s -w" -o ./builds/tinyfeed_linux_arm64
+          GOOS=freebsd GOARCH=arm64 go build -ldflags="-s -w" -o ./builds/tinyfeed_freebsd_arm64
+          GOOS=darwin  GOARCH=arm64 go build -ldflags="-s -w" -o ./builds/tinyfeed_darwin_arm64
+          GOOS=windows GOARCH=arm64 go build -ldflags="-s -w" -o ./builds/tinyfeed_windows_arm64
+          GOOS=linux   GOARCH=amd64 go build -ldflags="-s -w" -o ./builds/tinyfeed_linux_amd64
+          GOOS=freebsd GOARCH=amd64 go build -ldflags="-s -w" -o ./builds/tinyfeed_freebsd_amd64
+          GOOS=darwin  GOARCH=amd64 go build -ldflags="-s -w" -o ./builds/tinyfeed_darwin_amd64
+          GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o ./builds/tinyfeed_windows_amd64
 
           sudo apt install upx
           upx ./builds/tinyfeed_linux*
