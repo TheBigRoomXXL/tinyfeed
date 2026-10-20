@@ -73,6 +73,8 @@ func BaseConfig() tinyfeed.Config {
 }
 
 func TestRunSingleFeed(t *testing.T) {
+	t.Parallel()
+
 	feeds := Feeds()
 
 	for _, feed := range feeds {
@@ -101,6 +103,8 @@ func TestRunSingleFeed(t *testing.T) {
 }
 
 func TestRunAllFeeds(t *testing.T) {
+	t.Parallel()
+
 	feeds := Feeds()
 	feedsUrl := make([]string, len(feeds))
 	for i, feed := range feeds {
