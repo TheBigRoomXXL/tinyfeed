@@ -37,11 +37,11 @@ jobs:
           GOOS=linux   GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_linux_arm64
           GOOS=freebsd GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_freebsd_arm64
           GOOS=darwin  GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_darwin_arm64
-          GOOS=windows GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_windows_arm64
+          GOOS=windows GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_windows_arm64.exe
           GOOS=linux   GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_linux_amd64
           GOOS=freebsd GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_freebsd_amd64
           GOOS=darwin  GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_darwin_amd64
-          GOOS=windows GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_windows_amd64
+          GOOS=windows GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o ./builds/tinyfeed_windows_amd64.exe
 
           upx ./builds/tinyfeed_linux*
           upx ./builds/tinyfeed_windows*
