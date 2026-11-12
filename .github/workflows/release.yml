@@ -9,7 +9,7 @@ permissions: {}
 
 jobs:
   test:
-    uses: ./.github/workflows/tests.yml
+    uses: ./.github/workflows/.tests.yml
 
   build-and-release:
     needs: test
